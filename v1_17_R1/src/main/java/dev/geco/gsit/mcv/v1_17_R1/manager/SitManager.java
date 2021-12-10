@@ -151,6 +151,8 @@ public class SitManager implements ISitManager, Listener {
 
         startDetectSeat(seat);
 
+        feature_used++;
+
         return seat;
 
     }

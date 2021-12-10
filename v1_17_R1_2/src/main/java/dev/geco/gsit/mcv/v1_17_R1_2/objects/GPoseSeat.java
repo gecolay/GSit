@@ -239,6 +239,10 @@ public class GPoseSeat implements IGPoseSeat, Listener {
                 setEquipmentVisibility(false);
 
                 if(p == Pose.SLEEPING) {
+                    for(Player z : a) {
+                        ServerPlayer sp = ((CraftPlayer) z).getHandle();
+                        sp.connection.send(set_bed);
+                    }
                     if(GPM.getCManager().L_SNORING_SOUNDS) {
                         sleep_tick++;
                         if(sleep_tick >= 90) {

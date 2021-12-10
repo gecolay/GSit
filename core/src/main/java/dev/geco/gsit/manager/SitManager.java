@@ -20,6 +20,12 @@ public class SitManager implements ISitManager {
     private final GSitMain GPM;
     
     public SitManager(GSitMain GPluginMain) { GPM = GPluginMain; }
+
+    private int feature_used = 0;
+
+    public int getFeatureUsedCount() { return feature_used; }
+
+    public void resetFeatureUsedCount() { feature_used = 0; }
     
     private final List<GSeat> seats = new ArrayList<GSeat>();
 
@@ -101,6 +107,8 @@ public class SitManager implements ISitManager {
         GPM.getSitUtil().setSeatBlock(Block, seat);
 
         if(Rotate) startRotateSeat(seat);
+
+        feature_used++;
         
         return seat;
         

@@ -155,6 +155,8 @@ public class PoseManager implements IPoseManager, Listener {
 
         startDetectSeat(pose);
 
+        feature_used++;
+
         return pose;
 
     }
