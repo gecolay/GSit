@@ -8,6 +8,10 @@ public interface ISitManager {
 
     double STAIR_OFFSET = 0.123d;
 
+    int getFeatureUsedCount();
+
+    void resetFeatureUsedCount();
+
     boolean isSitting(Player Player);
 
     GSeat getSeat(Player Player);

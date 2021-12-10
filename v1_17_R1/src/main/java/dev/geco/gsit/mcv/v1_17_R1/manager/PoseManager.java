@@ -32,6 +32,12 @@ public class PoseManager implements IPoseManager, Listener {
         GPM.getServer().getPluginManager().registerEvents(this, GPM);
     }
 
+    private int feature_used = 0;
+
+    public int getFeatureUsedCount() { return feature_used; }
+
+    public void resetFeatureUsedCount() { feature_used = 0; }
+
     private final HashMap<IGPoseSeat, SeatArmorStand> poses = new HashMap<IGPoseSeat, SeatArmorStand>();
 
     private final HashMap<IGPoseSeat, BukkitRunnable> detect = new HashMap<IGPoseSeat, BukkitRunnable>();

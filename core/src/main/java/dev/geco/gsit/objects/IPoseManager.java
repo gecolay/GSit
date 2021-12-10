@@ -6,6 +6,10 @@ import org.bukkit.entity.Pose;
 
 public interface IPoseManager {
 
+    int getFeatureUsedCount();
+
+    void resetFeatureUsedCount();
+
     boolean isPosing(Player Player);
 
     IGPoseSeat getPose(Player Player);

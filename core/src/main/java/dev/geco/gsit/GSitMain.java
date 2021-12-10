@@ -45,6 +45,14 @@ public class GSitMain extends JavaPlugin {
 
     public IPoseManager getPoseManager() { return posemanager; }
 
+    private IPlayerSitManager playersitmanager;
+
+    public IPlayerSitManager getPlayerSitManager() { return playersitmanager; }
+
+    private ICrawlManager crawlmanager;
+
+    public ICrawlManager getCrawlManager() { return crawlmanager; }
+
     private ToggleManager togglemanager;
 
     public ToggleManager getToggleManager() { return togglemanager; }
@@ -95,7 +103,7 @@ public class GSitMain extends JavaPlugin {
 
     private void setupSettings() {
         copyLangFiles();
-        messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + Values.LANG_PATH, getConfig().getString("Lang.lang") + Values.YML_FILETYP));
+        messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + Values.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + Values.YML_FILETYP));
         prefix = getMessages().getString("Plugin.plugin-prefix");
         getToggleManager().loadToggleData();
     }
@@ -105,12 +113,13 @@ public class GSitMain extends JavaPlugin {
         bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", new Callable<String>() {
             @Override
             public String call() throws Exception {
-                return getConfig().getString("Lang.lang").toLowerCase();
+                return getConfig().getString("Lang.lang", "en_en").toLowerCase();
             }
         }));
-        /*bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", new Callable<Integer>() {
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
+                if(getSitManager() == null) return 0;
                 int c = getSitManager().getFeatureUsedCount();
                 getSitManager().resetFeatureUsedCount();
                 return c;
@@ -119,27 +128,30 @@ public class GSitMain extends JavaPlugin {
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                int c = getPoseSitManager().getFeatureUsedCount();
-                getPoseSitManager().resetFeatureUsedCount();
+                if(getPoseManager() == null) return 0;
+                int c = getPoseManager().getFeatureUsedCount();
+                getPoseManager().resetFeatureUsedCount();
                 return c;
             }
         }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                int c = getPSitManager().getFeatureUsedCount();
-                getPSitManager().resetFeatureUsedCount();
+                if(getPlayerSitManager() == null) return 0;
+                int c = getPlayerSitManager().getFeatureUsedCount();
+                getPlayerSitManager().resetFeatureUsedCount();
                 return c;
             }
         }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
+                if(getCrawlManager() == null) return 0;
                 int c = getCrawlManager().getFeatureUsedCount();
                 getCrawlManager().resetFeatureUsedCount();
                 return c;
             }
-        }));*/
+        }));
     }
 
     public void onLoad() {
@@ -164,6 +176,8 @@ public class GSitMain extends JavaPlugin {
         if(!versionCheck()) return;
         sitmanager = NMSManager.isNewerOrVersion(17, 0) ? (ISitManager) NMSManager.getPackageObject("gsit", "manager.SitManager", getInstance()) : new SitManager(getInstance());
         posemanager = NMSManager.isNewerOrVersion(17, 0) ? (IPoseManager) NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) : null;
+        playersitmanager = NMSManager.isNewerOrVersion(17, 0) ? (IPlayerSitManager) NMSManager.getPackageObject("gsit", "manager.PlayerSitManager", getInstance()) : null;
+        crawlmanager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
         teleportutil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("gsit", "util.TeleportUtil", null) : null;
         getCommand("gsit").setExecutor(new GSitCommand(getInstance()));
         getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));

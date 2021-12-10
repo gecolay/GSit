@@ -32,6 +32,12 @@ public class SitManager implements ISitManager, Listener {
         GPM.getServer().getPluginManager().registerEvents(this, GPM);
     }
 
+    private int feature_used = 0;
+
+    public int getFeatureUsedCount() { return feature_used; }
+
+    public void resetFeatureUsedCount() { feature_used = 0; }
+
     private final HashMap<GSeat, SeatArmorStand> seats = new HashMap<GSeat, SeatArmorStand>();
 
     private final HashMap<GSeat, BukkitRunnable> detect = new HashMap<GSeat, BukkitRunnable>();
@@ -123,8 +129,6 @@ public class SitManager implements ISitManager, Listener {
         t.absMoveTo(l.getX(), l.getY(), l.getZ());
 
         t.startRiding(sa, true);
-
-        //sa.getBukkitEntity().addPassenger(Player);
 
         ClientboundSetPassengersPacket pa3 = new ClientboundSetPassengersPacket(sa);
 
@@ -328,36 +332,22 @@ public class SitManager implements ISitManager, Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     private void PJoiE(PlayerJoinEvent e) {
-
         Player p = e.getPlayer();
-
         for(Player t : p.getWorld().getPlayers()) {
-
             if(isSitting(t)) {
-
                 showSeat(getSeat(t), p);
-
             }
-
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void PChaWE(PlayerChangedWorldEvent e) {
-
         Player p = e.getPlayer();
-
         for(Player t : p.getWorld().getPlayers()) {
-
             if(isSitting(t)) {
-
                 showSeat(getSeat(t), p);
-
             }
-
         }
-
     }
 
 }
