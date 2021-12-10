@@ -1,0 +1,105 @@
+name: GSit
+version: 1.0.0
+description: Relax with your Friends on nice Seats!
+author: Gecolay
+website: https://www.spigotmc.org/resources/62325
+main: dev.geco.gsit.GSitMain
+api-version: 1.13
+softdepend: [PlotSquared, WorldGuard]
+
+commands:
+
+  gsit:
+
+    usage: /<command>
+    aliases: [sit]
+    description: Sit-Command
+
+  glay:
+
+    usage: /<command>
+    aliases: [lay]
+    description: Lay-Command
+
+  gbellyflop:
+
+    usage: /<command>
+    aliases: [bellyflop]
+    description: BellyFlop-Command
+
+  gcrawl:
+
+    usage: /<command>
+    aliases: [crawl]
+    description: Crawl-Command
+
+  gsitreload:
+
+    usage: /<command>
+    aliases: [gsitrl]
+    description: GSit-Config-Reload
+    permission: GSit.GSitReload
+
+
+
+permissions:
+
+  GSit.*:
+    default: op
+    description: OP-Permission for all Commands and Functions for GSit
+    children:
+      GSit.Sit: true
+      GSit.SitClick: true
+      GSit.SitToggle: true
+      GSit.PlayerSit: true
+      GSit.PlayerSitToggle: true
+      GSit.Lay: true
+      GSit.BellyFlop: true
+      GSit.Crawl: true
+      GSit.Kick: true
+      GSit.Update: true
+      GSit.GSitReload: true
+
+  GSit.Sit:
+    default: true
+    description: Sit | Permission
+
+  GSit.SitClick:
+    default: true
+    description: Sit Click | Permission
+
+  GSit.SitToggle:
+    default: true
+    description: Toggle Sit-Ability | Permission
+
+  GSit.PlayerSit:
+    default: true
+    description: PlayerSit | Permission
+
+  GSit.PlayerSitToggle:
+    default: true
+    description: Toggle PlayerSit-Ability | Permission
+
+  GSit.Lay:
+    default: op
+    description: Lay | Permission
+
+  GSit.BellyFlop:
+    default: op
+    description: BellyFlop | Permission
+
+  GSit.Crawl:
+    default: op
+    description: Crawl | Permission
+
+  GSit.Kick:
+    default: op
+    description: Seat Kick | Permission
+
+  GSit.Update:
+    default: op
+    description: Get-Update-Notification | Permission
+
+  GSit.GSitReload:
+    default: op
+    description: Config-Reload-Command | Permission

@@ -1,0 +1,54 @@
+#
+# Language-File created by:		Gecolay
+#
+
+
+
+Plugin:
+
+  plugin-enabled: "[P]&a Das Plugin wurde erfolgreich aktiviert."
+  plugin-link: "[P]&a Verknüpfung mit&6 %Link%&a erfolgreich!"
+  plugin-update: "[P]&a Neue Version verfügbar:&6 %NewVersion%&a!\n[P]&a Aktuell verwendete Version:&6 %Version%&a!\n[P]&a Laden Sie die neuste Version von:\n[P]&6 %Path%"
+  plugin-version: "[P]&c Das Plugin kann mit dieser Server-Version nicht genutzt werden! (&b%Version%&c)"
+  plugin-disabled: "[P]&a Das Plugin wurde erfolgreich deaktiviert."
+  plugin-prefix: "&7[&6GSit&7]"
+
+
+
+Messages:
+
+  command-reload: "[P]&a Die Einstellungen wurden erfolgreich neu geladen."
+  command-permission-error: "[P]&c Sie haben keine Berechtigung, diesen Befehl zu verwenden!"
+  command-sender-error: "[P]&c Dieser Sender kann diesen Befehl nicht ausführen!"
+  command-version-error: "[P]&c Du kannst diese Funktion mit dieser Serverversion nicht nutzen! (&b%Version%&c)"
+
+  command-gsit-toggle-on: "[P]&a Du kannst nun durch klicken sitzen."
+  command-gsit-toggle-off: "[P]&a Du kannst nicht länger durch klicken sitzen."
+  command-gsit-playertoggle-on: "[P]&a Du kannst nun durch klicken auf einen Spieler sitzen."
+  command-gsit-playertoggle-off: "[P]&a Du kannst nicht länger durch klicken auf einen Spieler sitzen."
+
+  action-sit-already-error: "[P]&c Du sitzt bereits!"
+  action-sit-ground-error: "[P]&c Du kannst nur auf dem Boden sitzen!"
+  action-sit-world-error: "[P]&c Du kannst in dieser Welt nicht sitzen!"
+  action-sit-location-error: "[P]&c Du kannst hier nicht sitzen!"
+  action-sit-safe-error: "[P]&c Es ist nicht sicher, hier zu sitzen!"
+  action-sit-region-error: "[P]&c Du kannst in dieser Region nicht sitzen!"
+  action-sit-kick-error: "[P]&c Jemand sitzt hier bereits!"
+  action-sit-info: "&aNutze deine&6 <translatekey:key.sneak>&a Taste zum aufstehen."
+
+  action-playersit-info: "&aNutze deine&6 <translatekey:key.sneak>&a Taste zum aufstehen."
+
+  action-pose-already-error: "[P]&c Du posierst bereits!"
+  action-pose-ground-error: "[P]&c Du kannst nur auf dem Boden posieren!"
+  action-pose-world-error: "[P]&c Du kannst in dieser Welt nicht posieren!"
+  action-pose-location-error: "[P]&c Du kannst hier nicht posieren!"
+  action-pose-safe-error: "[P]&c Es ist nicht sicher, hier zu posieren!"
+  action-pose-region-error: "[P]&c Du kannst in dieser Region nicht posieren!"
+  action-pose-kick-error: "[P]&c Jemand posiert hier bereits!"
+  action-pose-info: "&aNutze deine&6 <translatekey:key.sneak>&a Taste zum aufstehen."
+
+  action-crawl-location-error: "[P]&c Du kannst hier nicht kriechen!"
+  action-crawl-world-error: "[P]&c Du kannst in dieser Welt nicht kriechen!"
+  action-crawl-info: "&aNutze deine&6 <translatekey:key.sneak>&a Taste zum aufstehen."
+
+  action-blocked-error: "[P]&c Du darfst diesen Befehl im Moment nicht ausführen!"
