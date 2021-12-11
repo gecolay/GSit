@@ -41,6 +41,10 @@ public class PlayerEvents implements Listener {
             GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.QUIT, true);
         }
 
+        if(GPM.getCrawlManager().isCrawling(p)) {
+            GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.QUIT);
+        }
+
     }
     
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -54,6 +58,10 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getPoseManager().isPosing(p)) {
             GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.TELEPORT, false);
+        }
+
+        if(GPM.getCrawlManager().isCrawling(p)) {
+            GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.TELEPORT);
         }
         
     }
@@ -92,6 +100,10 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getPoseManager().isPosing(p)) {
             GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.DAMAGE, true);
+        }
+
+        if(GPM.getCrawlManager().isCrawling(p)) {
+            GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.DAMAGE);
         }
 
     }

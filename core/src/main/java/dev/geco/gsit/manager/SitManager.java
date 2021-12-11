@@ -44,13 +44,9 @@ public class SitManager implements ISitManager {
         
         if(GPM.getSitUtil().isSeatBlock(Block)) {
             
-            if(!GPM.getPManager().hasPermission(Player, "Kick")) return false;
+            if(!GPM.getPManager().hasPermission(Player, "Kick.Sit")) return false;
             
-            for(GSeat s : GPM.getSitUtil().getSeats(Block)) {
-                
-                if(!removeSeat(s, GetUpReason.KICKED)) return false;
-                
-            }
+            for(GSeat s : GPM.getSitUtil().getSeats(Block)) if(!removeSeat(s, GetUpReason.KICKED)) return false;
             
         }
         

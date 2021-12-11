@@ -44,8 +44,8 @@ public class GSitCommand implements CommandExecutor {
                                         } else GPM.getMManager().sendMessage(s, "Messages.action-sit-location-error");
                                     } else GPM.getMManager().sendMessage(s, "Messages.action-sit-location-error");
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-sit-world-error");
-                            } else GPM.getMManager().sendMessage(s, "Messages.action-sit-already-error");
-                        } else GPM.getMManager().sendMessage(s, "Messages.action-sit-ground-error");
+                            } else GPM.getMManager().sendMessage(s, "Messages.action-sit-now-error");
+                        } else GPM.getMManager().sendMessage(s, "Messages.action-sit-now-error");
                     }
                 } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
             } else {

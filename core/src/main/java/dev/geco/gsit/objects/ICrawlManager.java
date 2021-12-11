@@ -16,6 +16,6 @@ public interface ICrawlManager {
 
     IGCrawl startCrawl(Player Player);
 
-    boolean stopCrawl(Player Player, GetUpReason Reason);
+    boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason);
 
 }

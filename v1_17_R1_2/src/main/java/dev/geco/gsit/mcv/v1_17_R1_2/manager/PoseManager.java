@@ -57,13 +57,9 @@ public class PoseManager implements IPoseManager, Listener {
 
         if(GPM.getPoseUtil().isPoseBlock(Block)) {
 
-            if(!GPM.getPManager().hasPermission(Player, "Kick")) return false;
+            if(!GPM.getPManager().hasPermission(Player, "Kick.Pose", "Kick.*")) return false;
 
-            for(IGPoseSeat p : GPM.getPoseUtil().getPoses(Block)) {
-
-                if(!removePose(p, GetUpReason.KICKED)) return false;
-
-            }
+            for(IGPoseSeat p : GPM.getPoseUtil().getPoses(Block)) if(!removePose(p, GetUpReason.KICKED)) return false;
 
         }
 

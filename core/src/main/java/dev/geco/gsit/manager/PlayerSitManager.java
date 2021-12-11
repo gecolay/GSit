@@ -9,7 +9,6 @@ import net.md_5.bungee.api.ChatMessageType;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerSitManager implements IPlayerSitManager {
 

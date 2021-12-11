@@ -8,9 +8,7 @@ import com.mojang.datafixers.util.Pair;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
@@ -37,7 +35,7 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 
-public class GPoseSeat implements IGPoseSeat, Listener {
+public class GPoseSeat implements IGPoseSeat {
 
     private final GSitMain GPM = GSitMain.getInstance();
 
@@ -154,11 +152,10 @@ public class GPoseSeat implements IGPoseSeat, Listener {
 
         };
 
-        Bukkit.getPluginManager().registerEvents(li, GPM);
-
     }
 
     public void spawn() {
+        Bukkit.getPluginManager().registerEvents(li, GPM);
         a = getNearPlayers();
         cp.setInvisible(true);
         setEquipmentVisibility(false);

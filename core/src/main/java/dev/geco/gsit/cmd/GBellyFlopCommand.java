@@ -22,7 +22,7 @@ public class GBellyFlopCommand implements CommandExecutor {
     public boolean onCommand(CommandSender s, Command c, String l, String[] a) {
         if(s instanceof Player) {
             Player p = (Player) s;
-            if(GPM.getPManager().hasNormalPermission(s, "Lay")) {
+            if(GPM.getPManager().hasNormalPermission(s, "BellyFlop")) {
                 if(GPM.getPoseManager() != null) {
                     if(GPM.getPoseManager().isPosing(p)) {
                         GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP);
@@ -45,8 +45,8 @@ public class GBellyFlopCommand implements CommandExecutor {
                                         } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
                                     } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-pose-world-error");
-                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-already-error");
-                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-ground-error");
+                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-now-error");
+                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-now-error");
                     }
                 } else {
                     String v = Bukkit.getServer().getClass().getPackage().getName();

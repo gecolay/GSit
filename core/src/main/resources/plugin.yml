@@ -56,7 +56,7 @@ permissions:
       GSit.Lay: true
       GSit.BellyFlop: true
       GSit.Crawl: true
-      GSit.Kick: true
+      GSit.Kick.*: true
       GSit.Update: true
       GSit.GSitReload: true
 
@@ -92,9 +92,20 @@ permissions:
     default: op
     description: Crawl | Permission
 
-  GSit.Kick:
+  GSit.Kick.*:
     default: op
-    description: Seat Kick | Permission
+    description: Kick | Permission
+    children:
+      GSit.Kick.Sit: true
+      GSit.Kick.Pose: true
+
+  GSit.Kick.Sit:
+    default: op
+    description: Kick Sit | Permission
+
+  GSit.Kick.Pose:
+    default: op
+    description: Kick Pose | Permission
 
   GSit.Update:
     default: op

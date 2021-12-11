@@ -45,8 +45,8 @@ public class GLayCommand implements CommandExecutor {
                                         } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
                                     } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-pose-world-error");
-                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-already-error");
-                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-ground-error");
+                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-now-error");
+                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-now-error");
                     }
                 } else {
                     String v = Bukkit.getServer().getClass().getPackage().getName();

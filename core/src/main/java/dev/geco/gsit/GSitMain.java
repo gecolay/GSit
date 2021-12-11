@@ -199,6 +199,7 @@ public class GSitMain extends JavaPlugin {
     public void onDisable() {
         getSitManager().clearSeats();
         if(getPoseManager() != null) getPoseManager().clearPoses();
+        if(getCrawlManager() != null) getCrawlManager().clearCrawls();
         getToggleManager().saveToggleData();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
@@ -224,6 +225,7 @@ public class GSitMain extends JavaPlugin {
         getCManager().reload();
         getSitManager().clearSeats();
         if(getPoseManager() != null) getPoseManager().clearPoses();
+        if(getCrawlManager() != null) getCrawlManager().clearCrawls();
         getToggleManager().saveToggleData();
         setupSettings();
         loadPluginDepends(s);
