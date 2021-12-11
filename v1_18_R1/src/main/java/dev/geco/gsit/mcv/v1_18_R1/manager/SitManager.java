@@ -46,14 +46,16 @@ public class SitManager implements ISitManager, Listener {
 
     private final HashMap<GSeat, BukkitRunnable> rotate = new HashMap<GSeat, BukkitRunnable>();
 
+    public List<GSeat> getSeats() { return new ArrayList<GSeat>(seats.keySet()); }
+
     public boolean isSitting(Player Player) { return getSeat(Player) != null; }
 
     public GSeat getSeat(Player Player) {
-        for(GSeat s : seats.keySet()) if(Player.equals(s.getPlayer())) return s;
+        for(GSeat s : getSeats()) if(Player.equals(s.getPlayer())) return s;
         return null;
     }
 
-    public void clearSeats() { for(GSeat s : seats.keySet()) removeSeat(s, GetUpReason.PLUGIN); }
+    public void clearSeats() { for(GSeat s : getSeats()) removeSeat(s, GetUpReason.PLUGIN); }
 
     public boolean kickSeat(Block Block, Player Player) {
 

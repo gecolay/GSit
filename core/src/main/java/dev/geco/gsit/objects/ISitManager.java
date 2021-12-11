@@ -1,5 +1,7 @@
 package dev.geco.gsit.objects;
 
+import java.util.*;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -11,6 +13,8 @@ public interface ISitManager {
     int getFeatureUsedCount();
 
     void resetFeatureUsedCount();
+
+    List<GSeat> getSeats();
 
     boolean isSitting(Player Player);
 

@@ -1,5 +1,7 @@
 package dev.geco.gsit.objects;
 
+import java.util.*;
+
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
@@ -9,6 +11,8 @@ public interface IPoseManager {
     int getFeatureUsedCount();
 
     void resetFeatureUsedCount();
+
+    List<IGPoseSeat> getPoses();
 
     boolean isPosing(Player Player);
 

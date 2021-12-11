@@ -46,14 +46,16 @@ public class PoseManager implements IPoseManager, Listener {
 
     private final HashMap<IGPoseSeat, BukkitRunnable> rotate = new HashMap<IGPoseSeat, BukkitRunnable>();
 
+    public List<IGPoseSeat> getPoses() { return new ArrayList<IGPoseSeat>(poses.keySet()); }
+
     public boolean isPosing(Player Player) { return getPose(Player) != null; }
 
     public IGPoseSeat getPose(Player Player) {
-        for(IGPoseSeat p : poses.keySet()) if(Player.equals(p.getSeat().getPlayer())) return p;
+        for(IGPoseSeat p : getPoses()) if(Player.equals(p.getSeat().getPlayer())) return p;
         return null;
     }
 
-    public void clearPoses() { for(IGPoseSeat p : poses.keySet()) removePose(p, GetUpReason.PLUGIN); }
+    public void clearPoses() { for(IGPoseSeat p : getPoses()) removePose(p, GetUpReason.PLUGIN); }
 
     public boolean kickPose(Block Block, Player Player) {
 

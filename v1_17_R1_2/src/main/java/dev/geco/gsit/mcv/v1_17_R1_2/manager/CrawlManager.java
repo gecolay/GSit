@@ -24,14 +24,16 @@ public class CrawlManager implements ICrawlManager {
 
     private final List<IGCrawl> crawls = new ArrayList<IGCrawl>();
 
+    public List<IGCrawl> getCrawls() { return new ArrayList<IGCrawl>(crawls); }
+
     public boolean isCrawling(Player Player) { return getCrawl(Player) != null; }
 
     public IGCrawl getCrawl(Player Player) {
-        for(IGCrawl s : crawls) if(Player.equals(s.getPlayer())) return s;
+        for(IGCrawl s : getCrawls()) if(Player.equals(s.getPlayer())) return s;
         return null;
     }
 
-    public void clearCrawls() { for(IGCrawl c : crawls) stopCrawl(c, GetUpReason.PLUGIN); }
+    public void clearCrawls() { for(IGCrawl c : getCrawls()) stopCrawl(c, GetUpReason.PLUGIN); }
 
     public IGCrawl startCrawl(Player Player) {
 
