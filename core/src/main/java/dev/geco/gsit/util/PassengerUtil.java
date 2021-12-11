@@ -15,7 +15,7 @@ public class PassengerUtil {
 
     public long getVehicleAmount(Entity E) {
         long a = 0;
-        if(E.getVehicle() != null) {
+        if(E.isInsideVehicle()) {
             Entity e = E.getVehicle();
             if(!e.hasMetadata(GPM.NAME + "A")) a++;
             a += getVehicleAmount(e);

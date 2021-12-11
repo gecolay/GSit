@@ -9,6 +9,7 @@ import net.md_5.bungee.api.ChatMessageType;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerSitManager implements IPlayerSitManager {
 
@@ -50,17 +51,22 @@ public class PlayerSitManager implements IPlayerSitManager {
         return true;
     }
 
-    public void stopSit(Player Player, GetUpReason Reason) {
+    public void stopSit(Entity Entity, GetUpReason Reason) {
 
-        for(Entity e : Player.getPassengers()) {
+        if(Entity.hasMetadata(GPM.NAME + "A")) {
+            Entity.eject();
+            Entity.remove();
+        }
+
+        for(Entity e : Entity.getPassengers()) {
             if(e.hasMetadata(GPM.NAME + "A")) {
                 e.eject();
                 e.remove();
             }
         }
 
-        if(Player.getVehicle() != null) {
-            Entity e = Player.getVehicle();
+        if(Entity.isInsideVehicle()) {
+            Entity e = Entity.getVehicle();
             if(e.hasMetadata(GPM.NAME + "A")) {
                 e.eject();
                 e.remove();

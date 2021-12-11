@@ -1,6 +1,6 @@
 package dev.geco.gsit.objects;
 
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
 public interface IPlayerSitManager {
 
@@ -10,6 +10,6 @@ public interface IPlayerSitManager {
 
     boolean sitOnPlayer(Player Player, Player Target);
 
-    void stopSit(Player Player, GetUpReason Reason);
+    void stopSit(Entity Entity, GetUpReason Reason);
 
 }
