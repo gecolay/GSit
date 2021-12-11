@@ -59,7 +59,7 @@ Options:
     use-playersit: false
 
     # Defines whether a Player can sit on an NPC by RightClick
-    allow-playersit-npc: false
+    use-playersit-npc: false
 
     # Defines the maximum Amount of Players that can be stacked (0 means unlimited!)
     max-stack: 0

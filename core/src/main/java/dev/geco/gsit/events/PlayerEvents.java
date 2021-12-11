@@ -78,20 +78,6 @@ public class PlayerEvents implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void PTogSE(PlayerToggleSneakEvent e) {
-
-        Player p = e.getPlayer();
-
-        if(!GPM.getCManager().PS_SNEAK_EJECTS || !e.isSneaking() || p.isFlying() || p.getPassengers().isEmpty()) return;
-
-
-
-
-
-
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void EDamE(EntityDamageEvent e) {
 
         Entity E = e.getEntity();
@@ -116,7 +102,7 @@ public class PlayerEvents implements Listener {
         Player p = e.getPlayer();
         String m = e.getMessage();
 
-        if(m.length() > 1 && GPM.getSitManager().isSitting(p)) {
+        if(m.length() > 1 && (GPM.getSitManager().isSitting(p) || GPM.getPoseManager().isPosing(p))) {
 
             m = m.substring(1).split(" ")[0].toLowerCase();
 

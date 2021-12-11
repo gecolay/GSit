@@ -186,6 +186,7 @@ public class GSitMain extends JavaPlugin {
         getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
         getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
         getServer().getPluginManager().registerEvents(new PlayerEvents(getInstance()), getInstance());
+        getServer().getPluginManager().registerEvents(new PlayerSitEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
         setupSettings();

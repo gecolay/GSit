@@ -38,7 +38,7 @@ public class CManager {
 
     public boolean PS_USE_PLAYERSIT;
 
-    public boolean PS_ALLOW_PLAYERSIT_NPC;
+    public boolean PS_USE_PLAYERSIT_NPC;
 
     public long PS_MAX_STACK;
 
@@ -114,7 +114,7 @@ public class CManager {
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);
 
         PS_USE_PLAYERSIT = GPM.getConfig().getBoolean("Options.PlayerSit.use-playersit", false);
-        PS_ALLOW_PLAYERSIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.allow-playersit-npc", false);
+        PS_USE_PLAYERSIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.use-playersit-npc", false);
         PS_MAX_STACK = GPM.getConfig().getLong("Options.PlayerSit.max-stack", 0);
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
         PS_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.PlayerSit.empty-hand-only", true);

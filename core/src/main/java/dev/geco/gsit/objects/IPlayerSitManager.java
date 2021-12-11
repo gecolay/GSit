@@ -10,4 +10,6 @@ public interface IPlayerSitManager {
 
     boolean sitOnPlayer(Player Player, Player Target);
 
+    void ejectPassengers(Player Player, GetUpReason Reason);
+
 }

@@ -17,7 +17,7 @@ public class PassengerUtil {
         long a = 0;
         if(E.getVehicle() != null) {
             Entity e = E.getVehicle();
-            if(!e.getScoreboardTags().contains(GPM.NAME + "A")) a++;
+            if(!e.hasMetadata(GPM.NAME + "A")) a++;
             a += getVehicleAmount(e);
         }
         return a;
@@ -26,7 +26,7 @@ public class PassengerUtil {
     public long getPassengerAmount(Entity E) {
         long a = 0;
         for(Entity e : E.getPassengers()) {
-            if(!e.getScoreboardTags().contains(GPM.NAME + "A")) a++;
+            if(!e.hasMetadata(GPM.NAME + "A")) a++;
             a += getPassengerAmount(e);
         }
         return a;
@@ -37,7 +37,7 @@ public class PassengerUtil {
         if(e.contains(S)) return true;
         for(Entity i : e) {
             boolean r = isInPassengerList(i, S);
-            if(r) return r;
+            if(r) return true;
         }
         return false;
     }
