@@ -1,16 +1,11 @@
 package dev.geco.gsit.cmd;
 
-import dev.geco.gsit.objects.GetUpReason;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 import dev.geco.gsit.GSitMain;
-import org.bukkit.entity.Pose;
+import dev.geco.gsit.objects.*;
 
 public class GCrawlCommand implements CommandExecutor {
 
@@ -27,14 +22,12 @@ public class GCrawlCommand implements CommandExecutor {
                     if(GPM.getCrawlManager().isCrawling(p)) {
                         GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.GET_UP);
                     } else {
-                        if(p.isValid() && !p.isSneaking() && p.isOnGround()) {
-                            if (!p.isInsideVehicle() && !p.isSleeping()) {
-                                if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName())) {
-                                    if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(p.getLocation(), GPM.getWorldGuard().CRAWL_FLAG)) {
-                                        GPM.getCrawlManager().startCrawl(p);
-                                    } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
-                                } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-world-error");
-                            } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-now-error");
+                        if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
+                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName())) {
+                                if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(p.getLocation(), GPM.getWorldGuard().CRAWL_FLAG)) {
+                                    GPM.getCrawlManager().startCrawl(p);
+                                } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
+                            } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-world-error");
                         } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-now-error");
                     }
                 } else {

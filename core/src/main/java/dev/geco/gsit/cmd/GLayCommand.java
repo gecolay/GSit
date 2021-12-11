@@ -27,25 +27,23 @@ public class GLayCommand implements CommandExecutor {
                     if(GPM.getPoseManager().isPosing(p)) {
                         GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP);
                     } else {
-                        if(p.isValid() && !p.isSneaking() && p.isOnGround()) {
-                            if(!p.isInsideVehicle() && !p.isSleeping()) {
-                                if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName())) {
-                                    Location pl = p.getLocation();
-                                    Block b = pl.getBlock().isPassable() ? pl.getBlock().getRelative(BlockFace.DOWN) : pl.getBlock();
-                                    if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {
-                                        Material u = b.getRelative(BlockFace.UP).getType();
-                                        if(GPM.getCManager().S_ALLOW_UNSAFE || (u.isTransparent() || u == Material.WATER || u.name().equalsIgnoreCase("LIGHT"))) {
-                                            if(GPM.getPlotSquared() == null || GPM.getPlotSquared().canCreateSeat(b.getLocation(), p)) {
-                                                if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().POSE_FLAG)) {
-                                                    if(GPM.getCManager().REST_SAME_BLOCK || GPM.getPoseManager().kickPose(b, p)) {
-                                                        GPM.getPoseManager().createPose(b, p, Pose.SLEEPING);
-                                                    } else GPM.getMManager().sendMessage(s, "Messages.action-pose-kick-error");
-                                                } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
+                        if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
+                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName())) {
+                                Location pl = p.getLocation();
+                                Block b = pl.getBlock().isPassable() ? pl.getBlock().getRelative(BlockFace.DOWN) : pl.getBlock();
+                                if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {
+                                    Material u = b.getRelative(BlockFace.UP).getType();
+                                    if(GPM.getCManager().S_ALLOW_UNSAFE || (u.isTransparent() || u == Material.WATER || u.name().equalsIgnoreCase("LIGHT"))) {
+                                        if(GPM.getPlotSquared() == null || GPM.getPlotSquared().canCreateSeat(b.getLocation(), p)) {
+                                            if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().POSE_FLAG)) {
+                                                if(GPM.getCManager().REST_SAME_BLOCK || GPM.getPoseManager().kickPose(b, p)) {
+                                                    GPM.getPoseManager().createPose(b, p, Pose.SLEEPING);
+                                                } else GPM.getMManager().sendMessage(s, "Messages.action-pose-kick-error");
                                             } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
-                                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
+                                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
                                     } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
-                                } else GPM.getMManager().sendMessage(s, "Messages.action-pose-world-error");
-                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-now-error");
+                                } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
+                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-world-error");
                         } else GPM.getMManager().sendMessage(s, "Messages.action-pose-now-error");
                     }
                 } else {

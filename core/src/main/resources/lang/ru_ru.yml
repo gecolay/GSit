@@ -27,8 +27,7 @@ Messages:
   command-gsit-playertoggle-on: "[P]&a Теперь вы можете сесть на игрока, нажав."
   command-gsit-playertoggle-off: "[P]&a Вы больше не можете сесть на игрока, нажав."
 
-  action-sit-already-error: "[P]&c Ты уже сидишь!"
-  action-sit-ground-error: "[P]&c Вы можете только сидеть на земле!"
+  action-sit-now-error: "[P]&c You can't sit right now!"
   action-sit-world-error: "[P]&c Вы не можете сидеть в этом мире!"
   action-sit-location-error: "[P]&c Ты не можешь здесь сидеть!"
   action-sit-safe-error: "[P]&c Здесь сидеть небезопасно!"
@@ -38,8 +37,7 @@ Messages:
 
   action-playersit-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
-  action-pose-already-error: "[P]&c Ты уже используешь эту команду!"
-  action-pose-ground-error: "[P]&c Вы можете использовать эту команду только на земле!"
+  action-pose-now-error: "[P]&c You can't pose right now!"
   action-pose-world-error: "[P]&c Вы не можете использовать эту команду в этом мире!"
   action-pose-location-error: "[P]&c Здесь нельзя использовать эту команду!"
   action-pose-safe-error: "[P]&c Здесь небезопасно использовать эту команду!"
@@ -47,8 +45,9 @@ Messages:
   action-pose-kick-error: "[P]&c Кто-то уже здесь использует эту команду!
   action-pose-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
-  action-crawl-location-error: "[P]&c Вы не можете ползать здесь!"
+  action-crawl-now-error: "[P]&c You can't crawl right now!"
   action-crawl-world-error: "[P]&c Вы не можете ползать в этом мире!"
+  action-crawl-region-error: "[P]&c You can't crawl in this region!"
   action-crawl-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
   action-blocked-error: "[P]&c Вам не разрешено выполнять эту команду прямо сейчас!"

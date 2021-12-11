@@ -27,8 +27,7 @@ Messages:
   command-gsit-playertoggle-on: "[P]&a You have enabled click-interactions for playersit."
   command-gsit-playertoggle-off: "[P]&a You have disabled click-interactions for playersit."
 
-  action-sit-already-error: "[P]&c You are already sitting!"
-  action-sit-ground-error: "[P]&c You can only sit on the ground!"
+  action-sit-now-error: "[P]&c You can't sit right now!"
   action-sit-world-error: "[P]&c You can't sit in this world!"
   action-sit-location-error: "[P]&c You can't sit here!"
   action-sit-safe-error: "[P]&c It's not safe to sit here!"
@@ -38,8 +37,7 @@ Messages:
 
   action-playersit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
 
-  action-pose-already-error: "[P]&c You are already posing!"
-  action-pose-ground-error: "[P]&c You can only pose on the ground!"
+  action-pose-now-error: "[P]&c You can't pose right now!"
   action-pose-world-error: "[P]&c You can't pose in this world!"
   action-pose-location-error: "[P]&c You can't pose here!"
   action-pose-safe-error: "[P]&c It's not safe to pose here!"
@@ -47,8 +45,9 @@ Messages:
   action-pose-kick-error: "[P]&c Someone is already posing here!"
   action-pose-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
 
-  action-crawl-location-error: "[P]&c You can't crawl here!"
+  action-crawl-now-error: "[P]&c You can't crawl right now!"
   action-crawl-world-error: "[P]&c You can't crawl in this world!"
+  action-crawl-region-error: "[P]&c You can't crawl in this region!"
   action-crawl-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
 
   action-blocked-error: "[P]&c You are not allowed to execute this Command right now!"

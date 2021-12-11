@@ -27,8 +27,7 @@ Messages:
   command-gsit-playertoggle-on: "[P]&a Du hast Klick-Interaktionen für Spieler-sitzen aktiviert."
   command-gsit-playertoggle-off: "[P]&a Du hast Klick-Interaktionen für Spieler-sitzen deaktiviert."
 
-  action-sit-already-error: "[P]&c Du sitzt bereits!"
-  action-sit-ground-error: "[P]&c Du kannst nur auf dem Boden sitzen!"
+  action-sit-now-error: "[P]&c Du kannst gerade nicht sitzen!"
   action-sit-world-error: "[P]&c Du kannst in dieser Welt nicht sitzen!"
   action-sit-location-error: "[P]&c Du kannst hier nicht sitzen!"
   action-sit-safe-error: "[P]&c Es ist nicht sicher, hier zu sitzen!"
@@ -38,8 +37,7 @@ Messages:
 
   action-playersit-info: "&aNutze deine&6 <translatekey:key.sneak>&a Taste zum aufstehen."
 
-  action-pose-already-error: "[P]&c Du posierst bereits!"
-  action-pose-ground-error: "[P]&c Du kannst nur auf dem Boden posieren!"
+  action-pose-now-error: "[P]&c Du kannst gerade nicht posieren!"
   action-pose-world-error: "[P]&c Du kannst in dieser Welt nicht posieren!"
   action-pose-location-error: "[P]&c Du kannst hier nicht posieren!"
   action-pose-safe-error: "[P]&c Es ist nicht sicher, hier zu posieren!"
@@ -47,8 +45,9 @@ Messages:
   action-pose-kick-error: "[P]&c Jemand posiert hier bereits!"
   action-pose-info: "&aNutze deine&6 <translatekey:key.sneak>&a Taste zum aufstehen."
 
-  action-crawl-location-error: "[P]&c Du kannst hier nicht kriechen!"
+  action-crawl-now-error: "[P]&c Du kannst gerade nicht kriechen!"
   action-crawl-world-error: "[P]&c Du kannst in dieser Welt nicht kriechen!"
+  action-crawl-region-error: "[P]&c Du kannst in dieser Region nicht kriechen!"
   action-crawl-info: "&aNutze deine&6 <translatekey:key.sneak>&a Taste zum aufstehen."
 
   action-blocked-error: "[P]&c Du darfst diesen Befehl im Moment nicht ausführen!"
