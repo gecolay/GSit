@@ -1,6 +1,5 @@
 package dev.geco.gsit.events;
 
-import dev.geco.gsit.objects.GetUpReason;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -8,7 +7,10 @@ import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 
+import org.spigotmc.event.entity.*;
+
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.objects.*;
 
 public class PlayerSitEvents implements Listener {
 
@@ -23,21 +25,34 @@ public class PlayerSitEvents implements Listener {
 
         if(!GPM.getCManager().PS_SNEAK_EJECTS || !e.isSneaking() || p.isFlying()) return;
 
-        GPM.getPlayerSitManager().ejectPassengers(p, GetUpReason.KICKED);
+        GPM.getPlayerSitManager().stopSit(p, GetUpReason.KICKED);
 
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PDeaE(PlayerDeathEvent e) {
 
-        GPM.getPlayerSitManager().ejectPassengers(e.getEntity(), GetUpReason.KICKED);
+        GPM.getPlayerSitManager().stopSit(e.getEntity(), GetUpReason.DAMAGE);
 
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PQuiE(PlayerQuitEvent e) {
 
-        GPM.getPlayerSitManager().ejectPassengers(e.getPlayer(), GetUpReason.QUIT);
+        GPM.getPlayerSitManager().stopSit(e.getPlayer(), GetUpReason.QUIT);
+
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void EDisE(EntityDismountEvent e) {
+
+        Entity E = e.getEntity();
+
+        if(!(E instanceof Player)) return;
+
+        Player p = (Player) E;
+
+        GPM.getPlayerSitManager().stopSit(p, GetUpReason.GET_UP);
 
     }
 
@@ -62,13 +77,11 @@ public class PlayerSitEvents implements Listener {
 
         if(!p.isValid() || !p.isOnGround() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
 
-        if(!GPM.getToggleManager().canPlayerSit(p.getUniqueId())) return;
-
         if(GPM.getPlotSquared() != null && !GPM.getPlotSquared().canCreateSeat(t.getLocation(), p)) return;
 
         if(GPM.getWorldGuard() != null && !GPM.getWorldGuard().checkFlag(t.getLocation(), GPM.getWorldGuard().PLAYERSIT_FLAG)) return;
 
-        if(GPM.getPassengerUtil().isInPassengerList(t, p)) return;
+        if(GPM.getPassengerUtil().isInPassengerList(t, p) || GPM.getPassengerUtil().isInPassengerList(p, t)) return;
 
         long a = GPM.getPassengerUtil().getPassengerAmount(t) + GPM.getPassengerUtil().getVehicleAmount(t) + 1;
 
@@ -79,6 +92,8 @@ public class PlayerSitEvents implements Listener {
         if(!(s instanceof Player)) return;
 
         Player z = (Player) s;
+
+        if(!GPM.getToggleManager().canPlayerSit(p.getUniqueId()) || !GPM.getToggleManager().canPlayerSit(z.getUniqueId())) return;
 
         boolean n = GPM.getPassengerUtil().isNPC(z);
 

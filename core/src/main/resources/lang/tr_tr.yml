@@ -22,10 +22,10 @@ Messages:
   command-sender-error: "[P]&c This Sender cannot execute this Command!"
   command-version-error: "[P]&c You can't use this Feature with this Server Version! (&b%Version%&c)"
 
-  command-gsit-toggle-on: "[P]&a You can now sit down by clicking."
-  command-gsit-toggle-off: "[P]&a You can no longer sit down by clicking."
-  command-gsit-playertoggle-on: "[P]&a You can now sit down on a player by clicking."
-  command-gsit-playertoggle-off: "[P]&a You can no longer sit down on a player by clicking."
+  command-gsit-toggle-on: "[P]&a You have enabled click-interactions for sit."
+  command-gsit-toggle-off: "[P]&a You have disabled click-interactions for sit."
+  command-gsit-playertoggle-on: "[P]&a You have enabled click-interactions for playersit."
+  command-gsit-playertoggle-off: "[P]&a You have disabled click-interactions for playersit."
 
   action-sit-already-error: "[P]&c You are already sitting!"
   action-sit-ground-error: "[P]&c You can only sit on the ground!"

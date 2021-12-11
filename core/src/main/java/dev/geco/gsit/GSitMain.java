@@ -176,7 +176,7 @@ public class GSitMain extends JavaPlugin {
         if(!versionCheck()) return;
         sitmanager = NMSManager.isNewerOrVersion(17, 0) ? (ISitManager) NMSManager.getPackageObject("gsit", "manager.SitManager", getInstance()) : new SitManager(getInstance());
         posemanager = NMSManager.isNewerOrVersion(17, 0) ? (IPoseManager) NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) : null;
-        playersitmanager = NMSManager.isNewerOrVersion(17, 0) ? (IPlayerSitManager) NMSManager.getPackageObject("gsit", "manager.PlayerSitManager", getInstance()) : null;
+        playersitmanager = new PlayerSitManager(getInstance());
         crawlmanager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
         teleportutil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("gsit", "util.TeleportUtil", null) : null;
         getCommand("gsit").setExecutor(new GSitCommand(getInstance()));

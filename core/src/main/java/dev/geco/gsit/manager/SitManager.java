@@ -87,7 +87,6 @@ public class SitManager implements ISitManager {
             b.setMarker(true);
             b.setBasePlate(false);
             b.setInvulnerable(true);
-            b.addScoreboardTag(GPM.NAME);
         });
 
         if(sa.isValid()) {
