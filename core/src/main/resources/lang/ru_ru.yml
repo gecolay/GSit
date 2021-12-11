@@ -1,54 +1,54 @@
 #
-# Language-File created by:		Gecolay
+# Language-File created by:		TioLopew
 #
 
 
 
 Plugin:
 
-  plugin-enabled: "[P]&a The Plugin was successfully enabled."
-  plugin-link: "[P]&a Link with&6 %Link%&a successful!"
-  plugin-update: "[P]&a New Version available:&6 %NewVersion%&a!\n[P]&a You are currently running Version:&6 %Version%&a!\n[P]&a Download the latest Version at:\n[P]&6 %Path%"
-  plugin-version: "[P]&c This Plugin can not be used with this Server Version! (&b%Version%&c)"
-  plugin-disabled: "[P]&a The Plugin was successfully disabled."
+  plugin-enabled: "[P]&a Плагин был включен."
+  plugin-link: "[P]&a Соединение с &6 %Link%&a Успешно!"
+  plugin-update: "[P]&a Доступна новая версия:&6 %NewVersion%&a!\n[P]&a Ваша версия:&6 %Version%&a!\n[P]&aСкачайте последнюю версию:\n[P]&6 %Path%"
+  plugin-version: "[P]&c Плагин не может быть использован с этой версией сервера! (&b%Version%&c)"
+  plugin-disabled: "[P]&a Плагин был успешно отключен."
   plugin-prefix: "&7[&6GSit&7]"
 
 
 
 Messages:
 
-  command-reload: "[P]&a The Settings were successfully reloaded."
-  command-permission-error: "[P]&c You don't have Permission to use this Command!"
-  command-sender-error: "[P]&c This Sender cannot execute this Command!"
-  command-version-error: "[P]&c You can't use this Feature with this Server Version! (&b%Version%&c)"
+  command-reload: "[P]&a Конфиг успешно перезагружен."
+  command-permission-error: "[P]&c У вас нет права для использования этой команды!"
+  command-sender-error: "[P]&c Этот отправитель не может выполнить эту команду!"
+  command-version-error: "[P]&c Вы не можете использовать эту функцию с этой версией сервера! (&b%Version%&c)"
 
-  command-gsit-toggle-on: "[P]&a You can now sit down by clicking."
-  command-gsit-toggle-off: "[P]&a You can no longer sit down by clicking."
-  command-gsit-playertoggle-on: "[P]&a You can now sit down on a player by clicking."
-  command-gsit-playertoggle-off: "[P]&a You can no longer sit down on a player by clicking."
+  command-gsit-toggle-on: "[P]&a Теперь вы можете сесть, нажав."
+  command-gsit-toggle-off: "[P]&a Вы больше не можете сесть, нажав."
+  command-gsit-playertoggle-on: "[P]&a Теперь вы можете сесть на игрока, нажав."
+  command-gsit-playertoggle-off: "[P]&a Вы больше не можете сесть на игрока, нажав."
 
-  action-sit-already-error: "[P]&c You are already sitting!"
-  action-sit-ground-error: "[P]&c You can only sit on the ground!"
-  action-sit-world-error: "[P]&c You can't sit in this world!"
-  action-sit-location-error: "[P]&c You can't sit here!"
-  action-sit-safe-error: "[P]&c It's not safe to sit here!"
-  action-sit-region-error: "[P]&c You can't sit in this region!"
-  action-sit-kick-error: "[P]&c Someone is already sitting here!"
-  action-sit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-sit-already-error: "[P]&c Ты уже сидишь!"
+  action-sit-ground-error: "[P]&c Вы можете только сидеть на земле!"
+  action-sit-world-error: "[P]&c Вы не можете сидеть в этом мире!"
+  action-sit-location-error: "[P]&c Ты не можешь здесь сидеть!"
+  action-sit-safe-error: "[P]&c Здесь сидеть небезопасно!"
+  action-sit-region-error: "[P]&c Вы не можете сидеть в этом регионе!"
+  action-sit-kick-error: "[P]&c Кто-то уже сидит здесь!"
+  action-sit-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
-  action-playersit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-playersit-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
-  action-pose-already-error: "[P]&c You are already posing!"
-  action-pose-ground-error: "[P]&c You can only pose on the ground!"
-  action-pose-world-error: "[P]&c You can't pose in this world!"
-  action-pose-location-error: "[P]&c You can't pose here!"
-  action-pose-safe-error: "[P]&c It's not safe to pose here!"
-  action-pose-region-error: "[P]&c You can't pose in this region!"
-  action-pose-kick-error: "[P]&c Someone is already posing here!"
-  action-pose-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-pose-already-error: "[P]&c Ты уже используешь эту команду!"
+  action-pose-ground-error: "[P]&c Вы можете использовать эту команду только на земле!"
+  action-pose-world-error: "[P]&c Вы не можете использовать эту команду в этом мире!"
+  action-pose-location-error: "[P]&c Здесь нельзя использовать эту команду!"
+  action-pose-safe-error: "[P]&c Здесь небезопасно использовать эту команду!"
+  action-pose-region-error: "[P]&c Вы не можете использовать эту команду в этом регионе!"
+  action-pose-kick-error: "[P]&c Кто-то уже здесь использует эту команду!
+  action-pose-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
-  action-crawl-location-error: "[P]&c You can't crawl here!"
-  action-crawl-world-error: "[P]&c You can't crawl in this world!"
-  action-crawl-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-crawl-location-error: "[P]&c Вы не можете ползать здесь!"
+  action-crawl-world-error: "[P]&c Вы не можете ползать в этом мире!"
+  action-crawl-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
-  action-blocked-error: "[P]&c You are not allowed to execute this Command right now!"
+  action-blocked-error: "[P]&c Вам не разрешено выполнять эту команду прямо сейчас!"
