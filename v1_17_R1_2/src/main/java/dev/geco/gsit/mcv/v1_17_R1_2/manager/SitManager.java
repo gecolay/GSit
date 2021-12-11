@@ -2,6 +2,7 @@ package dev.geco.gsit.mcv.v1_17_R1_2.manager;
 
 import java.util.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.Level;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.mcv.v1_17_R1_2.objects.*;
+import dev.geco.gsit.api.event.*;
 
 public class SitManager implements ISitManager, Listener {
 
@@ -70,6 +72,12 @@ public class SitManager implements ISitManager, Listener {
     public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getHeight() : 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER); }
 
     public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
+
+        PrePlayerSitEvent pplase = new PrePlayerSitEvent(Player, Block);
+
+        Bukkit.getPluginManager().callEvent(pplase);
+
+        if(pplase.isCancelled()) return null;
 
         double o = GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
@@ -148,6 +156,8 @@ public class SitManager implements ISitManager, Listener {
         startDetectSeat(seat);
 
         feature_used++;
+
+        Bukkit.getPluginManager().callEvent(new PlayerSitEvent(seat));
 
         return seat;
 
@@ -288,6 +298,12 @@ public class SitManager implements ISitManager, Listener {
 
     public boolean removeSeat(GSeat Seat, GetUpReason Reason, boolean Safe) {
 
+        PrePlayerGetUpSitEvent pplaguse = new PrePlayerGetUpSitEvent(Seat, Reason);
+
+        Bukkit.getPluginManager().callEvent(pplaguse);
+
+        if(pplaguse.isCancelled()) return false;
+
         GPM.getSitUtil().removeSeatBlock(Seat.getBlock(), Seat);
 
         seats.remove(Seat);
@@ -323,6 +339,8 @@ public class SitManager implements ISitManager, Listener {
             ServerPlayer sp = ((CraftPlayer) z).getHandle();
             sp.connection.send(pa);
         }
+
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpSitEvent(Seat, Reason));
 
         return true;
 

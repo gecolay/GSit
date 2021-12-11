@@ -2,11 +2,13 @@ package dev.geco.gsit.mcv.v1_17_R1.manager;
 
 import java.util.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.mcv.v1_17_R1.objects.*;
+import dev.geco.gsit.api.event.*;
 
 public class CrawlManager implements ICrawlManager {
 
@@ -33,6 +35,12 @@ public class CrawlManager implements ICrawlManager {
 
     public IGCrawl startCrawl(Player Player) {
 
+        PrePlayerCrawlEvent pplace = new PrePlayerCrawlEvent(Player);
+
+        Bukkit.getPluginManager().callEvent(pplace);
+
+        if(pplace.isCancelled()) return null;
+
         IGCrawl crawl = new GCrawl(Player);
 
         crawl.start();
@@ -41,15 +49,25 @@ public class CrawlManager implements ICrawlManager {
 
         feature_used++;
 
+        Bukkit.getPluginManager().callEvent(new PlayerCrawlEvent(crawl));
+
         return crawl;
 
     }
 
     public boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
 
+        PrePlayerGetUpCrawlEvent pplaguce = new PrePlayerGetUpCrawlEvent(Crawl, Reason);
+
+        Bukkit.getPluginManager().callEvent(pplaguce);
+
+        if(pplaguce.isCancelled()) return false;
+
         crawls.remove(Crawl);
 
         Crawl.stop();
+
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpCrawlEvent(Crawl, Reason));
 
         return true;
 

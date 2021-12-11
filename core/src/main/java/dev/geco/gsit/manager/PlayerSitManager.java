@@ -1,5 +1,6 @@
 package dev.geco.gsit.manager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.*;
@@ -9,6 +10,7 @@ import net.md_5.bungee.api.ChatMessageType;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
+import dev.geco.gsit.api.event.*;
 
 public class PlayerSitManager implements IPlayerSitManager {
 
@@ -23,6 +25,12 @@ public class PlayerSitManager implements IPlayerSitManager {
     public void resetFeatureUsedCount() { feature_used = 0; }
 
     public boolean sitOnPlayer(Player Player, Player Target) {
+
+        PrePlayerPlayerSitEvent pplapse = new PrePlayerPlayerSitEvent(Player, Target);
+
+        Bukkit.getPluginManager().callEvent(pplapse);
+
+        if(pplapse.isCancelled()) return false;
 
         AreaEffectCloud sa = Target.getWorld().spawn(Target.getLocation(), AreaEffectCloud.class, b -> {
             b.setDuration(Integer.MAX_VALUE);
@@ -47,10 +55,22 @@ public class PlayerSitManager implements IPlayerSitManager {
 
         feature_used++;
 
+        Bukkit.getPluginManager().callEvent(new PlayerPlayerSitEvent(Player, Target));
+
         return true;
     }
 
     public void stopSit(Entity Entity, GetUpReason Reason) {
+
+        if(Entity instanceof Player) {
+
+            PrePlayerGetUpPlayerSitEvent pplagupse = new PrePlayerGetUpPlayerSitEvent((Player) Entity, Reason);
+
+            Bukkit.getPluginManager().callEvent(pplagupse);
+
+            if(pplagupse.isCancelled()) return;
+
+        }
 
         if(Entity.hasMetadata(GPM.NAME + "A")) {
             Entity.eject();
@@ -71,6 +91,8 @@ public class PlayerSitManager implements IPlayerSitManager {
                 e.remove();
             }
         }
+
+        if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
 
     }
 

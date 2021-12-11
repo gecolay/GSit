@@ -2,16 +2,17 @@ package dev.geco.gsit.mcv.v1_17_R1_2.manager;
 
 import java.util.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 import org.bukkit.event.*;
 import org.bukkit.event.player.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 
 import net.md_5.bungee.api.ChatMessageType;
 
@@ -22,6 +23,7 @@ import net.minecraft.world.level.Level;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.mcv.v1_17_R1_2.objects.*;
+import dev.geco.gsit.api.event.*;
 
 public class PoseManager implements IPoseManager, Listener {
 
@@ -70,6 +72,12 @@ public class PoseManager implements IPoseManager, Listener {
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, GPM.getCManager().L_BLOCK_CENTER ? Block.getBoundingBox().getHeight() : 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().L_BLOCK_CENTER); }
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
+
+        PrePlayerPoseEvent pplape = new PrePlayerPoseEvent(Player, Block);
+
+        Bukkit.getPluginManager().callEvent(pplape);
+
+        if(pplape.isCancelled()) return null;
 
         double o = GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
@@ -126,7 +134,7 @@ public class PoseManager implements IPoseManager, Listener {
 
         t.startRiding(sa, true);
 
-        //sa.getBukkitEntity().addPassenger(Player);
+        sa.getBukkitEntity().addPassenger(Player);
 
         ClientboundSetPassengersPacket pa3 = new ClientboundSetPassengersPacket(sa);
 
@@ -139,21 +147,23 @@ public class PoseManager implements IPoseManager, Listener {
 
         GSeat seat = new GSeat(Block, l, Player, sa.getBukkitEntity(), r);
 
-        GPoseSeat pose = new GPoseSeat(seat, Pose);
+        GPoseSeat poseseat = new GPoseSeat(seat, Pose);
 
-        pose.spawn();
+        poseseat.spawn();
 
-        sa.getBukkitEntity().setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, pose));
+        sa.getBukkitEntity().setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poseseat));
 
-        poses.put(pose, sa);
+        poses.put(poseseat, sa);
 
-        GPM.getPoseUtil().setPoseBlock(Block, pose);
+        GPM.getPoseUtil().setPoseBlock(Block, poseseat);
 
-        startDetectSeat(pose);
+        startDetectSeat(poseseat);
 
         feature_used++;
 
-        return pose;
+        Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseseat));
+
+        return poseseat;
 
     }
 
@@ -216,6 +226,12 @@ public class PoseManager implements IPoseManager, Listener {
 
     public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe) {
 
+        PrePlayerGetUpPoseEvent pplagupe = new PrePlayerGetUpPoseEvent(PoseSeat,Reason);
+
+        Bukkit.getPluginManager().callEvent(pplagupe);
+
+        if(pplagupe.isCancelled()) return false;
+
         GPM.getPoseUtil().removePoseBlock(PoseSeat.getSeat().getBlock(), PoseSeat);
 
         poses.remove(PoseSeat);
@@ -252,42 +268,30 @@ public class PoseManager implements IPoseManager, Listener {
             sp.connection.send(pa);
         }
 
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(PoseSeat, Reason));
+
         return true;
 
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     private void PJoiE(PlayerJoinEvent e) {
-
         Player p = e.getPlayer();
-
         for(Player t : p.getWorld().getPlayers()) {
-
             if(isPosing(t)) {
-
                 showPose(getPose(t), p);
-
             }
-
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void PChaWE(PlayerChangedWorldEvent e) {
-
         Player p = e.getPlayer();
-
         for(Player t : p.getWorld().getPlayers()) {
-
             if(isPosing(t)) {
-
                 showPose(getPose(t), p);
-
             }
-
         }
-
     }
 
 }
