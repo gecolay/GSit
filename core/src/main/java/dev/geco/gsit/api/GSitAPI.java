@@ -197,7 +197,7 @@ public class GSitAPI {
      * @return <code>true</code> if the Player is posing
      */
     public static boolean isPosing(Player Player) {
-        return getInstance().getPoseManager().isPosing(Player);
+        return getInstance().getPoseManager() != null && getInstance().getPoseManager().isPosing(Player);
     }
 
     /**
@@ -207,7 +207,7 @@ public class GSitAPI {
      * @return List of all PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses() {
-        return getInstance().getPoseManager().getPoses();
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses() : new ArrayList<IGPoseSeat>();
     }
 
     /**
@@ -218,7 +218,7 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if there was no PoseSeat
      */
     public static IGPoseSeat getPose(Player Player) {
-        return getInstance().getPoseManager().getPose(Player);
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPose(Player) : null;
     }
 
     /**
@@ -229,7 +229,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(Block Block) {
-        return getInstance().getPoseUtil().getPoses(Block);
+        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Block) : new ArrayList<IGPoseSeat>();
     }
 
     /**
@@ -240,7 +240,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(List<Block> Blocks) {
-        return getInstance().getPoseUtil().getPoses(Blocks);
+        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Blocks) : new ArrayList<IGPoseSeat>();
     }
 
     /**
@@ -253,7 +253,7 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose) {
-        return getInstance().getPoseManager().createPose(Block, Player, Pose);
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().createPose(Block, Player, Pose) : null;
     }
 
     /**
@@ -289,7 +289,7 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return getInstance().getPoseManager().createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock) : null;
     }
 
     /**
@@ -301,7 +301,7 @@ public class GSitAPI {
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
     public static boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason) {
-        return getInstance().getPoseManager().removePose(PoseSeat, Reason);
+        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(PoseSeat, Reason);
     }
 
     /**
@@ -315,7 +315,7 @@ public class GSitAPI {
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
     public static boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe) {
-        return getInstance().getPoseManager().removePose(PoseSeat, Reason, Safe);
+        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(PoseSeat, Reason, Safe);
     }
 
     /**
@@ -326,7 +326,7 @@ public class GSitAPI {
      * @return <code>true</code> if the Player is crawling
      */
     public static boolean isCrawling(Player Player) {
-        return getInstance().getCrawlManager().isCrawling(Player);
+        return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().isCrawling(Player);
     }
 
     /**
@@ -336,7 +336,7 @@ public class GSitAPI {
      * @return List of all Crawl-Objects
      */
     public static List<IGCrawl> getCrawls() {
-        return getInstance().getCrawlManager().getCrawls();
+        return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().getCrawls() : new ArrayList<IGCrawl>();
     }
 
     /**
@@ -347,7 +347,7 @@ public class GSitAPI {
      * @return Crawl-Object or <code>null</code> if there was no Crawl-Object
      */
     public static IGCrawl getCrawl(Player Player) {
-        return getInstance().getCrawlManager().getCrawl(Player);
+        return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().getCrawl(Player) : null;
     }
 
     /**
@@ -358,7 +358,7 @@ public class GSitAPI {
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
     public static IGCrawl startCrawl(Player Player) {
-        return getInstance().getCrawlManager().startCrawl(Player);
+        return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().startCrawl(Player) : null;
     }
 
     /**
@@ -370,7 +370,7 @@ public class GSitAPI {
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
     public static boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
-        return getInstance().getCrawlManager().stopCrawl(Crawl, Reason);
+        return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().stopCrawl(Crawl, Reason);
     }
     
 }
