@@ -304,7 +304,9 @@ public class PoseManager implements IPoseManager, Listener {
                     l.setPitch(PoseSeat.getSeat().getPlayer().getLocation().getPitch());
                 }
 
-                GPM.getTeleportUtil().teleport(PoseSeat.getSeat().getPlayer(), l.add(0d, 0.2d, 0d), true);
+                t.setPos(l.getX(), l.getY(), l.getZ());
+
+                GPM.getTeleportUtil().teleport(PoseSeat.getSeat().getPlayer(), l, true);
 
             }
 

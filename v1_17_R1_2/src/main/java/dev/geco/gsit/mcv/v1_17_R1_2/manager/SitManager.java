@@ -329,7 +329,9 @@ public class SitManager implements ISitManager, Listener {
                     l.setPitch(Seat.getPlayer().getLocation().getPitch());
                 }
 
-                GPM.getTeleportUtil().teleport(Seat.getPlayer(), l.add(0d, 0.2d, 0d), true);
+                t.setPos(l.getX(), l.getY(), l.getZ());
+
+                GPM.getTeleportUtil().teleport(Seat.getPlayer(), l, true);
 
             }
 
