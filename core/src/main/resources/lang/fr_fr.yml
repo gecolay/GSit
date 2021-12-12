@@ -1,53 +1,53 @@
 #
-# Language-File created by:		Gecolay
+# Language-File created by:		ishi_sama
 #
 
 
 
 Plugin:
 
-  plugin-enabled: "[P]&a The Plugin was successfully enabled."
-  plugin-link: "[P]&a Link with&6 %Link%&a successful!"
-  plugin-update: "[P]&a New Version available:&6 %NewVersion%&a!\n[P]&a You are currently running Version:&6 %Version%&a!\n[P]&a Download the latest Version at:\n[P]&6 %Path%"
-  plugin-version: "[P]&c This Plugin can not be used with this Server Version! (&b%Version%&c)"
-  plugin-disabled: "[P]&a The Plugin was successfully disabled."
+  plugin-enabled: "[P]&a Le plugin a été activé avec succès."
+  plugin-link: "[P]&a Lien avec&6 %Link%&a réussi !"
+  plugin-update: "[P]&a Nouvelle version disponible :&6 %NewVersion%&a !\n[P]&a Vous êtes en train d'exécuter la version :&6 %Version%&a !\n[P]&a Téléchargez la dernière version sur :\n[P]&6 %Path%"
+  plugin-version: "[P]&c Ce plugin ne peut pas être utilisé avec cette version du serveur ! (&b%Version%&c)"
+  plugin-disabled: "[P]&a Le plugin a été désactivé avec succès."
   plugin-prefix: "&7[&6GSit&7]"
 
 
 
 Messages:
 
-  command-reload: "[P]&a The Settings were successfully reloaded."
-  command-permission-error: "[P]&c You don't have Permission to use this Command!"
-  command-sender-error: "[P]&c This Sender cannot execute this Command!"
-  command-version-error: "[P]&c You can't use this Feature with this Server Version! (&b%Version%&c)"
+  command-reload: "[P]&a Les paramètres ont été rechargés avec succès."
+  command-permission-error: "[P]&c Vous n'avez pas la permission d'utiliser cette commande !"
+  command-sender-error: "[P]&c Cet expéditeur ne peut pas exécuter cette commande !"
+  command-version-error: "[P]&c Vous ne pouvez pas utiliser cette fonctionnalité avec cette version du serveur ! (&b%Version%&c)"
 
-  command-gsit-toggle-on: "[P]&a You have enabled click-interactions for sit."
-  command-gsit-toggle-off: "[P]&a You have disabled click-interactions for sit."
-  command-gsit-playertoggle-on: "[P]&a You have enabled click-interactions for playersit."
-  command-gsit-playertoggle-off: "[P]&a You have disabled click-interactions for playersit."
+  command-gsit-toggle-on: "[P]&a Vous avez activé les interactions par clic pour s’asseoir."
+  command-gsit-toggle-off: "[P]&a Vous avez désactivé les interactions par clic pour s’asseoir."
+  command-gsit-playertoggle-on: "[P]&a Vous pouvez maintenant vous asseoir en cliquant."
+  command-gsit-playertoggle-off: "[P]&a Vous ne pouvez plus vous asseoir en cliquant."
 
-  action-sit-now-error: "[P]&c You can't sit right now!"
-  action-sit-world-error: "[P]&c You can't sit in this world!"
-  action-sit-location-error: "[P]&c You can't sit here!"
-  action-sit-safe-error: "[P]&c It's not safe to sit here!"
-  action-sit-region-error: "[P]&c You can't sit in this region!"
-  action-sit-kick-error: "[P]&c Someone is already sitting here!"
-  action-sit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-sit-now-error: "[P]&c Vous ne pouvez pas vous asseoir maintenant !"
+  action-sit-world-error: "[P]&c Vous ne pouvez pas vous asseoir dans ce monde !"
+  action-sit-location-error: "[P]&c Vous ne pouvez pas vous asseoir ici !"
+  action-sit-safe-error: "[P]&c Il est dangereux de s'asseoir ici !"
+  action-sit-region-error: "[P]&c Vous ne pouvez pas vous asseoir dans cette zone !"
+  action-sit-kick-error: "[P]&c Quelqu'un est déjà assis là !"
+  action-sit-info: "&aUtiliser votre touche&6 <translatekey:key.sneak>&a pour vous lever."
 
-  action-playersit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-playersit-info: "&aUtiliser votre touche&6 <translatekey:key.sneak>&a pour vous lever."
 
-  action-pose-now-error: "[P]&c You can't pose right now!"
-  action-pose-world-error: "[P]&c You can't pose in this world!"
-  action-pose-location-error: "[P]&c You can't pose here!"
-  action-pose-safe-error: "[P]&c It's not safe to pose here!"
-  action-pose-region-error: "[P]&c You can't pose in this region!"
-  action-pose-kick-error: "[P]&c Someone is already posing here!"
-  action-pose-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-pose-now-error: "[P]&c Vous ne pouvez pas vous allonger maintenant !"
+  action-pose-world-error: "[P]&c Vous ne pouvez pas vous allonger maintenant !"
+  action-pose-location-error: "[P]&c Vous ne pouvez pas vous allonger ici !"
+  action-pose-safe-error: "[P]&c Il est dangereux de vous allonger ici !"
+  action-pose-region-error: "[P]&c Vous ne pouvez pas vous allonger dans cette zone !"
+  action-pose-kick-error: "[P]&c Quelqu'un est déjà allonger là !"
+  action-pose-info: "&aUtiliser votre touche&6 <translatekey:key.sneak>&a pour vous lever."
 
-  action-crawl-now-error: "[P]&c You can't crawl right now!"
-  action-crawl-world-error: "[P]&c You can't crawl in this world!"
-  action-crawl-region-error: "[P]&c You can't crawl in this region!"
-  action-crawl-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-crawl-now-error: "[P]&c Vous ne pouvez pas ramper maintenant !"
+  action-crawl-world-error: "[P]&c Vous ne pouvez pas ramper dans ce monde !"
+  action-crawl-region-error: "[P]&c Vous ne pouvez pas ramper dans cette zone !"
+  action-crawl-info: "&aUtiliser votre touche&6 <translatekey:key.sneak>&a pour vous lever."
 
-  action-blocked-error: "[P]&c You are not allowed to execute this Command right now!"
+  action-blocked-error: "[P]&c Vous n'êtes pas autorisé à utiliser cette commande pour le moment !"
