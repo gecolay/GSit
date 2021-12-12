@@ -1,0 +1,53 @@
+#
+# Language-File created by:		Megachri
+#
+
+
+
+Plugin:
+
+  plugin-enabled: "[P]&a Il plugin è stato abilitato con successo."
+  plugin-link: "[P]&a Agganciato con successo con&6 %Link%&a !"
+  plugin-update: "[P]&a Nuova versione disponibile:&6 %NewVersion%&a!\n[P]&a In questo momento stai usando la versione:&6 %Version%&a!\n[P]&a Scarica l'ultima versione su:\n[P]&6 %Path%"
+  plugin-version: "[P]&c Il plugin non può essere utilizzato con questa versione del server! (&b%Version%&c)"
+  plugin-disabled: "[P]&a Il plugin è stato disabilitato con successo."
+  plugin-prefix: "&7[&6GSit&7]"
+
+
+
+Messages:
+
+  command-reload: "[P]&a Le impostazioni sono state ricaricate correttamente."
+  command-permission-error: "[P]&c Non hai il permesso di usare questo comando!"
+  command-sender-error: "[P]&c Questo mittente non può eseguire questo comando!"
+  command-version-error: "[P]&c Non puoi usare questa funzione con questa versione del server! (&b%Version%&c)"
+
+  command-gsit-toggle-on: "[P]&a Hai abilitato le interazioni-click per sederti."
+  command-gsit-toggle-off: "[P]&a Hai disabilitato le interazioni-click per sederti."
+  command-gsit-playertoggle-on: "[P]&a Hai abilitato le interazioni-click per i giocatori."
+  command-gsit-playertoggle-off: "[P]&a Hai disabilitato le interazioni-click per i giocatori."
+
+  action-sit-now-error: "[P]&c Non puoi sederti ora!"
+  action-sit-world-error: "[P]&c Non puoi sederti in questo mondo!"
+  action-sit-location-error: "[P]&c Non puoi sederti qui!"
+  action-sit-safe-error: "[P]&c Non è sicuro sedersi qui!"
+  action-sit-region-error: "[P]&c Non puoi sederti in questa regione!"
+  action-sit-kick-error: "[P]&c Qualcun'altro è gia seduto qui!"
+  action-sit-info: "&aUsa il pulsante&6 <translatekey:key.sneak>&a per alzarti."
+
+  action-playersit-info: "&aUsa il pulsante&6 <translatekey:key.sneak>&a per alzarti."
+
+  action-pose-now-error: "[P]&c Non puoi metterti in posa adesso!"
+  action-pose-world-error: "[P]&c Non puoi metterti in posa in questo mondo!"
+  action-pose-location-error: "[P]&c Non puoi metterti in posa qui!"
+  action-pose-safe-error: "[P]&c Non è sicuro mettersi in posa qui!"
+  action-pose-region-error: "[P]&c Non puoi metterti in posa in questa regione!"
+  action-pose-kick-error: "[P]&c Qualcuno è gia in posa qui!"
+  action-pose-info: "&aUsa il pulsante&6 <translatekey:key.sneak>&a per alzarti."
+
+  action-crawl-now-error: "[P]&c Non puoi strisciare in questo momento!"
+  action-crawl-world-error: "[P]&c Non puoi strisciare in questo mondo!"
+  action-crawl-region-error: "[P]&c Non puoi strisciare in questa regione!"
+  action-crawl-info: "&aUsa il pulsante&6 <translatekey:key.sneak>&a per alzarti."
+
+  action-blocked-error: "[P]&c Non hai il permesso di eseguire questo comando ora!"
