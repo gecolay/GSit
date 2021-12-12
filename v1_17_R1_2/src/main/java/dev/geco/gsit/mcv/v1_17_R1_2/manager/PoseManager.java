@@ -55,7 +55,7 @@ public class PoseManager implements IPoseManager, Listener {
         return null;
     }
 
-    public void clearPoses() { for(IGPoseSeat p :  getPoses()) removePose(p, GetUpReason.PLUGIN); }
+    public void clearPoses() { for(IGPoseSeat p : getPoses()) removePose(p, GetUpReason.PLUGIN); }
 
     public boolean kickPose(Block Block, Player Player) {
 

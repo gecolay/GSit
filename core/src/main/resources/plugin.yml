@@ -107,6 +107,16 @@ permissions:
     default: op
     description: Kick Pose | Permission
 
+  GSit.ByPass.*:
+    default: op
+    description: ByPass | Permission
+    children:
+      GSit.ByPass.World: true
+
+  GSit.ByPass.World:
+    default: op
+    description: ByPass World | Permission
+
   GSit.Update:
     default: op
     description: Get-Update-Notification | Permission

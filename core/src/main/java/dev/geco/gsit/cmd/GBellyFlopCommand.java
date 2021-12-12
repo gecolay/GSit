@@ -28,7 +28,7 @@ public class GBellyFlopCommand implements CommandExecutor {
                         GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP);
                     } else {
                         if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
-                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName())) {
+                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) || GPM.getPManager().hasPermission(s, "ByPass.World", "ByPass.*")) {
                                 Location pl = p.getLocation();
                                 Block b = pl.getBlock().isPassable() ? pl.getBlock().getRelative(BlockFace.DOWN) : pl.getBlock();
                                 if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {

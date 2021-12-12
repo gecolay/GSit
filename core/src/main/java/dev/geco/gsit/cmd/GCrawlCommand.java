@@ -23,7 +23,7 @@ public class GCrawlCommand implements CommandExecutor {
                         GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.GET_UP);
                     } else {
                         if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
-                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName())) {
+                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) || GPM.getPManager().hasPermission(s, "ByPass.World", "ByPass.*")) {
                                 if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(p.getLocation(), GPM.getWorldGuard().CRAWL_FLAG)) {
                                     GPM.getCrawlManager().startCrawl(p);
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
