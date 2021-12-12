@@ -88,7 +88,7 @@ public class CManager {
 
     public void reload() {
 
-        CHECK_FOR_UPDATES = false;//GPM.getConfig().getBoolean("Options.check-for-update", true);
+        CHECK_FOR_UPDATES = GPM.getConfig().getBoolean("Options.check-for-update", true);
         DEBUG = GPM.getConfig().getBoolean("Options.debug", false);
         CHECK_FEATURE_PERMISSIONS = GPM.getConfig().getBoolean("Options.check-feature-permissions", true);
         GET_UP_DAMAGE = GPM.getConfig().getBoolean("Options.get-up-damage", false);

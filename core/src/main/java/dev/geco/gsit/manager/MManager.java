@@ -22,7 +22,7 @@ public class MManager {
 
     private final boolean A = Arrays.stream(ChatColor.class.getMethods()).filter(m -> "of".equals(m.getName())).findFirst().orElse(null) != null;
 
-    private final String P = "(<click:.+:.+>.+</click>)|(<item:\\d+>.+</item>)|(<text:.+>.+</text>)|(<translate:\\d+>)|(<translatekey:.+>)|(&[\\da-fklmnor]{1})";
+    private final String P = "(<click:.+:.+>.+</click>)|(<item:\\d+>.+</item>)|(<text:.+>.+</text>)|(<translate:\\d+>)|(<translatekey:.+>)|(&[\\da-fklmnor])";
 
     private final String PA = P + "|(#[0-9a-fA-F]{6})";
 
@@ -70,9 +70,8 @@ public class MManager {
 
     public BaseComponent getComplexMessage(String Message, ItemStack... ReplaceList) {
         ComponentBuilder cb = new ComponentBuilder();
-        String r = Message;
 
-        Matcher m = Pattern.compile(A ? PA : P).matcher(r);
+        Matcher m = Pattern.compile(A ? PA : P).matcher(Message);
 
         List<ComplexComponent> eos = new ArrayList<ComplexComponent>();
 
@@ -128,7 +127,7 @@ public class MManager {
 
         int i = 0;
 
-        List<String> z = Arrays.asList(r.split(A ? PA : P));
+        List<String> z = Arrays.asList(Message.split(A ? PA : P));
 
         for(String s : z) {
             cb.append(s, FormatRetention.FORMATTING);

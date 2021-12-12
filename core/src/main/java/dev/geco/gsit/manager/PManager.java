@@ -7,7 +7,7 @@ import dev.geco.gsit.GSitMain;
 
 public class PManager {
 
-    private GSitMain GPM;
+    private final GSitMain GPM;
 
     public PManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
@@ -22,8 +22,7 @@ public class PManager {
             if(S.isPermissionSet(GPM.NAME + "." + i)) return S.hasPermission(GPM.NAME + "." + i);
             if(S.hasPermission(GPM.NAME + "." + i)) return true;
         }
-        if(S.hasPermission(GPM.NAME + ".*")) return true;
-        return false;
+        return S.hasPermission(GPM.NAME + ".*");
     }
     
 }
