@@ -57,6 +57,7 @@ permissions:
       GSit.BellyFlop: true
       GSit.Crawl: true
       GSit.Kick.*: true
+      GSit.ByPass.*: true
       GSit.Update: true
       GSit.GSitReload: true
 
