@@ -161,9 +161,7 @@ public class GPoseSeat implements IGPoseSeat {
         setEquipmentVisibility(false);
         if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(true);
         if(GPM.getCManager().L_RESET_TIME_SINCE_REST) s.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
-        for(Player z : a) {
-            spawnToPlayer(z);
-        }
+        for(Player z : a) spawnToPlayer(z);
         startUpdate();
     }
 
@@ -179,14 +177,12 @@ public class GPoseSeat implements IGPoseSeat {
             public void run() {
                 sp.connection.send(remove_npc);
             }
-        }.runTaskLater(GPM, 15);
+        }.runTaskLater(GPM, 20);
     }
 
     public void remove() {
         stopUpdate();
-        for(Player z : a) {
-            removeToPlayer(z);
-        }
+        for(Player z : a) removeToPlayer(z);
         if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(false);
         cp.setInvisible(false);
         setEquipmentVisibility(true);
