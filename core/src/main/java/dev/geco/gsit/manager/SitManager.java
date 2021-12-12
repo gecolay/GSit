@@ -2,6 +2,7 @@ package dev.geco.gsit.manager;
 
 import java.util.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -14,6 +15,7 @@ import net.md_5.bungee.api.ChatMessageType;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
+import dev.geco.gsit.api.event.*;
 
 public class SitManager implements ISitManager {
     
@@ -59,7 +61,13 @@ public class SitManager implements ISitManager {
     public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, Block.getBoundingBox().getHeight(), 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER); }
 
     public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
-        
+
+        PrePlayerSitEvent pplase = new PrePlayerSitEvent(Player, Block);
+
+        Bukkit.getPluginManager().callEvent(pplase);
+
+        if(pplase.isCancelled()) return null;
+
         double o = GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
         Location l = Player.getLocation().clone();
@@ -106,6 +114,8 @@ public class SitManager implements ISitManager {
         if(Rotate) startRotateSeat(seat);
 
         feature_used++;
+
+        Bukkit.getPluginManager().callEvent(new PlayerSitEvent(seat));
         
         return seat;
         
@@ -179,6 +189,12 @@ public class SitManager implements ISitManager {
 
     public boolean removeSeat(GSeat Seat, GetUpReason Reason, boolean Safe) {
 
+        PrePlayerGetUpSitEvent pplaguse = new PrePlayerGetUpSitEvent(Seat, Reason);
+
+        Bukkit.getPluginManager().callEvent(pplaguse);
+
+        if(pplaguse.isCancelled()) return false;
+
         GPM.getSitUtil().removeSeatBlock(Seat.getBlock(), Seat);
 
         seats.remove(Seat);
@@ -198,6 +214,8 @@ public class SitManager implements ISitManager {
             Seat.getEntity().remove();
 
         }
+
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpSitEvent(Seat, Reason));
         
         return true;
         
