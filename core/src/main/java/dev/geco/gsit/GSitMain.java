@@ -218,7 +218,7 @@ public class GSitMain extends JavaPlugin {
         } else wogulink = null;
     }
 
-    public void copyLangFiles() { for(String l : Arrays.asList("cz_cz", "de_de", "en_en", "es_es", "fi_fi", "fr_fr", "ja_jp", "pl_pl", "pt_br", "ru_ru", "sk_sk", "tr_tr", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + Values.LANG_PATH + "/" + l + Values.YML_FILETYP).exists()) saveResource(Values.LANG_PATH + "/" + l + Values.YML_FILETYP, false); }
+    public void copyLangFiles() { for(String l : Arrays.asList("cz_cz", "de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "ja_jp", "pl_pl", "pt_br", "ru_ru", "sk_sk", "tr_tr", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + Values.LANG_PATH + "/" + l + Values.YML_FILETYP).exists()) saveResource(Values.LANG_PATH + "/" + l + Values.YML_FILETYP, false); }
 
     public void reload(CommandSender s) {
         reloadConfig();
