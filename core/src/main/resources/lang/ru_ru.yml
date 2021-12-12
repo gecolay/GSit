@@ -42,7 +42,7 @@ Messages:
   action-pose-location-error: "[P]&c Здесь нельзя использовать эту команду!"
   action-pose-safe-error: "[P]&c Здесь небезопасно использовать эту команду!"
   action-pose-region-error: "[P]&c Вы не можете использовать эту команду в этом регионе!"
-  action-pose-kick-error: "[P]&c Кто-то уже здесь использует эту команду!
+  action-pose-kick-error: "[P]&c Кто-то уже здесь использует эту команду!"
   action-pose-info: "&aИспользуйте &6 <translatekey:key.sneak>&a, чтобы встать."
 
   action-crawl-now-error: "[P]&c Вы не можете ползать сейчас!"
