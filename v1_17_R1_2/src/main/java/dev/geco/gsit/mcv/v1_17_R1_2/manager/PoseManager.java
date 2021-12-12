@@ -206,7 +206,7 @@ public class PoseManager implements IPoseManager, Listener {
             }
         };
 
-        r.runTaskTimerAsynchronously(GPM, 0, 1);
+        r.runTaskTimer(GPM, 0, 1);
 
         detect.put(PoseSeat, r);
 

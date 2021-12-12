@@ -202,7 +202,7 @@ public class SitManager implements ISitManager, Listener {
             }
         };
 
-        r.runTaskTimerAsynchronously(GPM, 0, 1);
+        r.runTaskTimer(GPM, 0, 1);
 
         detect.put(Seat, r);
 
