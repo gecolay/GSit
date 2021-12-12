@@ -159,6 +159,8 @@ public class PoseManager implements IPoseManager, Listener {
 
         GPM.getPoseUtil().setPoseBlock(Block, poseseat);
 
+        startRotateSeat(poseseat);
+
         startDetectSeat(poseseat);
 
         feature_used++;
@@ -224,6 +226,49 @@ public class PoseManager implements IPoseManager, Listener {
 
     }
 
+    protected void startRotateSeat(IGPoseSeat PoseSeat) {
+
+        if(rotate.containsKey(PoseSeat)) stopRotateSeat(PoseSeat);
+
+        BukkitRunnable r = new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                if(!poses.containsKey(PoseSeat) || PoseSeat.getSeat().getEntity().getPassengers().isEmpty()) {
+                    cancel();
+                    return;
+                }
+
+                Location l = PoseSeat.getSeat().getEntity().getPassengers().get(0).getLocation();
+                PoseSeat.getSeat().getEntity().setRotation(l.getYaw(), l.getPitch());
+
+                ClientboundTeleportEntityPacket pa = new ClientboundTeleportEntityPacket(poses.get(PoseSeat));
+                for(Player z : PoseSeat.getSeat().getLocation().getWorld().getPlayers()) {
+                    ServerPlayer sp = ((CraftPlayer) z).getHandle();
+                    sp.connection.send(pa);
+                }
+
+            }
+        };
+
+        r.runTaskTimer(GPM, 0, 2);
+
+        rotate.put(PoseSeat, r);
+
+    }
+
+    protected void stopRotateSeat(IGPoseSeat PoseSeat) {
+
+        if(!rotate.containsKey(PoseSeat)) return;
+
+        BukkitRunnable r = rotate.get(PoseSeat);
+
+        if(r != null && !r.isCancelled()) r.cancel();
+
+        rotate.remove(PoseSeat);
+
+    }
+
     public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason) { return removePose(PoseSeat, Reason, true); }
 
     public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe) {
@@ -239,6 +284,8 @@ public class PoseManager implements IPoseManager, Listener {
         poses.remove(PoseSeat);
 
         stopDetectSeat(PoseSeat);
+
+        stopRotateSeat(PoseSeat);
 
         PoseSeat.remove();
 
