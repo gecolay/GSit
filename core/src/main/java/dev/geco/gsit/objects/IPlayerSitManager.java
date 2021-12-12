@@ -10,6 +10,6 @@ public interface IPlayerSitManager {
 
     boolean sitOnPlayer(Player Player, Player Target);
 
-    void stopSit(Entity Entity, GetUpReason Reason);
+    boolean stopPlayerSit(Entity Entity, GetUpReason Reason);
 
 }

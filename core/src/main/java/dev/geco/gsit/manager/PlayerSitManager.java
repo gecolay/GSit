@@ -60,7 +60,7 @@ public class PlayerSitManager implements IPlayerSitManager {
         return true;
     }
 
-    public void stopSit(Entity Entity, GetUpReason Reason) {
+    public boolean stopPlayerSit(Entity Entity, GetUpReason Reason) {
 
         if(Entity instanceof Player) {
 
@@ -68,7 +68,7 @@ public class PlayerSitManager implements IPlayerSitManager {
 
             Bukkit.getPluginManager().callEvent(pplagupse);
 
-            if(pplagupse.isCancelled()) return;
+            if(pplagupse.isCancelled()) return false;
 
         }
 
@@ -93,6 +93,8 @@ public class PlayerSitManager implements IPlayerSitManager {
         }
 
         if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
+
+        return true;
 
     }
 

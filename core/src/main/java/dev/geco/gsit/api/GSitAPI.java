@@ -3,6 +3,7 @@ package dev.geco.gsit.api;
 import java.util.*;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 
@@ -187,6 +188,30 @@ public class GSitAPI {
      */
     public static void setCanPlayerSit(Player Player, boolean CanPlayerSit) {
         getInstance().getToggleManager().setCanPlayerSit(Player.getUniqueId(), CanPlayerSit);
+    }
+
+    /**
+     * Let a Player sit on top of another Player (Target)
+     * @author Gecolay
+     * @since 1.0.0
+     * @param Player Player
+     * @param Target Target
+     * @return <code>true</code> or <code>false</code> if the action was canceled
+     */
+    public static boolean sitOnPlayer(Player Player, Player Target) {
+        return getInstance().getPlayerSitManager().sitOnPlayer(Player, Target);
+    }
+
+    /**
+     * Stop a PlayerSit
+     * @author Gecolay
+     * @since 1.0.0
+     * @param Entity Entity
+     * @param Reason The Reason why the PlayerSit is stopped
+     * @return <code>true</code> or <code>false</code> if the stop was canceled
+     */
+    public static boolean stopPlayerSit(Entity Entity, GetUpReason Reason) {
+        return getInstance().getPlayerSitManager().stopPlayerSit(Entity, Reason);
     }
 
     /**

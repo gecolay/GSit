@@ -25,30 +25,34 @@ public class PlayerSitEvents implements Listener {
 
         if(!GPM.getCManager().PS_SNEAK_EJECTS || !e.isSneaking() || p.isFlying() || !p.isInsideVehicle()) return;
 
-        GPM.getPlayerSitManager().stopSit(p, GetUpReason.KICKED);
+        boolean r = GPM.getPlayerSitManager().stopPlayerSit(p, GetUpReason.KICKED);
+
+        if(!r) e.setCancelled(true);
 
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PDeaE(PlayerDeathEvent e) {
 
-        if(e.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopSit(e.getEntity(), GetUpReason.DAMAGE);
+        if(e.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getEntity(), GetUpReason.DAMAGE);
 
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PQuiE(PlayerQuitEvent e) {
 
-        if(e.getPlayer().isInsideVehicle()) GPM.getPlayerSitManager().stopSit(e.getPlayer(), GetUpReason.QUIT);
+        if(e.getPlayer().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getPlayer(), GetUpReason.QUIT);
 
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void EDisE(EntityDismountEvent e) {
 
-        GPM.getPlayerSitManager().stopSit(e.getEntity(), GetUpReason.GET_UP);
+        boolean r = GPM.getPlayerSitManager().stopPlayerSit(e.getEntity(), GetUpReason.GET_UP);
 
-        GPM.getPlayerSitManager().stopSit(e.getDismounted(), GetUpReason.GET_UP);
+        if(!r) e.setCancelled(true);
+
+        GPM.getPlayerSitManager().stopPlayerSit(e.getDismounted(), GetUpReason.GET_UP);
 
     }
 
