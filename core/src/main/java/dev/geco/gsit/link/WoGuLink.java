@@ -32,7 +32,7 @@ public class WoGuLink {
             fr.register(sf);
             SIT_FLAG = sf;
 
-        } catch(FlagConflictException e) {
+        } catch(FlagConflictException | IllegalStateException e) {
 
             Flag<?> sf = fr.get("sit");
             if(sf instanceof StateFlag) {
@@ -47,7 +47,7 @@ public class WoGuLink {
             fr.register(sf);
             PLAYERSIT_FLAG = sf;
 
-        } catch(FlagConflictException e) {
+        } catch(FlagConflictException | IllegalStateException e) {
 
             Flag<?> sf = fr.get("playersit");
             if(sf instanceof StateFlag) {
@@ -62,7 +62,7 @@ public class WoGuLink {
             fr.register(sf);
             POSE_FLAG = sf;
 
-        } catch(FlagConflictException e) {
+        } catch(FlagConflictException | IllegalStateException e) {
 
             Flag<?> sf = fr.get("pose");
             if(sf instanceof StateFlag) {
@@ -77,7 +77,7 @@ public class WoGuLink {
             fr.register(sf);
             CRAWL_FLAG = sf;
 
-        } catch(FlagConflictException e) {
+        } catch(FlagConflictException | IllegalStateException e) {
 
             Flag<?> sf = fr.get("crawl");
             if(sf instanceof StateFlag) {
