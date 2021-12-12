@@ -25,6 +25,7 @@ Options:
     block-center: true
 
     # Defines the Blocks that a Player can sit on by clicking (You can use Materials and Tags!)
+    # Separate a Material or Tag with ";" from its y-offset. Like "STONE;0.5" for a 0.5 y-offset for Stone-Material
     SitMaterials:
       - "#STAIRS"
       - "#SLABS"
