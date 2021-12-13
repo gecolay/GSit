@@ -51,9 +51,7 @@ public class InteractEvents implements Listener {
         
         double d = GPM.getCManager().S_MAX_DISTANCE;
         
-        BoundingBox bb = b.getBoundingBox();
-        
-        if(d > 0d && b.getLocation().add(0.5, bb.getHeight(), 0.5).distance(p.getLocation()) > d) return;
+        if(d > 0d && b.getLocation().add(0.5, 0.5, 0.5).distance(p.getLocation()) > d) return;
         
         Material u = b.getRelative(BlockFace.UP).getType();
         
@@ -74,45 +72,42 @@ public class InteractEvents implements Listener {
             BlockFace f = bd.getFacing().getOppositeFace();
             
             Shape s = bd.getShape();
-            
-            switch(bd.getShape()) {
-            case STRAIGHT:
+
+            if(bd.getShape() == Shape.STRAIGHT) {
                 switch(f) {
-                case EAST:
-                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, 0d, 0d, -90f, true);
-                    break;
-                case SOUTH:
-                    GPM.getSitManager().createSeat(b, p, false, 0d, 0d, SitManager.STAIR_OFFSET, 0f, true);
-                    break;
-                case WEST:
-                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, 0d, 0d, 90f, true);
-                    break;
-                case NORTH:
-                    GPM.getSitManager().createSeat(b, p, false, 0d, 0d, -SitManager.STAIR_OFFSET, 180f, true);
-                    break;
-                default:
-                    break;
+                    case EAST:
+                        GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, 0d, -90f, true);
+                        break;
+                    case SOUTH:
+                        GPM.getSitManager().createSeat(b, p, false, 0d, -0.5d, SitManager.STAIR_OFFSET, 0f, true);
+                        break;
+                    case WEST:
+                        GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, 0d, 90f, true);
+                        break;
+                    case NORTH:
+                        GPM.getSitManager().createSeat(b, p, false, 0d, -0.5d, -SitManager.STAIR_OFFSET, 180f, true);
+                        break;
+                    default:
+                        break;
                 }
-                break;
-            default:
+            } else {
                 if(f == BlockFace.NORTH && s == Shape.OUTER_RIGHT || f == BlockFace.EAST && s == Shape.OUTER_LEFT || f == BlockFace.NORTH && s == Shape.INNER_RIGHT || f == BlockFace.EAST && s == Shape.INNER_LEFT) {
-                    
-                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, 0d, -SitManager.STAIR_OFFSET, -135f, true);
-                    
+
+                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, -135f, true);
+
                 } else if(f == BlockFace.NORTH && s == Shape.OUTER_LEFT || f == BlockFace.WEST && s == Shape.OUTER_RIGHT || f == BlockFace.NORTH && s == Shape.INNER_LEFT || f == BlockFace.WEST && s == Shape.INNER_RIGHT) {
-                    
-                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, 0d, -SitManager.STAIR_OFFSET, 135f, true);
-                    
+
+                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, 135f, true);
+
                 } else if(f == BlockFace.SOUTH && s == Shape.OUTER_RIGHT || f == BlockFace.WEST && s == Shape.OUTER_LEFT || f == BlockFace.SOUTH && s == Shape.INNER_RIGHT || f == BlockFace.WEST && s == Shape.INNER_LEFT) {
-                    
-                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, 0d, SitManager.STAIR_OFFSET, 45f, true);
-                    
+
+                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, 45f, true);
+
                 } else if(f == BlockFace.SOUTH && s == Shape.OUTER_LEFT || f == BlockFace.EAST && s == Shape.OUTER_RIGHT || f == BlockFace.SOUTH && s == Shape.INNER_LEFT || f == BlockFace.EAST && s == Shape.INNER_RIGHT) {
-                    
-                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, 0d, SitManager.STAIR_OFFSET, -45f, true);
-                    
+
+                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, -45f, true);
+
                 }
-                break;
             }
             
             e.setCancelled(true);
