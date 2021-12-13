@@ -71,7 +71,7 @@ public class PoseManager implements IPoseManager, Listener {
 
     }
 
-    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, GPM.getCManager().L_BLOCK_CENTER ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() - Block.getY() : 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().L_BLOCK_CENTER); }
+    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().L_BLOCK_CENTER); }
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
@@ -81,7 +81,9 @@ public class PoseManager implements IPoseManager, Listener {
 
         if(pplape.isCancelled()) return null;
 
-        double o = GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+        double o = GPM.getCManager().L_BLOCK_CENTER ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
+
+        o = (GPM.getCManager().L_BLOCK_CENTER ? o == 0d ? o : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
         ServerPlayer t = ((CraftPlayer) Player).getHandle();
 

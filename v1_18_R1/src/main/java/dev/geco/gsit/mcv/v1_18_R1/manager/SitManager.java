@@ -71,7 +71,7 @@ public class SitManager implements ISitManager, Listener {
 
     }
 
-    public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() - Block.getY() : 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER); }
+    public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER); }
 
     public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
@@ -81,7 +81,9 @@ public class SitManager implements ISitManager, Listener {
 
         if(pplase.isCancelled()) return null;
 
-        double o = GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+        double o = GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
+
+        o = (GPM.getCManager().S_BLOCK_CENTER ? o == 0d ? o : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
         ServerPlayer t = ((CraftPlayer) Player).getHandle();
 
