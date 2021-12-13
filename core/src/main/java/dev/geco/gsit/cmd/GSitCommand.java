@@ -31,8 +31,7 @@ public class GSitCommand implements CommandExecutor {
                                 Location pl = p.getLocation();
                                 Block b = pl.getBlock().isPassable() ? pl.getBlock().getRelative(BlockFace.DOWN) : pl.getBlock();
                                 if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {
-                                    Material u = b.getRelative(BlockFace.UP).getType();
-                                    if(GPM.getCManager().S_ALLOW_UNSAFE || (u.isTransparent() || u == Material.WATER || u.name().equalsIgnoreCase("LIGHT"))) {
+                                    if(GPM.getCManager().S_ALLOW_UNSAFE || b.getRelative(BlockFace.UP).isPassable()) {
                                         if(GPM.getPlotSquared() == null || GPM.getPlotSquared().canCreateSeat(b.getLocation(), p)) {
                                             if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().SIT_FLAG)) {
                                                 if(GPM.getCManager().REST_SAME_BLOCK || GPM.getSitManager().kickSeat(b, p)) {
