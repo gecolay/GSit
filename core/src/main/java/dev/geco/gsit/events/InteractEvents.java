@@ -79,16 +79,16 @@ public class InteractEvents implements Listener {
             case STRAIGHT:
                 switch(f) {
                 case EAST:
-                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, (bb.getMaxY() / 2d), 0d, -90f, true);
+                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, 0d, 0d, -90f, true);
                     break;
                 case SOUTH:
-                    GPM.getSitManager().createSeat(b, p, false, 0d, (bb.getMaxY() / 2d), SitManager.STAIR_OFFSET, 0f, true);
+                    GPM.getSitManager().createSeat(b, p, false, 0d, 0d, SitManager.STAIR_OFFSET, 0f, true);
                     break;
                 case WEST:
-                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, (bb.getMaxY() / 2d), 0d, 90f, true);
+                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, 0d, 0d, 90f, true);
                     break;
                 case NORTH:
-                    GPM.getSitManager().createSeat(b, p, false, 0d, (bb.getMaxY() / 2d), -SitManager.STAIR_OFFSET, 180f, true);
+                    GPM.getSitManager().createSeat(b, p, false, 0d, 0d, -SitManager.STAIR_OFFSET, 180f, true);
                     break;
                 default:
                     break;
