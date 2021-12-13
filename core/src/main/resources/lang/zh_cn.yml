@@ -1,53 +1,53 @@
 #
-# Language-File created by:		Gecolay
+# Language-File translated by:		Thaumiel9
 #
 
 
 
 Plugin:
 
-  plugin-enabled: "[P]&a The Plugin was successfully enabled."
-  plugin-link: "[P]&a Link with&6 %Link%&a successful!"
-  plugin-update: "[P]&a New Version available:&6 %NewVersion%&a!\n[P]&a You are currently running Version:&6 %Version%&a!\n[P]&a Download the latest Version at:\n[P]&6 %Path%"
-  plugin-version: "[P]&c This Plugin can not be used with this Server Version! (&b%Version%&c)"
-  plugin-disabled: "[P]&a The Plugin was successfully disabled."
+  plugin-enabled: "[P]&a 插件已成功启用"
+  plugin-link: "[P]&a 成功链接到&6 %Link%&a !"
+  plugin-update: "[P]&a 新版本可用:&6 %NewVersion%&a!\n[P]&a 当前使用版本:&6 %Version%&a!\n[P]&a 下载最新版本:\n[P]&6 %Path%"
+  plugin-version: "[P]&c 插件与当前服务器版本不兼容! (&b%Version%&c)"
+  plugin-disabled: "[P]&a 插件已成功禁用"
   plugin-prefix: "&7[&6GSit&7]"
 
 
 
 Messages:
 
-  command-reload: "[P]&a The Settings were successfully reloaded."
-  command-permission-error: "[P]&c You don't have Permission to use this Command!"
-  command-sender-error: "[P]&c This Sender cannot execute this Command!"
-  command-version-error: "[P]&c You can't use this Feature with this Server Version! (&b%Version%&c)"
+  command-reload: "[P]&a 配置已成功重载"
+  command-permission-error: "[P]&c 你不能执行此命令!"
+  command-sender-error: "[P]&c 当前发送人不能执行此命令!"
+  command-version-error: "[P]&c 此功能与当前服务器版本不兼容! (&b%Version%&c)"
 
-  command-gsit-toggle-on: "[P]&a You have enabled click-interactions for sit."
-  command-gsit-toggle-off: "[P]&a You have disabled click-interactions for sit."
-  command-gsit-playertoggle-on: "[P]&a You have enabled click-interactions for playersit."
-  command-gsit-playertoggle-off: "[P]&a You have disabled click-interactions for playersit."
+  command-gsit-toggle-on: "[P]&a 你可以通过右键坐下了"
+  command-gsit-toggle-off: "[P]&a 你不能通过右键坐下了"
+  command-gsit-playertoggle-on: "[P]&a 你可以通过右键坐在其他玩家身上了"
+  command-gsit-playertoggle-off: "[P]&a 你不能通过右键坐在其他玩家身上了"
 
-  action-sit-now-error: "[P]&c You can't sit right now!"
-  action-sit-world-error: "[P]&c You can't sit in this world!"
-  action-sit-location-error: "[P]&c You can't sit here!"
-  action-sit-safe-error: "[P]&c It's not safe to sit here!"
-  action-sit-region-error: "[P]&c You can't sit in this region!"
-  action-sit-kick-error: "[P]&c Someone is already sitting here!"
-  action-sit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-sit-now-error: "[P]&c 你现在不能坐下!"
+  action-sit-world-error: "[P]&c 你不能在这个世界坐下!"
+  action-sit-location-error: "[P]&c 你不能在这坐下!"
+  action-sit-safe-error: "[P]&c 你不能在不安全的地方坐下!"
+  action-sit-region-error: "[P]&c 你不能在这个区域坐下!"
+  action-sit-kick-error: "[P]&c 已经有人在这坐下了!"
+  action-sit-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
 
-  action-playersit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-playersit-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
 
-  action-pose-now-error: "[P]&c You can't pose right now!"
-  action-pose-world-error: "[P]&c You can't pose in this world!"
-  action-pose-location-error: "[P]&c You can't pose here!"
-  action-pose-safe-error: "[P]&c It's not safe to pose here!"
-  action-pose-region-error: "[P]&c You can't pose in this region!"
-  action-pose-kick-error: "[P]&c Someone is already posing here!"
-  action-pose-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-pose-now-error: "[P]&c 你现在不能躺下!"
+  action-pose-world-error: "[P]&c 你不能在这个世界躺下!"
+  action-pose-location-error: "[P]&c 你不能在这躺下!"
+  action-pose-safe-error: "[P]&c 你不能在不安全的地方躺下!"
+  action-pose-region-error: "[P]&c 你不能在这个区域躺下!"
+  action-pose-kick-error: "[P]&c 已经有人在这躺下了!"
+  action-pose-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
 
-  action-crawl-now-error: "[P]&c You can't crawl right now!"
-  action-crawl-world-error: "[P]&c You can't crawl in this world!"
-  action-crawl-region-error: "[P]&c You can't crawl in this region!"
-  action-crawl-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-crawl-now-error: "[P]&c 你现在不能爬行!"
+  action-crawl-world-error: "[P]&c 你不能在这个世界爬行!"
+  action-crawl-region-error: "[P]&c 你不能在这个区域爬行!"
+  action-crawl-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
 
-  action-blocked-error: "[P]&c You are not allowed to execute this Command right now!"
+  action-blocked-error: "[P]&c 你现在不能执行此指令!"
