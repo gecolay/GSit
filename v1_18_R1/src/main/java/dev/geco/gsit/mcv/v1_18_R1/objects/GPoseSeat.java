@@ -155,13 +155,13 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     public void spawn() {
-        Bukkit.getPluginManager().registerEvents(li, GPM);
         a = getNearPlayers();
         cp.setInvisible(true);
         setEquipmentVisibility(false);
         if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(true);
         if(GPM.getCManager().L_RESET_TIME_SINCE_REST) s.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
         for(Player z : a) spawnToPlayer(z);
+        Bukkit.getPluginManager().registerEvents(li, GPM);
         startUpdate();
     }
 
@@ -182,11 +182,11 @@ public class GPoseSeat implements IGPoseSeat {
 
     public void remove() {
         stopUpdate();
+        HandlerList.unregisterAll(li);
         for(Player z : a) removeToPlayer(z);
         if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(false);
         cp.setInvisible(false);
         setEquipmentVisibility(true);
-        HandlerList.unregisterAll(li);
     }
 
     private void removeToPlayer(Player z) {

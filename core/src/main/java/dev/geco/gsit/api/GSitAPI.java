@@ -116,7 +116,7 @@ public class GSitAPI {
      * @param Player Player for this Seat
      * @param Rotate Should this Seat rotate with direction the player is facing
      * @param SeatRotationYaw The default Rotation of the Seat
-     * @param SitAtBlock Should the Seat be aligned with the Block or the Player
+     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
     public static GSeat createSeat(Block Block, Player Player, boolean Rotate, float SeatRotationYaw, boolean SitAtBlock) {
@@ -136,7 +136,7 @@ public class GSitAPI {
      * @param YOffset The Y-Coordinate-Offset for the Seat
      * @param ZOffset The Z-Coordinate-Offset for the Seat
      * @param SeatRotationYaw The default Rotation of the Seat
-     * @param SitAtBlock Should the Seat be aligned with the Block or the Player
+     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
     public static GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
@@ -290,7 +290,7 @@ public class GSitAPI {
      * @param Player Player for this PoseSeat
      * @param Pose Player-Pose {@link Pose}
      * @param SeatRotationYaw The default Rotation of the PoseSeat
-     * @param SitAtBlock Should the PoseSeat be aligned with the Block or the Player
+     * @param SitAtBlock Should the PoseSeat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, float SeatRotationYaw, boolean SitAtBlock) {
@@ -310,7 +310,7 @@ public class GSitAPI {
      * @param YOffset The Y-Coordinate-Offset for the PoseSeat
      * @param ZOffset The Z-Coordinate-Offset for the PoseSeat
      * @param SeatRotationYaw The default Rotation of the PoseSeat
-     * @param SitAtBlock Should the PoseSeat be aligned with the Block or the Player
+     * @param SitAtBlock Should the PoseSeat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
