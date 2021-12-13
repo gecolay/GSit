@@ -34,3 +34,14 @@ With GSit installed to your local maven repository, you can depend on it in your
     <scope>provided</scope>
 </dependency>
 ```
+
+If you only need access to the `dev.geco.gsit.api` package (as you should), you can depend solely on the core package.
+
+```xml
+<dependency>
+    <groupId>dev.geco</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0.0</version>
+    <scope>provided</scope>
+</dependency>
+```
