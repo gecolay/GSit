@@ -133,7 +133,7 @@ public class GSitAPI {
      * @param Player Player for this Seat
      * @param Rotate Should this Seat rotate with direction the player is facing
      * @param XOffset The X-Coordinate-Offset for the Seat
-     * @param YOffset The Y-Coordinate-Offset for the Seat (Default: the Block-Height)
+     * @param YOffset The Y-Coordinate-Offset for the Seat (Default: Block-BoundingBox-MaxY)
      * @param ZOffset The Z-Coordinate-Offset for the Seat
      * @param SeatRotationYaw The default Rotation of the Seat
      * @param SitAtBlock Should the Seat be aligned with the Block or the Player
@@ -307,7 +307,7 @@ public class GSitAPI {
      * @param Player Player for this PoseSeat
      * @param Pose Player-Pose {@link Pose}
      * @param XOffset The X-Coordinate-Offset for the PoseSeat
-     * @param YOffset The Y-Coordinate-Offset for the PoseSeat (Default: the Block-Height)
+     * @param YOffset The Y-Coordinate-Offset for the PoseSeat (Default: Block-BoundingBox-MaxY)
      * @param ZOffset The Z-Coordinate-Offset for the PoseSeat
      * @param SeatRotationYaw The default Rotation of the PoseSeat
      * @param SitAtBlock Should the PoseSeat be aligned with the Block or the Player

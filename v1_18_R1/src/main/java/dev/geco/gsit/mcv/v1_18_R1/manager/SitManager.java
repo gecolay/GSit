@@ -71,7 +71,7 @@ public class SitManager implements ISitManager, Listener {
 
     }
 
-    public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getHeight() : 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER); }
+    public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getMaxY() : 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER); }
 
     public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
