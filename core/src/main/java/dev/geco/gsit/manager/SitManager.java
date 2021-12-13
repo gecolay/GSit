@@ -70,7 +70,7 @@ public class SitManager implements ISitManager {
 
         double o = GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
-        o = (GPM.getCManager().S_BLOCK_CENTER ? o == 0d ? o : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+        o = (GPM.getCManager().S_BLOCK_CENTER ? o == 0d ? 1d : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
         Location l = Player.getLocation().clone();
 

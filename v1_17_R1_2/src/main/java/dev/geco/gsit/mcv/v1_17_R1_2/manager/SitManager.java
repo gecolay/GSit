@@ -83,7 +83,7 @@ public class SitManager implements ISitManager, Listener {
 
         double o = GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
-        o = (GPM.getCManager().S_BLOCK_CENTER ? o == 0d ? o : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+        o = (GPM.getCManager().S_BLOCK_CENTER ? o == 0d ? 1d : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
         ServerPlayer t = ((CraftPlayer) Player).getHandle();
 
