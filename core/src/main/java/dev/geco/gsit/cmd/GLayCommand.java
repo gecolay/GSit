@@ -24,7 +24,7 @@ public class GLayCommand implements CommandExecutor {
             Player p = (Player) s;
             if(GPM.getPManager().hasNormalPermission(s, "Lay")) {
                 if(GPM.getPoseManager() != null) {
-                    if(GPM.getPoseManager().isPosing(p)) {
+                    if(GPM.getPoseManager().isPosing(p) && GPM.getPoseManager().getPose(p).getPose() == Pose.SLEEPING) {
                         GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP);
                     } else {
                         if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {

@@ -5,6 +5,7 @@ import java.util.*;
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.nbt.CompoundTag;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.*;
@@ -58,6 +59,7 @@ public class GPoseSeat implements IGPoseSeat {
     private final Direction d;
 
     protected ClientboundTeleportEntityPacket set_npc;
+    protected ClientboundMoveEntityPacket.PosRot rot_npc;
     protected ClientboundBlockUpdatePacket set_bed;
     protected ClientboundPlayerInfoPacket add_npc;
     protected ClientboundPlayerInfoPacket remove_npc;
@@ -79,7 +81,7 @@ public class GPoseSeat implements IGPoseSeat {
         this.cp = ((CraftPlayer) s.getPlayer()).getHandle();
 
         this.f = createNPC();
-        this.f.moveTo(l.getX(), l.getY() + 0.3125d, l.getZ(), 0f, 0f);
+        this.f.moveTo(l.getX(), l.getY() + (p == org.bukkit.entity.Pose.SLEEPING ? 0.3125d : p == org.bukkit.entity.Pose.SPIN_ATTACK ? 0.2d : 0d), l.getZ(), 0f, 0f);
 
         this.bl = l.clone();
 
@@ -104,7 +106,8 @@ public class GPoseSeat implements IGPoseSeat {
         this.remove_entity = new ClientboundRemoveEntityPacket(f.getId());
         this.create_npc = new ClientboundAddPlayerPacket(f);
         this.meta_npc = new ClientboundSetEntityDataPacket(f.getId(), f.getEntityData(), false);
-        this.set_npc = new ClientboundTeleportEntityPacket(f);
+        if(p == org.bukkit.entity.Pose.SLEEPING) this.set_npc = new ClientboundTeleportEntityPacket(f);
+        if(p == org.bukkit.entity.Pose.SPIN_ATTACK) this.rot_npc = new ClientboundMoveEntityPacket.PosRot(f.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90.0f), true);
 
         li = new Listener() {
 
@@ -158,6 +161,10 @@ public class GPoseSeat implements IGPoseSeat {
         a = getNearPlayers();
         cp.setInvisible(true);
         setEquipmentVisibility(false);
+        f.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), cp.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
+        f.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), cp.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
+        cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), new CompoundTag());
+        cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), new CompoundTag());
         if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(true);
         if(GPM.getCManager().L_RESET_TIME_SINCE_REST) s.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
         for(Player z : a) spawnToPlayer(z);
@@ -171,7 +178,8 @@ public class GPoseSeat implements IGPoseSeat {
         sp.connection.send(create_npc);
         if(p == Pose.SLEEPING) sp.connection.send(set_bed);
         sp.connection.send(meta_npc);
-        sp.connection.send(set_npc);
+        if(p == Pose.SLEEPING) sp.connection.send(set_npc);
+        if(p == Pose.SPIN_ATTACK) sp.connection.send(rot_npc);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -187,6 +195,9 @@ public class GPoseSeat implements IGPoseSeat {
         if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(false);
         cp.setInvisible(false);
         setEquipmentVisibility(true);
+        s.getPlayer().setInvisible(false);
+        cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), f.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
+        cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), f.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
     }
 
     private void removeToPlayer(Player z) {
@@ -262,11 +273,9 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     private void setMeta() {
-        SynchedEntityData sed = f.getEntityData();
-        sed.set(EntityDataSerializers.BYTE.createAccessor(17), cp.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(17)));
-        sed.set(EntityDataSerializers.POSE.createAccessor(6), net.minecraft.world.entity.Pose.values()[p.ordinal()]);
-        if(p == Pose.SPIN_ATTACK) sed.set(EntityDataSerializers.BYTE.createAccessor(8), cp.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(8)));
-        if(p == Pose.SLEEPING) sed.set(EntityDataSerializers.OPTIONAL_BLOCK_POS.createAccessor(14), Optional.of(bp));
+        f.getEntityData().set(EntityDataSerializers.POSE.createAccessor(6), net.minecraft.world.entity.Pose.values()[p.ordinal()]);
+        if(p == Pose.SPIN_ATTACK) f.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(8), (byte) 4);
+        if(p == Pose.SLEEPING) f.getEntityData().set(EntityDataSerializers.OPTIONAL_BLOCK_POS.createAccessor(14), Optional.of(bp));
     }
 
     private float fixYaw(float Y) {
@@ -274,6 +283,17 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     private void updateDirection() {
+        if(p == Pose.SWIMMING) {
+            byte y = getFixedRotation(s.getPlayer().getLocation().getYaw());
+            ClientboundRotateHeadPacket pa = new ClientboundRotateHeadPacket(f, y);
+            ClientboundMoveEntityPacket.PosRot pa2 = new ClientboundMoveEntityPacket.PosRot(f.getId(), (short) 0, (short) 0, (short) 0, y, (byte) 0, true);
+            for(Player z : a) {
+                ServerPlayer sp = ((CraftPlayer) z).getHandle();
+                sp.connection.send(pa);
+                sp.connection.send(pa2);
+            }
+            return;
+        }
         float yc = s.getPlayer().getLocation().getYaw();
         if(d == Direction.WEST) yc -= 90;
         if(d == Direction.EAST) yc += 90;
@@ -290,6 +310,7 @@ public class GPoseSeat implements IGPoseSeat {
     private void updateSkin() {
         SynchedEntityData sed = f.getEntityData();
         sed.set(EntityDataSerializers.BYTE.createAccessor(17), cp.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(17)));
+        sed.set(EntityDataSerializers.BYTE.createAccessor(18), cp.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(18)));
         ClientboundSetEntityDataPacket pa = new ClientboundSetEntityDataPacket(f.getId(), sed, false);
         for(Player z : a) {
             ServerPlayer sp = ((CraftPlayer) z).getHandle();

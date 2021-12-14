@@ -47,31 +47,31 @@ public class GSitCommand implements CommandExecutor {
                 } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
             } else {
                 switch(a[0]) {
-                case "toggle":
-                    if(GPM.getPManager().hasNormalPermission(s, "SitToggle")) {
-                        if(GPM.getToggleManager().canSit(p.getUniqueId())) {
-                            GPM.getToggleManager().setCanSit(p.getUniqueId(), false);
-                            GPM.getMManager().sendMessage(s, "Messages.command-gsit-toggle-off");
-                        } else {
-                            GPM.getToggleManager().setCanSit(p.getUniqueId(), true);
-                            GPM.getMManager().sendMessage(s, "Messages.command-gsit-toggle-on");
+                    case "toggle":
+                        if(GPM.getPManager().hasNormalPermission(s, "SitToggle")) {
+                            if(GPM.getToggleManager().canSit(p.getUniqueId())) {
+                                GPM.getToggleManager().setCanSit(p.getUniqueId(), false);
+                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-toggle-off");
+                            } else {
+                                GPM.getToggleManager().setCanSit(p.getUniqueId(), true);
+                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-toggle-on");
+                            }
+                            break;
                         }
-                        break;
-                    }
-                case "playertoggle":
-                    if(GPM.getPManager().hasNormalPermission(s, "PlayerSitToggle")) {
-                        if(GPM.getToggleManager().canPlayerSit(p.getUniqueId())) {
-                            GPM.getToggleManager().setCanPlayerSit(p.getUniqueId(), false);
-                            GPM.getMManager().sendMessage(s, "Messages.command-gsit-playertoggle-off");
-                        } else {
-                            GPM.getToggleManager().setCanPlayerSit(p.getUniqueId(), true);
-                            GPM.getMManager().sendMessage(s, "Messages.command-gsit-playertoggle-on");
+                    case "playertoggle":
+                        if(GPM.getPManager().hasNormalPermission(s, "PlayerSitToggle")) {
+                            if(GPM.getToggleManager().canPlayerSit(p.getUniqueId())) {
+                                GPM.getToggleManager().setCanPlayerSit(p.getUniqueId(), false);
+                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-playertoggle-off");
+                            } else {
+                                GPM.getToggleManager().setCanPlayerSit(p.getUniqueId(), true);
+                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-playertoggle-on");
+                            }
+                            break;
                         }
+                    default:
+                        Bukkit.dispatchCommand(s, l);
                         break;
-                    }
-                default:
-                    Bukkit.dispatchCommand(s, l);
-                    break;
                 }
             }
         } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");

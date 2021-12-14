@@ -90,21 +90,13 @@ public class InteractEvents implements Listener {
                 }
             } else {
                 if(f == BlockFace.NORTH && s == Shape.OUTER_RIGHT || f == BlockFace.EAST && s == Shape.OUTER_LEFT || f == BlockFace.NORTH && s == Shape.INNER_RIGHT || f == BlockFace.EAST && s == Shape.INNER_LEFT) {
-
                     GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, -135f, true);
-
                 } else if(f == BlockFace.NORTH && s == Shape.OUTER_LEFT || f == BlockFace.WEST && s == Shape.OUTER_RIGHT || f == BlockFace.NORTH && s == Shape.INNER_LEFT || f == BlockFace.WEST && s == Shape.INNER_RIGHT) {
-
                     GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, 135f, true);
-
                 } else if(f == BlockFace.SOUTH && s == Shape.OUTER_RIGHT || f == BlockFace.WEST && s == Shape.OUTER_LEFT || f == BlockFace.SOUTH && s == Shape.INNER_RIGHT || f == BlockFace.WEST && s == Shape.INNER_LEFT) {
-
                     GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, 45f, true);
-
                 } else if(f == BlockFace.SOUTH && s == Shape.OUTER_LEFT || f == BlockFace.EAST && s == Shape.OUTER_RIGHT || f == BlockFace.SOUTH && s == Shape.INNER_LEFT || f == BlockFace.EAST && s == Shape.INNER_RIGHT) {
-
                     GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, -45f, true);
-
                 }
             }
             
