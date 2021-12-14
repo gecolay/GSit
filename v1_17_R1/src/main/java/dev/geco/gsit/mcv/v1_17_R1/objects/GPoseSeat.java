@@ -5,7 +5,6 @@ import java.util.*;
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.nbt.CompoundTag;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.*;
@@ -22,6 +21,7 @@ import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -58,14 +58,14 @@ public class GPoseSeat implements IGPoseSeat {
 
     private final Direction d;
 
-    protected ClientboundTeleportEntityPacket set_npc;
-    protected ClientboundMoveEntityPacket.PosRot rot_npc;
     protected ClientboundBlockUpdatePacket set_bed;
     protected ClientboundPlayerInfoPacket add_npc;
     protected ClientboundPlayerInfoPacket remove_npc;
     protected ClientboundRemoveEntityPacket remove_entity;
     protected ClientboundAddPlayerPacket create_npc;
     protected ClientboundSetEntityDataPacket meta_npc;
+    protected ClientboundTeleportEntityPacket set_npc;
+    protected ClientboundMoveEntityPacket.PosRot rot_npc;
 
     private BukkitRunnable r;
 
