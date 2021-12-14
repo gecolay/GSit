@@ -1,0 +1,53 @@
+#
+# Language-File created by:		stiltezh
+#
+
+
+
+Plugin:
+
+  plugin-enabled: "[P]&a Плаґін був успішно включений."
+  plugin-link: "[P]&a З'єднання з&6 %Link%&a успішне!"
+  plugin-update: "[P]&a Доступна нова версія:&6 %NewVersion%&a!\n[P]&a В даний час ви використовуєте версію:&6 %Version%&a!\n[P]&a Завантажте останню версію на сайті:\n[P]&6 %Path%"
+  plugin-version: "[P]&c Цей плаґін не може бути використаний з цією версією сервера! (&b%Version%&c)"
+  plugin-disabled: "[P]&a Плаґін був успішно відключений."
+  plugin-prefix: "&7[&6GSit&7]"
+
+
+
+Messages:
+
+  command-reload: "[P]&a Налаштування були успішно перезавантажені."
+  command-permission-error: "[P]&c Ви не маєте дозволу на використання цієї команди!"
+  command-sender-error: "[P]&c Цей відправник не може виконати цю команду!"
+  command-version-error: "[P]&c Ви не можете використовувати цю функцію з цією версією сервера! (&b%Version%&c)"
+
+  command-gsit-toggle-on: "[P]&a Тепер ви можете сісти, натиснувши."
+  command-gsit-toggle-off: "[P]&a Ви більше не можете сісти, натиснувши."
+  command-gsit-playertoggle-on: "[P]&a Тепер ви можете сісти на гравця, натиснувши."
+  command-gsit-playertoggle-off: "[P]&a Ви більше не можете сісти на гравця, натиснувши."
+
+  action-sit-now-error: "[P]&c Ви не можете сидіти прямо зараз!"
+  action-sit-world-error: "[P]&c Ви не можете сидіти у цьому світі!"
+  action-sit-location-error: "[P]&c Ви не можете сидіти тут!"
+  action-sit-safe-error: "[P]&c Тут небезпечно сидіти!"
+  action-sit-region-error: "[P]&c Ви не можете сидіти у цьому регіоні!"
+  action-sit-kick-error: "[P]&c Хтось уже сидить тут!"
+  action-sit-info: "&aВикористовуйте&6 <translatekey:key.sneak>&a, щоби встати."
+
+  action-playersit-info: "&aВикористовуйте&6 <translatekey:key.sneak>&a, щоби встати."
+
+  action-pose-now-error: "[P]&c Ви не можете використати цю команду зараз!"
+  action-pose-world-error: "[P]&c Ви не можете використовувати цю команду у цьому світі!"
+  action-pose-location-error: "[P]&c Тут не можна використати цю команду!"
+  action-pose-safe-error: "[P]&c Тут небезпечно використовувати цю команду!"
+  action-pose-region-error: "[P]&c Ви не можете використовувати цю команду в цьому регіоні!"
+  action-pose-kick-error: "[P]&c Хтось уже тут використовує цю команду!"
+  action-pose-info: "&aВикористовуйте&6 <translatekey:key.sneak>&a, щоби встати."
+
+  action-crawl-now-error: "[P]&c Ти не можеш повзати прямо зараз!"
+  action-crawl-world-error: "[P]&c Ти не можеш повзати у цьому світі!"
+  action-crawl-region-error: "[P]&c Ви не можете повзати у цьому регіоні!"
+  action-crawl-info: "&aВикористовуйте&6 <translatekey:key.sneak>&a, щоби встати."
+
+  action-blocked-error: "[P]&c Вам не дозволено виконувати цю команду прямо зараз!"
