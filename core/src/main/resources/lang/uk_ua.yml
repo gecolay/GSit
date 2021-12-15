@@ -6,11 +6,11 @@
 
 Plugin:
 
-  plugin-enabled: "[P]&a Плаґін був успішно включений."
+  plugin-enabled: "[P]&a Плагін був успішно включений."
   plugin-link: "[P]&a З'єднання з&6 %Link%&a успішне!"
   plugin-update: "[P]&a Доступна нова версія:&6 %NewVersion%&a!\n[P]&a В даний час ви використовуєте версію:&6 %Version%&a!\n[P]&a Завантажте останню версію на сайті:\n[P]&6 %Path%"
-  plugin-version: "[P]&c Цей плаґін не може бути використаний з цією версією сервера! (&b%Version%&c)"
-  plugin-disabled: "[P]&a Плаґін був успішно відключений."
+  plugin-version: "[P]&c Цей Плагін не може бути використаний з цією версією сервера! (&b%Version%&c)"
+  plugin-disabled: "[P]&a Плагін був успішно відключений."
   plugin-prefix: "&7[&6GSit&7]"
 
 
