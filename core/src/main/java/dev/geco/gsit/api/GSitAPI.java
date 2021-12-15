@@ -3,6 +3,7 @@ package dev.geco.gsit.api;
 import java.util.*;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
@@ -141,6 +142,17 @@ public class GSitAPI {
      */
     public static GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
         return getInstance().getSitManager().createSeat(Block, Player, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
+    }
+
+    /**
+     * Moves an existing Seat
+     * @author Gecolay
+     * @since 1.0.0
+     * @param Seat The Seat
+     * @param Direction The Direction in which the Seat should get moved
+     */
+    public static void moveSeat(GSeat Seat, BlockFace Direction) {
+        getInstance().getSitManager().moveSeat(Seat, Direction);
     }
 
     /**
