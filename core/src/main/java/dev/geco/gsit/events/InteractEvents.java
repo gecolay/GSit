@@ -1,21 +1,18 @@
 package dev.geco.gsit.events;
 
-import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Bisected.Half;
 import org.bukkit.block.data.type.*;
 import org.bukkit.block.data.type.Slab.Type;
-import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.util.BoundingBox;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.manager.*;
+import dev.geco.gsit.objects.*;
 
 public class InteractEvents implements Listener {
     
@@ -66,41 +63,10 @@ public class InteractEvents implements Listener {
             Stairs bd = (Stairs) b.getBlockData();
             
             if(bd.getHalf() != Half.BOTTOM) return;
-            
-            BlockFace f = bd.getFacing().getOppositeFace();
-            
-            Shape s = bd.getShape();
 
-            if(bd.getShape() == Shape.STRAIGHT) {
-                switch(f) {
-                    case EAST:
-                        GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, 0d, -90f, true);
-                        break;
-                    case SOUTH:
-                        GPM.getSitManager().createSeat(b, p, false, 0d, -0.5d, SitManager.STAIR_OFFSET, 0f, true);
-                        break;
-                    case WEST:
-                        GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, 0d, 90f, true);
-                        break;
-                    case NORTH:
-                        GPM.getSitManager().createSeat(b, p, false, 0d, -0.5d, -SitManager.STAIR_OFFSET, 180f, true);
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                if(f == BlockFace.NORTH && s == Shape.OUTER_RIGHT || f == BlockFace.EAST && s == Shape.OUTER_LEFT || f == BlockFace.NORTH && s == Shape.INNER_RIGHT || f == BlockFace.EAST && s == Shape.INNER_LEFT) {
-                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, -135f, true);
-                } else if(f == BlockFace.NORTH && s == Shape.OUTER_LEFT || f == BlockFace.WEST && s == Shape.OUTER_RIGHT || f == BlockFace.NORTH && s == Shape.INNER_LEFT || f == BlockFace.WEST && s == Shape.INNER_RIGHT) {
-                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, 135f, true);
-                } else if(f == BlockFace.SOUTH && s == Shape.OUTER_RIGHT || f == BlockFace.WEST && s == Shape.OUTER_LEFT || f == BlockFace.SOUTH && s == Shape.INNER_RIGHT || f == BlockFace.WEST && s == Shape.INNER_LEFT) {
-                    GPM.getSitManager().createSeat(b, p, false, -SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, 45f, true);
-                } else if(f == BlockFace.SOUTH && s == Shape.OUTER_LEFT || f == BlockFace.EAST && s == Shape.OUTER_RIGHT || f == BlockFace.SOUTH && s == Shape.INNER_LEFT || f == BlockFace.EAST && s == Shape.INNER_RIGHT) {
-                    GPM.getSitManager().createSeat(b, p, false, SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, -45f, true);
-                }
-            }
-            
-            e.setCancelled(true);
+            GSeat seat = GPM.getSitUtil().createSeatForStair(b, p);
+
+            if(seat != null) e.setCancelled(true);
             
         } else if(Tag.SLABS.isTagged(b.getType())) {
             

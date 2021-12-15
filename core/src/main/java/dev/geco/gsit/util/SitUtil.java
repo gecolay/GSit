@@ -3,9 +3,14 @@ package dev.geco.gsit.util;
 import java.util.*;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.type.Stairs;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.*;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 
 public class SitUtil {
@@ -43,6 +48,51 @@ public class SitUtil {
         seats.remove(S);
         if(seats.size() > 0) B.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seats));
         else B.removeMetadata(GPM.NAME, GPM);
+    }
+
+    public GSeat createSeatForStair(Block Block, Player Player) {
+
+        GSeat seat = null;
+
+        Stairs bd = (Stairs) Block.getBlockData();
+
+        if(bd.getHalf() != Bisected.Half.BOTTOM) return GPM.getSitManager().createSeat(Block, Player);
+
+        BlockFace f = bd.getFacing().getOppositeFace();
+
+        Stairs.Shape s = bd.getShape();
+
+        if(bd.getShape() == Stairs.Shape.STRAIGHT) {
+            switch(f) {
+                case EAST:
+                    seat = GPM.getSitManager().createSeat(Block, Player, false, SitManager.STAIR_OFFSET, -0.5d, 0d, -90f, true);
+                    break;
+                case SOUTH:
+                    seat = GPM.getSitManager().createSeat(Block, Player, false, 0d, -0.5d, SitManager.STAIR_OFFSET, 0f, true);
+                    break;
+                case WEST:
+                    seat = GPM.getSitManager().createSeat(Block, Player, false, -SitManager.STAIR_OFFSET, -0.5d, 0d, 90f, true);
+                    break;
+                case NORTH:
+                    seat = GPM.getSitManager().createSeat(Block, Player, false, 0d, -0.5d, -SitManager.STAIR_OFFSET, 180f, true);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            if(f == BlockFace.NORTH && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.EAST && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.NORTH && s == Stairs.Shape.INNER_RIGHT || f == BlockFace.EAST && s == Stairs.Shape.INNER_LEFT) {
+                seat = GPM.getSitManager().createSeat(Block, Player, false, SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, -135f, true);
+            } else if(f == BlockFace.NORTH && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.WEST && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.NORTH && s == Stairs.Shape.INNER_LEFT || f == BlockFace.WEST && s == Stairs.Shape.INNER_RIGHT) {
+                seat = GPM.getSitManager().createSeat(Block, Player, false, -SitManager.STAIR_OFFSET, -0.5d, -SitManager.STAIR_OFFSET, 135f, true);
+            } else if(f == BlockFace.SOUTH && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.WEST && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.SOUTH && s == Stairs.Shape.INNER_RIGHT || f == BlockFace.WEST && s == Stairs.Shape.INNER_LEFT) {
+                seat = GPM.getSitManager().createSeat(Block, Player, false, -SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, 45f, true);
+            } else if(f == BlockFace.SOUTH && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.EAST && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.SOUTH && s == Stairs.Shape.INNER_LEFT || f == BlockFace.EAST && s == Stairs.Shape.INNER_RIGHT) {
+                seat = GPM.getSitManager().createSeat(Block, Player, false, SitManager.STAIR_OFFSET, -0.5d, SitManager.STAIR_OFFSET, -45f, true);
+            }
+        }
+
+        return seat;
+
     }
 
 }

@@ -2,7 +2,7 @@ package dev.geco.gsit.cmd;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.*;
@@ -35,7 +35,11 @@ public class GSitCommand implements CommandExecutor {
                                         if(GPM.getPlotSquared() == null || GPM.getPlotSquared().canCreateSeat(b.getLocation(), p)) {
                                             if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().SIT_FLAG)) {
                                                 if(GPM.getCManager().REST_SAME_BLOCK || GPM.getSitManager().kickSeat(b, p)) {
-                                                    GPM.getSitManager().createSeat(b, p);
+                                                    if(Tag.STAIRS.isTagged(b.getType())) {
+                                                        GPM.getSitUtil().createSeatForStair(b, p);
+                                                    } else {
+                                                        GPM.getSitManager().createSeat(b, p);
+                                                    }
                                                 } else GPM.getMManager().sendMessage(s, "Messages.action-sit-kick-error");
                                             } else GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
                                         } else GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
