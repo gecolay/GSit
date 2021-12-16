@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -324,7 +325,7 @@ public class SitManager implements ISitManager, Listener {
 
             if(Safe) {
 
-                Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation()).add(0d, 0.2d, 0d);
+                Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation()).add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? 0.5 : 0d), 0d);
 
                 if(!GPM.getCManager().S_GET_UP_RETURN) {
                     l.setYaw(Seat.getPlayer().getLocation().getYaw());

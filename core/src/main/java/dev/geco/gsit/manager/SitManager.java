@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
@@ -205,11 +206,13 @@ public class SitManager implements ISitManager {
 
         if(Seat.getEntity() != null && Seat.getEntity().isValid()) {
 
+            Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation()).add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? 0.5 : 0d), 0d);
+
             try {
 
                 Object sa = NMSManager.getHandle(Seat.getEntity());
 
-                NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, Seat.getLocation().getX(), Seat.getLocation().getY() + 0.2d, Seat.getLocation().getZ());
+                NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, l.getX(), l.getY(), l.getZ());
 
             } catch(Exception e) { e.printStackTrace(); }
 
