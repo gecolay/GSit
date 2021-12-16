@@ -183,6 +183,7 @@ public class GSitMain extends JavaPlugin {
         getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));
         getCommand("glay").setExecutor(new GLayCommand(getInstance()));
         getCommand("gbellyflop").setExecutor(new GBellyFlopCommand(getInstance()));
+        getCommand("gspin").setExecutor(new GSpinCommand(getInstance()));
         getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
         getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
         getServer().getPluginManager().registerEvents(new PlayerEvents(getInstance()), getInstance());

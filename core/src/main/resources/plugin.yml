@@ -27,6 +27,12 @@ commands:
     aliases: [bellyflop]
     description: BellyFlop-Command
 
+  gspin:
+
+    usage: /<command>
+    aliases: [spin]
+    description: Spin-Command
+
   gcrawl:
 
     usage: /<command>
@@ -55,6 +61,7 @@ permissions:
       GSit.PlayerSitToggle: true
       GSit.Lay: true
       GSit.BellyFlop: true
+      GSit.Spin: true
       GSit.Crawl: true
       GSit.Kick.*: true
       GSit.ByPass.*: true
@@ -88,6 +95,10 @@ permissions:
   GSit.BellyFlop:
     default: op
     description: BellyFlop | Permission
+
+  GSit.Spin:
+    default: op
+    description: Spin | Permission
 
   GSit.Crawl:
     default: op
