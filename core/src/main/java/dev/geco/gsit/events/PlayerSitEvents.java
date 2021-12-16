@@ -34,7 +34,7 @@ public class PlayerSitEvents implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void PDeaE(PlayerDeathEvent e) {
 
-        if(e.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getEntity(), GetUpReason.DAMAGE);
+        if(e.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getEntity(), GetUpReason.DEATH);
 
     }
 

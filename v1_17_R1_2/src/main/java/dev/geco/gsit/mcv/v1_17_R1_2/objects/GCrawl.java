@@ -210,7 +210,7 @@ public class GCrawl implements IGCrawl {
                 @Override
                 public void run() {
 
-                    GPM.getCrawlManager().stopCrawl(i, GetUpReason.KICKED);
+                    GPM.getCrawlManager().stopCrawl(i, GetUpReason.ACTION);
 
                 }
             }.runTask(GPM);
