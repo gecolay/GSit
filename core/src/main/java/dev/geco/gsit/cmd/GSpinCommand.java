@@ -1,16 +1,15 @@
 package dev.geco.gsit.cmd;
 
-import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.GetUpReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
+import org.bukkit.command.*;
+import org.bukkit.entity.Player;
+
+import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.objects.*;
 
 public class GSpinCommand implements CommandExecutor {
 
@@ -54,5 +53,5 @@ public class GSpinCommand implements CommandExecutor {
         } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
         return true;
     }
-    
+
 }
