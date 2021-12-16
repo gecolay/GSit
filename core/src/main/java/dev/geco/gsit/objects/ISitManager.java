@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 
 public interface ISitManager {
 
-    double STAIR_OFFSET = 0.123d;
+    double STAIR_XZ_OFFSET = 0.123d;
+
+    double STAIR_Y_OFFSET = 0.5d;
 
     int getFeatureUsedCount();
 
