@@ -149,7 +149,7 @@ public class GSitAPI {
      * The Seat can be static or rotating.
      * The seat can be moved to with an Offset
      * @author Gecolay
-     * @since 1.0.0
+     * @since 1.0.4
      * @param Block Block which should be connected to the Seat-Object
      * @param Player Player for this Seat
      * @param Rotate Should this Seat rotate with direction the player is facing
@@ -168,7 +168,7 @@ public class GSitAPI {
     /**
      * Moves an existing Seat
      * @author Gecolay
-     * @since 1.0.0
+     * @since 1.0.4
      * @param Seat The Seat
      * @param Direction The Direction in which the Seat should get moved
      */
@@ -355,7 +355,7 @@ public class GSitAPI {
      * The PoseSeat can be static or rotating.
      * The PoseSeat can be moved to with an Offset
      * @author Gecolay
-     * @since 1.0.0
+     * @since 1.0.4
      * @param Block Block which should be connected to the PoseSeat-Object
      * @param Player Player for this PoseSeat
      * @param Pose Player-Pose {@link Pose}
