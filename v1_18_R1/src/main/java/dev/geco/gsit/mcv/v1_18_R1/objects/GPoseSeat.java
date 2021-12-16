@@ -113,14 +113,14 @@ public class GPoseSeat implements IGPoseSeat {
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void PIntE(PlayerInteractEvent e) {
-                if(e.getPlayer() == s.getPlayer() && !GPM.getCManager().L_INTERACT) {
+                if(e.getPlayer() == s.getPlayer() && !GPM.getCManager().P_INTERACT) {
                     e.setCancelled(true);
                 }
             }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void EDamBEE(EntityDamageByEntityEvent e) {
-                if(e.getDamager() == s.getPlayer() && !GPM.getCManager().L_INTERACT) {
+                if(e.getDamager() == s.getPlayer() && !GPM.getCManager().P_INTERACT) {
                     e.setCancelled(true);
                 }
             }
@@ -134,7 +134,7 @@ public class GPoseSeat implements IGPoseSeat {
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void PLauE(ProjectileLaunchEvent e) {
-                if(e.getEntity().getShooter() == s.getPlayer() && !GPM.getCManager().L_INTERACT) {
+                if(e.getEntity().getShooter() == s.getPlayer() && !GPM.getCManager().P_INTERACT) {
                     e.setCancelled(true);
                 }
             }
@@ -165,8 +165,10 @@ public class GPoseSeat implements IGPoseSeat {
         f.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), cp.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
         cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), new CompoundTag());
         cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), new CompoundTag());
-        if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(true);
-        if(GPM.getCManager().L_RESET_TIME_SINCE_REST) s.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
+        if(p == Pose.SLEEPING) {
+            if(GPM.getCManager().P_LAY_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(true);
+            if(GPM.getCManager().P_LAY_RESET_TIME_SINCE_REST) s.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
+        }
         for(Player z : a) spawnToPlayer(z);
         Bukkit.getPluginManager().registerEvents(li, GPM);
         startUpdate();
@@ -192,7 +194,7 @@ public class GPoseSeat implements IGPoseSeat {
         stopUpdate();
         HandlerList.unregisterAll(li);
         for(Player z : a) removeToPlayer(z);
-        if(GPM.getCManager().L_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(false);
+        if(p == Pose.SLEEPING && GPM.getCManager().P_LAY_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(false);
         cp.setInvisible(false);
         setEquipmentVisibility(true);
         s.getPlayer().setInvisible(false);
@@ -247,11 +249,11 @@ public class GPoseSeat implements IGPoseSeat {
                         ServerPlayer sp = ((CraftPlayer) z).getHandle();
                         sp.connection.send(set_bed);
                     }
-                    if(GPM.getCManager().L_SNORING_SOUNDS) {
+                    if(GPM.getCManager().P_LAY_SNORING_SOUNDS) {
                         sleep_tick++;
                         if(sleep_tick >= 90) {
                             long ti = s.getPlayer().getPlayerTime();
-                            if(!GPM.getCManager().L_SNORING_NIGHT_ONLY || (ti >= 12500 && ti <= 23500)) {
+                            if(!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (ti >= 12500 && ti <= 23500)) {
                                 for(Player z : a) {
                                     z.playSound(s.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
                                 }

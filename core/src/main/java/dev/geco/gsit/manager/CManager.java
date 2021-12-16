@@ -16,6 +16,8 @@ public class CManager {
 
     public boolean GET_UP_DAMAGE;
 
+    public boolean GET_UP_SNEAK;
+
     public boolean REST_SAME_BLOCK;
 
 
@@ -52,19 +54,19 @@ public class CManager {
 
 
 
-    public boolean L_BLOCK_CENTER;
+    public boolean P_BLOCK_CENTER;
 
-    public boolean L_SHOW_LAY_MESSAGE;
+    public boolean P_SHOW_POSE_MESSAGE;
 
-    public boolean L_INTERACT;
+    public boolean P_INTERACT;
 
-    public boolean L_RESET_TIME_SINCE_REST;
+    public boolean P_LAY_RESET_TIME_SINCE_REST;
 
-    public boolean L_SNORING_SOUNDS;
+    public boolean P_LAY_SNORING_SOUNDS;
 
-    public boolean L_SNORING_NIGHT_ONLY;
+    public boolean P_LAY_SNORING_NIGHT_ONLY;
 
-    public boolean L_NIGHT_SKIP;
+    public boolean P_LAY_NIGHT_SKIP;
 
 
     public boolean C_GET_UP_SNEAK;
@@ -76,7 +78,7 @@ public class CManager {
 
     public List<Material> MATERIALBLACKLIST = new ArrayList<Material>();
 
-    public List<String> BLOCKEDCOMMANDLIST = new ArrayList<String>();
+    public List<String> COMMANDBLACKLIST = new ArrayList<String>();
 
 
     private final GSitMain GPM;
@@ -92,6 +94,7 @@ public class CManager {
         DEBUG = GPM.getConfig().getBoolean("Options.debug", false);
         CHECK_FEATURE_PERMISSIONS = GPM.getConfig().getBoolean("Options.check-feature-permissions", true);
         GET_UP_DAMAGE = GPM.getConfig().getBoolean("Options.get-up-damage", false);
+        GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.get-up-sneak", true);
         REST_SAME_BLOCK = GPM.getConfig().getBoolean("Options.rest-same-block", false);
 
         S_BLOCK_CENTER = GPM.getConfig().getBoolean("Options.Sit.block-center", true);
@@ -121,13 +124,13 @@ public class CManager {
         PS_SHOW_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.show-sit-message", true);
         PS_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.PlayerSit.default-sit-mode", true);
 
-        L_BLOCK_CENTER = GPM.getConfig().getBoolean("Options.Lay.block-center", true);
-        L_SHOW_LAY_MESSAGE = GPM.getConfig().getBoolean("Options.Lay.show-lay-message", true);
-        L_INTERACT = GPM.getConfig().getBoolean("Options.Lay.interact", false);
-        L_RESET_TIME_SINCE_REST = GPM.getConfig().getBoolean("Options.Lay.reset-time-since-rest", true);
-        L_SNORING_SOUNDS = GPM.getConfig().getBoolean("Options.Lay.snoring-sounds", true);
-        L_SNORING_NIGHT_ONLY = GPM.getConfig().getBoolean("Options.Lay.snoring-night-only", true);
-        L_NIGHT_SKIP = GPM.getConfig().getBoolean("Options.Lay.night-skip", false);
+        P_BLOCK_CENTER = GPM.getConfig().getBoolean("Options.Pose.block-center", true);
+        P_SHOW_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.show-pose-message", true);
+        P_INTERACT = GPM.getConfig().getBoolean("Options.Pose.interact", false);
+        P_LAY_RESET_TIME_SINCE_REST = GPM.getConfig().getBoolean("Options.Pose.lay-reset-time-since-rest", true);
+        P_LAY_SNORING_SOUNDS = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-sounds", true);
+        P_LAY_SNORING_NIGHT_ONLY = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-night-only", true);
+        P_LAY_NIGHT_SKIP = GPM.getConfig().getBoolean("Options.Pose.lay-night-skip", false);
 
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
 
@@ -140,7 +143,7 @@ public class CManager {
                 else MATERIALBLACKLIST.add(Material.valueOf(s.toUpperCase()));
             } catch(IllegalArgumentException e) { }
         }
-        BLOCKEDCOMMANDLIST = GPM.getConfig().getStringList("Options.BlockedCommandlist");
+        COMMANDBLACKLIST = GPM.getConfig().getStringList("Options.CommandBlacklist");
 
     }
 

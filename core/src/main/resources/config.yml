@@ -1,31 +1,34 @@
 Lang:
 
-  # Defines the Plugin-Language
+  # Defines the plugin language
   lang: en_en
 
 
 
 Options:
 
-  # Checks if a new Update was released
+  # Defines whether the plugin should notify when a new version is available
   check-for-update: true
 
-  # Defines whether the Plugin should check Permissions for default Features
+  # Defines whether the plugin should check permissions for standard functions
   check-feature-permissions: true
 
-  # Defines whether a Player gets up when he take Damage
+  # Defines whether a player gets up when he suffers damage
   get-up-damage: false
 
-  # Defines whether more than one Player can sit or lay on the same Block
+  # Defines whether a player can get up by sneaking
+  get-up-sneak: true
+
+  # Defines whether more than one player can sit or pose on the same block
   rest-same-block: false
 
   Sit:
 
-    # Defines whether a Player gets centered on the Block when he sits down
+    # Defines whether a player is centered on the block when sitting
     block-center: true
 
-    # Defines the Blocks that a Player can sit on by clicking (You can use Materials and Tags!)
-    # Separate a Material or Tag with ";" from its y-offset. Like "STONE;0.5" for a 0.5 y-offset for Stone-Material
+    # Defines the blocks a player can sit on by clicking (Materials and Tags)
+    # Separate a material or tag from its y-offset with ";". For example, "STONE;0.5" for a y-offset of 0.5 for stone material
     SitMaterials:
       - "#STAIRS"
       - "#SLABS"
@@ -34,91 +37,91 @@ Options:
       - "BIG_DRIPLEAF"
       - "SNOW"
 
-    # Defines whether a Player can sit in an unsafe Location
+    # Defines whether a player can sit in an unsafe place
     allow-unsafe: false
 
-    # Defines whether a Player gets returned to the Location from before he started sitting
+    # Defines whether a player is returned to the place where he started sitting
     get-up-return: false
 
-    # Defines whether a Player needs an empty MainHand to sit down
+    # Defines whether a player needs an empty main hand to sit down by clicking
     empty-hand-only: true
 
-    # Defines the maximum Range from where a Player can sit down by clicking (0 means unlimited!)
+    # Defines the maximum range in which a player can sit down by clicking (0 means unlimited!)
     max-distance: 0.00
 
-    # Defines whether a Player should get a custom Message when he sits down
+    # Defines whether a player should receive a custom message when he starts to sit
     show-sit-message: true
 
-    # Defines whether a Player can sit by default without using the sit toggle Command
+    # Defines whether a player can sit by default without using the sit toggle command
     default-sit-mode: true
 
 
 
   PlayerSit:
 
-    # Defines whether a Player can sit on another Player by RightClick
+    # Defines whether a player can right-click to sit on another player
     use-playersit: false
 
-    # Defines whether a Player can sit on an NPC by RightClick
+    # Defines whether a player can right-click to sit on an NPC
     use-playersit-npc: false
 
-    # Defines the maximum Amount of Players that can be stacked (0 means unlimited!)
+    # Defines the maximum number of players that can be stacked (0 means unlimited!)
     max-stack: 0
 
-    # Defines whether a Player should eject all Passengers when he sneaks
+    # Defines whether a player should kick out all passengers when sneaking
     sneak-ejects: true
 
-    # Defines whether a Player needs an empty MainHand to sit on another Player
+    # Defines whether a player needs an empty main hand to sit on another player
     empty-hand-only: true
 
-    # Defines whether a Player should get a custom Message when he sits down on another Player
+    # Defines whether a player should receive a custom message when he starts to sit on another player
     show-sit-message: true
 
-    # Defines whether a Player can sit on another Player by default without using the sit playertoggle Command
+    # Defines whether a player can sit on another player by default without using the sit playertoggle command
     default-sit-mode: true
 
 
 
-  Lay:
+  Pose:
 
-    # Defines whether a Player gets centered on the Block when he lays down
+    # Defines whether a player is centered on the block when posing
     block-center: true
 
-    # Defines whether a Player should get a custom Message when he lays down
-    show-lay-message: true
+    # Defines whether a player should receive a custom message when he starts to pose
+    show-pose-message: true
 
-    # Defines whether a Player can interact with the Environment while lying down
+    # Defines whether a player can interact with the environment while posing
     interact: false
 
-    # Defines whether to reset the time since last rest of a Player, which effects his phantom spawn time, when he lays down
-    reset-time-since-rest: true
+    # Defines whether to reset the time since a player's last rest, which affects his phantom spawn timer
+    lay-reset-time-since-rest: true
 
-    # Defines whether a Player makes Snoring-Noises while lying down
-    snoring-sounds: true
+    # Defines whether a player makes snoring sounds when lying down
+    lay-snoring-sounds: true
 
-    # Defines whether Snoring-Noises can only heard at Night
-    snoring-night-only: true
+    # Defines whether snoring sounds are only heard at night
+    lay-snoring-night-only: true
 
-    # Defines whether a lying down Player counts for skipping Night (At least one Player needs to sleep in a Bed to skip the Night!)
-    night-skip: false
+    # Defines whether a lying player counts for skipping the night (At least one player must be sleeping in a bed to skip the night!)
+    lay-night-skip: false
 
 
 
   Crawl:
 
-    # Defines whether a Player can get up by sneaking
+    # Defines whether a player can get up by sneaking
     get-up-sneak: true
 
 
 
-  # Defines whether a Player can only sit or lay on a Plot where he is part of the team
+  # Defines whether a player can only sit or pose on a plot where he is part of the team
   rest-team-plots-only: false
 
-  # Defines the Worlds in which a Player cannot sit, lay nor crawl
+  # Defines the worlds in which a player cannot sit, pose or crawl
   WorldBlacklist: []
 
-  # Defines the List of Materials that a Player cannot sit nor lay on
+  # Defines the list of materials on which a player may not sit or pose
   MaterialBlacklist: []
 
-  # Defines the List of Commands that cannot be executed while sitting or lying down
-  BlockedCommandlist: []
+  # Defines the list of commands that cannot be executed while sitting or posing
+  CommandBlacklist: []

@@ -79,13 +79,21 @@ public class PlayerEvents implements Listener {
         Player p = (Player) E;
 
         if(GPM.getSitManager().isSitting(p)) {
-            boolean r = GPM.getSitManager().removeSeat(GPM.getSitManager().getSeat(p), GetUpReason.GET_UP, true);
-            if(!r) e.setCancelled(true);
+            if(!GPM.getCManager().GET_UP_SNEAK) {
+                e.setCancelled(true);
+            } else {
+                boolean r = GPM.getSitManager().removeSeat(GPM.getSitManager().getSeat(p), GetUpReason.GET_UP, true);
+                if(!r) e.setCancelled(true);
+            }
         }
 
         if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(p)) {
-            boolean r = GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP, true);
-            if(!r) e.setCancelled(true);
+            if(!GPM.getCManager().GET_UP_SNEAK) {
+                e.setCancelled(true);
+            } else {
+                boolean r = GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP, true);
+                if(!r) e.setCancelled(true);
+            }
         }
 
     }
@@ -123,7 +131,7 @@ public class PlayerEvents implements Listener {
 
             m = m.substring(1).split(" ")[0].toLowerCase();
 
-            if(GPM.getCManager().BLOCKEDCOMMANDLIST.stream().anyMatch(m::equalsIgnoreCase)) {
+            if(GPM.getCManager().COMMANDBLACKLIST.stream().anyMatch(m::equalsIgnoreCase)) {
 
                 GPM.getMManager().sendMessage(p, "Messages.action-blocked-error");
 

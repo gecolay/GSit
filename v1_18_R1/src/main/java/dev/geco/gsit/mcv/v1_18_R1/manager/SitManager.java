@@ -157,7 +157,7 @@ public class SitManager implements ISitManager, Listener {
 
         if(Rotate) startRotateSeat(seat);
 
-        startDetectSeat(seat);
+        if(GPM.getCManager().GET_UP_SNEAK) startDetectSeat(seat);
 
         feature_used++;
 

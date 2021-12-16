@@ -71,7 +71,7 @@ public class PoseManager implements IPoseManager, Listener {
 
     }
 
-    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().L_BLOCK_CENTER); }
+    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().P_BLOCK_CENTER); }
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
@@ -147,7 +147,7 @@ public class PoseManager implements IPoseManager, Listener {
             sp.connection.send(pa3);
         }
 
-        if(GPM.getCManager().L_SHOW_LAY_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
+        if(GPM.getCManager().P_SHOW_POSE_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
 
         GSeat seat = new GSeat(Block, l, Player, sa.getBukkitEntity(), r);
 
@@ -163,7 +163,7 @@ public class PoseManager implements IPoseManager, Listener {
 
         startRotateSeat(poseseat);
 
-        startDetectSeat(poseseat);
+        if(GPM.getCManager().GET_UP_SNEAK) startDetectSeat(poseseat);
 
         feature_used++;
 
