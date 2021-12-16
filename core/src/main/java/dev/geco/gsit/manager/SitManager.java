@@ -59,7 +59,7 @@ public class SitManager implements ISitManager {
         
     }
     
-    public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER, GPM.getCManager().GET_UP_SNEAK); }
+    public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER, true); }
 
     public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
 
@@ -69,9 +69,9 @@ public class SitManager implements ISitManager {
 
         if(pplase.isCancelled()) return null;
 
-        double o = GPM.getCManager().S_BLOCK_CENTER ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
+        double o = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
-        o = (GPM.getCManager().S_BLOCK_CENTER ? o == 0d ? 1d : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+        o = (SitAtBlock ? o == 0d ? 1d : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
         Location l = Player.getLocation().clone();
 
@@ -83,7 +83,7 @@ public class SitManager implements ISitManager {
 
         } else {
 
-            l = l.add(XOffset, YOffset - 0.2d, ZOffset);
+            l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
 
         }
 
@@ -206,7 +206,7 @@ public class SitManager implements ISitManager {
 
         if(Seat.getEntity() != null && Seat.getEntity().isValid()) {
 
-            Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d), 0d));
+            Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(Seat.getBlock().getType(), 0d), 0d));
 
             try {
 

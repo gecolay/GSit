@@ -98,7 +98,7 @@ public class SitManager implements ISitManager, Listener {
 
         } else {
 
-            l = l.add(XOffset, YOffset - 0.2d, ZOffset);
+            l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
 
         }
 
@@ -325,7 +325,7 @@ public class SitManager implements ISitManager, Listener {
 
             if(Safe) {
 
-                Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d), 0d));
+                Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(Seat.getBlock().getType(), 0d), 0d));
 
                 if(!GPM.getCManager().S_GET_UP_RETURN) {
                     l.setYaw(Seat.getPlayer().getLocation().getYaw());
