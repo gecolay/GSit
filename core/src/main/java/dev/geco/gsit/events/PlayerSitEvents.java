@@ -69,11 +69,11 @@ public class PlayerSitEvents implements Listener {
 
         if(!GPM.getCManager().PS_USE_PLAYERSIT && !GPM.getCManager().PS_USE_PLAYERSIT_NPC) return;
 
+        if(!GPM.getPManager().hasNormalPermission(p, "PlayerSit")) return;
+
         if(GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) && !GPM.getPManager().hasPermission(p, "ByPass.World", "ByPass.*")) return;
 
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && p.getInventory().getItemInMainHand().getType() != Material.AIR) return;
-
-        if(!GPM.getPManager().hasNormalPermission(p, "PlayerSit")) return;
 
         if(!p.isValid() || !p.isOnGround() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
 

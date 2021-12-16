@@ -33,14 +33,14 @@ public class InteractEvents implements Listener {
         if(e.getBlockFace() != BlockFace.UP) return;
 
         if(GPM.getCManager().S_EMPTY_HAND_ONLY && e.getItem() != null) return;
+
+        if(!GPM.getPManager().hasNormalPermission(p, "SitClick")) return;
         
         if(!GPM.getCManager().S_SITMATERIALS.containsKey(b.getType())) return;
         
         if(GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) return;
         
-        if(GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName())) return;
-        
-        if(!GPM.getPManager().hasNormalPermission(p, "SitClick")) return;
+        if(GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) && !GPM.getPManager().hasPermission(p, "ByPass.World", "ByPass.*")) return;
         
         if(!p.isValid() || !p.isOnGround() || p.isSneaking() || p.isInsideVehicle()) return;
         
