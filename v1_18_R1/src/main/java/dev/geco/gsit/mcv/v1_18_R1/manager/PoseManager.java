@@ -71,9 +71,9 @@ public class PoseManager implements IPoseManager, Listener {
 
     }
 
-    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().P_BLOCK_CENTER); }
+    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().P_BLOCK_CENTER, GPM.getCManager().GET_UP_SNEAK); }
 
-    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
+    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
 
         PrePlayerPoseEvent pplape = new PrePlayerPoseEvent(Player, Block);
 
@@ -163,7 +163,7 @@ public class PoseManager implements IPoseManager, Listener {
 
         startRotateSeat(poseseat);
 
-        if(GPM.getCManager().GET_UP_SNEAK) startDetectSeat(poseseat);
+        if(GetUpSneak) startDetectSeat(poseseat);
 
         feature_used++;
 

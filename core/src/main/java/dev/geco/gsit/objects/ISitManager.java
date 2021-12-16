@@ -26,7 +26,7 @@ public interface ISitManager {
 
     GSeat createSeat(Block Block, Player Player);
 
-    GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock);
+    GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak);
 
     void moveSeat(GSeat Seat, BlockFace Face);
 

@@ -141,7 +141,28 @@ public class GSitAPI {
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
     public static GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return getInstance().getSitManager().createSeat(Block, Player, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
+        return createSeat(Block, Player, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, true);
+    }
+
+    /**
+     * Creates a new Seat on a Block for a Player.
+     * The Seat can be static or rotating.
+     * The seat can be moved to with an Offset
+     * @author Gecolay
+     * @since 1.0.0
+     * @param Block Block which should be connected to the Seat-Object
+     * @param Player Player for this Seat
+     * @param Rotate Should this Seat rotate with direction the player is facing
+     * @param XOffset The X-Coordinate-Offset for the Seat
+     * @param YOffset The Y-Coordinate-Offset for the Seat
+     * @param ZOffset The Z-Coordinate-Offset for the Seat
+     * @param SeatRotationYaw The default Rotation of the Seat
+     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
+     * @param GetUpSneak Should the Player be able to get up by sneaking
+     * @return Seat-Object or <code>null</code> if the creation was canceled
+     */
+    public static GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock, boolean GetUpSneak) {
+        return getInstance().getSitManager().createSeat(Block, Player, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, GetUpSneak);
     }
 
     /**
@@ -326,7 +347,28 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock) : null;
+        return createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, true);
+    }
+
+    /**
+     * Creates a new PoseSeat on a Block for a Player.
+     * The PoseSeat can be static or rotating.
+     * The PoseSeat can be moved to with an Offset
+     * @author Gecolay
+     * @since 1.0.0
+     * @param Block Block which should be connected to the PoseSeat-Object
+     * @param Player Player for this PoseSeat
+     * @param Pose Player-Pose {@link Pose}
+     * @param XOffset The X-Coordinate-Offset for the PoseSeat
+     * @param YOffset The Y-Coordinate-Offset for the PoseSeat
+     * @param ZOffset The Z-Coordinate-Offset for the PoseSeat
+     * @param SeatRotationYaw The default Rotation of the PoseSeat
+     * @param SitAtBlock Should the PoseSeat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
+     * @param GetUpSneak Should the Player be able to get up by sneaking
+     * @return PoseSeat-Object or <code>null</code> if the creation was canceled
+     */
+    public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock, boolean GetUpSneak) {
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, GetUpSneak) : null;
     }
 
     /**

@@ -24,7 +24,7 @@ public interface IPoseManager {
 
     IGPoseSeat createPose(Block Block, Player Player, Pose Pose);
 
-    IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock);
+    IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak);
 
     boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason);
 
