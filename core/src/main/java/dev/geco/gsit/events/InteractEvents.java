@@ -66,7 +66,13 @@ public class InteractEvents implements Listener {
 
             GSeat seat = GPM.getSitUtil().createSeatForStair(b, p);
 
-            if(seat != null) e.setCancelled(true);
+            if(seat != null) {
+
+                e.setCancelled(true);
+
+                return;
+
+            }
             
         } else if(Tag.SLABS.isTagged(b.getType())) {
             
