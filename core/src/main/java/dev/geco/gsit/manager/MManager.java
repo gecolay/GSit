@@ -14,7 +14,7 @@ import dev.geco.gsit.GSitMain;
 
 public class MManager {
 
-    private GSitMain GPM;
+    private final GSitMain GPM;
 
     public MManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
@@ -51,13 +51,13 @@ public class MManager {
     }
 
     public List<String> getMessageList(String Message, Object... ReplaceList) {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
         for(String i : GPM.getMessages().getStringList(Message)) l.add(toColoredString(replace(i, ReplaceList)));
         return l;
     }
 
     public List<String> getRawMessageList(String Message, Object... ReplaceList) {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
         for(String i : GPM.getMessages().getStringList(Message)) l.add(replace(i, ReplaceList));
         return l;
     }
@@ -73,7 +73,7 @@ public class MManager {
 
         Matcher m = Pattern.compile(A ? PA : P).matcher(Message);
 
-        List<ComplexComponent> eos = new ArrayList<ComplexComponent>();
+        List<ComplexComponent> eos = new ArrayList<>();
 
         while(m.find()) {
             if(m.group().contains(":")) {

@@ -74,17 +74,11 @@ public class InteractEvents implements Listener {
             
             if(bd.getType() != Type.BOTTOM) return;
             
-            GPM.getSitManager().createSeat(b, p, true, 0d, 0d, 0d, p.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK);
-            
-            e.setCancelled(true);
-            
-        } else {
-
-            GPM.getSitManager().createSeat(b, p, true, 0d, 0d, 0d, p.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK);
-            
-            e.setCancelled(true);
-            
         }
+
+        GSeat seat = GPM.getSitManager().createSeat(b, p, true, 0d, 0d, 0d, p.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK);
+
+        if(seat != null) e.setCancelled(true);
         
     }
     

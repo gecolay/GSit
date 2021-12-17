@@ -22,9 +22,9 @@ public class CrawlManager implements ICrawlManager {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
-    private final List<IGCrawl> crawls = new ArrayList<IGCrawl>();
+    private final List<IGCrawl> crawls = new ArrayList<>();
 
-    public List<IGCrawl> getCrawls() { return new ArrayList<IGCrawl>(crawls); }
+    public List<IGCrawl> getCrawls() { return new ArrayList<>(crawls); }
 
     public boolean isCrawling(Player Player) { return getCrawl(Player) != null; }
 

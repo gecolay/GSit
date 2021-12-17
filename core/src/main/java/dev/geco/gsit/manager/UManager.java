@@ -73,7 +73,7 @@ public class UManager {
 
     private static class Closer implements Closeable {
 
-        private final List<Closeable> l = new ArrayList<Closeable>();
+        private final List<Closeable> l = new ArrayList<>();
 
         public static Closer create() { return new Closer(); }
 

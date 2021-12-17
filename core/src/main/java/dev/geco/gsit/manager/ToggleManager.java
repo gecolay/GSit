@@ -19,9 +19,9 @@ public class ToggleManager {
     
     private FileConfiguration TD;
     
-    private final List<UUID> t = new ArrayList<UUID>();
+    private final List<UUID> t = new ArrayList<>();
 
-    private final List<UUID> pt = new ArrayList<UUID>();
+    private final List<UUID> pt = new ArrayList<>();
     
     private BukkitRunnable r;
     
@@ -65,10 +65,10 @@ public class ToggleManager {
     private void quickSaveToggleData() {
         TD.set("T", null);
         TD.set("P", null);
-        List<String> tc = new ArrayList<String>();
+        List<String> tc = new ArrayList<>();
         for(UUID z : t) tc.add(z.toString());
         TD.set("T", tc);
-        List<String> pc = new ArrayList<String>();
+        List<String> pc = new ArrayList<>();
         for(UUID z : pt) pc.add(z.toString());
         TD.set("P", pc);
         saveFile(TData, TD);

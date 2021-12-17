@@ -44,11 +44,11 @@ public class GPoseSeat implements IGPoseSeat {
 
     private final Pose p;
 
-    private Set<Player> a = new HashSet<Player>();
+    private Set<Player> a = new HashSet<>();
 
     private final ServerPlayer cp;
 
-    protected ServerPlayer f;
+    protected final ServerPlayer f;
 
     private final Location bl;
 
@@ -73,25 +73,25 @@ public class GPoseSeat implements IGPoseSeat {
 
     public GPoseSeat(GSeat Seat, Pose Pose) {
 
-        this.s = Seat;
-        this.p = Pose;
+        s = Seat;
+        p = Pose;
 
         Location l = s.getLocation();
 
-        this.cp = ((CraftPlayer) s.getPlayer()).getHandle();
+        cp = ((CraftPlayer) s.getPlayer()).getHandle();
 
-        this.f = createNPC();
-        this.f.moveTo(l.getX(), l.getY() + (p == org.bukkit.entity.Pose.SLEEPING ? 0.3125d : p == org.bukkit.entity.Pose.SPIN_ATTACK ? 0.2d : 0d), l.getZ(), 0f, 0f);
+        f = createNPC();
+        f.moveTo(l.getX(), l.getY() + (p == org.bukkit.entity.Pose.SLEEPING ? 0.3125d : p == org.bukkit.entity.Pose.SPIN_ATTACK ? 0.2d : 0d), l.getZ(), 0f, 0f);
 
-        this.bl = l.clone();
+        bl = l.clone();
 
-        this.bl.setY(bl.getWorld().getMinHeight());
+        bl.setY(bl.getWorld().getMinHeight());
 
-        this.bd = bl.getBlock().getBlockData();
+        bd = bl.getBlock().getBlockData();
 
-        this.bp = new BlockPos(bl.getBlockX(), bl.getBlockY(), bl.getBlockZ());
+        bp = new BlockPos(bl.getBlockX(), bl.getBlockY(), bl.getBlockZ());
 
-        this.d = getDirection();
+        d = getDirection();
 
         BlockState bs = Blocks.WHITE_BED.defaultBlockState();
 
@@ -100,14 +100,14 @@ public class GPoseSeat implements IGPoseSeat {
 
         setMeta();
 
-        if(p == org.bukkit.entity.Pose.SLEEPING) this.set_bed = new ClientboundBlockUpdatePacket(bp, bs);
-        this.add_npc = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, f);
-        this.remove_npc = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.REMOVE_PLAYER, f);
-        this.remove_entity = new ClientboundRemoveEntitiesPacket(f.getId());
-        this.create_npc = new ClientboundAddPlayerPacket(f);
-        this.meta_npc = new ClientboundSetEntityDataPacket(f.getId(), f.getEntityData(), false);
-        if(p == org.bukkit.entity.Pose.SLEEPING) this.set_npc = new ClientboundTeleportEntityPacket(f);
-        if(p == org.bukkit.entity.Pose.SPIN_ATTACK) this.rot_npc = new ClientboundMoveEntityPacket.PosRot(f.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90.0f), true);
+        if(p == org.bukkit.entity.Pose.SLEEPING) set_bed = new ClientboundBlockUpdatePacket(bp, bs);
+        add_npc = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, f);
+        remove_npc = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.REMOVE_PLAYER, f);
+        remove_entity = new ClientboundRemoveEntitiesPacket(f.getId());
+        create_npc = new ClientboundAddPlayerPacket(f);
+        meta_npc = new ClientboundSetEntityDataPacket(f.getId(), f.getEntityData(), false);
+        if(p == org.bukkit.entity.Pose.SLEEPING) set_npc = new ClientboundTeleportEntityPacket(f);
+        if(p == org.bukkit.entity.Pose.SPIN_ATTACK) rot_npc = new ClientboundMoveEntityPacket.PosRot(f.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90.0f), true);
 
         li = new Listener() {
 
@@ -210,7 +210,7 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     private Set<Player> getNearPlayers() {
-        HashSet<Player> pl = new HashSet<Player>();
+        HashSet<Player> pl = new HashSet<>();
         s.getLocation().getWorld().getPlayers().parallelStream().filter(o -> s.getLocation().distance(o.getLocation()) <= 250).forEach(pl::add);
         return pl;
     }
@@ -232,7 +232,7 @@ public class GPoseSeat implements IGPoseSeat {
                     spawnToPlayer(z);
                 }
 
-                for(Player z : new HashSet<Player>(a)) {
+                for(Player z : new HashSet<>(a)) {
                     if(np.contains(z)) continue;
                     a.remove(z);
                     removeToPlayer(z);
@@ -321,7 +321,7 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     private void updateEquipment() {
-        List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> lp = new ArrayList<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>>();
+        List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> lp = new ArrayList<>();
         for(net.minecraft.world.entity.EquipmentSlot es : net.minecraft.world.entity.EquipmentSlot.values()) {
             net.minecraft.world.item.ItemStack is = cp.getItemBySlot(es);
             if(is != null) lp.add(Pair.of(es, is));
@@ -334,7 +334,7 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     private void setEquipmentVisibility(boolean v) {
-        List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> lp = new ArrayList<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>>();
+        List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> lp = new ArrayList<>();
         net.minecraft.world.item.ItemStack nis = CraftItemStack.asNMSCopy(new ItemStack(Material.AIR));
         for(net.minecraft.world.entity.EquipmentSlot es : net.minecraft.world.entity.EquipmentSlot.values()) {
             net.minecraft.world.item.ItemStack is = v ? cp.getItemBySlot(es) : null;

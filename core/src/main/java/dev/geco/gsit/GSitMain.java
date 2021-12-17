@@ -2,7 +2,6 @@ package dev.geco.gsit;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.Callable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -110,47 +109,30 @@ public class GSitMain extends JavaPlugin {
 
     private void linkBStats() {
         BStatsLink bstats = new BStatsLink(getInstance(), 4914);
-        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return getConfig().getString("Lang.lang", "en_en").toLowerCase();
-            }
+        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getConfig().getString("Lang.lang", "en_en").toLowerCase()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> {
+            if(getSitManager() == null) return 0;
+            int c = getSitManager().getFeatureUsedCount();
+            getSitManager().resetFeatureUsedCount();
+            return c;
         }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                if(getSitManager() == null) return 0;
-                int c = getSitManager().getFeatureUsedCount();
-                getSitManager().resetFeatureUsedCount();
-                return c;
-            }
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> {
+            if(getPoseManager() == null) return 0;
+            int c = getPoseManager().getFeatureUsedCount();
+            getPoseManager().resetFeatureUsedCount();
+            return c;
         }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                if(getPoseManager() == null) return 0;
-                int c = getPoseManager().getFeatureUsedCount();
-                getPoseManager().resetFeatureUsedCount();
-                return c;
-            }
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> {
+            if(getPlayerSitManager() == null) return 0;
+            int c = getPlayerSitManager().getFeatureUsedCount();
+            getPlayerSitManager().resetFeatureUsedCount();
+            return c;
         }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                if(getPlayerSitManager() == null) return 0;
-                int c = getPlayerSitManager().getFeatureUsedCount();
-                getPlayerSitManager().resetFeatureUsedCount();
-                return c;
-            }
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                if(getCrawlManager() == null) return 0;
-                int c = getCrawlManager().getFeatureUsedCount();
-                getCrawlManager().resetFeatureUsedCount();
-                return c;
-            }
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> {
+            if(getCrawlManager() == null) return 0;
+            int c = getCrawlManager().getFeatureUsedCount();
+            getCrawlManager().resetFeatureUsedCount();
+            return c;
         }));
     }
 

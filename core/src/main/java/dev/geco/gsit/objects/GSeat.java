@@ -11,31 +11,31 @@ public class GSeat {
 
     protected Location l;
 
-    protected Player p;
+    protected final Player p;
 
-    protected Entity e;
+    protected final Entity e;
     
     protected Location r;
     
     public GSeat(Block block, Location location, Player player, Entity entity, Location returnloc) {
-        this.b = block;
-        this.l = location;
-        this.p = player;
-        this.e = entity;
-        this.r = returnloc;
+        b = block;
+        l = location;
+        p = player;
+        e = entity;
+        r = returnloc;
     }
     
     public Block getBlock() { return b; }
 
     public GSeat setBlock(Block block) {
-        this.b = block;
+        b = block;
         return this;
     }
 
     public Location getLocation() { return l.clone(); }
 
     public GSeat setLocation(Location location) {
-        this.l = location.clone();
+        l = location.clone();
         return this;
     }
     
@@ -46,7 +46,7 @@ public class GSeat {
     public Location getReturn() { return r.clone(); }
     
     public GSeat setReturn(Location returnloc) {
-        this.r = returnloc.clone();
+        r = returnloc.clone();
         return this;
     }
     

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class NMSManager {
 
-    private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
+    private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<>();
 
     private static Class<?> getPrimitiveType(Class<?> Class) { return CORRESPONDING_TYPES.getOrDefault(Class, Class); }
 

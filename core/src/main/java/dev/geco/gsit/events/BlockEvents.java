@@ -18,7 +18,7 @@ public class BlockEvents implements Listener {
     
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BPisEE(BlockPistonExtendEvent e) {
-        List<GSeat> ml = new ArrayList<GSeat>();
+        List<GSeat> ml = new ArrayList<>();
         for(Block b : e.getBlocks()) {
             if(GPM.getSitUtil().isSeatBlock(b)) {
                 for(GSeat s : GPM.getSitUtil().getSeats(b)) {
@@ -35,7 +35,7 @@ public class BlockEvents implements Listener {
     
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BPisRE(BlockPistonRetractEvent e) {
-        List<GSeat> ml = new ArrayList<GSeat>();
+        List<GSeat> ml = new ArrayList<>();
         for(Block b : e.getBlocks()) {
             if(GPM.getSitUtil().isSeatBlock(b)) {
                 for(GSeat s : GPM.getSitUtil().getSeats(b)) {

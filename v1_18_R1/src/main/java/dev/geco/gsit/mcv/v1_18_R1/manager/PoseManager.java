@@ -40,13 +40,13 @@ public class PoseManager implements IPoseManager, Listener {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
-    private final HashMap<IGPoseSeat, SeatArmorStand> poses = new HashMap<IGPoseSeat, SeatArmorStand>();
+    private final HashMap<IGPoseSeat, SeatArmorStand> poses = new HashMap<>();
 
-    private final HashMap<IGPoseSeat, BukkitRunnable> detect = new HashMap<IGPoseSeat, BukkitRunnable>();
+    private final HashMap<IGPoseSeat, BukkitRunnable> detect = new HashMap<>();
 
-    private final HashMap<IGPoseSeat, BukkitRunnable> rotate = new HashMap<IGPoseSeat, BukkitRunnable>();
+    private final HashMap<IGPoseSeat, BukkitRunnable> rotate = new HashMap<>();
 
-    public List<IGPoseSeat> getPoses() { return new ArrayList<IGPoseSeat>(poses.keySet()); }
+    public List<IGPoseSeat> getPoses() { return new ArrayList<>(poses.keySet()); }
 
     public boolean isPosing(Player Player) { return getPose(Player) != null; }
 

@@ -30,11 +30,11 @@ public class SitManager implements ISitManager {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
     
-    private final List<GSeat> seats = new ArrayList<GSeat>();
+    private final List<GSeat> seats = new ArrayList<>();
 
-    private final HashMap<GSeat, BukkitRunnable> rotate = new HashMap<GSeat, BukkitRunnable>();
+    private final HashMap<GSeat, BukkitRunnable> rotate = new HashMap<>();
 
-    public List<GSeat> getSeats() { return new ArrayList<GSeat>(seats); }
+    public List<GSeat> getSeats() { return new ArrayList<>(seats); }
     
     public boolean isSitting(Player Player) { return getSeat(Player) != null; }
     

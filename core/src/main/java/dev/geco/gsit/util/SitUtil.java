@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.*;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 
 public class SitUtil {
@@ -23,16 +22,16 @@ public class SitUtil {
 
     @SuppressWarnings("unchecked")
     public List<GSeat> getSeats(Block B) {
-        List<GSeat> seats = new ArrayList<GSeat>();
+        List<GSeat> seats = new ArrayList<>();
         if(isSeatBlock(B)) {
             MetadataValue m = B.getMetadata(GPM.NAME).stream().filter(s -> GPM.equals(s.getOwningPlugin())).findFirst().orElse(null);
-            if(m != null) seats = new ArrayList<GSeat>((List<GSeat>) m.value());
+            if(m != null) seats = new ArrayList<>((List<GSeat>) m.value());
         }
         return seats;
     }
 
     public List<GSeat> getSeats(List<Block> B) {
-        List<GSeat> seats = new ArrayList<GSeat>();
+        List<GSeat> seats = new ArrayList<>();
         for(Block b : B) for(GSeat c : getSeats(b)) if(!seats.contains(c)) seats.add(c);
         return seats;
     }

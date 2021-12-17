@@ -26,21 +26,19 @@ public class GCrawl implements IGCrawl {
 
     private final GSitMain GPM = GSitMain.getInstance();
 
-    private final IGCrawl i = this;
-
     private final Player p;
 
     private final ServerPlayer cp;
 
-    protected Shulker s;
+    protected final Shulker s;
 
-    private Location a;
+    private Location bloc;
 
-    private boolean b;
+    private boolean build;
 
-    private boolean d;
+    private boolean svalid;
 
-    protected BlockData m = Material.BARRIER.createBlockData();
+    protected final BlockData m = Material.BARRIER.createBlockData();
 
     private final Listener li;
 
@@ -50,11 +48,11 @@ public class GCrawl implements IGCrawl {
 
     public GCrawl(Player Player) {
 
-        this.p = Player;
+        p = Player;
 
-        this.cp = ((CraftPlayer) p).getHandle();
+        cp = ((CraftPlayer) p).getHandle();
 
-        this.s = createShulker();
+        s = createShulker();
 
         li = new Listener() {
 
@@ -67,12 +65,12 @@ public class GCrawl implements IGCrawl {
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void PIntE(PlayerInteractEvent e) {
-                if(e.getPlayer() == p && b && e.getClickedBlock().equals(a.getBlock()) && e.getHand() == EquipmentSlot.HAND) {
+                if(e.getPlayer() == p && build && e.getClickedBlock().equals(bloc.getBlock()) && e.getHand() == EquipmentSlot.HAND) {
                     e.setCancelled(true);
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            build();
+                            buildBlock();
                         }
                     }.runTaskAsynchronously(GPM);
                 }
@@ -100,7 +98,7 @@ public class GCrawl implements IGCrawl {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void PTogSE(PlayerToggleSneakEvent e) {
                 if(e.getPlayer() == p && e.isSneaking()) {
-                    GPM.getCrawlManager().stopCrawl(i, GetUpReason.GET_UP);
+                    GPM.getCrawlManager().stopCrawl(GCrawl.this, GetUpReason.GET_UP);
                 }
             }
 
@@ -123,35 +121,33 @@ public class GCrawl implements IGCrawl {
         }.runTaskLaterAsynchronously(GPM, 1);
     }
 
-    private void tick(Location TLocation) {
+    private void tick(Location L) {
         if(!checkCrawlValid()) return;
-        Location l = TLocation.clone();
-        Block o = l.getBlock();
-        int f = (int) ((l.getY() - l.getBlockY()) * 100.0);
-        l.setX(l.getX());
-        l.setY(l.getBlockY() + (f >= 40 ? 2.49 : 1.49));
-        l.setZ(l.getZ());
-        Block i = l.getBlock();
-        boolean j = i.getBoundingBox().contains(l.toVector()) && i.getCollisionShape().getBoundingBoxes().size() > 0;
-        boolean g = isValidArea(o.getRelative(BlockFace.UP), i, a != null ? a.getBlock() : null);
-        boolean bl = g && (i.getType().isAir() || j);
-        if(a == null || !i.equals(a.getBlock())) {
-            destory();
-            a = l;
-            if(bl && !j) build();
+        Location l = L.clone();
+        Block cblock = l.getBlock();
+        int bheight = (int) ((l.getY() - l.getBlockY()) * 100.0);
+        l.setY(l.getBlockY() + (bheight >= 40 ? 2.49 : 1.49));
+        Block topblock = l.getBlock();
+        boolean solidblock = topblock.getBoundingBox().contains(l.toVector()) && topblock.getCollisionShape().getBoundingBoxes().size() > 0;
+        boolean valid = isValidArea(cblock.getRelative(BlockFace.UP), topblock, bloc != null ? bloc.getBlock() : null);
+        boolean canreplace = valid && (topblock.getType().isAir() || solidblock);
+        if(bloc == null || !topblock.equals(bloc.getBlock())) {
+            destoryBlock();
+            bloc = l;
+            if(canreplace && !solidblock) buildBlock();
         }
-        if(!bl && !j) {
+        if(!canreplace && !solidblock) {
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
 
-                    Location les = TLocation.clone();
-                    int h = o.getBoundingBox().getHeight() >= 0.4 || TLocation.getY() % 0.015625 == 0.0 ? (p.getFallDistance() > 0.7 ? 0 : f) : 0;
+                    Location les = L.clone();
+                    int h = cblock.getBoundingBox().getHeight() >= 0.4 || les.getY() % 0.015625 == 0.0 ? (p.getFallDistance() > 0.7 ? 0 : bheight) : 0;
                     les.setY(les.getY() + (h >= 40 ? 1.5 : 0.5));
                     s.setRawPeekAmount(h >= 40 ? 100 - h : 0);
 
-                    if(d) {
+                    if(svalid) {
 
                         ClientboundSetEntityDataPacket pa = new ClientboundSetEntityDataPacket(s.getId(), s.getEntityData(), true);
                         cp.connection.send(pa);
@@ -166,7 +162,7 @@ public class GCrawl implements IGCrawl {
                         cp.connection.send(pa);
                         ClientboundSetEntityDataPacket pa2 = new ClientboundSetEntityDataPacket(s.getId(), s.getEntityData(), true);
                         cp.connection.send(pa2);
-                        d = true;
+                        svalid = true;
 
                     }
 
@@ -181,26 +177,26 @@ public class GCrawl implements IGCrawl {
         HandlerList.unregisterAll(lim);
         HandlerList.unregisterAll(lic);
         p.setSwimming(false);
-        destory();
+        destoryBlock();
         destoryEntity();
     }
 
-    private void build() {
-        p.sendBlockChange(a, m);
-        b = true;
+    private void buildBlock() {
+        p.sendBlockChange(bloc, m);
+        build = true;
     }
 
-    private void destory() {
-        if(b) {
-            p.sendBlockChange(a, a.getBlock().getBlockData());
-            b = false;
+    private void destoryBlock() {
+        if(build) {
+            p.sendBlockChange(bloc, bloc.getBlock().getBlockData());
+            build = false;
         }
     }
 
     private void destoryEntity() {
-        if(d) {
+        if(svalid) {
             cp.connection.send(new ClientboundRemoveEntitiesPacket(s.getId()));
-            d = false;
+            svalid = false;
         }
     }
 
@@ -210,7 +206,7 @@ public class GCrawl implements IGCrawl {
                 @Override
                 public void run() {
 
-                    GPM.getCrawlManager().stopCrawl(i, GetUpReason.ACTION);
+                    GPM.getCrawlManager().stopCrawl(GCrawl.this, GetUpReason.ACTION);
 
                 }
             }.runTask(GPM);

@@ -18,16 +18,16 @@ public class PoseUtil {
 
     @SuppressWarnings("unchecked")
     public List<IGPoseSeat> getPoses(Block B) {
-        List<IGPoseSeat> poses = new ArrayList<IGPoseSeat>();
+        List<IGPoseSeat> poses = new ArrayList<>();
         if(isPoseBlock(B)) {
             MetadataValue m = B.getMetadata(GPM.NAME + "P").stream().filter(s -> GPM.equals(s.getOwningPlugin())).findFirst().orElse(null);
-            if(m != null) poses = new ArrayList<IGPoseSeat>((List<IGPoseSeat>) m.value());
+            if(m != null) poses = new ArrayList<>((List<IGPoseSeat>) m.value());
         }
         return poses;
     }
 
     public List<IGPoseSeat> getPoses(List<Block> B) {
-        List<IGPoseSeat> poses = new ArrayList<IGPoseSeat>();
+        List<IGPoseSeat> poses = new ArrayList<>();
         for(Block b : B) for(IGPoseSeat c : getPoses(b)) if(!poses.contains(c)) poses.add(c);
         return poses;
     }

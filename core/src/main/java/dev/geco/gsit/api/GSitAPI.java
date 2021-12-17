@@ -265,7 +265,7 @@ public class GSitAPI {
      * @return List of all PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses() {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses() : new ArrayList<IGPoseSeat>();
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses() : new ArrayList<>();
     }
 
     /**
@@ -287,7 +287,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(Block Block) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Block) : new ArrayList<IGPoseSeat>();
+        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Block) : new ArrayList<>();
     }
 
     /**
@@ -298,7 +298,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(List<Block> Blocks) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Blocks) : new ArrayList<IGPoseSeat>();
+        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Blocks) : new ArrayList<>();
     }
 
     /**
@@ -415,7 +415,7 @@ public class GSitAPI {
      * @return List of all Crawl-Objects
      */
     public static List<IGCrawl> getCrawls() {
-        return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().getCrawls() : new ArrayList<IGCrawl>();
+        return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().getCrawls() : new ArrayList<>();
     }
 
     /**

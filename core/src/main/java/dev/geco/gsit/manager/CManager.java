@@ -23,7 +23,7 @@ public class CManager {
 
     public boolean S_BLOCK_CENTER;
 
-    public HashMap<Material, Double> S_SITMATERIALS = new HashMap<Material, Double>();
+    public HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
 
     public boolean S_ALLOW_UNSAFE;
 
@@ -74,11 +74,11 @@ public class CManager {
 
     public boolean REST_TEAM_PLOTS_ONLY;
 
-    public List<String> WORLDBLACKLIST = new ArrayList<String>();
+    public List<String> WORLDBLACKLIST = new ArrayList<>();
 
-    public List<Material> MATERIALBLACKLIST = new ArrayList<Material>();
+    public List<Material> MATERIALBLACKLIST = new ArrayList<>();
 
-    public List<String> COMMANDBLACKLIST = new ArrayList<String>();
+    public List<String> COMMANDBLACKLIST = new ArrayList<>();
 
 
     private final GSitMain GPM;

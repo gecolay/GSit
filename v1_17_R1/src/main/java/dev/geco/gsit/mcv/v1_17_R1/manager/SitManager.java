@@ -41,13 +41,13 @@ public class SitManager implements ISitManager, Listener {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
-    private final HashMap<GSeat, SeatArmorStand> seats = new HashMap<GSeat, SeatArmorStand>();
+    private final HashMap<GSeat, SeatArmorStand> seats = new HashMap<>();
 
-    private final HashMap<GSeat, BukkitRunnable> detect = new HashMap<GSeat, BukkitRunnable>();
+    private final HashMap<GSeat, BukkitRunnable> detect = new HashMap<>();
 
-    private final HashMap<GSeat, BukkitRunnable> rotate = new HashMap<GSeat, BukkitRunnable>();
+    private final HashMap<GSeat, BukkitRunnable> rotate = new HashMap<>();
 
-    public List<GSeat> getSeats() { return new ArrayList<GSeat>(seats.keySet()); }
+    public List<GSeat> getSeats() { return new ArrayList<>(seats.keySet()); }
 
     public boolean isSitting(Player Player) { return getSeat(Player) != null; }
 
