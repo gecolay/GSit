@@ -50,7 +50,7 @@ public class InteractEvents implements Listener {
         
         if(d > 0d && b.getLocation().add(0.5, 0.5, 0.5).distance(p.getLocation()) > d) return;
         
-        if(!GPM.getCManager().S_ALLOW_UNSAFE && !(b.getRelative(BlockFace.UP).isPassable() && !b.isPassable())) return;
+        if(!GPM.getCManager().S_ALLOW_UNSAFE && !(b.getRelative(BlockFace.UP).isPassable())) return;
 
         if(GPM.getPlotSquared() != null && !GPM.getPlotSquared().canCreateSeat(b.getLocation(), p)) return;
 
