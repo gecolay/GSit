@@ -160,9 +160,9 @@ public class GCrawl implements IGCrawl {
                         s.setPos(les.getX(), les.getY(), les.getZ());
                         ClientboundAddEntityPacket pa = new ClientboundAddEntityPacket(s);
                         cp.connection.send(pa);
+                        svalid = true;
                         ClientboundSetEntityDataPacket pa2 = new ClientboundSetEntityDataPacket(s.getId(), s.getEntityData(), true);
                         cp.connection.send(pa2);
-                        svalid = true;
 
                     }
 
@@ -177,8 +177,8 @@ public class GCrawl implements IGCrawl {
         HandlerList.unregisterAll(lim);
         HandlerList.unregisterAll(lic);
         p.setSwimming(false);
-        destoryBlock();
-        destoryEntity();
+        p.sendBlockChange(bloc, bloc.getBlock().getBlockData());
+        cp.connection.send(new ClientboundRemoveEntitiesPacket(s.getId()));
     }
 
     private void buildBlock() {
