@@ -23,7 +23,7 @@ public class PlayerSitEvents implements Listener {
 
         Player p = e.getPlayer();
 
-        if(!GPM.getCManager().PS_SNEAK_EJECTS || !e.isSneaking() || p.isFlying() || !p.isInsideVehicle()) return;
+        if(!GPM.getCManager().PS_SNEAK_EJECTS || !e.isSneaking() || p.isFlying() || p.isInsideVehicle()) return;
 
         boolean r = GPM.getPlayerSitManager().stopPlayerSit(p, GetUpReason.KICKED);
 
