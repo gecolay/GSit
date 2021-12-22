@@ -190,7 +190,8 @@ public class GSitMain extends JavaPlugin {
     private void loadPluginDepends(CommandSender s) {
         if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
             plsqlink = new PlSqLink(getInstance());
-            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
+            if(plsqlink.isVersionSupported()) getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
+            else plsqlink = null;
         } else plsqlink = null;
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             if(wogulink == null) {

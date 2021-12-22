@@ -32,4 +32,12 @@ public class PlSqLink {
 
     }
 
+    public boolean isVersionSupported() {
+        try {
+            new PlotAPI();
+            return true;
+        } catch(Exception | Error e) { }
+        return false;
+    }
+
 }
