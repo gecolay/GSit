@@ -53,5 +53,5 @@ public class GBellyFlopCommand implements CommandExecutor {
         } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
         return true;
     }
-    
+
 }

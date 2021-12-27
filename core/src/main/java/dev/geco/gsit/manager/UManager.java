@@ -63,13 +63,7 @@ public class UManager {
 
     private String shortVersion(String V) { return V.replace(" ", "").replace("[", "").replace("]", ""); }
 
-    public boolean updatePlugin() {
-
-
-
-        return false;
-
-    }
+    public boolean updatePlugin() { return false; }
 
     private static class Closer implements Closeable {
 

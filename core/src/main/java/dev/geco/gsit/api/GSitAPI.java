@@ -12,13 +12,13 @@ import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 
 public class GSitAPI {
-    
+
     /**
      * Returns the Plugin-Instance for GSit
      * @author Gecolay
      * @since 1.0.0
      * @return Plugin-Instance
-    */
+     */
     public static GSitMain getInstance() { return GSitMain.getInstance(); }
 
     /**
@@ -451,5 +451,5 @@ public class GSitAPI {
     public static boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
         return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().stopCrawl(Crawl, Reason);
     }
-    
+
 }

@@ -11,11 +11,11 @@ import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 
 public class PlayerEvents implements Listener {
-    
+
     private final GSitMain GPM;
-    
+
     public PlayerEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
-    
+
     @EventHandler
     public void PJoiE(PlayerJoinEvent e) {
 
@@ -25,7 +25,7 @@ public class PlayerEvents implements Listener {
             String me = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", GPM.getUManager().getLatestVersion(), "%Version%", GPM.getUManager().getPluginVersion(), "%Path%", GPM.getDescription().getWebsite());
             if(GPM.getPManager().hasPermission(p, "Update")) p.sendMessage(me);
         }
-        
+
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -46,7 +46,7 @@ public class PlayerEvents implements Listener {
         }
 
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void PTelE(PlayerTeleportEvent e) {
 
@@ -66,7 +66,7 @@ public class PlayerEvents implements Listener {
             boolean r = GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.TELEPORT);
             if(!r) e.setCancelled(true);
         }
-        
+
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

@@ -12,7 +12,7 @@ public class GCrawlCommand implements CommandExecutor {
     private final GSitMain GPM;
 
     public GCrawlCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
-    
+
     @Override
     public boolean onCommand(CommandSender s, Command c, String l, String[] a) {
         if(s instanceof Player) {
@@ -39,5 +39,5 @@ public class GCrawlCommand implements CommandExecutor {
         } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
         return true;
     }
-    
+
 }

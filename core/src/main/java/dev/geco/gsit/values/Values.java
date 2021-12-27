@@ -11,5 +11,5 @@ public class Values {
     public static final String DATA_FILETYP = ".data";
 
     public static final String YML_FILETYP = ".yml";
-    
+
 }

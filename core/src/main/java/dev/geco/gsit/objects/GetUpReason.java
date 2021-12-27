@@ -11,5 +11,5 @@ public enum GetUpReason {
     PLUGIN,
     TELEPORT,
     QUIT
-    
+
 }

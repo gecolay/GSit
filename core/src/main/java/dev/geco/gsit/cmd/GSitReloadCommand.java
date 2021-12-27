@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import dev.geco.gsit.GSitMain;
 
 public class GSitReloadCommand implements CommandExecutor {
-    
+
     private final GSitMain GPM;
-    
+
     public GSitReloadCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
-    
+
     @Override
     public boolean onCommand(CommandSender s, Command c, String l, String[] a) {
         if(s instanceof Player || s instanceof ConsoleCommandSender || s instanceof RemoteConsoleCommandSender) {
@@ -21,5 +21,5 @@ public class GSitReloadCommand implements CommandExecutor {
         } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
         return true;
     }
-    
+
 }

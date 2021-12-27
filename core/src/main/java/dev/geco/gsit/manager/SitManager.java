@@ -19,9 +19,9 @@ import dev.geco.gsit.objects.*;
 import dev.geco.gsit.api.event.*;
 
 public class SitManager implements ISitManager {
-    
+
     private final GSitMain GPM;
-    
+
     public SitManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     private int feature_used = 0;
@@ -29,36 +29,36 @@ public class SitManager implements ISitManager {
     public int getFeatureUsedCount() { return feature_used; }
 
     public void resetFeatureUsedCount() { feature_used = 0; }
-    
+
     private final List<GSeat> seats = new ArrayList<>();
 
     private final HashMap<GSeat, BukkitRunnable> rotate = new HashMap<>();
 
     public List<GSeat> getSeats() { return new ArrayList<>(seats); }
-    
+
     public boolean isSitting(Player Player) { return getSeat(Player) != null; }
-    
+
     public GSeat getSeat(Player Player) {
         for(GSeat s : getSeats()) if(Player.equals(s.getPlayer())) return s;
         return null;
     }
 
     public void clearSeats() { for(GSeat s : getSeats()) removeSeat(s, GetUpReason.PLUGIN); }
-    
+
     public boolean kickSeat(Block Block, Player Player) {
-        
+
         if(GPM.getSitUtil().isSeatBlock(Block)) {
-            
+
             if(!GPM.getPManager().hasPermission(Player, "Kick.Sit")) return false;
-            
+
             for(GSeat s : GPM.getSitUtil().getSeats(Block)) if(!removeSeat(s, GetUpReason.KICKED)) return false;
-            
+
         }
-        
+
         return true;
-        
+
     }
-    
+
     public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER, true); }
 
     public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
@@ -119,13 +119,13 @@ public class SitManager implements ISitManager {
         feature_used++;
 
         Bukkit.getPluginManager().callEvent(new PlayerSitEvent(seat));
-        
+
         return seat;
-        
+
     }
 
     public void moveSeat(GSeat Seat, BlockFace Face) {
-        
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -138,14 +138,22 @@ public class SitManager implements ISitManager {
 
                 GPM.getSitUtil().setSeatBlock(Seat.getBlock(), Seat);
 
-                try {
+                if(NMSManager.isNewerOrVersion(17, 0)) {
 
-                    Object sa = NMSManager.getHandle(Seat.getEntity());
+                    Seat.getEntity().teleport(Seat.getLocation());
 
-                    NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, Seat.getLocation().getX(), Seat.getLocation().getY(), Seat.getLocation().getZ());
+                } else {
 
-                } catch(Exception e) { e.printStackTrace(); }
-                
+                    try {
+
+                        Object sa = NMSManager.getHandle(Seat.getEntity());
+
+                        NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, Seat.getLocation().getX(), Seat.getLocation().getY(), Seat.getLocation().getZ());
+
+                    } catch(Exception e) { e.printStackTrace(); }
+
+                }
+
             }
         }.runTaskLater(GPM, 0);
 
@@ -159,7 +167,7 @@ public class SitManager implements ISitManager {
             @Override
             public void run() {
 
-                if(Seat.getEntity().getPassengers().isEmpty()) {
+                if(!seats.contains(Seat) || Seat.getEntity().getPassengers().isEmpty()) {
                     cancel();
                     return;
                 }
@@ -204,26 +212,34 @@ public class SitManager implements ISitManager {
 
         stopRotateSeat(Seat);
 
-        if(Seat.getEntity() != null && Seat.getEntity().isValid()) {
+        if(Seat.getEntity().isValid()) {
 
             Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(Seat.getBlock().getType(), 0d), 0d));
 
-            try {
+            if(NMSManager.isNewerOrVersion(17, 0)) {
 
-                Object sa = NMSManager.getHandle(Seat.getEntity());
+                Seat.getEntity().teleport(l);
 
-                NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, l.getX(), l.getY(), l.getZ());
+            } else {
 
-            } catch(Exception e) { e.printStackTrace(); }
+                try {
+
+                    Object sa = NMSManager.getHandle(Seat.getEntity());
+
+                    NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, l.getX(), l.getY(), l.getZ());
+
+                } catch(Exception e) { e.printStackTrace(); }
+
+            }
 
             Seat.getEntity().remove();
 
         }
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpSitEvent(Seat, Reason));
-        
+
         return true;
-        
+
     }
-    
+
 }

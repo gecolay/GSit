@@ -115,9 +115,9 @@ public class SitManager implements ISitManager, Listener {
         sa.setNoBasePlate(true);
         sa.setInvulnerable(true);
         sa.persist = false;
-        
+
         sa.setPos(l.getX(), l.getY(), l.getZ());
-        
+
         sa.setYRot(l.getYaw());
         sa.setXRot(l.getPitch());
 
@@ -136,7 +136,7 @@ public class SitManager implements ISitManager, Listener {
         }
 
         t.absMoveTo(l.getX(), l.getY(), l.getZ());
-        
+
         t.startRiding(sa, true);
 
         ClientboundSetPassengersPacket pa3 = new ClientboundSetPassengersPacket(sa);

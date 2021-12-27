@@ -12,11 +12,11 @@ import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 
 public class GSitCommand implements CommandExecutor {
-    
+
     private final GSitMain GPM;
-    
+
     public GSitCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
-    
+
     @Override
     public boolean onCommand(CommandSender s, Command c, String l, String[] a) {
         if(s instanceof Player) {
@@ -81,5 +81,5 @@ public class GSitCommand implements CommandExecutor {
         } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
         return true;
     }
-    
+
 }

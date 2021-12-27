@@ -24,5 +24,5 @@ public class PManager {
         }
         return S.hasPermission(GPM.NAME + ".*");
     }
-    
+
 }

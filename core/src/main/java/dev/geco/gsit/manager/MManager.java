@@ -204,5 +204,5 @@ public class MManager {
         public String getColor() { return c; }
 
     }
-    
+
 }

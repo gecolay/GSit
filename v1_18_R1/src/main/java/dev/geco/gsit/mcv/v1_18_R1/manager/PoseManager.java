@@ -321,7 +321,7 @@ public class PoseManager implements IPoseManager, Listener {
             sp.connection.send(pa);
         }
 
-       Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(PoseSeat, Reason));
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(PoseSeat, Reason));
 
         return true;
 

@@ -28,5 +28,5 @@ public class GSitTabComplete implements TabCompleter {
         }
         return ta.size() == 0 ? ts : ta;
     }
-    
+
 }
