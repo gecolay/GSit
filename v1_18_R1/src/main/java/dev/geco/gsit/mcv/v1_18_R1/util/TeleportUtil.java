@@ -2,7 +2,7 @@ package dev.geco.gsit.mcv.v1_18_R1.util;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R1.entity.*;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.protocol.game.*;
@@ -22,5 +22,7 @@ public class TeleportUtil implements ITeleportUtil {
         t.connection.send(u);
 
     }
+
+    public void pos(org.bukkit.entity.Entity E, Location L) { ((CraftEntity) E).getHandle().setPos(L.getX(), L.getY(), L.getZ()); }
 
 }

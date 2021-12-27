@@ -140,7 +140,7 @@ public class SitManager implements ISitManager {
 
                 if(NMSManager.isNewerOrVersion(17, 0)) {
 
-                    Seat.getEntity().teleport(Seat.getLocation());
+                    GPM.getTeleportUtil().pos(Seat.getEntity(), Seat.getLocation());
 
                 } else {
 
@@ -218,7 +218,7 @@ public class SitManager implements ISitManager {
 
             if(NMSManager.isNewerOrVersion(17, 0)) {
 
-                Seat.getEntity().teleport(l);
+                GPM.getTeleportUtil().pos(Seat.getEntity(), l);
 
             } else {
 
