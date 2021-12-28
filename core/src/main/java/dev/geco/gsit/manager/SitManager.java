@@ -216,9 +216,20 @@ public class SitManager implements ISitManager {
 
             Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(Seat.getBlock().getType(), 0d), 0d));
 
+            if(!GPM.getCManager().S_GET_UP_RETURN) {
+                l.setYaw(Seat.getPlayer().getLocation().getYaw());
+                l.setPitch(Seat.getPlayer().getLocation().getPitch());
+            }
+
             if(NMSManager.isNewerOrVersion(17, 0)) {
 
-                GPM.getTeleportUtil().pos(Seat.getEntity(), l);
+                if(Safe) {
+
+                    GPM.getTeleportUtil().pos(Seat.getEntity(), l);
+
+                    GPM.getTeleportUtil().teleport(Seat.getPlayer(), l, true);
+
+                }
 
             } else {
 
