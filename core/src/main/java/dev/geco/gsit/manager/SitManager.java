@@ -104,7 +104,18 @@ public class SitManager implements ISitManager {
 
         } else return null;
 
-        if(GPM.getCManager().S_SHOW_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
+        if(GPM.getCManager().S_SHOW_SIT_MESSAGE) {
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+
+                    Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
+
+                }
+            }.runTaskLaterAsynchronously(GPM, 2);
+
+        }
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
 
@@ -212,26 +223,24 @@ public class SitManager implements ISitManager {
 
         stopRotateSeat(Seat);
 
+        Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(Seat.getBlock().getType(), 0d), 0d));
+
+        if(!GPM.getCManager().S_GET_UP_RETURN) {
+            l.setYaw(Seat.getPlayer().getLocation().getYaw());
+            l.setPitch(Seat.getPlayer().getLocation().getPitch());
+        }
+
+        if(Seat.getPlayer().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) {
+
+            GPM.getTeleportUtil().pos(Seat.getPlayer(), l);
+
+            GPM.getTeleportUtil().teleport(Seat.getPlayer(), l, true);
+
+        }
+
         if(Seat.getEntity().isValid()) {
 
-            Location l = (GPM.getCManager().S_GET_UP_RETURN ? Seat.getReturn() : Seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(Seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(Seat.getBlock().getType(), 0d), 0d));
-
-            if(!GPM.getCManager().S_GET_UP_RETURN) {
-                l.setYaw(Seat.getPlayer().getLocation().getYaw());
-                l.setPitch(Seat.getPlayer().getLocation().getPitch());
-            }
-
-            if(NMSManager.isNewerOrVersion(17, 0)) {
-
-                if(Safe) {
-
-                    GPM.getTeleportUtil().pos(Seat.getEntity(), l);
-
-                    GPM.getTeleportUtil().teleport(Seat.getPlayer(), l, true);
-
-                }
-
-            } else {
+            if(!NMSManager.isNewerOrVersion(17, 0)) {
 
                 try {
 
