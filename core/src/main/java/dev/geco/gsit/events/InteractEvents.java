@@ -46,6 +46,8 @@ public class InteractEvents implements Listener {
 
         if(!GPM.getToggleManager().canSit(p.getUniqueId())) return;
 
+        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) return;
+
         double d = GPM.getCManager().S_MAX_DISTANCE;
 
         if(d > 0d && b.getLocation().add(0.5, 0.5, 0.5).distance(p.getLocation()) > d) return;

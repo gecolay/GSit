@@ -77,6 +77,8 @@ public class PlayerSitEvents implements Listener {
 
         if(!p.isValid() || !p.isOnGround() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
 
+        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) return;
+
         if(GPM.getPlotSquared() != null && !GPM.getPlotSquared().canCreateSeat(t.getLocation(), p)) return;
 
         if(GPM.getWorldGuard() != null && !GPM.getWorldGuard().checkFlag(t.getLocation(), GPM.getWorldGuard().PLAYERSIT_FLAG)) return;
