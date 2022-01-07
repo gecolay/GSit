@@ -27,7 +27,7 @@ public class BlockEvents implements Listener {
                     ml.add(s);
                 }
             }
-            if(GPM.getPoseUtil().isPoseBlock(b)) {
+            if(GPM.getCManager().GET_UP_BREAK && GPM.getPoseUtil().isPoseBlock(b)) {
                 for(IGPoseSeat p : GPM.getPoseUtil().getPoses(b)) GPM.getPoseManager().removePose(p, GetUpReason.BREAK);
             }
         }
@@ -44,7 +44,7 @@ public class BlockEvents implements Listener {
                     ml.add(s);
                 }
             }
-            if(GPM.getPoseUtil().isPoseBlock(b)) {
+            if(GPM.getCManager().GET_UP_BREAK && GPM.getPoseUtil().isPoseBlock(b)) {
                 for(IGPoseSeat p : GPM.getPoseUtil().getPoses(b)) GPM.getPoseManager().removePose(p, GetUpReason.BREAK);
             }
         }
@@ -52,6 +52,7 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BExpE(BlockExplodeEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
         for(Block b : new ArrayList<>(e.blockList())) {
             if(GPM.getSitUtil().isSeatBlock(b)) {
                 for(GSeat s : GPM.getSitUtil().getSeats(b)) {
@@ -70,6 +71,7 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void EExpE(EntityExplodeEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
         for(Block b : new ArrayList<>(e.blockList())) {
             if(GPM.getSitUtil().isSeatBlock(b)) {
                 for(GSeat s : GPM.getSitUtil().getSeats(b)) {
@@ -88,6 +90,7 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BFadE(BlockFadeEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
         if(GPM.getSitUtil().isSeatBlock(e.getBlock())) {
             for(GSeat s : GPM.getSitUtil().getSeats(e.getBlock())) {
                 boolean r = GPM.getSitManager().removeSeat(s, GetUpReason.BREAK);
@@ -104,6 +107,7 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void LDecE(LeavesDecayEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
         if(GPM.getSitUtil().isSeatBlock(e.getBlock())) {
             for(GSeat s : GPM.getSitUtil().getSeats(e.getBlock())) {
                 boolean r = GPM.getSitManager().removeSeat(s, GetUpReason.BREAK);
@@ -120,6 +124,7 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BBurE(BlockBurnEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
         if(GPM.getSitUtil().isSeatBlock(e.getBlock())) {
             for(GSeat s : GPM.getSitUtil().getSeats(e.getBlock())) {
                 boolean r = GPM.getSitManager().removeSeat(s, GetUpReason.BREAK);
@@ -136,6 +141,7 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void EChaBE(EntityChangeBlockEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
         if(GPM.getSitUtil().isSeatBlock(e.getBlock())) {
             for(GSeat s : GPM.getSitUtil().getSeats(e.getBlock())) {
                 boolean r = GPM.getSitManager().removeSeat(s, GetUpReason.BREAK);
@@ -152,6 +158,7 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BBreE(BlockBreakEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
         if(GPM.getSitUtil().isSeatBlock(e.getBlock())) {
             for(GSeat s : GPM.getSitUtil().getSeats(e.getBlock())) {
                 boolean r = GPM.getSitManager().removeSeat(s, GetUpReason.BREAK);

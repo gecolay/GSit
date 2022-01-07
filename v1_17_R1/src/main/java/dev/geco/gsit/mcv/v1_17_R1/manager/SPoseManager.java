@@ -195,9 +195,9 @@ public class SPoseManager implements IPoseManager {
 
         PoseSeat.remove();
 
-        Location l = (GPM.getCManager().S_GET_UP_RETURN ? PoseSeat.getSeat().getReturn() : PoseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(PoseSeat.getSeat().getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(PoseSeat.getSeat().getBlock().getType(), 0d), 0d));
+        Location l = (GPM.getCManager().GET_UP_RETURN ? PoseSeat.getSeat().getReturn() : PoseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(PoseSeat.getSeat().getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(PoseSeat.getSeat().getBlock().getType(), 0d), 0d));
 
-        if(!GPM.getCManager().S_GET_UP_RETURN) {
+        if(!GPM.getCManager().GET_UP_RETURN) {
             l.setYaw(PoseSeat.getSeat().getPlayer().getLocation().getYaw());
             l.setPitch(PoseSeat.getSeat().getPlayer().getLocation().getPitch());
         }

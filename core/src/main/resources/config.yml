@@ -19,6 +19,15 @@ Options:
   # Defines whether a player can get up by sneaking
   get-up-sneak: true
 
+  # Defines whether a player is returned to the place where he started sitting or posing
+  get-up-return: false
+
+  # Defines whether a player gets up if the connected block breaks
+  get-up-break: true
+
+  # Defines whether a player can sit or pose in an unsafe place
+  allow-unsafe: false
+
   # Defines whether more than one player can sit or pose on the same block
   rest-same-block: false
 
@@ -36,12 +45,6 @@ Options:
       - "MOSS_CARPET"
       - "BIG_DRIPLEAF"
       - "SNOW"
-
-    # Defines whether a player can sit in an unsafe place
-    allow-unsafe: false
-
-    # Defines whether a player is returned to the place where he started sitting
-    get-up-return: false
 
     # Defines whether a player needs an empty main hand to sit down by clicking
     empty-hand-only: true

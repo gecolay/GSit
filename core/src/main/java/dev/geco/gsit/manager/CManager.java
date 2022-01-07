@@ -18,16 +18,18 @@ public class CManager {
 
     public boolean GET_UP_SNEAK;
 
+    public boolean GET_UP_RETURN;
+
+    public boolean GET_UP_BREAK;
+
+    public boolean ALLOW_UNSAFE;
+
     public boolean REST_SAME_BLOCK;
 
 
     public boolean S_BLOCK_CENTER;
 
     public HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
-
-    public boolean S_ALLOW_UNSAFE;
-
-    public boolean S_GET_UP_RETURN;
 
     public boolean S_EMPTY_HAND_ONLY;
 
@@ -95,6 +97,9 @@ public class CManager {
         CHECK_FEATURE_PERMISSIONS = GPM.getConfig().getBoolean("Options.check-feature-permissions", true);
         GET_UP_DAMAGE = GPM.getConfig().getBoolean("Options.get-up-damage", false);
         GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.get-up-sneak", true);
+        GET_UP_RETURN = GPM.getConfig().getBoolean("Options.get-up-return", false);
+        GET_UP_BREAK = GPM.getConfig().getBoolean("Options.get-up-break", true);
+        ALLOW_UNSAFE = GPM.getConfig().getBoolean("Options.allow-unsafe", false);
         REST_SAME_BLOCK = GPM.getConfig().getBoolean("Options.rest-same-block", false);
 
         S_BLOCK_CENTER = GPM.getConfig().getBoolean("Options.Sit.block-center", true);
@@ -109,8 +114,6 @@ public class CManager {
                 } else S_SITMATERIALS.put(Material.valueOf(m[0].toUpperCase()), m.length > 1 ? Double.parseDouble(m[1]) : 0d);
             } catch(IllegalArgumentException e) { }
         }
-        S_ALLOW_UNSAFE = GPM.getConfig().getBoolean("Options.Sit.allow-unsafe", false);
-        S_GET_UP_RETURN = GPM.getConfig().getBoolean("Options.Sit.get-up-return", false);
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
         S_SHOW_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.show-sit-message", true);
