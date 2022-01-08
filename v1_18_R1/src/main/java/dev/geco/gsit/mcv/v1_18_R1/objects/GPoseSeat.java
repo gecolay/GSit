@@ -187,7 +187,7 @@ public class GPoseSeat implements IGPoseSeat {
             public void run() {
                 sp.connection.send(remove_npc);
             }
-        }.runTaskLater(GPM, 20);
+        }.runTaskLater(GPM, 15);
     }
 
     public void remove() {
@@ -211,7 +211,7 @@ public class GPoseSeat implements IGPoseSeat {
 
     private Set<Player> getNearPlayers() {
         HashSet<Player> pl = new HashSet<>();
-        s.getLocation().getWorld().getPlayers().parallelStream().filter(o -> s.getLocation().distance(o.getLocation()) <= 250).forEach(pl::add);
+        s.getLocation().getWorld().getPlayers().stream().filter(o -> s.getLocation().distance(o.getLocation()) <= 250).forEach(pl::add);
         return pl;
     }
 
@@ -238,11 +238,11 @@ public class GPoseSeat implements IGPoseSeat {
                     removeToPlayer(z);
                 }
 
-                updateSkin();
                 if(p != Pose.SPIN_ATTACK) updateDirection();
                 cp.setInvisible(true);
                 updateEquipment();
                 setEquipmentVisibility(false);
+                updateSkin();
 
                 if(p == Pose.SLEEPING) {
                     for(Player z : a) {
@@ -266,7 +266,7 @@ public class GPoseSeat implements IGPoseSeat {
             }
         };
 
-        r.runTaskTimerAsynchronously(GPM, 0, 1);
+        r.runTaskTimerAsynchronously(GPM, 5, 1);
 
     }
 
@@ -276,6 +276,8 @@ public class GPoseSeat implements IGPoseSeat {
 
     private void setMeta() {
         f.getEntityData().set(EntityDataSerializers.POSE.createAccessor(6), net.minecraft.world.entity.Pose.values()[p.ordinal()]);
+        f.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(17), cp.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(17)));
+        f.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(18), cp.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(18)));
         if(p == Pose.SPIN_ATTACK) f.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(8), (byte) 4);
         if(p == Pose.SLEEPING) f.getEntityData().set(EntityDataSerializers.OPTIONAL_BLOCK_POS.createAccessor(14), Optional.of(bp));
     }
