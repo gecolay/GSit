@@ -177,7 +177,7 @@ public class GCrawl implements IGCrawl {
         HandlerList.unregisterAll(lim);
         HandlerList.unregisterAll(lic);
         p.setSwimming(false);
-        p.sendBlockChange(bloc, bloc.getBlock().getBlockData());
+        if(bloc != null) p.sendBlockChange(bloc, bloc.getBlock().getBlockData());
         cp.connection.send(new ClientboundRemoveEntityPacket(s.getId()));
     }
 
