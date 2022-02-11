@@ -9,7 +9,7 @@
     <parent>
         <groupId>dev.geco</groupId>
         <artifactId>GSit</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
 
     <properties>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Core</artifactId>
-            <version>6.2.0</version>
+            <version>6.4.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

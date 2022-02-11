@@ -7,7 +7,7 @@
     <groupId>dev.geco</groupId>
     <artifactId>GSit</artifactId>
     <name>GSit</name>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <description>Relax with your Friends on nice Seats!</description>
     <url>https://www.spigotmc.org/resources/62325</url>
     <packaging>pom</packaging>
