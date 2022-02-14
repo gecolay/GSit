@@ -239,6 +239,8 @@ public class SitManager implements ISitManager, Listener {
 
                 SeatArmorStand sa = seats.get(Seat);
 
+                if(sa == null) return;
+
                 sa.moveTo(Seat.getLocation().getX(), Seat.getLocation().getY(), Seat.getLocation().getZ());
 
                 ClientboundTeleportEntityPacket pa = new ClientboundTeleportEntityPacket(sa);
