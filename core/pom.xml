@@ -9,14 +9,14 @@
     <parent>
         <groupId>dev.geco</groupId>
         <artifactId>GSit</artifactId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
     </parent>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.18.1-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.18.2-R0.1-SNAPSHOT</spigot.version>
     </properties>
 
     <build>

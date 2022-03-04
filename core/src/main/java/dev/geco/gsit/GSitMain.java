@@ -231,6 +231,7 @@ public class GSitMain extends JavaPlugin {
         List<String> version_list = new ArrayList<>(); {
             version_list.add("v1_17_R1");
             version_list.add("v1_18_R1");
+            version_list.add("v1_18_R2");
         }
         String v = Bukkit.getServer().getClass().getPackage().getName();
         v = v.substring(v.lastIndexOf('.') + 1);
