@@ -118,6 +118,13 @@ public class GPoseSeat implements IGPoseSeat {
                 }
             }
 
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+            public void PIntE(PlayerInteractEntityEvent e) {
+                if(e.getPlayer() == s.getPlayer()) {
+                    e.setCancelled(true);
+                }
+            }
+
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void EDamBEE(EntityDamageByEntityEvent e) {
                 if(e.getDamager() == s.getPlayer() && !GPM.getCManager().P_INTERACT) {
