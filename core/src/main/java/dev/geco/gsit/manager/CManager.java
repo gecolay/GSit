@@ -10,10 +10,6 @@ public class CManager {
 
     public boolean CHECK_FOR_UPDATES;
 
-    public boolean DEV;
-
-    public boolean DEBUG;
-
     public boolean CHECK_FEATURE_PERMISSIONS;
 
     public boolean GET_UP_DAMAGE;
@@ -95,8 +91,6 @@ public class CManager {
     public void reload() {
 
         CHECK_FOR_UPDATES = GPM.getConfig().getBoolean("Options.check-for-update", true);
-        DEV = GPM.getConfig().getBoolean("Options.dev", false);
-        DEBUG = GPM.getConfig().getBoolean("Options.debug", false);
         CHECK_FEATURE_PERMISSIONS = GPM.getConfig().getBoolean("Options.check-feature-permissions", true);
         GET_UP_DAMAGE = GPM.getConfig().getBoolean("Options.get-up-damage", false);
         GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.get-up-sneak", true);

@@ -22,7 +22,7 @@ public class PlSqLink {
 
         if(plot != null) {
 
-            if(!plot.getArea().isSpawnCustom() && !(GPM.getCManager().DEV && NMSManager.isNewerOrVersion(17, 0))) return false;
+            if(!plot.getArea().isSpawnCustom()) return false;
 
             return !GPM.getCManager().REST_TEAM_PLOTS_ONLY || plot.isAdded(P.getUniqueId());
 
