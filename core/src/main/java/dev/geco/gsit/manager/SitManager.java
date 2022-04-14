@@ -90,12 +90,12 @@ public class SitManager implements ISitManager {
         l.setYaw(SeatRotation);
 
         ArmorStand sa = l.getWorld().spawn(l, ArmorStand.class, b -> {
-            b.setInvisible(true);
-            b.setSmall(true);
-            b.setGravity(false);
-            b.setMarker(true);
-            b.setBasePlate(false);
-            b.setInvulnerable(true);
+            try { b.setInvisible(true); } catch(Exception e) { }
+            try { b.setSmall(true); } catch(Exception e) { }
+            try { b.setGravity(false); } catch(Exception e) { }
+            try { b.setMarker(true); } catch(Exception e) { }
+            try { b.setBasePlate(false); } catch(Exception e) { }
+            try { b.setInvulnerable(true); } catch(Exception e) { }
         });
 
         if(sa.isValid()) {
