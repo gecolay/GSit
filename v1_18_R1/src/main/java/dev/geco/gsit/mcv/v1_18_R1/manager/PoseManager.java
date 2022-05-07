@@ -53,11 +53,9 @@ public class PoseManager implements IPoseManager {
             if(!GPM.getPManager().hasPermission(Player, "Kick.Pose", "Kick.*")) return false;
 
             for(IGPoseSeat p : GPM.getPoseUtil().getPoses(Block)) if(!removePose(p, GetUpReason.KICKED)) return false;
-
         }
 
         return true;
-
     }
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().P_BLOCK_CENTER, GPM.getCManager().GET_UP_SNEAK); }
@@ -85,25 +83,20 @@ public class PoseManager implements IPoseManager {
         } else {
 
             l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
-
         }
 
         l.setYaw(SeatRotation);
 
         ArmorStand sa = l.getWorld().spawn(l, ArmorStand.class, b -> {
-            try { b.setInvisible(true); } catch(Exception e) { }
-            try { b.setSmall(true); } catch(Exception e) { }
-            try { b.setGravity(false); } catch(Exception e) { }
-            try { b.setMarker(true); } catch(Exception e) { }
-            try { b.setBasePlate(false); } catch(Exception e) { }
-            try { b.setInvulnerable(true); } catch(Exception e) { }
+            try { b.setInvisible(true); } catch(Exception ignored) { }
+            try { b.setSmall(true); } catch(Exception ignored) { }
+            try { b.setGravity(false); } catch(Exception ignored) { }
+            try { b.setMarker(true); } catch(Exception ignored) { }
+            try { b.setBasePlate(false); } catch(Exception ignored) { }
+            try { b.setInvulnerable(true); } catch(Exception ignored) { }
         });
 
-        if(sa.isValid()) {
-
-            sa.addPassenger(Player);
-
-        } else return null;
+        if(sa.isValid()) { sa.addPassenger(Player); } else return null;
 
         if(GPM.getCManager().P_SHOW_POSE_MESSAGE) {
 
@@ -115,7 +108,6 @@ public class PoseManager implements IPoseManager {
 
                 }
             }.runTaskLaterAsynchronously(GPM, 2);
-
         }
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
@@ -137,7 +129,6 @@ public class PoseManager implements IPoseManager {
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseseat));
 
         return poseseat;
-
     }
 
     protected void startRotateSeat(IGPoseSeat PoseSeat) {
@@ -162,7 +153,6 @@ public class PoseManager implements IPoseManager {
         r.runTaskTimer(GPM, 0, 2);
 
         rotate.put(PoseSeat, r);
-
     }
 
     protected void stopRotateSeat(IGPoseSeat PoseSeat) {
@@ -174,7 +164,6 @@ public class PoseManager implements IPoseManager {
         if(r != null && !r.isCancelled()) r.cancel();
 
         rotate.remove(PoseSeat);
-
     }
 
     public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason) { return removePose(PoseSeat, Reason, true); }
@@ -207,7 +196,6 @@ public class PoseManager implements IPoseManager {
             GPM.getTeleportUtil().pos(PoseSeat.getSeat().getPlayer(), l);
 
             GPM.getTeleportUtil().teleport(PoseSeat.getSeat().getPlayer(), l, true);
-
         }
 
         if(PoseSeat.getSeat().getEntity().isValid()) PoseSeat.getSeat().getEntity().remove();
@@ -215,7 +203,6 @@ public class PoseManager implements IPoseManager {
         Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(PoseSeat, Reason));
 
         return true;
-
     }
 
 }

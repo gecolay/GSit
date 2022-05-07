@@ -62,7 +62,7 @@ public class NMSManager {
             try {
                 Class.forName("net.minecraft.server." + getClassVersion() + ".Entity");
                 return true;
-            } catch(Exception ex) { }
+            } catch(Exception ignored) { }
         }
         return false;
     }
@@ -90,13 +90,13 @@ public class NMSManager {
 
     public static Class<?> getNMSClass(String ClassName) {
         Class<?> C = null;
-        try { return Class.forName("net.minecraft.server." + getClassVersion() + "." + ClassName); } catch (Exception e) { }
+        try { return Class.forName("net.minecraft.server." + getClassVersion() + "." + ClassName); } catch (Exception ignored) { }
         return C;
     }
 
     public static Class<?> getOBCClass(String ClassName) {
         Class<?> C = null;
-        try { return Class.forName("org.bukkit.craftbukkit." + getClassVersion() + "." + ClassName); } catch (Exception e) { }
+        try { return Class.forName("org.bukkit.craftbukkit." + getClassVersion() + "." + ClassName); } catch (Exception ignored) { }
         return C;
     }
 

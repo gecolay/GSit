@@ -1,5 +1,7 @@
 package dev.geco.gsit.api.event;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.player.PlayerEvent;
@@ -19,7 +21,7 @@ public class PlayerGetUpPlayerSitEvent extends PlayerEvent {
 
     public GetUpReason getReason() { return r; }
 
-    public HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return HANDLERS; }
 
     public static HandlerList getHandlerList() { return HANDLERS; }
 

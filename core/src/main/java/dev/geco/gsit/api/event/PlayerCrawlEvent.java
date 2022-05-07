@@ -1,5 +1,7 @@
 package dev.geco.gsit.api.event;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.event.*;
 import org.bukkit.event.player.PlayerEvent;
 
@@ -18,7 +20,7 @@ public class PlayerCrawlEvent extends PlayerEvent {
 
     public IGCrawl getCrawl() { return c; }
 
-    public HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return HANDLERS; }
 
     public static HandlerList getHandlerList() { return HANDLERS; }
 

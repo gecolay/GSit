@@ -33,12 +33,12 @@ public class PlayerSitManager implements IPlayerSitManager {
         if(pplapse.isCancelled()) return false;
 
         AreaEffectCloud sa = Target.getWorld().spawn(Target.getLocation(), AreaEffectCloud.class, b -> {
-            try { b.setDuration(Integer.MAX_VALUE); } catch(Exception e) { }
-            try { b.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch(Exception e) { }
-            try { b.setRadius(0); } catch(Exception e) { }
-            try { b.setWaitTime(0); } catch(Exception e) { }
-            try { b.setGravity(false); } catch(Exception e) { }
-            try { b.setInvulnerable(true); } catch(Exception e) { }
+            try { b.setDuration(Integer.MAX_VALUE); } catch(Exception ignored) { }
+            try { b.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch(Exception ignored) { }
+            try { b.setRadius(0); } catch(Exception ignored) { }
+            try { b.setWaitTime(0); } catch(Exception ignored) { }
+            try { b.setGravity(false); } catch(Exception ignored) { }
+            try { b.setInvulnerable(true); } catch(Exception ignored) { }
         });
 
         if(sa.isValid()) {
@@ -95,7 +95,6 @@ public class PlayerSitManager implements IPlayerSitManager {
         if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
 
         return true;
-
     }
 
 }

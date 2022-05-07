@@ -159,9 +159,7 @@ public class GPoseSeat implements IGPoseSeat {
                     setEquipmentVisibility(true);
                 }
             }
-
         };
-
     }
 
     public void spawn() {
@@ -269,12 +267,10 @@ public class GPoseSeat implements IGPoseSeat {
                         }
                     }
                 }
-
             }
         };
 
         r.runTaskTimerAsynchronously(GPM, 5, 1);
-
     }
 
     private void stopUpdate() {

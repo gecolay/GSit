@@ -28,21 +28,18 @@ public class PlayerSitEvents implements Listener {
         boolean r = GPM.getPlayerSitManager().stopPlayerSit(p, GetUpReason.KICKED);
 
         if(!r) e.setCancelled(true);
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PDeaE(PlayerDeathEvent e) {
 
         if(e.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getEntity(), GetUpReason.DEATH);
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PQuiE(PlayerQuitEvent e) {
 
         if(e.getPlayer().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getPlayer(), GetUpReason.QUIT);
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -53,7 +50,6 @@ public class PlayerSitEvents implements Listener {
         if(!r) e.setCancelled(true);
 
         GPM.getPlayerSitManager().stopPlayerSit(e.getDismounted(), GetUpReason.GET_UP);
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -106,7 +102,6 @@ public class PlayerSitEvents implements Listener {
         boolean r = GPM.getPlayerSitManager().sitOnPlayer(p, z);
 
         if(r) e.setCancelled(true);
-
     }
 
 }

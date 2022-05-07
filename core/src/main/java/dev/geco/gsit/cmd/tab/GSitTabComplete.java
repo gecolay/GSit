@@ -2,6 +2,8 @@ package dev.geco.gsit.cmd.tab;
 
 import java.util.*;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.entity.Player;
 import org.bukkit.command.*;
 
@@ -14,7 +16,7 @@ public class GSitTabComplete implements TabCompleter {
     public GSitTabComplete(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
-    public List<String> onTabComplete(CommandSender s, Command c, String l, String[] a) {
+    public List<String> onTabComplete(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
         List<String> ta = new ArrayList<>(), ts = new ArrayList<>();
         if(s instanceof Player) {
             if(a.length == 1) {

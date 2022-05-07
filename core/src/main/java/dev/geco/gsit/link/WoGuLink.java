@@ -38,7 +38,6 @@ public class WoGuLink {
             if(sf instanceof StateFlag) {
                 SIT_FLAG = (StateFlag) sf;
             }
-
         }
 
         try {
@@ -53,7 +52,6 @@ public class WoGuLink {
             if(sf instanceof StateFlag) {
                 PLAYERSIT_FLAG = (StateFlag) sf;
             }
-
         }
 
         try {
@@ -68,7 +66,6 @@ public class WoGuLink {
             if(sf instanceof StateFlag) {
                 POSE_FLAG = (StateFlag) sf;
             }
-
         }
 
         try {
@@ -83,7 +80,6 @@ public class WoGuLink {
             if(sf instanceof StateFlag) {
                 CRAWL_FLAG = (StateFlag) sf;
             }
-
         }
 
     }
@@ -101,7 +97,6 @@ public class WoGuLink {
         }
 
         return true;
-
     }
 
 }

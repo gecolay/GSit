@@ -52,11 +52,9 @@ public class SitManager implements ISitManager {
             if(!GPM.getPManager().hasPermission(Player, "Kick.Sit")) return false;
 
             for(GSeat s : GPM.getSitUtil().getSeats(Block)) if(!removeSeat(s, GetUpReason.KICKED)) return false;
-
         }
 
         return true;
-
     }
 
     public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().S_BLOCK_CENTER, true); }
@@ -84,25 +82,20 @@ public class SitManager implements ISitManager {
         } else {
 
             l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
-
         }
 
         l.setYaw(SeatRotation);
 
         ArmorStand sa = l.getWorld().spawn(l, ArmorStand.class, b -> {
-            try { b.setInvisible(true); } catch(Exception e) { }
-            try { b.setSmall(true); } catch(Exception e) { }
-            try { b.setGravity(false); } catch(Exception e) { }
-            try { b.setMarker(true); } catch(Exception e) { }
-            try { b.setBasePlate(false); } catch(Exception e) { }
-            try { b.setInvulnerable(true); } catch(Exception e) { }
+            try { b.setInvisible(true); } catch(Exception ignored) { }
+            try { b.setSmall(true); } catch(Exception ignored) { }
+            try { b.setGravity(false); } catch(Exception ignored) { }
+            try { b.setMarker(true); } catch(Exception ignored) { }
+            try { b.setBasePlate(false); } catch(Exception ignored) { }
+            try { b.setInvulnerable(true); } catch(Exception ignored) { }
         });
 
-        if(sa.isValid()) {
-
-            sa.addPassenger(Player);
-
-        } else return null;
+        if(sa.isValid()) { sa.addPassenger(Player); } else return null;
 
         if(GPM.getCManager().S_SHOW_SIT_MESSAGE) {
 
@@ -132,7 +125,6 @@ public class SitManager implements ISitManager {
         Bukkit.getPluginManager().callEvent(new PlayerSitEvent(seat));
 
         return seat;
-
     }
 
     public void moveSeat(GSeat Seat, BlockFace Face) {
@@ -167,7 +159,6 @@ public class SitManager implements ISitManager {
 
             }
         }.runTaskLater(GPM, 0);
-
     }
 
     protected void startRotateSeat(GSeat Seat) {
@@ -192,7 +183,6 @@ public class SitManager implements ISitManager {
         r.runTaskTimer(GPM, 0, 2);
 
         rotate.put(Seat, r);
-
     }
 
     protected void stopRotateSeat(GSeat Seat) {
@@ -204,7 +194,6 @@ public class SitManager implements ISitManager {
         if(r != null) r.cancel();
 
         rotate.remove(Seat);
-
     }
 
     public boolean removeSeat(GSeat Seat, GetUpReason Reason) { return removeSeat(Seat, Reason, true); }
@@ -259,7 +248,6 @@ public class SitManager implements ISitManager {
         Bukkit.getPluginManager().callEvent(new PlayerGetUpSitEvent(Seat, Reason));
 
         return true;
-
     }
 
 }

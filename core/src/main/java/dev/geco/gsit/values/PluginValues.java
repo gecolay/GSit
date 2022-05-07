@@ -1,6 +1,6 @@
 package dev.geco.gsit.values;
 
-public class Values {
+public class PluginValues {
 
     public static final String TOGGLE_FILE = "t";
 

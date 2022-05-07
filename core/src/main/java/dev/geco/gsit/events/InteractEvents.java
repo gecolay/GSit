@@ -20,7 +20,6 @@ public class InteractEvents implements Listener {
 
     public InteractEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void PIntE(PlayerInteractEvent e) {
 
@@ -34,7 +33,7 @@ public class InteractEvents implements Listener {
 
         if(GPM.getCManager().S_EMPTY_HAND_ONLY && e.getItem() != null) return;
 
-        if(!GPM.getPManager().hasNormalPermission(p, "SitClick")) return;
+        if(b == null || !GPM.getPManager().hasNormalPermission(p, "SitClick")) return;
 
         if(!GPM.getCManager().S_SITMATERIALS.containsKey(b.getType())) return;
 
@@ -73,7 +72,6 @@ public class InteractEvents implements Listener {
                 e.setCancelled(true);
 
                 return;
-
             }
 
         } else if(Tag.SLABS.isTagged(b.getType())) {
@@ -81,13 +79,11 @@ public class InteractEvents implements Listener {
             Slab bd = (Slab) b.getBlockData();
 
             if(bd.getType() != Type.BOTTOM) return;
-
         }
 
         GSeat seat = GPM.getSitManager().createSeat(b, p, true, 0d, 0d, 0d, p.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK);
 
         if(seat != null) e.setCancelled(true);
-
     }
 
 }

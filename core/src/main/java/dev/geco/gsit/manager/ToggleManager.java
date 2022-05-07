@@ -50,7 +50,7 @@ public class ToggleManager {
     public void loadToggleData() {
         t.clear();
         pt.clear();
-        TData = new File("plugins/" + GPM.NAME, Values.DATA_PATH + "/" + Values.TOGGLE_FILE + Values.DATA_FILETYP);
+        TData = new File("plugins/" + GPM.NAME, PluginValues.DATA_PATH + "/" + PluginValues.TOGGLE_FILE + PluginValues.DATA_FILETYP);
         TD = YamlConfiguration.loadConfiguration(TData);
         for(String z : TD.getStringList("T")) t.add(UUID.fromString(z));
         for(String z : TD.getStringList("P")) pt.add(UUID.fromString(z));
@@ -88,6 +88,6 @@ public class ToggleManager {
 
     private void stopAutoSave() { if(r != null) r.cancel(); }
 
-    private void saveFile(File f, FileConfiguration fc) { try { fc.save(f); } catch(IOException e) { } }
+    private void saveFile(File f, FileConfiguration fc) { try { fc.save(f); } catch(IOException ignored) { } }
 
 }

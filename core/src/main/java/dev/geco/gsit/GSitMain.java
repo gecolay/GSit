@@ -32,10 +32,6 @@ public class GSitMain extends JavaPlugin {
 
     public String getPrefix() { return prefix; }
 
-    private Values values;
-
-    public Values getValues() { return values; }
-
     private ISitManager sitmanager;
 
     public ISitManager getSitManager() { return sitmanager; }
@@ -84,6 +80,10 @@ public class GSitMain extends JavaPlugin {
 
     public ITeleportUtil getTeleportUtil() { return teleportutil; }
 
+    private PAPILink papilink;
+
+    public PAPILink getPlaceholderAPI() { return papilink; }
+
     private PlSqLink plsqlink;
 
     public PlSqLink getPlotSquared() { return plsqlink; }
@@ -102,7 +102,7 @@ public class GSitMain extends JavaPlugin {
 
     private void setupSettings() {
         copyLangFiles();
-        messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + Values.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + Values.YML_FILETYP));
+        messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
         prefix = getMessages().getString("Plugin.plugin-prefix");
         getToggleManager().loadToggleData();
     }
@@ -140,7 +140,6 @@ public class GSitMain extends JavaPlugin {
         GPM = this;
         saveDefaultConfig();
         cmanager = new CManager(getInstance());
-        values = new Values();
         umanager = new UManager(getInstance(), RESOURCE);
         pmanager = new PManager(getInstance());
         mmanager = new MManager(getInstance());
@@ -184,25 +183,31 @@ public class GSitMain extends JavaPlugin {
         if(getPoseManager() != null) getPoseManager().clearPoses();
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
         getToggleManager().saveToggleData();
+        if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
 
     private void loadPluginDepends(CommandSender s) {
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            papilink = new PAPILink(getInstance());
+            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
+            getPlaceholderAPI().register();
+        } else papilink = null;
         if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
             plsqlink = new PlSqLink(getInstance());
-            if(plsqlink.isVersionSupported()) getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
+            if(getPlotSquared().isVersionSupported()) getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
             else plsqlink = null;
         } else plsqlink = null;
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             if(wogulink == null) {
                 wogulink = new WoGuLink(getInstance());
-                wogulink.registerFlags();
+                getWorldGuard().registerFlags();
             }
             getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "WorldGuard");
         } else wogulink = null;
     }
 
-    public void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pt_br", "ru_ru", "uk_ua", "zh_cn")) if(!new File("plugins/" + NAME + "/" + Values.LANG_PATH + "/" + l + Values.YML_FILETYP).exists()) saveResource(Values.LANG_PATH + "/" + l + Values.YML_FILETYP, false); }
+    public void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pt_br", "ru_ru", "uk_ua", "zh_cn")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }
 
     public void reload(CommandSender s) {
         reloadConfig();
@@ -211,6 +216,7 @@ public class GSitMain extends JavaPlugin {
         if(getPoseManager() != null) getPoseManager().clearPoses();
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
         getToggleManager().saveToggleData();
+        if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
         setupSettings();
         loadPluginDepends(s);
         updateCheck();
@@ -235,7 +241,7 @@ public class GSitMain extends JavaPlugin {
         }
         String v = Bukkit.getServer().getClass().getPackage().getName();
         v = v.substring(v.lastIndexOf('.') + 1);
-        if(!NMSManager.isNewerOrVersion(14, 0) || (NMSManager.isNewerOrVersion(17, 0) && !version_list.contains(v))) {
+        if(!NMSManager.isNewerOrVersion(14, 0) || (NMSManager.isNewerOrVersion(17, 0) && !version_list.contains(v)) || !NMSManager.isNMSCompatible()) {
             getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", v);
             updateCheck();
             Bukkit.getPluginManager().disablePlugin(getInstance());

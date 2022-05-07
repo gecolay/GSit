@@ -54,7 +54,6 @@ public class CrawlManager implements ICrawlManager {
         Bukkit.getPluginManager().callEvent(new PlayerCrawlEvent(crawl));
 
         return crawl;
-
     }
 
     public boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
@@ -72,7 +71,6 @@ public class CrawlManager implements ICrawlManager {
         Bukkit.getPluginManager().callEvent(new PlayerGetUpCrawlEvent(Crawl, Reason));
 
         return true;
-
     }
 
 }

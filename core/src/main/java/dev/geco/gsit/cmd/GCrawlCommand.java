@@ -1,5 +1,7 @@
 package dev.geco.gsit.cmd;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -14,7 +16,7 @@ public class GCrawlCommand implements CommandExecutor {
     public GCrawlCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
-    public boolean onCommand(CommandSender s, Command c, String l, String[] a) {
+    public boolean onCommand(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
         if(s instanceof Player) {
             Player p = (Player) s;
             if(GPM.getPManager().hasNormalPermission(s, "Crawl")) {

@@ -27,7 +27,7 @@ public class CManager {
 
     public boolean S_BLOCK_CENTER;
 
-    public HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
+    public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
 
     public boolean S_EMPTY_HAND_ONLY;
 
@@ -76,7 +76,7 @@ public class CManager {
 
     public List<String> WORLDBLACKLIST = new ArrayList<>();
 
-    public List<Material> MATERIALBLACKLIST = new ArrayList<>();
+    public final List<Material> MATERIALBLACKLIST = new ArrayList<>();
 
     public List<String> COMMANDBLACKLIST = new ArrayList<>();
 
@@ -109,7 +109,7 @@ public class CManager {
                         S_SITMATERIALS.put(a, m.length > 1 ? Double.parseDouble(m[1]) : 0d);
                     }
                 } else S_SITMATERIALS.put(Material.valueOf(m[0].toUpperCase()), m.length > 1 ? Double.parseDouble(m[1]) : 0d);
-            } catch(Exception e) { }
+            } catch(Exception ignored) { }
         }
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
@@ -141,10 +141,9 @@ public class CManager {
             try {
                 if(s.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(s.substring(1).toLowerCase()), Material.class).getValues());
                 else MATERIALBLACKLIST.add(Material.valueOf(s.toUpperCase()));
-            } catch(Exception e) { }
+            } catch(Exception ignored) { }
         }
         COMMANDBLACKLIST = GPM.getConfig().getStringList("Options.CommandBlacklist");
-
     }
 
 }

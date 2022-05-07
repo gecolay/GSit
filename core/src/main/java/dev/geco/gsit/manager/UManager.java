@@ -29,7 +29,7 @@ public class UManager {
             con.setRequestMethod("GET");
             con.setConnectTimeout(1000);
             vs = c.register(new BufferedReader(c.register(new InputStreamReader(con.getInputStream())))).readLine();
-        } catch(IOException e) { }
+        } catch(IOException ignored) { }
         return vs;
     }
 
@@ -63,8 +63,6 @@ public class UManager {
 
     private String shortVersion(String V) { return V.replace(" ", "").replace("[", "").replace("]", ""); }
 
-    public boolean updatePlugin() { return false; }
-
     private static class Closer implements Closeable {
 
         private final List<Closeable> l = new ArrayList<>();
@@ -79,8 +77,7 @@ public class UManager {
         @Override
         public void close() { for(Closeable c : l) closeQuietly(c); }
 
-        public void closeQuietly(Closeable c) { try { c.close(); } catch (Throwable e) { } }
-
+        public void closeQuietly(Closeable c) { try { c.close(); } catch (Throwable ignored) { } }
     }
 
 }

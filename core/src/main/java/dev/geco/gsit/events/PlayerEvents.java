@@ -25,7 +25,6 @@ public class PlayerEvents implements Listener {
             String me = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", GPM.getUManager().getLatestVersion(), "%Version%", GPM.getUManager().getPluginVersion(), "%Path%", GPM.getDescription().getWebsite());
             if(GPM.getPManager().hasPermission(p, "Update")) p.sendMessage(me);
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -44,7 +43,6 @@ public class PlayerEvents implements Listener {
         if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) {
             GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.QUIT);
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -66,7 +64,6 @@ public class PlayerEvents implements Listener {
             boolean r = GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.TELEPORT);
             if(!r) e.setCancelled(true);
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -95,7 +92,6 @@ public class PlayerEvents implements Listener {
                 if(!r) e.setCancelled(true);
             }
         }
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -118,7 +114,6 @@ public class PlayerEvents implements Listener {
         if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) {
             GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.DAMAGE);
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -136,11 +131,8 @@ public class PlayerEvents implements Listener {
                 GPM.getMManager().sendMessage(p, "Messages.action-blocked-error");
 
                 e.setCancelled(true);
-
             }
-
         }
-
     }
 
 }

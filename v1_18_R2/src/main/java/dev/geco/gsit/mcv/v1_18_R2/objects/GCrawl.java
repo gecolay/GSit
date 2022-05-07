@@ -103,7 +103,6 @@ public class GCrawl implements IGCrawl {
             }
 
         };
-
     }
 
     public void start() {

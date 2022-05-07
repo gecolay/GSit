@@ -1,6 +1,5 @@
 package dev.geco.gsit.link;
 
-import dev.geco.gsit.manager.NMSManager;
 import org.bukkit.entity.Player;
 
 import com.plotsquared.core.PlotAPI;
@@ -22,21 +21,19 @@ public class PlSqLink {
 
         if(plot != null) {
 
-            if(!plot.getArea().isSpawnCustom()) return false;
+            if(plot.getArea() == null || !plot.getArea().isSpawnCustom()) return false;
 
             return !GPM.getCManager().REST_TEAM_PLOTS_ONLY || plot.isAdded(P.getUniqueId());
-
         }
 
         return !GPM.getCManager().REST_TEAM_PLOTS_ONLY;
-
     }
 
     public boolean isVersionSupported() {
         try {
             new PlotAPI();
             return true;
-        } catch(Exception | Error e) { }
+        } catch(Exception | Error ignored) { }
         return false;
     }
 

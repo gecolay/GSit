@@ -85,7 +85,7 @@ public class MManager {
                         bc = getComplexMessage(m.group().substring(m.group().indexOf(">") + 1, m.group().lastIndexOf("<")));
                         try {
                             bc.setClickEvent(new ClickEvent(ClickEvent.Action.valueOf(s[1].toUpperCase()), s[2]));
-                        } catch(IllegalArgumentException e) { }
+                        } catch(IllegalArgumentException ignored) { }
                         break;
                     case "item":
                         bc = getComplexMessage(m.group().substring(m.group().indexOf(">") + 1, m.group().lastIndexOf("<")));
@@ -100,7 +100,7 @@ public class MManager {
                                     bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new net.md_5.bungee.api.chat.hover.content.Item(is.getType().getKey().toString(), is.getAmount(), ItemTag.ofNbt(nbt.toString()))));
                                 } catch(Exception e) { e.printStackTrace(); }
                             }
-                        } catch(NumberFormatException e) { }
+                        } catch(NumberFormatException ignored) { }
                         break;
                     case "text":
                         bc = new TextComponent(m.group().substring(m.group().indexOf(">") + 1, m.group().lastIndexOf("<")));
@@ -113,7 +113,7 @@ public class MManager {
                                 ItemStack is = ReplaceList[i];
                                 bc = new TranslatableComponent((is.getType().isBlock() ? "block" : "item") + ".minecraft." + is.getType().getKey().getKey());
                             }
-                        } catch(NumberFormatException e) { }
+                        } catch(NumberFormatException ignored) { }
                         break;
                     case "translatekey":
                         bc = new TranslatableComponent(s[1]);
@@ -202,7 +202,6 @@ public class MManager {
         public BaseComponent getBase() { return b; }
 
         public String getColor() { return c; }
-
     }
 
 }
