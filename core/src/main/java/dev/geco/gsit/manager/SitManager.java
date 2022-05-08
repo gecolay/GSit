@@ -107,7 +107,6 @@ public class SitManager implements ISitManager {
 
                 }
             }.runTaskLaterAsynchronously(GPM, 2);
-
         }
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
@@ -144,7 +143,6 @@ public class SitManager implements ISitManager {
                 if(NMSManager.isNewerOrVersion(17, 0)) {
 
                     GPM.getTeleportUtil().pos(Seat.getEntity(), Seat.getLocation());
-
                 } else {
 
                     try {
@@ -154,9 +152,7 @@ public class SitManager implements ISitManager {
                         NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, Seat.getLocation().getX(), Seat.getLocation().getY(), Seat.getLocation().getZ());
 
                     } catch(Exception e) { e.printStackTrace(); }
-
                 }
-
             }
         }.runTaskLater(GPM, 0);
     }
@@ -224,7 +220,6 @@ public class SitManager implements ISitManager {
             GPM.getTeleportUtil().pos(Seat.getPlayer(), l);
 
             GPM.getTeleportUtil().teleport(Seat.getPlayer(), l, true);
-
         }
 
         if(Seat.getEntity().isValid()) {
@@ -238,11 +233,9 @@ public class SitManager implements ISitManager {
                     NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, l.getX(), l.getY(), l.getZ());
 
                 } catch(Exception e) { e.printStackTrace(); }
-
             }
 
             Seat.getEntity().remove();
-
         }
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpSitEvent(Seat, Reason));

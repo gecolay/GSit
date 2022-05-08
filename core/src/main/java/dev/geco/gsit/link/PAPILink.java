@@ -5,6 +5,7 @@ import java.util.*;
 import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.expansion.*;
 
@@ -32,17 +33,22 @@ public class PAPILink extends PlaceholderExpansion {
     public @NotNull String getVersion() { return GPM.getDescription().getVersion(); }
 
     @Override
-    public @NotNull List<String> getPlaceholders() { return Arrays.asList("toggle", "playertoggle"); }
+    public @NotNull List<String> getPlaceholders() { return Arrays.asList("playertoggle", "posing", "sitting", "toggle"); }
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
 
-        if(player == null || params == null) return null;
-
-        if(params.equalsIgnoreCase("toggle")) return "" + GPM.getToggleManager().canSit(player.getUniqueId());
+        if(player == null) return null;
 
         if(params.equalsIgnoreCase("playertoggle")) return "" + GPM.getToggleManager().canPlayerSit(player.getUniqueId());
 
+        if(params.equalsIgnoreCase("posing")) return player.isOnline() ? "" + GPM.getPoseManager().isPosing((Player) player) : "" + false;
+
+        if(params.equalsIgnoreCase("sitting")) return player.isOnline() ? "" + GPM.getSitManager().isSitting((Player) player) : "" + false;
+
+        if(params.equalsIgnoreCase("toggle")) return "" + GPM.getToggleManager().canSit(player.getUniqueId());
+
         return null;
     }
+
 }
