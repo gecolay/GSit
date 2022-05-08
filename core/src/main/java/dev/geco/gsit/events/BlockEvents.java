@@ -2,6 +2,7 @@ package dev.geco.gsit.events;
 
 import java.util.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.*;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
@@ -141,6 +142,23 @@ public class BlockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void EChaBE(EntityChangeBlockEvent e) {
+        if(!GPM.getCManager().GET_UP_BREAK) return;
+        if(GPM.getSitUtil().isSeatBlock(e.getBlock())) {
+            for(GSeat s : GPM.getSitUtil().getSeats(e.getBlock())) {
+                boolean r = GPM.getSitManager().removeSeat(s, GetUpReason.BREAK);
+                if(!r) e.setCancelled(true);
+            }
+        }
+        if(GPM.getPoseUtil().isPoseBlock(e.getBlock()) && !e.isCancelled()) {
+            for(IGPoseSeat p : GPM.getPoseUtil().getPoses(e.getBlock())) {
+                boolean r = GPM.getPoseManager().removePose(p, GetUpReason.BREAK);
+                if(!r) e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void BPhyE(BlockPhysicsEvent e) {
         if(!GPM.getCManager().GET_UP_BREAK) return;
         if(GPM.getSitUtil().isSeatBlock(e.getBlock())) {
             for(GSeat s : GPM.getSitUtil().getSeats(e.getBlock())) {
