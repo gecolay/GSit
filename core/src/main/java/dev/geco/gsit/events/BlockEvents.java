@@ -156,7 +156,7 @@ public class BlockEvents implements Listener {
         }
     }
 
-    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BPhyE(BlockPhysicsEvent e) {
         if(!GPM.getCManager().GET_UP_BREAK) return;
         if(!e.getSourceBlock().getType().name().endsWith("AIR")) return;
@@ -172,7 +172,7 @@ public class BlockEvents implements Listener {
                 if(!r) e.setCancelled(true);
             }
         }
-    }*/
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void BBreE(BlockBreakEvent e) {

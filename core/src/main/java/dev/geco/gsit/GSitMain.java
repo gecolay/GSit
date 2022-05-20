@@ -64,6 +64,10 @@ public class GSitMain extends JavaPlugin {
 
     public MManager getMManager() { return mmanager; }
 
+    private EntityUtil entityutil;
+
+    public EntityUtil getEntityUtil() { return entityutil; }
+
     private PassengerUtil passengerutil;
 
     public PassengerUtil getPassengerUtil() { return passengerutil; }
@@ -144,6 +148,7 @@ public class GSitMain extends JavaPlugin {
         pmanager = new PManager(getInstance());
         mmanager = new MManager(getInstance());
         togglemanager = new ToggleManager(getInstance());
+        entityutil = new EntityUtil(getInstance());
         passengerutil = new PassengerUtil(getInstance());
         situtil = new SitUtil(getInstance());
         poseutil = new PoseUtil(getInstance());

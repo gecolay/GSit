@@ -85,6 +85,8 @@ public class PoseManager implements IPoseManager {
             l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
         }
 
+        if(!GPM.getEntityUtil().canSpawn(l)) return null;
+
         l.setYaw(SeatRotation);
 
         ArmorStand sa = l.getWorld().spawn(l, ArmorStand.class, b -> {
@@ -94,21 +96,10 @@ public class PoseManager implements IPoseManager {
             try { b.setMarker(true); } catch(Exception ignored) { }
             try { b.setBasePlate(false); } catch(Exception ignored) { }
             try { b.setInvulnerable(true); } catch(Exception ignored) { }
+            b.addPassenger(Player);
         });
 
-        if(sa.isValid()) { sa.addPassenger(Player); } else return null;
-
-        if(GPM.getCManager().P_SHOW_POSE_MESSAGE) {
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-
-                    Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
-
-                }
-            }.runTaskLaterAsynchronously(GPM, 2);
-        }
+        if(GPM.getCManager().P_SHOW_POSE_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
 
