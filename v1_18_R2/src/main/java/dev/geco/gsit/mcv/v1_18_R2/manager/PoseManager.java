@@ -91,11 +91,11 @@ public class PoseManager implements IPoseManager {
 
         ArmorStand sa = l.getWorld().spawn(l, ArmorStand.class, b -> {
             try { b.setInvisible(true); } catch(Exception ignored) { }
-            try { b.setSmall(true); } catch(Exception ignored) { }
             try { b.setGravity(false); } catch(Exception ignored) { }
             try { b.setMarker(true); } catch(Exception ignored) { }
-            try { b.setBasePlate(false); } catch(Exception ignored) { }
             try { b.setInvulnerable(true); } catch(Exception ignored) { }
+            try { b.setSmall(true); } catch(Exception ignored) { }
+            try { b.setBasePlate(false); } catch(Exception ignored) { }
             b.addPassenger(Player);
         });
 

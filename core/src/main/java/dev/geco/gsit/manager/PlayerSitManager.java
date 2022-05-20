@@ -33,12 +33,12 @@ public class PlayerSitManager implements IPlayerSitManager {
         if(pplapse.isCancelled()) return false;
 
         AreaEffectCloud sa = Target.getWorld().spawn(Target.getLocation(), AreaEffectCloud.class, b -> {
-            try { b.setDuration(Integer.MAX_VALUE); } catch(Exception ignored) { }
-            try { b.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch(Exception ignored) { }
             try { b.setRadius(0); } catch(Exception ignored) { }
-            try { b.setWaitTime(0); } catch(Exception ignored) { }
             try { b.setGravity(false); } catch(Exception ignored) { }
             try { b.setInvulnerable(true); } catch(Exception ignored) { }
+            try { b.setDuration(Integer.MAX_VALUE); } catch(Exception ignored) { }
+            try { b.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch(Exception ignored) { }
+            try { b.setWaitTime(0); } catch(Exception ignored) { }
         });
 
         if(sa.isValid()) {
