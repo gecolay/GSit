@@ -64,10 +64,6 @@ public class GSitMain extends JavaPlugin {
 
     public MManager getMManager() { return mmanager; }
 
-    private EntityUtil entityutil;
-
-    public EntityUtil getEntityUtil() { return entityutil; }
-
     private PassengerUtil passengerutil;
 
     public PassengerUtil getPassengerUtil() { return passengerutil; }
@@ -79,6 +75,10 @@ public class GSitMain extends JavaPlugin {
     private PoseUtil poseutil;
 
     public PoseUtil getPoseUtil() { return poseutil; }
+
+    private ISpawnUtil spawnutil;
+
+    public ISpawnUtil getSpawnUtil() { return spawnutil; }
 
     private ITeleportUtil teleportutil;
 
@@ -148,7 +148,6 @@ public class GSitMain extends JavaPlugin {
         pmanager = new PManager(getInstance());
         mmanager = new MManager(getInstance());
         togglemanager = new ToggleManager(getInstance());
-        entityutil = new EntityUtil(getInstance());
         passengerutil = new PassengerUtil(getInstance());
         situtil = new SitUtil(getInstance());
         poseutil = new PoseUtil(getInstance());
@@ -164,6 +163,7 @@ public class GSitMain extends JavaPlugin {
         posemanager = NMSManager.isNewerOrVersion(17, 0) ? (IPoseManager) NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) : null;
         playersitmanager = new PlayerSitManager(getInstance());
         crawlmanager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
+        spawnutil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("gsit", "util.SpawnUtil", null) : new SpawnUtil();
         teleportutil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("gsit", "util.TeleportUtil", null) : null;
         getCommand("gsit").setExecutor(new GSitCommand(getInstance()));
         getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));

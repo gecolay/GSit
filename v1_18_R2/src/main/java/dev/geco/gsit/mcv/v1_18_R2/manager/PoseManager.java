@@ -5,10 +5,8 @@ import java.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Tag;
-import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -85,19 +83,11 @@ public class PoseManager implements IPoseManager {
             l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
         }
 
-        if(!GPM.getEntityUtil().canSpawn(l)) return null;
+        if(!GPM.getSpawnUtil().check(l)) return null;
 
         l.setYaw(SeatRotation);
 
-        ArmorStand sa = l.getWorld().spawn(l, ArmorStand.class, b -> {
-            try { b.setInvisible(true); } catch(Exception ignored) { }
-            try { b.setGravity(false); } catch(Exception ignored) { }
-            try { b.setMarker(true); } catch(Exception ignored) { }
-            try { b.setInvulnerable(true); } catch(Exception ignored) { }
-            try { b.setSmall(true); } catch(Exception ignored) { }
-            try { b.setBasePlate(false); } catch(Exception ignored) { }
-            b.addPassenger(Player);
-        });
+        Entity sa = GPM.getSpawnUtil().createEntity(l, Player);
 
         if(GPM.getCManager().P_SHOW_POSE_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
 

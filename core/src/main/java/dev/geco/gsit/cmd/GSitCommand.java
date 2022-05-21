@@ -38,9 +38,11 @@ public class GSitCommand implements CommandExecutor {
                                             if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().SIT_FLAG)) {
                                                 if(GPM.getCManager().REST_SAME_BLOCK || GPM.getSitManager().kickSeat(b, p)) {
                                                     if(Tag.STAIRS.isTagged(b.getType())) {
-                                                        GPM.getSitUtil().createSeatForStair(b, p);
+                                                        GSeat v = GPM.getSitUtil().createSeatForStair(b, p);
+                                                        if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
                                                     } else {
-                                                        GPM.getSitManager().createSeat(b, p);
+                                                        GSeat v = GPM.getSitManager().createSeat(b, p);
+                                                        if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
                                                     }
                                                 } else GPM.getMManager().sendMessage(s, "Messages.action-sit-kick-error");
                                             } else GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
