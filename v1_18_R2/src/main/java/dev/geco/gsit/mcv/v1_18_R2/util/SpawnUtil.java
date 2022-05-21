@@ -5,8 +5,6 @@ import org.bukkit.entity.*;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity;
 
-import net.minecraft.server.level.ServerLevel;
-
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.mcv.v1_18_R2.objects.*;
 
@@ -26,9 +24,7 @@ public class SpawnUtil implements ISpawnUtil {
 
         if(Rider != null && Rider.isValid()) ((CraftEntity) Rider).getHandle().startRiding(sas, true);
 
-        ServerLevel sl = cw.getHandle();
-
-        sl.entityManager.addNewEntity(sas);
+        cw.getHandle().entityManager.addNewEntity(sas);
 
         return sas.getBukkitEntity();
     }
