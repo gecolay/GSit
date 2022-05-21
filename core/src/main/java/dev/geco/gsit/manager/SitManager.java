@@ -82,11 +82,11 @@ public class SitManager implements ISitManager {
             l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
         }
 
-        if(!GPM.getSpawnUtil().check(l)) return null;
+        if(!GPM.getSpawnUtil().checkLocation(l)) return null;
 
         l.setYaw(SeatRotation);
 
-        Entity sa = GPM.getSpawnUtil().createEntity(l, Player);
+        Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
 
         if(GPM.getCManager().S_SHOW_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
 

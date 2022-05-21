@@ -9,11 +9,11 @@ public class SpawnUtil implements ISpawnUtil {
 
     public boolean needCheck() { return true; }
 
-    public boolean check(Location Location) {
+    public boolean checkLocation(Location Location) {
 
         if(!needCheck()) return true;
 
-        Entity e = createEntity(Location);
+        Entity e = createSeatEntity(Location);
 
         boolean v = e.isValid();
 
@@ -22,11 +22,11 @@ public class SpawnUtil implements ISpawnUtil {
         return v;
     }
 
-    public Entity createEntity(Location Location) {
-        return createEntity(Location, null);
+    public Entity createSeatEntity(Location Location) {
+        return createSeatEntity(Location, null);
     }
 
-    public Entity createEntity(Location Location, Entity Rider) {
+    public Entity createSeatEntity(Location Location, Entity Rider) {
 
         return Location.getWorld().spawn(Location, ArmorStand.class, b -> {
             try { b.setInvisible(true); } catch(Exception ignored) { }

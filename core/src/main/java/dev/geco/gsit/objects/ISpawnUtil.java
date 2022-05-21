@@ -7,10 +7,10 @@ public interface ISpawnUtil {
 
     boolean needCheck();
 
-    boolean check(Location Location);
+    boolean checkLocation(Location Location);
 
-    Entity createEntity(Location Location);
+    Entity createSeatEntity(Location Location);
 
-    Entity createEntity(Location Location, Entity Rider);
+    Entity createSeatEntity(Location Location, Entity Rider);
 
 }

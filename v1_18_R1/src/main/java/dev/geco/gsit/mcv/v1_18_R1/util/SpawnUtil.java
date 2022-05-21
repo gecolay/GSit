@@ -12,15 +12,15 @@ public class SpawnUtil implements ISpawnUtil {
 
     public boolean needCheck() { return false; }
 
-    public boolean check(Location Location) { return true; }
+    public boolean checkLocation(Location Location) { return true; }
 
-    public Entity createEntity(Location Location) { return createEntity(Location, null); }
+    public Entity createSeatEntity(Location Location) { return createSeatEntity(Location, null); }
 
-    public Entity createEntity(Location Location, Entity Rider) {
+    public Entity createSeatEntity(Location Location, Entity Rider) {
 
         CraftWorld cw = (CraftWorld) Location.getWorld();
 
-        SeatArmorStand sas = new SeatArmorStand(cw.getHandle(), Location.getX(), Location.getY(), Location.getZ());
+        SeatEntity sas = new SeatEntity(cw.getHandle(), Location.getX(), Location.getY(), Location.getZ());
 
         if(Rider != null && Rider.isValid()) ((CraftEntity) Rider).getHandle().startRiding(sas, true);
 

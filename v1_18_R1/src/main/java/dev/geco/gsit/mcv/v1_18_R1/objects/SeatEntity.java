@@ -1,11 +1,11 @@
-package dev.geco.gsit.mcv.v1_17_R1_2.objects;
+package dev.geco.gsit.mcv.v1_18_R1.objects;
 
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.Level;
 
-public class SeatArmorStand extends ArmorStand {
+public class SeatEntity extends ArmorStand {
 
-    public SeatArmorStand(Level world, double d0, double d1, double d2) {
+    public SeatEntity(Level world, double d0, double d1, double d2) {
         super(world, d0, d1, d2);
         setInvisible(true);
         setNoGravity(true);
