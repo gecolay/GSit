@@ -21,12 +21,12 @@ public class PlSqLink {
 
         if(plot != null) {
 
-            if(plot.getArea() == null || !plot.getArea().isSpawnCustom()) return false;
+            if((plot.getArea() == null || !plot.getArea().isSpawnCustom()) && !GPM.getSpawnUtil().check(L)) return false;
 
-            return !GPM.getCManager().REST_TEAM_PLOTS_ONLY || plot.isAdded(P.getUniqueId());
+            return (!GPM.getCManager().REST_TEAM_PLOTS_ONLY || plot.isAdded(P.getUniqueId())) && GPM.getSpawnUtil().check(L);
         }
 
-        return !GPM.getCManager().REST_TEAM_PLOTS_ONLY;
+        return !GPM.getCManager().REST_TEAM_PLOTS_ONLY && GPM.getSpawnUtil().check(L);
     }
 
     public boolean isVersionSupported() {

@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Core</artifactId>
-            <version>6.6.3</version>
+            <version>6.7.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
