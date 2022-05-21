@@ -21,9 +21,11 @@ public class PlSqLink {
 
         if(plot != null) {
 
-            if((plot.getArea() == null || !plot.getArea().isSpawnCustom()) && !GPM.getSpawnUtil().checkLocation(L)) return false;
+            boolean c = GPM.getSpawnUtil().checkLocation(L);
 
-            return (!GPM.getCManager().REST_TEAM_PLOTS_ONLY || plot.isAdded(P.getUniqueId())) && GPM.getSpawnUtil().checkLocation(L);
+            if((plot.getArea() == null || !plot.getArea().isSpawnCustom()) && !c) return false;
+
+            return (!GPM.getCManager().REST_TEAM_PLOTS_ONLY || plot.isAdded(P.getUniqueId())) && c;
         }
 
         return !GPM.getCManager().REST_TEAM_PLOTS_ONLY && GPM.getSpawnUtil().checkLocation(L);
