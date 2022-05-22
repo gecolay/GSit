@@ -90,13 +90,13 @@ public class NMSManager {
 
     public static Class<?> getNMSClass(String ClassName) {
         Class<?> C = null;
-        try { return Class.forName("net.minecraft.server." + getClassVersion() + "." + ClassName); } catch (Exception ignored) { }
+        try { return Class.forName("net.minecraft.server." + getClassVersion() + "." + ClassName); } catch(Exception ignored) { }
         return C;
     }
 
     public static Class<?> getOBCClass(String ClassName) {
         Class<?> C = null;
-        try { return Class.forName("org.bukkit.craftbukkit." + getClassVersion() + "." + ClassName); } catch (Exception ignored) { }
+        try { return Class.forName("org.bukkit.craftbukkit." + getClassVersion() + "." + ClassName); } catch(Exception ignored) { }
         return C;
     }
 
@@ -121,7 +121,7 @@ public class NMSManager {
 
     public static Object invokeMethod(String MethodName, Object Parameter) {
         try { return getMethod(MethodName, Parameter.getClass()).invoke(Parameter); }
-        catch (Exception e) {
+        catch(Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -132,7 +132,7 @@ public class NMSManager {
             Method m = O.getClass().getDeclaredMethod("getHandle");
             m.setAccessible(true);
             return m.invoke(O);
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
             return O;
         }
@@ -155,7 +155,7 @@ public class NMSManager {
                 F.setAccessible(true);
                 F.set(Object, Value);
                 return true;
-            } catch (NoSuchFieldException e) { C = C.getSuperclass(); } catch (Exception e) { throw new IllegalStateException(e); }
+            } catch(NoSuchFieldException e) { C = C.getSuperclass(); } catch(Exception e) { throw new IllegalStateException(e); }
         }
         return false;
     }

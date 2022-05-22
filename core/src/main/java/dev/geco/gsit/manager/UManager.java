@@ -77,7 +77,7 @@ public class UManager {
         @Override
         public void close() { for(Closeable c : l) closeQuietly(c); }
 
-        public void closeQuietly(Closeable c) { try { c.close(); } catch (Throwable ignored) { } }
+        public void closeQuietly(Closeable c) { try { c.close(); } catch(Exception ignored) { } }
     }
 
 }

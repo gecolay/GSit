@@ -69,7 +69,7 @@ public class MManager {
     }
 
     public BaseComponent getComplexMessage(String Message, ItemStack... ReplaceList) {
-        ComponentBuilder cb = new ComponentBuilder();
+        ComponentBuilder cb = new ComponentBuilder("");
 
         Matcher m = Pattern.compile(A ? PA : P).matcher(Message);
 

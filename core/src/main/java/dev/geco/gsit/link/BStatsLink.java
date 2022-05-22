@@ -200,7 +200,7 @@ public class BStatsLink {
                     () -> {
                         try {
                             sendData(data);
-                        } catch (Exception e) {
+                        } catch(Exception e) {
                             if(logErrors) errorLogger.accept("Could not submit bStats metrics data", e);
                         }
                     }
@@ -363,7 +363,7 @@ public class BStatsLink {
                 JsonObjectBuilder.JsonObject data = getChartData();
                 if(data == null) return null;
                 builder.appendField("data", data);
-            } catch (Throwable t) {
+            } catch(Throwable t) {
                 if(logErrors) errorLogger.accept("Failed to get data for custom chart with id " + chartId, t);
                 return null;
             }

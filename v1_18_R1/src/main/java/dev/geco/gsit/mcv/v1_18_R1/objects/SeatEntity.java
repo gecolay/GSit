@@ -1,6 +1,6 @@
 package dev.geco.gsit.mcv.v1_18_R1.objects;
 
-import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.decoration.*;
 import net.minecraft.world.level.Level;
 
 public class SeatEntity extends ArmorStand {

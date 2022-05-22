@@ -109,7 +109,7 @@ public class CManager {
                         S_SITMATERIALS.put(a, m.length > 1 ? Double.parseDouble(m[1]) : 0d);
                     }
                 } else S_SITMATERIALS.put(Material.valueOf(m[0].toUpperCase()), m.length > 1 ? Double.parseDouble(m[1]) : 0d);
-            } catch(Exception ignored) { }
+            } catch(Exception | Error ignored) { }
         }
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
@@ -141,7 +141,7 @@ public class CManager {
             try {
                 if(s.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(s.substring(1).toLowerCase()), Material.class).getValues());
                 else MATERIALBLACKLIST.add(Material.valueOf(s.toUpperCase()));
-            } catch(Exception ignored) { }
+            } catch(Exception | Error ignored) { }
         }
         COMMANDBLACKLIST = GPM.getConfig().getStringList("Options.CommandBlacklist");
     }
