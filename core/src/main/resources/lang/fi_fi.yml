@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a Asetukset ladattiin onnistuneesti uudelleen."
   command-permission-error: "[P]&c Sinulla ei ole oikeutta tähän komentoon!"
   command-sender-error: "[P]&c Vain pelaajat voivat käyttää tätä komentoa!"
-  command-version-error: "[P]&c Et voi käyttää tätä ominaisuutta tällä palvelimen versiolla! (&b%Version%&c)"
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a Istuminen klikkaamalla on nyt käytössä."
   command-gsit-toggle-off: "[P]&a Istuminen klikkaamalla on nyt pois käytöstä."

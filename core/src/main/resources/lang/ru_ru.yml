@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a Конфиг успешно перезагружен."
   command-permission-error: "[P]&c У вас нет права для использования этой команды!"
   command-sender-error: "[P]&c Этот отправитель не может выполнить эту команду!"
-  command-version-error: "[P]&c Вы не можете использовать эту функцию с этой версией сервера! (&b%Version%&c)"
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a Теперь вы можете сесть, нажав."
   command-gsit-toggle-off: "[P]&a Вы больше не можете сесть, нажав."

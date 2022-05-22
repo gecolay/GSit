@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a Le impostazioni sono state ricaricate correttamente."
   command-permission-error: "[P]&c Non hai il permesso di usare questo comando!"
   command-sender-error: "[P]&c Questo mittente non può eseguire questo comando!"
-  command-version-error: "[P]&c Non puoi usare questa funzione con questa versione del server! (&b%Version%&c)"
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a Hai abilitato le interazioni-click per sederti."
   command-gsit-toggle-off: "[P]&a Hai disabilitato le interazioni-click per sederti."

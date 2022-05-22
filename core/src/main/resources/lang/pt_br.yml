@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a As configurações foram atualizadas com sucesso."
   command-permission-error: "[P]&c Sem permissão para executar esse comando."
   command-sender-error: "[P]&c O console não pode executar esse comando."
-  command-version-error: "[P]&c Esse recurso não pode ser utilizado nessa versão atual do servidor! (&b%Version%&c)"
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a Você ativou a função de sentar-se."
   command-gsit-toggle-off: "[P]&a Você desativou a função de sentar-se."

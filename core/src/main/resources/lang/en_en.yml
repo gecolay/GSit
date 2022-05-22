@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a The Settings were successfully reloaded."
   command-permission-error: "[P]&c You don't have Permission to use this Command!"
   command-sender-error: "[P]&c This Sender cannot execute this Command!"
-  command-version-error: "[P]&c You can't use this Feature with this Server Version! (&b%Version%&c)"
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a You have enabled click-interactions for sit."
   command-gsit-toggle-off: "[P]&a You have disabled click-interactions for sit."

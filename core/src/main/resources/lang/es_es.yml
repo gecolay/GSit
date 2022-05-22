@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a Las configuraciones se han recargado con éxito."
   command-permission-error: "[P]&c ¡No tienes permiso para usar éste comando!"
   command-sender-error: "[P]&c ¡Éste usuario no puede ejecutar éste comando!"
-  command-version-error: "[P]&c ¡No puedes usar ésta característica con la versión (&b%Version%&c) que tiene el servidor! "
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a Has habilitado el uso de 'click' para sentarse (sit)."
   command-gsit-toggle-off: "[P]&a Has deshabilitado el uso de 'click' para sentarse (sit)."

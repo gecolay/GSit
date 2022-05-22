@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a Les paramètres ont été rechargés avec succès."
   command-permission-error: "[P]&c Vous n'avez pas la permission d'utiliser cette commande !"
   command-sender-error: "[P]&c Cet expéditeur ne peut pas exécuter cette commande !"
-  command-version-error: "[P]&c Vous ne pouvez pas utiliser cette fonctionnalité avec cette version du serveur ! (&b%Version%&c)"
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a Vous avez activé les interactions par clic pour s’asseoir."
   command-gsit-toggle-off: "[P]&a Vous avez désactivé les interactions par clic pour s’asseoir."
