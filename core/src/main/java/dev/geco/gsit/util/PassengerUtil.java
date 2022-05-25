@@ -17,7 +17,7 @@ public class PassengerUtil {
         long a = 0;
         if(E.isInsideVehicle()) {
             Entity e = E.getVehicle();
-            if(!e.hasMetadata(GPM.NAME + "A")) a++;
+            if(e instanceof Player) a++;
             a += getVehicleAmount(e);
         }
         return a;
@@ -26,7 +26,7 @@ public class PassengerUtil {
     public long getPassengerAmount(Entity E) {
         long a = 0;
         for(Entity e : E.getPassengers()) {
-            if(!e.hasMetadata(GPM.NAME + "A")) a++;
+            if(e instanceof Player) a++;
             a += getPassengerAmount(e);
         }
         return a;

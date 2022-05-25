@@ -81,7 +81,7 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getPassengerUtil().isInPassengerList(t, p) || GPM.getPassengerUtil().isInPassengerList(p, t)) return;
 
-        long a = GPM.getPassengerUtil().getPassengerAmount(t) + GPM.getPassengerUtil().getVehicleAmount(t) + 1;
+        long a = GPM.getPassengerUtil().getPassengerAmount(t) + 1 + GPM.getPassengerUtil().getVehicleAmount(t) + GPM.getPassengerUtil().getPassengerAmount(p);
 
         if(GPM.getCManager().PS_MAX_STACK > 0 && GPM.getCManager().PS_MAX_STACK <= a) return;
 
