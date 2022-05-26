@@ -1,0 +1,53 @@
+#
+# Language-File created by:		THE___BULDI___
+#
+
+
+
+Plugin:
+
+  plugin-enabled: "[P]&a Plugin został prawidłowo włączony."
+  plugin-link: "[P]&a Prawidłowo połączono z&6 %Link%&a!"
+  plugin-update: "[P]&a Nowa wersja dostępna:&6 %NewVersion%&a!\n[P]&a Aktuanie korzystasz z wersji:&6 %Version%&a!\n[P]&a Pobierz najnowszą wersję na:\n[P]&6 %Path%"
+  plugin-version: "[P]&c Ten plugin nie może być użyty gdy serwer jest na tej wersji! (&b%Version%&c)"
+  plugin-disabled: "[P]&a Plugin został prawidłowo wyłączony."
+  plugin-prefix: "&7[&6GSit&7]"
+
+
+
+Messages:
+
+  command-reload: "[P]&a Ustawienia prawidłowo przeładowane."
+  command-permission-error: "[P]&c Nie masz uprawnień aby korzystać z tej komendy!"
+  command-sender-error: "[P]&c Ta osoba nie ma uprawnień aby korzystać z tej komendy!"
+  command-version-error: "[P]&c Nieaktualna wersja serwera! (&b%Version%&c)\n[P]&c Uaktualnij swój serwer aby skorzystać ze wszystkich funkcji!"
+
+  command-gsit-toggle-on: "[P]&a Włączyłeś siadanie za pomocą kliknięcia."
+  command-gsit-toggle-off: "[P]&a Wyłączyłeś siadanie za pomocą kliknięcia."
+  command-gsit-playertoggle-on: "[P]&a Włączyłeś siadanie bytach za pomocą kliknięcia."
+  command-gsit-playertoggle-off: "[P]&a Wyłączyłeś siadanie na bytach za pomocą kliknięcia."
+
+  action-sit-now-error: "[P]&c Nie możesz teraz usiąść!"
+  action-sit-world-error: "[P]&c Nie możesz siadać w tym świecie!"
+  action-sit-location-error: "[P]&c Nie możesz tu siadać!"
+  action-sit-safe-error: "[P]&c Nie jest bezpiecznie aby tu usiąść!"
+  action-sit-region-error: "[P]&c Nie możesz siadać w tym regionie!"
+  action-sit-kick-error: "[P]&c Ktoś już tu siedzi!"
+  action-sit-info: "&aUżyj&6 <translatekey:key.sneak>&a aby wstać."
+
+  action-playersit-info: "&aUżyj&6 <translatekey:key.sneak>&a aby zejść."
+
+  action-pose-now-error: "[P]&c Nie możesz się teraz położyć!"
+  action-pose-world-error: "[P]&c Nie możesz się kłąść w tym świecie!"
+  action-pose-location-error: "[P]&c Nie możesz się tu kłaść!"
+  action-pose-safe-error: "[P]&c Nie jest bezpiecznie aby się tu kłaść!"
+  action-pose-region-error: "[P]&c Nie możesz się kłaść w tym regionie!"
+  action-pose-kick-error: "[P]&c Ktoś już tu leży!"
+  action-pose-info: "&aUżyj&6&l <translatekey:key.sneak>&a aby wstać."
+
+  action-crawl-now-error: "[P]&c Nie możesz się teraz czołgać!"
+  action-crawl-world-error: "[P]&c Nie możesz się czołgać na tym świecie!"
+  action-crawl-region-error: "[P]&c Nie możesz się czołgać w tym regionie!"
+  action-crawl-info: "&aUżyj&6&l <translatekey:key.sneak>&a aby przestać się czołgać."
+
+  action-blocked-error: "[P]&c Nie masz w tym momencie dostępu do tej komendy!"

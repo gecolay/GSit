@@ -1,0 +1,53 @@
+#
+# Language-File created by:		flandretw
+#
+
+
+
+Plugin:
+
+  plugin-enabled: "[P]&a 插件已成功載入"
+  plugin-link: "[P]&a 成功連接到&6 %Link%&a!"
+  plugin-update: "[P]&a 新版本可用:&6 %NewVersion%&a!\n[P]&a 目前使用版本:&6 %Version%&a!\n[P]&a 下载最新版本:\n[P]&6 %Path%"
+  plugin-version: "[P]&c 插件與目前伺服器版本不相容! (&b%Version%&c)"
+  plugin-disabled: "[P]&a 插件已成功禁用"
+  plugin-prefix: "&7[&6GSit&7]"
+
+
+
+Messages:
+
+  command-reload: "[P]&a 插件配置已成功重新載入"
+  command-permission-error: "[P]&c 你不能執行此指令!"
+  command-sender-error: "[P]&c 目前玩家不能執行此指令!"
+  command-version-error: "[P]&c 過時伺服器版本! (&b%Version%&c)\n[P]&c 更新伺服器以使用此功能!"
+
+  command-gsit-toggle-on: "[P]&a 你可以使用右键坐下了"
+  command-gsit-toggle-off: "[P]&a 你不能使用右键坐下了"
+  command-gsit-playertoggle-on: "[P]&a 你可以使用右键坐在其他玩家身上了"
+  command-gsit-playertoggle-off: "[P]&a 你不能使用右键坐在其他玩家身上了"
+
+  action-sit-now-error: "[P]&c 你現在不能坐下!"
+  action-sit-world-error: "[P]&c 你不能在這個世界坐下!"
+  action-sit-location-error: "[P]&c 你不能在這坐下!"
+  action-sit-safe-error: "[P]&c 你不能在不安全的地方坐下!"
+  action-sit-region-error: "[P]&c 你不能在這個區域坐下!"
+  action-sit-kick-error: "[P]&c 已經有人在這裡坐下了!"
+  action-sit-info: "&a使用&6 <translatekey:key.sneak>&a 鍵起来"
+
+  action-playersit-info: "&a使用&6 <translatekey:key.sneak>&a 鍵起来"
+
+  action-pose-now-error: "[P]&c 你現在不能躺下!"
+  action-pose-world-error: "[P]&c 你不能在這個世界躺下!"
+  action-pose-location-error: "[P]&c 你不能在這躺下!"
+  action-pose-safe-error: "[P]&c 你不能在不安全的地方躺下!"
+  action-pose-region-error: "[P]&c 你不能在這個區域躺下!"
+  action-pose-kick-error: "[P]&c 已經有人在這裡躺下了!"
+  action-pose-info: "&a使用&6 <translatekey:key.sneak>&a 鍵起来"
+
+  action-crawl-now-error: "[P]&c 你現在不能爬行!"
+  action-crawl-world-error: "[P]&c 你不能在這個世界爬行!"
+  action-crawl-region-error: "[P]&c 你不能在這個區域爬行!"
+  action-crawl-info: "&a使用&6 <translatekey:key.sneak>&a 鍵起来"
+
+  action-blocked-error: "[P]&c 你現在不能使用此指令!"
