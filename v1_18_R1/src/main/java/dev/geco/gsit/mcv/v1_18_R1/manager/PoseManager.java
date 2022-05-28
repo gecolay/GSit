@@ -85,8 +85,6 @@ public class PoseManager implements IPoseManager {
 
         if(!GPM.getSpawnUtil().checkLocation(l)) return null;
 
-        l.setYaw(SeatRotation);
-
         Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
 
         if(GPM.getCManager().P_SHOW_POSE_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));

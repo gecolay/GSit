@@ -18,13 +18,11 @@ public class SpawnUtil implements ISpawnUtil {
 
     public Entity createSeatEntity(Location Location, Entity Rider) {
 
-        CraftWorld cw = (CraftWorld) Location.getWorld();
-
-        SeatEntity sas = new SeatEntity(cw.getHandle(), Location.getX(), Location.getY(), Location.getZ());
+        SeatEntity sas = new SeatEntity(Location);
 
         if(Rider != null && Rider.isValid()) ((CraftEntity) Rider).getHandle().startRiding(sas, true);
 
-        cw.getHandle().entityManager.addNewEntity(sas);
+        ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(sas);
 
         return sas.getBukkitEntity();
     }

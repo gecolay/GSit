@@ -1,18 +1,21 @@
 package dev.geco.gsit.mcv.v1_18_R2.objects;
 
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+
 import net.minecraft.world.entity.decoration.*;
-import net.minecraft.world.level.Level;
 
 public class SeatEntity extends ArmorStand {
 
-    public SeatEntity(Level world, double d0, double d1, double d2) {
-        super(world, d0, d1, d2);
+    public SeatEntity(Location Location) {
+        super(((CraftWorld) Location.getWorld()).getHandle(), Location.getX(), Location.getY(), Location.getZ());
         setInvisible(true);
         setNoGravity(true);
         setMarker(true);
         setInvulnerable(true);
         setSmall(true);
         setNoBasePlate(true);
+        setRot(Location.getYaw(), Location.getPitch());
     }
 
     public boolean canChangeDimensions() { return false; }
