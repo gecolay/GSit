@@ -215,7 +215,7 @@ public class GPoseSeat implements IGPoseSeat {
 
     private Set<Player> getNearPlayers() {
         HashSet<Player> pl = new HashSet<>();
-        s.getLocation().getWorld().getPlayers().stream().filter(o -> s.getLocation().distance(o.getLocation()) <= 250).forEach(pl::add);
+        s.getLocation().getWorld().getPlayers().stream().filter(o -> s.getLocation().distance(o.getLocation()) <= 250 && o.canSee(s.getPlayer())).forEach(pl::add);
         return pl;
     }
 
