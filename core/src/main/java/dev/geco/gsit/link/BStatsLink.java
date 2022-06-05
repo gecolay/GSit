@@ -45,28 +45,14 @@ public class BStatsLink {
                                     + "performance penalty associated with having metrics enabled, and data sent to bStats is fully\n"
                                     + "anonymous.")
                     .copyDefaults(true);
-            try { config.save(configFile); } catch (IOException ignored) { }
+            try { config.save(configFile); } catch(IOException ignored) { }
         }
         boolean enabled = config.getBoolean("enabled", true);
         String serverUUID = config.getString("serverUuid");
         boolean logErrors = config.getBoolean("logFailedRequests", false);
         boolean logSentData = config.getBoolean("logSentData", false);
         boolean logResponseStatusText = config.getBoolean("logResponseStatusText", false);
-        metricsBase =
-                new MetricsBase(
-                        "bukkit",
-                        serverUUID,
-                        serviceId,
-                        enabled,
-                        this::appendPlatformData,
-                        this::appendServiceData,
-                        submitDataTask -> Bukkit.getScheduler().runTask(plugin, submitDataTask),
-                        plugin::isEnabled,
-                        (message, error) -> this.plugin.getLogger().log(Level.WARNING, message, error),
-                        (message) -> this.plugin.getLogger().log(Level.INFO, message),
-                        logErrors,
-                        logSentData,
-                        logResponseStatusText);
+        metricsBase = new MetricsBase("bukkit", serverUUID, serviceId, enabled, this::appendPlatformData, this::appendServiceData, submitDataTask -> Bukkit.getScheduler().runTask(plugin, submitDataTask), plugin::isEnabled, (message, error) -> this.plugin.getLogger().log(Level.WARNING, message, error), (message) -> this.plugin.getLogger().log(Level.INFO, message), logErrors, logSentData, logResponseStatusText);
     }
 
     public void addCustomChart(CustomChart chart) { metricsBase.addCustomChart(chart); }
@@ -89,7 +75,7 @@ public class BStatsLink {
         try {
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             return onlinePlayersMethod.getReturnType().equals(Collection.class) ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size() : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
-        } catch (Exception e) { return Bukkit.getOnlinePlayers().size(); }
+        } catch(Exception e) { return Bukkit.getOnlinePlayers().size(); }
     }
 
     public static class MetricsBase {
@@ -128,20 +114,7 @@ public class BStatsLink {
 
         private final boolean enabled;
 
-        public MetricsBase(
-                String platform,
-                String serverUuid,
-                int serviceId,
-                boolean enabled,
-                Consumer<JsonObjectBuilder> appendPlatformDataConsumer,
-                Consumer<JsonObjectBuilder> appendServiceDataConsumer,
-                Consumer<Runnable> submitTaskConsumer,
-                Supplier<Boolean> checkServiceEnabledSupplier,
-                BiConsumer<String, Throwable> errorLogger,
-                Consumer<String> infoLogger,
-                boolean logErrors,
-                boolean logSentData,
-                boolean logResponseStatusText) {
+        public MetricsBase(String platform, String serverUuid, int serviceId, boolean enabled, Consumer<JsonObjectBuilder> appendPlatformDataConsumer, Consumer<JsonObjectBuilder> appendServiceDataConsumer, Consumer<Runnable> submitTaskConsumer, Supplier<Boolean> checkServiceEnabledSupplier, BiConsumer<String, Throwable> errorLogger, Consumer<String> infoLogger, boolean logErrors, boolean logSentData, boolean logResponseStatusText) {
             this.platform = platform;
             this.serverUuid = serverUuid;
             this.serviceId = serviceId;
@@ -200,7 +173,7 @@ public class BStatsLink {
                     () -> {
                         try {
                             sendData(data);
-                        } catch (Exception e) {
+                        } catch(Exception e) {
                             if(logErrors) errorLogger.accept("Could not submit bStats metrics data", e);
                         }
                     });
@@ -223,15 +196,13 @@ public class BStatsLink {
             StringBuilder builder = new StringBuilder();
             try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 String line;
-                while((line = bufferedReader.readLine()) != null) {
-                    builder.append(line);
-                }
+                while((line = bufferedReader.readLine()) != null) { builder.append(line); }
             }
             if(logResponseStatusText) infoLogger.accept("Sent data to bStats and received response: " + builder);
         }
 
         private void checkRelocation() {
-            if (System.getProperty("bstats.relocatecheck") == null || !System.getProperty("bstats.relocatecheck").equals("false")) {
+            if(System.getProperty("bstats.relocatecheck") == null || !System.getProperty("bstats.relocatecheck").equals("false")) {
                 final String defaultPackage = new String(new byte[] {'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's'});
                 final String examplePackage = new String(new byte[] {'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
                 if(MetricsBase.class.getPackage().getName().startsWith(defaultPackage) || MetricsBase.class.getPackage().getName().startsWith(examplePackage)) throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
@@ -241,9 +212,7 @@ public class BStatsLink {
         private static byte[] compress(final String str) throws IOException {
             if(str == null) return null;
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            try(GZIPOutputStream gzip = new GZIPOutputStream(outputStream)) {
-                gzip.write(str.getBytes(StandardCharsets.UTF_8));
-            }
+            try(GZIPOutputStream gzip = new GZIPOutputStream(outputStream)) { gzip.write(str.getBytes(StandardCharsets.UTF_8)); }
             return outputStream.toByteArray();
         }
     }
@@ -407,7 +376,7 @@ public class BStatsLink {
             Map<String, int[]> map = callable.call();
             if(map == null || map.isEmpty()) return null;
             boolean allSkipped = true;
-            for (Map.Entry<String, int[]> entry : map.entrySet()) {
+            for(Map.Entry<String, int[]> entry : map.entrySet()) {
                 if(entry.getValue().length == 0) continue;
                 allSkipped = false;
                 valuesBuilder.appendField(entry.getKey(), entry.getValue());
@@ -466,10 +435,7 @@ public class BStatsLink {
 
         public JsonObjectBuilder appendField(String key, String[] values) {
             if(values == null) throw new IllegalArgumentException("JSON values must not be null");
-            String escapedValues =
-                    Arrays.stream(values)
-                            .map(value -> "\"" + escape(value) + "\"")
-                            .collect(Collectors.joining(","));
+            String escapedValues = Arrays.stream(values).map(value -> "\"" + escape(value) + "\"").collect(Collectors.joining(","));
             appendFieldUnescaped(key, "[" + escapedValues + "]");
             return this;
         }
