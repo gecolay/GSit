@@ -1,8 +1,6 @@
 package dev.geco.gsit.manager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -30,22 +28,9 @@ public class PlayerSitManager implements IPlayerSitManager {
 
         if(pplapse.isCancelled()) return false;
 
-        AreaEffectCloud sa = Target.getWorld().spawn(Target.getLocation(), AreaEffectCloud.class, b -> {
-            try { b.setRadius(0); } catch(Exception ignored) { }
-            try { b.setGravity(false); } catch(Exception ignored) { }
-            try { b.setInvulnerable(true); } catch(Exception ignored) { }
-            try { b.setDuration(Integer.MAX_VALUE); } catch(Exception ignored) { }
-            try { b.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch(Exception ignored) { }
-            try { b.setWaitTime(0); } catch(Exception ignored) { }
-        });
+        if(!GPM.getSpawnUtil().checkLocation(Target.getLocation())) return false;
 
-        if(sa.isValid()) {
-
-            sa.addPassenger(Player);
-
-        } else return false;
-
-        Target.addPassenger(sa);
+        Entity sa = GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
 
         if(GPM.getCManager().PS_SHOW_SIT_MESSAGE) GPM.getPlayerUtil().send(Player, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-playersit-info")));
 

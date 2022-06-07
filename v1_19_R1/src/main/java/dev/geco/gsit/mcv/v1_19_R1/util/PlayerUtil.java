@@ -1,10 +1,10 @@
 package dev.geco.gsit.mcv.v1_19_R1.util;
 
-import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.craftbukkit.v1_19_R1.entity.*;
 
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 
 import net.minecraft.server.level.ServerPlayer;

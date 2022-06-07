@@ -9,8 +9,10 @@ public interface ISpawnUtil {
 
     boolean checkLocation(Location Location);
 
-    Entity createSeatEntity(Location Location);
+    boolean checkPlayerLocation(Entity Holder);
 
     Entity createSeatEntity(Location Location, Entity Rider);
+
+    Entity createPlayerSeatEntity(Entity Holder, Entity Rider);
 
 }

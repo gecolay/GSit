@@ -1,6 +1,5 @@
 package dev.geco.gsit.mcv.v1_19_R1.util;
 
-import dev.geco.gsit.mcv.v1_19_R1.objects.SeatEntity;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
@@ -15,7 +14,7 @@ public class SpawnUtil implements ISpawnUtil {
 
     public boolean checkLocation(Location Location) { return true; }
 
-    public Entity createSeatEntity(Location Location) { return createSeatEntity(Location, null); }
+    public boolean checkPlayerLocation(Entity Holder) { return true; }
 
     public Entity createSeatEntity(Location Location, Entity Rider) {
 
@@ -24,6 +23,22 @@ public class SpawnUtil implements ISpawnUtil {
         if(Rider != null && Rider.isValid()) ((CraftEntity) Rider).getHandle().startRiding(sas, true);
 
         ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(sas);
+
+        return sas.getBukkitEntity();
+    }
+
+    public Entity createPlayerSeatEntity(Entity Holder, Entity Rider) {
+
+        PlayerSeatEntity sas = new PlayerSeatEntity(Holder.getLocation());
+
+        if(Rider != null && Rider.isValid()) {
+
+            sas.startRiding(((CraftEntity) Holder).getHandle(), true);
+
+            ((CraftEntity) Rider).getHandle().startRiding(sas, true);
+        }
+
+        ((CraftWorld) Holder.getWorld()).getHandle().entityManager.addNewEntity(sas);
 
         return sas.getBukkitEntity();
     }
