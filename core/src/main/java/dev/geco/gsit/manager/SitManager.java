@@ -191,7 +191,7 @@ public class SitManager implements ISitManager {
 
         if(Seat.getEntity().isValid()) {
 
-            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().pos(Seat.getPlayer(), l);
+            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().pos(Seat.getEntity(), l);
 
             Seat.getEntity().remove();
         }
