@@ -22,10 +22,10 @@ public class CManager {
 
     public boolean ALLOW_UNSAFE;
 
-    public boolean REST_SAME_BLOCK;
+    public boolean SAME_BLOCK_REST;
 
+    public boolean BLOCK_CENTER;
 
-    public boolean S_BLOCK_CENTER;
 
     public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
 
@@ -38,9 +38,9 @@ public class CManager {
     public boolean S_DEFAULT_SIT_MODE;
 
 
-    public boolean PS_USE_PLAYERSIT;
+    public boolean PS_ALLOW_SIT;
 
-    public boolean PS_USE_PLAYERSIT_NPC;
+    public boolean PS_ALLOW_SIT_NPC;
 
     public long PS_MAX_STACK;
 
@@ -60,7 +60,7 @@ public class CManager {
 
     public boolean P_INTERACT;
 
-    public boolean P_LAY_RESET_TIME_SINCE_REST;
+    public boolean P_LAY_REST;
 
     public boolean P_LAY_SNORING_SOUNDS;
 
@@ -97,9 +97,9 @@ public class CManager {
         GET_UP_RETURN = GPM.getConfig().getBoolean("Options.get-up-return", false);
         GET_UP_BREAK = GPM.getConfig().getBoolean("Options.get-up-break", true);
         ALLOW_UNSAFE = GPM.getConfig().getBoolean("Options.allow-unsafe", false);
-        REST_SAME_BLOCK = GPM.getConfig().getBoolean("Options.rest-same-block", false);
-
-        S_BLOCK_CENTER = GPM.getConfig().getBoolean("Options.Sit.block-center", true);
+        SAME_BLOCK_REST = GPM.getConfig().getBoolean("Options.same-block-rest", false);
+        BLOCK_CENTER = GPM.getConfig().getBoolean("Options.block-center", true);
+        
         S_SITMATERIALS.clear();
         for(String s : GPM.getConfig().getStringList("Options.Sit.SitMaterials")) {
             try {
@@ -116,8 +116,8 @@ public class CManager {
         S_SHOW_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.show-sit-message", true);
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);
 
-        PS_USE_PLAYERSIT = GPM.getConfig().getBoolean("Options.PlayerSit.use-playersit", false);
-        PS_USE_PLAYERSIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.use-playersit-npc", false);
+        PS_ALLOW_SIT = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit", false);
+        PS_ALLOW_SIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit-npc", false);
         PS_MAX_STACK = GPM.getConfig().getLong("Options.PlayerSit.max-stack", 0);
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
         PS_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.PlayerSit.empty-hand-only", true);
@@ -127,7 +127,7 @@ public class CManager {
         P_BLOCK_CENTER = GPM.getConfig().getBoolean("Options.Pose.block-center", true);
         P_SHOW_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.show-pose-message", true);
         P_INTERACT = GPM.getConfig().getBoolean("Options.Pose.interact", false);
-        P_LAY_RESET_TIME_SINCE_REST = GPM.getConfig().getBoolean("Options.Pose.lay-reset-time-since-rest", true);
+        P_LAY_REST = GPM.getConfig().getBoolean("Options.Pose.lay-rest", true);
         P_LAY_SNORING_SOUNDS = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-sounds", true);
         P_LAY_SNORING_NIGHT_ONLY = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-night-only", true);
         P_LAY_NIGHT_SKIP = GPM.getConfig().getBoolean("Options.Pose.lay-night-skip", false);

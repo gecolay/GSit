@@ -63,7 +63,7 @@ public class PlayerSitEvents implements Listener {
 
         Player t = (Player) E;
 
-        if(!GPM.getCManager().PS_USE_PLAYERSIT && !GPM.getCManager().PS_USE_PLAYERSIT_NPC) return;
+        if(!GPM.getCManager().PS_ALLOW_SIT && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
 
         if(!GPM.getPManager().hasNormalPermission(p, "PlayerSit")) return;
 
@@ -95,9 +95,9 @@ public class PlayerSitEvents implements Listener {
 
         boolean n = GPM.getPassengerUtil().isNPC(z);
 
-        if(n && !GPM.getCManager().PS_USE_PLAYERSIT_NPC) return;
+        if(n && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
 
-        if(!n && !GPM.getCManager().PS_USE_PLAYERSIT) return;
+        if(!n && !GPM.getCManager().PS_ALLOW_SIT) return;
 
         boolean r = GPM.getPlayerSitManager().sitOnPlayer(p, z);
 

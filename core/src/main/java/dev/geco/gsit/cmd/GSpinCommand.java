@@ -36,7 +36,7 @@ public class GSpinCommand implements CommandExecutor {
                                     if(GPM.getCManager().ALLOW_UNSAFE || (b.getRelative(BlockFace.UP).isPassable() && (!b.isPassable() || !GPM.getCManager().P_BLOCK_CENTER))) {
                                         if(GPM.getPlotSquared() == null || GPM.getPlotSquared().canCreateSeat(b.getLocation(), p)) {
                                             if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().POSE_FLAG)) {
-                                                if(GPM.getCManager().REST_SAME_BLOCK || GPM.getPoseManager().kickPose(b, p)) {
+                                                if(GPM.getCManager().SAME_BLOCK_REST || GPM.getPoseManager().kickPose(b, p)) {
                                                     IGPoseSeat v = GPM.getPoseManager().createPose(b, p, Pose.SPIN_ATTACK);
                                                     if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
                                                 } else GPM.getMManager().sendMessage(s, "Messages.action-pose-kick-error");

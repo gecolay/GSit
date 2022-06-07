@@ -171,7 +171,7 @@ public class GPoseSeat implements IGPoseSeat {
         cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), new CompoundTag());
         if(p == Pose.SLEEPING) {
             if(GPM.getCManager().P_LAY_NIGHT_SKIP) s.getPlayer().setSleepingIgnored(true);
-            if(GPM.getCManager().P_LAY_RESET_TIME_SINCE_REST) s.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
+            if(GPM.getCManager().P_LAY_REST) s.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
         }
         for(Player z : a) spawnToPlayer(z);
         Bukkit.getPluginManager().registerEvents(li, GPM);

@@ -29,22 +29,23 @@ Options:
   allow-unsafe: false
 
   # Defines whether more than one player can sit or pose on the same block
-  rest-same-block: false
+  same-block-rest: false
+
+  # Defines whether a player is centered on the block when sitting or posing
+  block-center: true
 
   Sit:
-
-    # Defines whether a player is centered on the block when sitting
-    block-center: true
 
     # Defines the blocks a player can sit on by clicking (Materials and Tags)
     # Separate a material or tag from its y-offset with ";". For example, "STONE;0.5" for a y-offset of 0.5 for stone material
     SitMaterials:
-      - "#STAIRS"
-      - "#SLABS"
-      - "#CARPETS"
-      - "MOSS_CARPET"
-      - "BIG_DRIPLEAF"
-      - "SNOW"
+      - "#stairs"
+      - "#slabs"
+      - "#carpets"
+      - "#wool_carpets"
+      - "moss_carpet"
+      - "big_dripleaf"
+      - "snow"
 
     # Defines whether a player needs an empty main hand to sit down by clicking
     empty-hand-only: true
@@ -63,10 +64,10 @@ Options:
   PlayerSit:
 
     # Defines whether a player can right-click to sit on another player
-    use-playersit: false
+    allow-sit: false
 
     # Defines whether a player can right-click to sit on an NPC
-    use-playersit-npc: false
+    allow-sit-npc: false
 
     # Defines the maximum number of players that can be stacked (0 means unlimited!)
     max-stack: 0
@@ -87,9 +88,6 @@ Options:
 
   Pose:
 
-    # Defines whether a player is centered on the block when posing
-    block-center: true
-
     # Defines whether a player should receive a custom message when he starts to pose
     show-pose-message: true
 
@@ -97,7 +95,7 @@ Options:
     interact: false
 
     # Defines whether to reset the time since a player's last rest, which affects his phantom spawn timer
-    lay-reset-time-since-rest: true
+    lay-rest: true
 
     # Defines whether a player makes snoring sounds when lying down
     lay-snoring-sounds: true
@@ -121,10 +119,14 @@ Options:
   rest-team-plots-only: false
 
   # Defines the worlds in which a player cannot sit, pose or crawl
-  WorldBlacklist: []
+  WorldBlacklist:
+  - "blocked_world"
 
   # Defines the list of materials on which a player may not sit or pose
-  MaterialBlacklist: []
+  MaterialBlacklist:
+  - "lava"
 
   # Defines the list of commands that cannot be executed while sitting or posing
-  CommandBlacklist: []
+  CommandBlacklist:
+  - "skin"
+  - "nick"
