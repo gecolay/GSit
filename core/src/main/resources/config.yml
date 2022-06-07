@@ -32,20 +32,20 @@ Options:
   same-block-rest: false
 
   # Defines whether a player is centered on the block when sitting or posing
-  block-center: true
+  center-block: true
 
   Sit:
 
     # Defines the blocks a player can sit on by clicking (Materials and Tags)
     # Separate a material or tag from its y-offset with ";". For example, "STONE;0.5" for a y-offset of 0.5 for stone material
     SitMaterials:
-      - "#stairs"
-      - "#slabs"
-      - "#carpets"
-      - "#wool_carpets"
-      - "moss_carpet"
-      - "big_dripleaf"
-      - "snow"
+    - "#stairs"
+    - "#slabs"
+    - "#carpets"
+    - "#wool_carpets"
+    - "moss_carpet"
+    - "big_dripleaf"
+    - "snow"
 
     # Defines whether a player needs an empty main hand to sit down by clicking
     empty-hand-only: true

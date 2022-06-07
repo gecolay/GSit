@@ -71,7 +71,7 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && p.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 
-        if(!p.isValid() || !p.isOnGround() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
+        if(!p.isValid() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
 
         if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) return;
 

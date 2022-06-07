@@ -24,7 +24,7 @@ public class CManager {
 
     public boolean SAME_BLOCK_REST;
 
-    public boolean BLOCK_CENTER;
+    public boolean CENTER_BLOCK;
 
 
     public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
@@ -95,7 +95,7 @@ public class CManager {
         GET_UP_BREAK = GPM.getConfig().getBoolean("Options.get-up-break", true);
         ALLOW_UNSAFE = GPM.getConfig().getBoolean("Options.allow-unsafe", false);
         SAME_BLOCK_REST = GPM.getConfig().getBoolean("Options.same-block-rest", false);
-        BLOCK_CENTER = GPM.getConfig().getBoolean("Options.block-center", true);
+        CENTER_BLOCK = GPM.getConfig().getBoolean("Options.center-block", true);
 
         S_SITMATERIALS.clear();
         for(String s : GPM.getConfig().getStringList("Options.Sit.SitMaterials")) {
