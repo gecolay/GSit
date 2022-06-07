@@ -10,8 +10,6 @@ import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.md_5.bungee.api.ChatMessageType;
-
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.api.event.*;
@@ -88,7 +86,7 @@ public class SitManager implements ISitManager {
 
         Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
 
-        if(GPM.getCManager().S_SHOW_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
+        if(GPM.getCManager().S_SHOW_SIT_MESSAGE) GPM.getPlayerUtil().send(Player, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
 
@@ -123,7 +121,7 @@ public class SitManager implements ISitManager {
 
                 if(NMSManager.isNewerOrVersion(17, 0)) {
 
-                    GPM.getTeleportUtil().pos(Seat.getEntity(), Seat.getLocation());
+                    GPM.getPlayerUtil().pos(Seat.getEntity(), Seat.getLocation());
                 } else {
 
                     try {
@@ -198,9 +196,9 @@ public class SitManager implements ISitManager {
 
         if(Seat.getPlayer().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) {
 
-            GPM.getTeleportUtil().pos(Seat.getPlayer(), l);
+            GPM.getPlayerUtil().pos(Seat.getPlayer(), l);
 
-            GPM.getTeleportUtil().teleport(Seat.getPlayer(), l, true);
+            GPM.getPlayerUtil().teleport(Seat.getPlayer(), l, true);
         }
 
         if(Seat.getEntity().isValid()) {

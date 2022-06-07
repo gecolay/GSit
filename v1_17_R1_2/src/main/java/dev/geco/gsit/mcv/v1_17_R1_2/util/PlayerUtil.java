@@ -1,15 +1,18 @@
-package dev.geco.gsit.mcv.v1_19_R1.util;
+package dev.geco.gsit.mcv.v1_17_R1_2.util;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.craftbukkit.v1_19_R1.entity.*;
+import org.bukkit.craftbukkit.v1_17_R1.entity.*;
+
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.protocol.game.*;
 
 import dev.geco.gsit.objects.*;
 
-public class TeleportUtil implements ITeleportUtil {
+public class PlayerUtil implements IPlayerUtil {
 
     public void teleport(Player P, Location L) { teleport(P, L, false); }
 
@@ -23,5 +26,7 @@ public class TeleportUtil implements ITeleportUtil {
     }
 
     public void pos(org.bukkit.entity.Entity E, Location L) { ((CraftEntity) E).getHandle().setPos(L.getX(), L.getY(), L.getZ()); }
+
+    public void send(Player P, BaseComponent... M) { P.spigot().sendMessage(ChatMessageType.ACTION_BAR, M); }
 
 }

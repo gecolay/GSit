@@ -10,8 +10,6 @@ import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.md_5.bungee.api.ChatMessageType;
-
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.mcv.v1_18_R2.objects.*;
@@ -89,7 +87,7 @@ public class PoseManager implements IPoseManager {
 
         Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
 
-        if(GPM.getCManager().P_SHOW_POSE_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
+        if(GPM.getCManager().P_SHOW_POSE_MESSAGE) GPM.getPlayerUtil().send(Player, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
 
@@ -174,9 +172,9 @@ public class PoseManager implements IPoseManager {
 
         if(PoseSeat.getSeat().getPlayer().isValid() && Safe) {
 
-            GPM.getTeleportUtil().pos(PoseSeat.getSeat().getPlayer(), l);
+            GPM.getPlayerUtil().pos(PoseSeat.getSeat().getPlayer(), l);
 
-            GPM.getTeleportUtil().teleport(PoseSeat.getSeat().getPlayer(), l, true);
+            GPM.getPlayerUtil().teleport(PoseSeat.getSeat().getPlayer(), l, true);
         }
 
         if(PoseSeat.getSeat().getEntity().isValid()) PoseSeat.getSeat().getEntity().remove();

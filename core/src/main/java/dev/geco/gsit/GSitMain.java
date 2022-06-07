@@ -80,9 +80,9 @@ public class GSitMain extends JavaPlugin {
 
     public ISpawnUtil getSpawnUtil() { return spawnutil; }
 
-    private ITeleportUtil teleportutil;
+    private IPlayerUtil playerutil;
 
-    public ITeleportUtil getTeleportUtil() { return teleportutil; }
+    public IPlayerUtil getPlayerUtil() { return playerutil; }
 
     private PAPILink papilink;
 
@@ -164,7 +164,7 @@ public class GSitMain extends JavaPlugin {
         playersitmanager = new PlayerSitManager(getInstance());
         crawlmanager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
         spawnutil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("gsit", "util.SpawnUtil", null) : new SpawnUtil();
-        teleportutil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("gsit", "util.TeleportUtil", null) : null;
+        playerutil = NMSManager.isNewerOrVersion(17, 0) ? (IPlayerUtil) NMSManager.getPackageObject("gsit", "util.PlayerUtil", null) : new PlayerUtil();
         getCommand("gsit").setExecutor(new GSitCommand(getInstance()));
         getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));
         getCommand("glay").setExecutor(new GLayCommand(getInstance()));
