@@ -56,7 +56,7 @@ public class PoseManager implements IPoseManager {
         return true;
     }
 
-    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().P_BLOCK_CENTER, GPM.getCManager().GET_UP_SNEAK); }
+    public IGPoseSeat createPose(Block Block, Player Player, Pose Pose) { return createPose(Block, Player, Pose, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().BLOCK_CENTER, GPM.getCManager().GET_UP_SNEAK); }
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
 

@@ -53,9 +53,6 @@ public class CManager {
     public boolean PS_DEFAULT_SIT_MODE;
 
 
-
-    public boolean P_BLOCK_CENTER;
-
     public boolean P_SHOW_POSE_MESSAGE;
 
     public boolean P_INTERACT;
@@ -99,7 +96,7 @@ public class CManager {
         ALLOW_UNSAFE = GPM.getConfig().getBoolean("Options.allow-unsafe", false);
         SAME_BLOCK_REST = GPM.getConfig().getBoolean("Options.same-block-rest", false);
         BLOCK_CENTER = GPM.getConfig().getBoolean("Options.block-center", true);
-        
+
         S_SITMATERIALS.clear();
         for(String s : GPM.getConfig().getStringList("Options.Sit.SitMaterials")) {
             try {
@@ -124,7 +121,6 @@ public class CManager {
         PS_SHOW_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.show-sit-message", true);
         PS_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.PlayerSit.default-sit-mode", true);
 
-        P_BLOCK_CENTER = GPM.getConfig().getBoolean("Options.Pose.block-center", true);
         P_SHOW_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.show-pose-message", true);
         P_INTERACT = GPM.getConfig().getBoolean("Options.Pose.interact", false);
         P_LAY_REST = GPM.getConfig().getBoolean("Options.Pose.lay-rest", true);
