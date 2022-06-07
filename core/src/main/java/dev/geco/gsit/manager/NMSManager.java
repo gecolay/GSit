@@ -54,19 +54,6 @@ public class NMSManager {
         return V.length > 1 && (V.length > 2 ? Long.parseLong(V[1]) == Version && Long.parseLong(V[2]) == SubVersion : Long.parseLong(V[1]) == Version);
     }
 
-    public static boolean isNMSCompatible() {
-        try {
-            Class.forName("net.minecraft.server.level.EntityPlayer");
-            return true;
-        } catch(Exception e) {
-            try {
-                Class.forName("net.minecraft.server." + getClassVersion() + ".Entity");
-                return true;
-            } catch(Exception ignored) { }
-        }
-        return false;
-    }
-
     public static Field getField(Class<?> Class, String Field) {
         try {
             Field F = Class.getDeclaredField(Field);
@@ -82,10 +69,7 @@ public class NMSManager {
         try {
             Class<?> sm = Class.forName("dev.geco." + Name + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
             return O == null ? sm.getConstructor().newInstance() : sm.getConstructor(O.getClass()).newInstance(O);
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        } catch(Exception e) { return null; }
     }
 
     public static Class<?> getNMSClass(String ClassName) {

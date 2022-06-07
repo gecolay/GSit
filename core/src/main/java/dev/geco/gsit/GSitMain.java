@@ -239,15 +239,9 @@ public class GSitMain extends JavaPlugin {
     }
 
     private boolean versionCheck() {
-        List<String> version_list = new ArrayList<>(); {
-            version_list.add("v1_17_R1");
-            version_list.add("v1_18_R1");
-            version_list.add("v1_18_R2");
-        }
-        String v = Bukkit.getServer().getClass().getPackage().getName();
-        v = v.substring(v.lastIndexOf('.') + 1);
-        if(!NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !version_list.contains(v)) || !NMSManager.isNMSCompatible()) {
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", v);
+        if(!NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) == null)) {
+            String v = Bukkit.getServer().getClass().getPackage().getName();
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", v.substring(v.lastIndexOf('.') + 1));
             updateCheck();
             Bukkit.getPluginManager().disablePlugin(getInstance());
             return false;
