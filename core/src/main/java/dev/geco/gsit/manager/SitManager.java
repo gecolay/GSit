@@ -119,19 +119,7 @@ public class SitManager implements ISitManager {
 
                 GPM.getSitUtil().setSeatBlock(Seat.getBlock(), Seat);
 
-                if(NMSManager.isNewerOrVersion(17, 0)) {
-
-                    GPM.getPlayerUtil().pos(Seat.getEntity(), Seat.getLocation());
-                } else {
-
-                    try {
-
-                        Object sa = NMSManager.getHandle(Seat.getEntity());
-
-                        NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, Seat.getLocation().getX(), Seat.getLocation().getY(), Seat.getLocation().getZ());
-
-                    } catch(Exception e) { e.printStackTrace(); }
-                }
+                GPM.getPlayerUtil().pos(Seat.getEntity(), Seat.getLocation());
             }
         }.runTaskLater(GPM, 0);
     }
@@ -203,16 +191,7 @@ public class SitManager implements ISitManager {
 
         if(Seat.getEntity().isValid()) {
 
-            if(!NMSManager.isNewerOrVersion(17, 0)) {
-
-                try {
-
-                    Object sa = NMSManager.getHandle(Seat.getEntity());
-
-                    NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, l.getX(), l.getY(), l.getZ());
-
-                } catch(Exception e) { e.printStackTrace(); }
-            }
+            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().pos(Seat.getPlayer(), l);
 
             Seat.getEntity().remove();
         }
