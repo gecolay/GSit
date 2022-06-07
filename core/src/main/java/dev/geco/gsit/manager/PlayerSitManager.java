@@ -28,7 +28,7 @@ public class PlayerSitManager implements IPlayerSitManager {
 
         if(pplapse.isCancelled()) return false;
 
-        if(!GPM.getSpawnUtil().checkLocation(Target.getLocation())) return false;
+        if(!GPM.getSpawnUtil().checkPlayerLocation(Target)) return false;
 
         Entity sa = GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
 
