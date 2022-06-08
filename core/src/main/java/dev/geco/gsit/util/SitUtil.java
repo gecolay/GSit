@@ -2,6 +2,7 @@ package dev.geco.gsit.util;
 
 import java.util.*;
 
+import dev.geco.gsit.manager.ISitManager;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;

@@ -37,7 +37,7 @@ Options:
   Sit:
 
     # Defines the blocks a player can sit on by clicking (Materials and Tags)
-    # Separate a material or tag from its y-offset with ";". For example, "STONE;0.5" for a y-offset of 0.5 for stone material
+    # Separate a material or tag from its y-offset with a ; character "stone;0.5" to get a y-offset of 0.5 for the material
     SitMaterials:
     - "#stairs"
     - "#slabs"

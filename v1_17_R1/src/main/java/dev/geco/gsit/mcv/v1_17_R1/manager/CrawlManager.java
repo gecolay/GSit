@@ -2,6 +2,7 @@ package dev.geco.gsit.mcv.v1_17_R1.manager;
 
 import java.util.*;
 
+import dev.geco.gsit.manager.ICrawlManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

@@ -14,7 +14,6 @@ import dev.geco.gsit.cmd.tab.*;
 import dev.geco.gsit.events.*;
 import dev.geco.gsit.link.*;
 import dev.geco.gsit.manager.*;
-import dev.geco.gsit.objects.*;
 import dev.geco.gsit.util.*;
 import dev.geco.gsit.values.*;
 
@@ -104,7 +103,7 @@ public class GSitMain extends JavaPlugin {
 
     public static GSitMain getInstance() { return GPM; }
 
-    private void setupSettings() {
+    private void loadSettings() {
         copyLangFiles();
         messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
         prefix = getMessages().getString("Plugin.plugin-prefix");
@@ -147,6 +146,8 @@ public class GSitMain extends JavaPlugin {
         umanager = new UManager(getInstance(), RESOURCE);
         pmanager = new PManager(getInstance());
         mmanager = new MManager(getInstance());
+        sitmanager = new SitManager(getInstance());
+        playersitmanager = new PlayerSitManager(getInstance());
         togglemanager = new ToggleManager(getInstance());
         passengerutil = new PassengerUtil(getInstance());
         situtil = new SitUtil(getInstance());
@@ -159,28 +160,17 @@ public class GSitMain extends JavaPlugin {
 
     public void onEnable() {
         if(!versionCheck()) return;
-        sitmanager = new SitManager(getInstance());
         posemanager = NMSManager.isNewerOrVersion(17, 0) ? (IPoseManager) NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) : null;
-        playersitmanager = new PlayerSitManager(getInstance());
         crawlmanager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
         spawnutil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("gsit", "util.SpawnUtil", null) : new SpawnUtil();
         playerutil = NMSManager.isNewerOrVersion(17, 0) ? (IPlayerUtil) NMSManager.getPackageObject("gsit", "util.PlayerUtil", null) : new PlayerUtil();
-        getCommand("gsit").setExecutor(new GSitCommand(getInstance()));
-        getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));
-        getCommand("glay").setExecutor(new GLayCommand(getInstance()));
-        getCommand("gbellyflop").setExecutor(new GBellyFlopCommand(getInstance()));
-        getCommand("gspin").setExecutor(new GSpinCommand(getInstance()));
-        getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
-        getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
-        getServer().getPluginManager().registerEvents(new PlayerEvents(getInstance()), getInstance());
-        getServer().getPluginManager().registerEvents(new PlayerSitEvents(getInstance()), getInstance());
-        getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
-        getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
-        setupSettings();
+        setupCommands();
+        setupEvents();
+        loadSettings();
         linkBStats();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
         loadPluginDepends(Bukkit.getConsoleSender());
-        updateCheck();
+        checkForUpdates();
     }
 
     public void onDisable() {
@@ -190,6 +180,28 @@ public class GSitMain extends JavaPlugin {
         getToggleManager().saveToggleData();
         if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
+    }
+
+    private void setupCommands() {
+        getCommand("gsit").setExecutor(new GSitCommand(getInstance()));
+        getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));
+        getCommand("glay").setExecutor(new GLayCommand(getInstance()));
+        getCommand("glay").setTabCompleter(new EmptyTabComplete());
+        getCommand("gbellyflop").setExecutor(new GBellyFlopCommand(getInstance()));
+        getCommand("gbellyflop").setTabCompleter(new EmptyTabComplete());
+        getCommand("gspin").setExecutor(new GSpinCommand(getInstance()));
+        getCommand("gspin").setTabCompleter(new EmptyTabComplete());
+        getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
+        getCommand("gcrawl").setTabCompleter(new EmptyTabComplete());
+        getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
+        getCommand("gsitreload").setTabCompleter(new EmptyTabComplete());
+    }
+
+    private void setupEvents() {
+        getServer().getPluginManager().registerEvents(new PlayerEvents(getInstance()), getInstance());
+        getServer().getPluginManager().registerEvents(new PlayerSitEvents(getInstance()), getInstance());
+        getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
+        getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
     }
 
     private void loadPluginDepends(CommandSender s) {
@@ -212,7 +224,7 @@ public class GSitMain extends JavaPlugin {
         } else wogulink = null;
     }
 
-    public void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pl_pl", "pt_br", "ru_ru", "uk_ua", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }
+    private void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pl_pl", "pt_br", "ru_ru", "uk_ua", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }
 
     public void reload(CommandSender s) {
         reloadConfig();
@@ -222,12 +234,12 @@ public class GSitMain extends JavaPlugin {
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
         getToggleManager().saveToggleData();
         if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
-        setupSettings();
+        loadSettings();
         loadPluginDepends(s);
-        updateCheck();
+        checkForUpdates();
     }
 
-    private void updateCheck() {
+    private void checkForUpdates() {
         if(getCManager().CHECK_FOR_UPDATES) {
             getUManager().checkVersion();
             if(!getUManager().isLatestVersion()) {
@@ -242,7 +254,7 @@ public class GSitMain extends JavaPlugin {
         if(!NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) == null)) {
             String v = Bukkit.getServer().getClass().getPackage().getName();
             getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", v.substring(v.lastIndexOf('.') + 1));
-            updateCheck();
+            checkForUpdates();
             Bukkit.getPluginManager().disablePlugin(getInstance());
             return false;
         }

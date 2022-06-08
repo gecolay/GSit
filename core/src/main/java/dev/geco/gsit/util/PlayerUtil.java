@@ -3,11 +3,7 @@ package dev.geco.gsit.util;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
-
 import dev.geco.gsit.manager.*;
-import dev.geco.gsit.objects.*;
 
 public class PlayerUtil implements IPlayerUtil {
 
@@ -25,7 +21,5 @@ public class PlayerUtil implements IPlayerUtil {
 
         } catch(Exception e) { e.printStackTrace(); }
     }
-
-    public void send(Player P, BaseComponent... M) { P.spigot().sendMessage(ChatMessageType.ACTION_BAR, M); }
 
 }

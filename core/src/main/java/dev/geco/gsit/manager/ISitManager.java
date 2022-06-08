@@ -1,7 +1,9 @@
-package dev.geco.gsit.objects;
+package dev.geco.gsit.manager;
 
 import java.util.*;
 
+import dev.geco.gsit.objects.GSeat;
+import dev.geco.gsit.objects.GetUpReason;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;

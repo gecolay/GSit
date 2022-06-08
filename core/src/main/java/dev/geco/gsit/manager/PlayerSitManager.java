@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import net.md_5.bungee.api.ChatMessageType;
+
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.api.event.*;
@@ -32,7 +34,7 @@ public class PlayerSitManager implements IPlayerSitManager {
 
         Entity sa = GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
 
-        if(GPM.getCManager().PS_SHOW_SIT_MESSAGE) GPM.getPlayerUtil().send(Player, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-playersit-info")));
+        if(GPM.getCManager().PS_SHOW_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-playersit-info")));
 
         sa.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, Player));
 

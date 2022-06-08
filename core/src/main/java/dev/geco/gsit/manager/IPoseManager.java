@@ -1,7 +1,9 @@
-package dev.geco.gsit.objects;
+package dev.geco.gsit.manager;
 
 import java.util.*;
 
+import dev.geco.gsit.objects.GetUpReason;
+import dev.geco.gsit.objects.IGPoseSeat;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
