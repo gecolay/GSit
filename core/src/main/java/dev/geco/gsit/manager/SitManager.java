@@ -86,7 +86,7 @@ public class SitManager implements ISitManager {
 
         Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
 
-        if(GPM.getCManager().S_SHOW_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
+        if(GPM.getCManager().S_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
 

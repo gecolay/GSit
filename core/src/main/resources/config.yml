@@ -54,7 +54,7 @@ Options:
     max-distance: 0.00
 
     # Defines whether a player should receive a custom message when he starts to sit
-    show-sit-message: true
+    sit-message: true
 
     # Defines whether a player can sit by default without using the sit toggle command
     default-sit-mode: true
@@ -79,7 +79,7 @@ Options:
     empty-hand-only: true
 
     # Defines whether a player should receive a custom message when he starts to sit on another player
-    show-sit-message: true
+    sit-message: true
 
     # Defines whether a player can sit on another player by default without using the sit playertoggle command
     default-sit-mode: true
@@ -89,7 +89,7 @@ Options:
   Pose:
 
     # Defines whether a player should receive a custom message when he starts to pose
-    show-pose-message: true
+    pose-message: true
 
     # Defines whether a player can interact with the environment while posing
     interact: false
@@ -116,7 +116,7 @@ Options:
 
 
   # Defines whether a player can only sit or pose on a plot where he is part of the team
-  rest-team-plots-only: false
+  team-plots-only: false
 
   # Defines the worlds in which a player cannot sit, pose or crawl
   WorldBlacklist:

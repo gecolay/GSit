@@ -34,7 +34,7 @@ public class PlayerSitManager implements IPlayerSitManager {
 
         Entity sa = GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
 
-        if(GPM.getCManager().PS_SHOW_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-playersit-info")));
+        if(GPM.getCManager().PS_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-playersit-info")));
 
         sa.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, Player));
 

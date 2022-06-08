@@ -33,7 +33,7 @@ public class CManager {
 
     public double S_MAX_DISTANCE;
 
-    public boolean S_SHOW_SIT_MESSAGE;
+    public boolean S_SIT_MESSAGE;
 
     public boolean S_DEFAULT_SIT_MODE;
 
@@ -48,12 +48,12 @@ public class CManager {
 
     public boolean PS_EMPTY_HAND_ONLY;
 
-    public boolean PS_SHOW_SIT_MESSAGE;
+    public boolean PS_SIT_MESSAGE;
 
     public boolean PS_DEFAULT_SIT_MODE;
 
 
-    public boolean P_SHOW_POSE_MESSAGE;
+    public boolean P_POSE_MESSAGE;
 
     public boolean P_INTERACT;
 
@@ -69,7 +69,7 @@ public class CManager {
     public boolean C_GET_UP_SNEAK;
 
 
-    public boolean REST_TEAM_PLOTS_ONLY;
+    public boolean TEAM_PLOTS_ONLY;
 
     public List<String> WORLDBLACKLIST = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class CManager {
         }
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
-        S_SHOW_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.show-sit-message", true);
+        S_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.sit-message", true);
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);
 
         PS_ALLOW_SIT = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit", false);
@@ -118,10 +118,10 @@ public class CManager {
         PS_MAX_STACK = GPM.getConfig().getLong("Options.PlayerSit.max-stack", 0);
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
         PS_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.PlayerSit.empty-hand-only", true);
-        PS_SHOW_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.show-sit-message", true);
+        PS_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.sit-message", true);
         PS_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.PlayerSit.default-sit-mode", true);
 
-        P_SHOW_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.show-pose-message", true);
+        P_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.pose-message", true);
         P_INTERACT = GPM.getConfig().getBoolean("Options.Pose.interact", false);
         P_LAY_REST = GPM.getConfig().getBoolean("Options.Pose.lay-rest", true);
         P_LAY_SNORING_SOUNDS = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-sounds", true);
@@ -130,7 +130,7 @@ public class CManager {
 
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
 
-        REST_TEAM_PLOTS_ONLY = GPM.getConfig().getBoolean("Options.rest-team-plots-only", false);
+        TEAM_PLOTS_ONLY = GPM.getConfig().getBoolean("Options.team-plots-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
         MATERIALBLACKLIST.clear();
         for(String s : GPM.getConfig().getStringList("Options.MaterialBlacklist")) {
