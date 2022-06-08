@@ -2,7 +2,7 @@ package dev.geco.gsit.util;
 
 import java.util.*;
 
-import org.bukkit.block.Block;
+import org.bukkit.block.*;
 import org.bukkit.metadata.*;
 
 import dev.geco.gsit.GSitMain;

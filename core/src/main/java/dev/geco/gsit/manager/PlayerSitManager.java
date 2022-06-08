@@ -7,8 +7,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import net.md_5.bungee.api.ChatMessageType;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.*;
 import dev.geco.gsit.api.event.*;
+import dev.geco.gsit.objects.*;
 
 public class PlayerSitManager implements IPlayerSitManager {
 

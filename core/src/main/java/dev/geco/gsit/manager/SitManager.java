@@ -2,9 +2,7 @@ package dev.geco.gsit.manager;
 
 import java.util.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -13,8 +11,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.md_5.bungee.api.ChatMessageType;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.*;
 import dev.geco.gsit.api.event.*;
+import dev.geco.gsit.objects.*;
 
 public class SitManager implements ISitManager {
 

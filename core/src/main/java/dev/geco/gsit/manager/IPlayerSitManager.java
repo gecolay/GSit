@@ -1,7 +1,8 @@
 package dev.geco.gsit.manager;
 
-import dev.geco.gsit.objects.GetUpReason;
 import org.bukkit.entity.*;
+
+import dev.geco.gsit.objects.*;
 
 public interface IPlayerSitManager {
 

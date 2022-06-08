@@ -2,8 +2,6 @@ package dev.geco.gsit.mcv.v1_18_R1.manager;
 
 import java.util.*;
 
-import dev.geco.gsit.manager.IPoseManager;
-import dev.geco.gsit.manager.ISitManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Tag;
@@ -15,9 +13,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.md_5.bungee.api.ChatMessageType;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.api.event.*;
+import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 import dev.geco.gsit.mcv.v1_18_R1.objects.*;
-import dev.geco.gsit.api.event.*;
 
 public class PoseManager implements IPoseManager {
 

@@ -1,6 +1,6 @@
 package dev.geco.gsit.objects;
 
-import org.bukkit.entity.Pose;
+import org.bukkit.entity.*;
 
 public interface IGPoseSeat {
 

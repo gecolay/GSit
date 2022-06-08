@@ -2,11 +2,10 @@ package dev.geco.gsit.manager;
 
 import java.util.*;
 
-import dev.geco.gsit.objects.GSeat;
-import dev.geco.gsit.objects.GetUpReason;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
+
+import dev.geco.gsit.objects.*;
 
 public interface ISitManager {
 

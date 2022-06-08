@@ -13,22 +13,17 @@ import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.*;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.*;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.*;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.server.level.*;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 
