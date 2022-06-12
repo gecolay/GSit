@@ -1,6 +1,6 @@
-name: GSit
-version: 1.1.0
-description: Relax with other players on nice seats!
+name: ${project.parent.name}
+version: ${project.parent.version}
+description: ${project.description}
 author: Gecolay
 website: https://www.spigotmc.org/resources/62325
 main: dev.geco.gsit.GSitMain

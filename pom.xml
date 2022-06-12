@@ -8,7 +8,7 @@
     <artifactId>GSit</artifactId>
     <name>GSit</name>
     <version>1.1.0</version>
-    <description>Relax with your Friends on nice Seats!</description>
+    <description>Relax with other players on nice seats!</description>
     <url>https://www.spigotmc.org/resources/62325</url>
     <packaging>pom</packaging>
 
@@ -23,11 +23,26 @@
     </modules>
 
     <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
