@@ -159,6 +159,7 @@ public class GSitMain extends JavaPlugin {
     }
 
     public void onEnable() {
+        loadSettings();
         if(!versionCheck()) return;
         posemanager = NMSManager.isNewerOrVersion(17, 0) ? (IPoseManager) NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) : null;
         crawlmanager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
@@ -166,7 +167,6 @@ public class GSitMain extends JavaPlugin {
         playerutil = NMSManager.isNewerOrVersion(17, 0) ? (IPlayerUtil) NMSManager.getPackageObject("gsit", "util.PlayerUtil", null) : new PlayerUtil();
         setupCommands();
         setupEvents();
-        loadSettings();
         linkBStats();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
         loadPluginDepends(Bukkit.getConsoleSender());
