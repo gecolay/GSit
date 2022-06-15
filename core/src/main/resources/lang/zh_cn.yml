@@ -20,7 +20,7 @@ Messages:
   command-reload: "[P]&a 配置已成功重载"
   command-permission-error: "[P]&c 你不能执行此命令!"
   command-sender-error: "[P]&c 当前发送人不能执行此命令!"
-  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
+  command-version-error: "[P]&c 服务器版本过旧! (&b%Version%&c)\n[P]&c 更新服务器以使用此功能!"
 
   command-gsit-toggle-on: "[P]&a 你可以通过右键坐下了"
   command-gsit-toggle-off: "[P]&a 你不能通过右键坐下了"
