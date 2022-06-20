@@ -87,10 +87,6 @@ public class GSitMain extends JavaPlugin {
 
     public PAPILink getPlaceholderAPI() { return papilink; }
 
-    private PlSqLink plsqlink;
-
-    public PlSqLink getPlotSquared() { return plsqlink; }
-
     private WoGuLink wogulink;
 
     public WoGuLink getWorldGuard() { return wogulink; }
@@ -210,11 +206,6 @@ public class GSitMain extends JavaPlugin {
             getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
             getPlaceholderAPI().register();
         } else papilink = null;
-        if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
-            plsqlink = new PlSqLink(getInstance());
-            if(getPlotSquared().isVersionSupported()) getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
-            else plsqlink = null;
-        } else plsqlink = null;
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             if(wogulink == null) {
                 wogulink = new WoGuLink(getInstance());

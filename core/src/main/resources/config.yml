@@ -115,9 +115,6 @@ Options:
 
 
 
-  # Defines whether a player can only sit or pose on a plot where he is part of the team
-  team-plots-only: false
-
   # Defines the worlds in which a player cannot sit, pose or crawl
   WorldBlacklist:
   - "blocked_world"

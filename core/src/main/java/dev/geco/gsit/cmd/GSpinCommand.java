@@ -34,13 +34,11 @@ public class GSpinCommand implements CommandExecutor {
                                 Block b = pl.getBlock().isPassable() ? pl.subtract(0, 0.0625, 0).getBlock() : pl.getBlock();
                                 if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {
                                     if(GPM.getCManager().ALLOW_UNSAFE || (b.getRelative(BlockFace.UP).isPassable() && (!b.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
-                                        if(GPM.getPlotSquared() == null || GPM.getPlotSquared().canCreateSeat(b.getLocation(), p)) {
-                                            if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().POSE_FLAG)) {
-                                                if(GPM.getCManager().SAME_BLOCK_REST || GPM.getPoseManager().kickPose(b, p)) {
-                                                    IGPoseSeat v = GPM.getPoseManager().createPose(b, p, Pose.SPIN_ATTACK);
-                                                    if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
-                                                } else GPM.getMManager().sendMessage(s, "Messages.action-pose-kick-error");
-                                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
+                                        if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(b.getLocation(), GPM.getWorldGuard().POSE_FLAG)) {
+                                            if(GPM.getCManager().SAME_BLOCK_REST || GPM.getPoseManager().kickPose(b, p)) {
+                                                IGPoseSeat v = GPM.getPoseManager().createPose(b, p, Pose.SPIN_ATTACK);
+                                                if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
+                                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-kick-error");
                                         } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
                                     } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");

@@ -69,8 +69,6 @@ public class CManager {
     public boolean C_GET_UP_SNEAK;
 
 
-    public boolean TEAM_PLOTS_ONLY;
-
     public List<String> WORLDBLACKLIST = new ArrayList<>();
 
     public final List<Material> MATERIALBLACKLIST = new ArrayList<>();
@@ -130,7 +128,6 @@ public class CManager {
 
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
 
-        TEAM_PLOTS_ONLY = GPM.getConfig().getBoolean("Options.team-plots-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
         MATERIALBLACKLIST.clear();
         for(String s : GPM.getConfig().getStringList("Options.MaterialBlacklist")) {
