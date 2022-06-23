@@ -158,6 +158,8 @@ public class GPoseSeat implements IGPoseSeat {
 
     public void spawn() {
         a = getNearPlayers();
+        f.setGlowingTag(cp.hasGlowingTag());
+        if(cp.hasGlowingTag()) cp.setGlowingTag(false);
         cp.setInvisible(true);
         setEquipmentVisibility(false);
         f.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), cp.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
@@ -199,6 +201,7 @@ public class GPoseSeat implements IGPoseSeat {
         s.getPlayer().setInvisible(false);
         cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), f.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
         cp.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), f.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
+        cp.setGlowingTag(f.hasGlowingTag());
     }
 
     private void removeToPlayer(Player z) {
