@@ -19,6 +19,7 @@ public class WoGuLink {
     public StateFlag PLAYERSIT_FLAG;
     public StateFlag POSE_FLAG;
     public StateFlag CRAWL_FLAG;
+    public StateFlag EMOTE_FLAG;
 
     public void registerFlags() {
 
@@ -77,6 +78,20 @@ public class WoGuLink {
             Flag<?> sf = fr.get("crawl");
             if(sf instanceof StateFlag) {
                 CRAWL_FLAG = (StateFlag) sf;
+            }
+        }
+
+        try {
+
+            StateFlag sf = new StateFlag("emote", true);
+            fr.register(sf);
+            EMOTE_FLAG = sf;
+
+        } catch (FlagConflictException | IllegalStateException e) {
+
+            Flag<?> sf = fr.get("emote");
+            if(sf instanceof StateFlag) {
+                EMOTE_FLAG = (StateFlag) sf;
             }
         }
 

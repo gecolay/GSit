@@ -65,6 +65,8 @@ public class EmoteManager implements IEmoteManager {
 
         if(!available_emotes.contains(Emote) || Emote.getParts().size() == 0) return false;
 
+        if(!stopEmote(Entity)) return false;
+
         Emote.start(Entity);
 
         emotes.put(Entity, Emote);

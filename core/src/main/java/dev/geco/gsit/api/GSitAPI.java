@@ -471,6 +471,16 @@ public class GSitAPI {
     }
 
     /**
+     * Gets all available Emotes
+     * @author Gecolay
+     * @since 1.1.1
+     * @return List of all available Emotes
+     */
+    public static List<GEmote> getAvailableEmotes() {
+        return getInstance().getEmoteManager().getAvailableEmotes();
+    }
+
+    /**
      * Gets the Emote-Object of an Entity
      * @author Gecolay
      * @since 1.1.1

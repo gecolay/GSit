@@ -115,7 +115,7 @@ Options:
 
 
 
-  # Defines the worlds in which a player cannot sit, pose or crawl
+  # Defines the worlds in which a player cannot sit, pose, crawl or emote
   WorldBlacklist:
   - "blocked_world"
 
