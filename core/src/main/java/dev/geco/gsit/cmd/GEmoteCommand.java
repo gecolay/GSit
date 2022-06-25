@@ -28,7 +28,7 @@ public class GEmoteCommand implements CommandExecutor {
                     }
                     GEmote emote = GPM.getEmoteManager().getEmoteByName(a[0]);
                     if(emote != null) {
-                        GPM.getEmoteManager().playEmote(p, emote);
+                        GPM.getEmoteManager().startEmote(p, emote);
                     } else GPM.getMManager().sendMessage(s, "Messages.action-emote-error", "%Emote%", a[0]);
                 }
             } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
