@@ -2,22 +2,24 @@ package dev.geco.gsit.api.event;
 
 import org.jetbrains.annotations.NotNull;
 
-import org.bukkit.block.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
-import org.bukkit.event.player.*;
 
-public class PrePlayerPoseEvent extends PlayerEvent implements Cancellable {
+import dev.geco.gsit.objects.*;
+
+public class PreEntityStopEmoteEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
     private boolean cancel = false;
 
-    private final Block b;
+    private final LivingEntity e;
 
-    public PrePlayerPoseEvent(Player Player, Block Block) {
-        super(Player);
-        b = Block;
+    private final GEmote g;
+
+    public PreEntityStopEmoteEvent(LivingEntity Entity, GEmote Emote) {
+        e = Entity;
+        g = Emote;
     }
 
     public boolean isCancelled() {
@@ -28,7 +30,9 @@ public class PrePlayerPoseEvent extends PlayerEvent implements Cancellable {
         this.cancel = cancel;
     }
 
-    public Block getBlock() { return b; }
+    public LivingEntity getEntity() { return e; }
+
+    public GEmote getEmote() { return g; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

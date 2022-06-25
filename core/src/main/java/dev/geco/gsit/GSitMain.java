@@ -121,7 +121,6 @@ public class GSitMain extends JavaPlugin {
         BStatsLink bstats = new BStatsLink(getInstance(), 4914);
         bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getConfig().getString("Lang.lang", "en_en").toLowerCase()));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> {
-            if(getSitManager() == null) return 0;
             int c = getSitManager().getFeatureUsedCount();
             getSitManager().resetFeatureUsedCount();
             return c;
@@ -133,7 +132,6 @@ public class GSitMain extends JavaPlugin {
             return c;
         }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> {
-            if(getPlayerSitManager() == null) return 0;
             int c = getPlayerSitManager().getFeatureUsedCount();
             getPlayerSitManager().resetFeatureUsedCount();
             return c;
@@ -145,7 +143,6 @@ public class GSitMain extends JavaPlugin {
             return c;
         }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
-            if(getEmoteManager() == null) return 0;
             int c = getEmoteManager().getFeatureUsedCount();
             getEmoteManager().resetFeatureUsedCount();
             return c;

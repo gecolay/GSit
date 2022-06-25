@@ -38,11 +38,11 @@ public class CrawlManager implements ICrawlManager {
 
     public IGCrawl startCrawl(Player Player) {
 
-        PrePlayerCrawlEvent pplace = new PrePlayerCrawlEvent(Player);
+        PrePlayerCrawlEvent preevent = new PrePlayerCrawlEvent(Player);
 
-        Bukkit.getPluginManager().callEvent(pplace);
+        Bukkit.getPluginManager().callEvent(preevent);
 
-        if(pplace.isCancelled()) return null;
+        if(preevent.isCancelled()) return null;
 
         IGCrawl crawl = new GCrawl(Player);
 
@@ -59,11 +59,11 @@ public class CrawlManager implements ICrawlManager {
 
     public boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
 
-        PrePlayerGetUpCrawlEvent pplaguce = new PrePlayerGetUpCrawlEvent(Crawl, Reason);
+        PrePlayerGetUpCrawlEvent preevent = new PrePlayerGetUpCrawlEvent(Crawl, Reason);
 
-        Bukkit.getPluginManager().callEvent(pplaguce);
+        Bukkit.getPluginManager().callEvent(preevent);
 
-        if(pplaguce.isCancelled()) return false;
+        if(preevent.isCancelled()) return false;
 
         crawls.remove(Crawl);
 

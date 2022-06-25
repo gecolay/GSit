@@ -3,7 +3,7 @@ package dev.geco.gsit.api.event;
 import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.event.*;
-import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.*;
 
 import dev.geco.gsit.objects.*;
 

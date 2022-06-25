@@ -3,6 +3,8 @@ package dev.geco.gsit.manager;
 import java.io.*;
 import java.util.*;
 
+import dev.geco.gsit.api.event.*;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
@@ -53,15 +55,23 @@ public class EmoteManager implements IEmoteManager {
 
     public void clearEmotes() { for(LivingEntity e : getEmotes().keySet()) stopEmote(e); }
 
-    public boolean playEmote(LivingEntity Entity, GEmote Emote) {
+    public boolean startEmote(LivingEntity Entity, GEmote Emote) {
+
+        PreEntityEmoteEvent preevent = new PreEntityEmoteEvent(Entity, Emote);
+
+        Bukkit.getPluginManager().callEvent(preevent);
+
+        if(preevent.isCancelled()) return false;
 
         if(!available_emotes.contains(Emote) || Emote.getParts().size() == 0) return false;
 
-        Emote.play(Entity);
+        Emote.start(Entity);
 
         emotes.put(Entity, Emote);
 
         feature_used++;
+
+        Bukkit.getPluginManager().callEvent(new EntityEmoteEvent(Entity, Emote));
 
         return true;
     }
@@ -70,9 +80,19 @@ public class EmoteManager implements IEmoteManager {
 
         if(!isEmoting(Entity)) return true;
 
-        getEmote(Entity).stop(Entity);
+        GEmote emote = getEmote(Entity);
+
+        PreEntityStopEmoteEvent preevent = new PreEntityStopEmoteEvent(Entity, emote);
+
+        Bukkit.getPluginManager().callEvent(preevent);
+
+        if(preevent.isCancelled()) return false;
+
+        emote.stop(Entity);
 
         emotes.remove(Entity);
+
+        Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Entity, emote));
 
         return true;
     }

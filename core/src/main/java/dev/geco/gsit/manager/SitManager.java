@@ -55,11 +55,11 @@ public class SitManager implements ISitManager {
 
     public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
 
-        PrePlayerSitEvent pplase = new PrePlayerSitEvent(Player, Block);
+        PrePlayerSitEvent preevent = new PrePlayerSitEvent(Player, Block);
 
-        Bukkit.getPluginManager().callEvent(pplase);
+        Bukkit.getPluginManager().callEvent(preevent);
 
-        if(pplase.isCancelled()) return null;
+        if(preevent.isCancelled()) return null;
 
         double o = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
@@ -161,11 +161,11 @@ public class SitManager implements ISitManager {
 
     public boolean removeSeat(GSeat Seat, GetUpReason Reason, boolean Safe) {
 
-        PrePlayerGetUpSitEvent pplaguse = new PrePlayerGetUpSitEvent(Seat, Reason);
+        PrePlayerGetUpSitEvent preevent = new PrePlayerGetUpSitEvent(Seat, Reason);
 
-        Bukkit.getPluginManager().callEvent(pplaguse);
+        Bukkit.getPluginManager().callEvent(preevent);
 
-        if(pplaguse.isCancelled()) return false;
+        if(preevent.isCancelled()) return false;
 
         GPM.getSitUtil().removeSeatBlock(Seat.getBlock(), Seat);
 

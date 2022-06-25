@@ -59,11 +59,11 @@ public class PoseManager implements IPoseManager {
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
 
-        PrePlayerPoseEvent pplape = new PrePlayerPoseEvent(Player, Block);
+        PrePlayerPoseEvent preevent = new PrePlayerPoseEvent(Player, Block);
 
-        Bukkit.getPluginManager().callEvent(pplape);
+        Bukkit.getPluginManager().callEvent(preevent);
 
-        if(pplape.isCancelled()) return null;
+        if(preevent.isCancelled()) return null;
 
         double o = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
@@ -150,11 +150,11 @@ public class PoseManager implements IPoseManager {
 
     public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe) {
 
-        PrePlayerGetUpPoseEvent pplagupe = new PrePlayerGetUpPoseEvent(PoseSeat,Reason);
+        PrePlayerGetUpPoseEvent preevent = new PrePlayerGetUpPoseEvent(PoseSeat,Reason);
 
-        Bukkit.getPluginManager().callEvent(pplagupe);
+        Bukkit.getPluginManager().callEvent(preevent);
 
-        if(pplagupe.isCancelled()) return false;
+        if(preevent.isCancelled()) return false;
 
         GPM.getPoseUtil().removePoseBlock(PoseSeat.getSeat().getBlock(), PoseSeat);
 

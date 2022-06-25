@@ -26,7 +26,7 @@ public interface IEmoteManager {
 
     GEmote getEmote(LivingEntity Entity);
 
-    boolean playEmote(LivingEntity Entity, GEmote Emote);
+    boolean startEmote(LivingEntity Entity, GEmote Emote);
 
     boolean stopEmote(LivingEntity Entity);
 

@@ -22,11 +22,11 @@ public class PlayerSitManager implements IPlayerSitManager {
 
     public boolean sitOnPlayer(Player Player, Player Target) {
 
-        PrePlayerPlayerSitEvent pplapse = new PrePlayerPlayerSitEvent(Player, Target);
+        PrePlayerPlayerSitEvent preevent = new PrePlayerPlayerSitEvent(Player, Target);
 
-        Bukkit.getPluginManager().callEvent(pplapse);
+        Bukkit.getPluginManager().callEvent(preevent);
 
-        if(pplapse.isCancelled()) return false;
+        if(preevent.isCancelled()) return false;
 
         if(!GPM.getSpawnUtil().checkPlayerLocation(Target)) return false;
 
@@ -47,11 +47,11 @@ public class PlayerSitManager implements IPlayerSitManager {
 
         if(Entity instanceof Player) {
 
-            PrePlayerGetUpPlayerSitEvent pplagupse = new PrePlayerGetUpPlayerSitEvent((Player) Entity, Reason);
+            PrePlayerGetUpPlayerSitEvent preevent = new PrePlayerGetUpPlayerSitEvent((Player) Entity, Reason);
 
-            Bukkit.getPluginManager().callEvent(pplagupse);
+            Bukkit.getPluginManager().callEvent(preevent);
 
-            if(pplagupse.isCancelled()) return false;
+            if(preevent.isCancelled()) return false;
 
         }
 

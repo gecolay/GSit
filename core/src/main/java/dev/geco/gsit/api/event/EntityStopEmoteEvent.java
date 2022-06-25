@@ -3,22 +3,26 @@ package dev.geco.gsit.api.event;
 import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.objects.*;
 
-public class PlayerSitEvent extends PlayerEvent {
+public class EntityStopEmoteEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final GSeat s;
+    private final LivingEntity e;
 
-    public PlayerSitEvent(GSeat Seat) {
-        super(Seat.getPlayer());
-        s = Seat;
+    private final GEmote g;
+
+    public EntityStopEmoteEvent(LivingEntity Entity, GEmote Emote) {
+        e = Entity;
+        g = Emote;
     }
 
-    public GSeat getSeat() { return s; }
+    public LivingEntity getEntity() { return e; }
+
+    public GEmote getEmote() { return g; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

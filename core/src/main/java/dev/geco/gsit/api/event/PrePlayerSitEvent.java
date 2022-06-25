@@ -2,10 +2,10 @@ package dev.geco.gsit.api.event;
 
 import org.jetbrains.annotations.NotNull;
 
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.*;
-import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.*;
 
 public class PrePlayerSitEvent extends PlayerEvent implements Cancellable {
 

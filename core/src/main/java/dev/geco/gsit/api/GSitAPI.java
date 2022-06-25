@@ -2,11 +2,8 @@ package dev.geco.gsit.api;
 
 import java.util.*;
 
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
@@ -434,7 +431,7 @@ public class GSitAPI {
      * @author Gecolay
      * @since 1.0.0
      * @param Player Player for this Crawl-Object
-     * @return Seat-Object or <code>null</code> if the creation was canceled
+     * @return Crawl-Object or <code>null</code> if the creation was canceled
      */
     public static IGCrawl startCrawl(Player Player) {
         return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().startCrawl(Player) : null;
@@ -450,6 +447,61 @@ public class GSitAPI {
      */
     public static boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
         return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().stopCrawl(Crawl, Reason);
+    }
+
+    /**
+     * Checks if an Entity is currently emoting
+     * @author Gecolay
+     * @since 1.1.1
+     * @param Entity Entity for this Emote-Object
+     * @return <code>true</code> if the Entity is emoting
+     */
+    public static boolean isEmoting(LivingEntity Entity) {
+        return getInstance().getEmoteManager().isEmoting(Entity);
+    }
+
+    /**
+     * Gets all Emote-Objects
+     * @author Gecolay
+     * @since 1.1.1
+     * @return List of all Emote-Objects
+     */
+    public static HashMap<LivingEntity, GEmote> getEmotes() {
+        return getInstance().getEmoteManager().getEmotes();
+    }
+
+    /**
+     * Gets the Emote-Object of an Entity
+     * @author Gecolay
+     * @since 1.1.1
+     * @param Entity Entity for this Emote-Object
+     * @return Emote-Object or <code>null</code> if there was no Emote-Object
+     */
+    public static GEmote getEmote(LivingEntity Entity) {
+        return getInstance().getEmoteManager().getEmote(Entity);
+    }
+
+    /**
+     * Starts an Emote for an Entity
+     * @author Gecolay
+     * @since 1.1.1
+     * @param Entity Entity for this Emote-Object
+     * @param Emote Emote
+     * @return <code>true</code> or <code>false</code> if the creation was canceled
+     */
+    public static boolean startEmote(LivingEntity Entity, GEmote Emote) {
+        return getInstance().getEmoteManager().startEmote(Entity, Emote);
+    }
+
+    /**
+     * Stops an Emote from an Entity
+     * @author Gecolay
+     * @since 1.1.1
+     * @param Entity Entity for this Emote-Object
+     * @return <code>true</code> or <code>false</code> if the deletion was canceled
+     */
+    public static boolean stopEmote(LivingEntity Entity) {
+        return getInstance().getEmoteManager().stopEmote(Entity);
     }
 
 }

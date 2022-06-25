@@ -44,7 +44,7 @@ public class GEmote {
         }
     }
 
-    public void play(LivingEntity Entity) {
+    public void start(LivingEntity Entity) {
 
         if(parts.size() == 0) return;
 
@@ -67,12 +67,12 @@ public class GEmote {
                             Player p = (Player) Entity;
 
                             for(Player t : Entity.getWorld().getPlayers().stream().filter(o -> Entity.getLocation().distance(o.getLocation()) <= range && o.canSee(p)).collect(Collectors.toSet())) {
-                                part.play(t, Entity, isFromHead());
+                                part.start(t, Entity, isFromHead());
                             }
                         } else {
 
                             for(Player t : Entity.getWorld().getPlayers().stream().filter(o -> Entity.getLocation().distance(o.getLocation()) <= range).collect(Collectors.toSet())) {
-                                part.play(t, Entity, isFromHead());
+                                part.start(t, Entity, isFromHead());
                             }
                         }
                     }

@@ -52,7 +52,7 @@ public class GEmotePart {
         return new Vector(l.getX(), 0, l.getZ());
     }
 
-    protected void play(Player Player, LivingEntity Origin, boolean Head) {
+    protected void start(Player Player, LivingEntity Origin, boolean Head) {
 
         if(getParticle() == null) return;
 
