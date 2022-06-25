@@ -82,7 +82,7 @@ public class GEmote {
 
                 if(i >= t) {
                     if(isLoop()) i = 0;
-                    else cancel();
+                    else GSitMain.getInstance().getEmoteManager().stopEmote(Entity);
                 }
             }
         };

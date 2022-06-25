@@ -153,7 +153,6 @@ public class GSitMain extends JavaPlugin {
     }
 
     public void onLoad() {
-        Bukkit.getConsoleSender().sendMessage(Bukkit.getVersion());
         GPM = this;
         saveDefaultConfig();
         cmanager = new CManager(getInstance());

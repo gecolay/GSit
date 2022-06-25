@@ -18,20 +18,20 @@ public class GEmoteCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
         if(s instanceof Player) {
             Player p = (Player) s;
-            if(a.length == 0) {
-                if(GPM.getPManager().hasNormalPermission(s, "Emote")) {
+            if(GPM.getPManager().hasNormalPermission(s, "Emote")) {
+                if(a.length == 0) {
                     GPM.getMManager().sendMessage(s, "Messages.action-emote-none-error");
-                } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
-            } else {
-                if(GPM.getEmoteManager().isEmoting(p)) {
-                    GPM.getEmoteManager().stopEmote(p);
-                    return true;
+                } else {
+                    if(GPM.getEmoteManager().isEmoting(p)) {
+                        GPM.getEmoteManager().stopEmote(p);
+                        return true;
+                    }
+                    GEmote emote = GPM.getEmoteManager().getEmoteByName(a[0]);
+                    if(emote != null) {
+                        GPM.getEmoteManager().playEmote(p, emote);
+                    } else GPM.getMManager().sendMessage(s, "Messages.action-emote-error", "%Emote%", a[0]);
                 }
-                GEmote emote = GPM.getEmoteManager().getEmoteByName(a[0]);
-                if(emote != null) {
-                    GPM.getEmoteManager().playEmote(p, emote);
-                } else GPM.getMManager().sendMessage(s, "Messages.action-emote-error", "%Emote%", a[0]);
-            }
+            } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
         } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
         return true;
     }
