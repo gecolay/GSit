@@ -2,13 +2,10 @@ package dev.geco.gsit.cmd;
 
 import org.jetbrains.annotations.NotNull;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Pose;
+import org.bukkit.*;
+import org.bukkit.block.*;
 import org.bukkit.command.*;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;

@@ -33,9 +33,9 @@ Messages:
   action-sit-safe-error: "[P]&c It's not safe to sit here!"
   action-sit-region-error: "[P]&c You can't sit in this region!"
   action-sit-kick-error: "[P]&c Someone is already sitting here!"
-  action-sit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-sit-info: "&aUse your&6 <lang:key.sneak>&a Key to get up."
 
-  action-playersit-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-playersit-info: "&aUse your&6 <lang:key.sneak>&a Key to get up."
 
   action-pose-now-error: "[P]&c You can't pose right now!"
   action-pose-world-error: "[P]&c You can't pose in this world!"
@@ -43,11 +43,14 @@ Messages:
   action-pose-safe-error: "[P]&c It's not safe to pose here!"
   action-pose-region-error: "[P]&c You can't pose in this region!"
   action-pose-kick-error: "[P]&c Someone is already posing here!"
-  action-pose-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-pose-info: "&aUse your&6 <lang:key.sneak>&a Key to get up."
 
   action-crawl-now-error: "[P]&c You can't crawl right now!"
   action-crawl-world-error: "[P]&c You can't crawl in this world!"
   action-crawl-region-error: "[P]&c You can't crawl in this region!"
-  action-crawl-info: "&aUse your&6 <translatekey:key.sneak>&a Key to get up."
+  action-crawl-info: "&aUse your&6 <lang:key.sneak>&a Key to get up."
+
+  action-emote-none-error: "[P]&c You didn't specify an emote!"
+  action-emote-error: "[P]&c The Emote&6 %Emote%&c does not exist!"
 
   action-blocked-error: "[P]&c You are not allowed to execute this Command right now!"

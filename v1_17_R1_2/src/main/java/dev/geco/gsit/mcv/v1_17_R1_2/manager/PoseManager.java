@@ -7,10 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Tag;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import net.md_5.bungee.api.ChatMessageType;
+import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -90,7 +88,7 @@ public class PoseManager implements IPoseManager {
 
         Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
 
-        if(GPM.getCManager().P_POSE_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-pose-info")));
+        if(GPM.getCManager().P_POSE_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
 

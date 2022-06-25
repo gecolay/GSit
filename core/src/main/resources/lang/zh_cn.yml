@@ -33,9 +33,9 @@ Messages:
   action-sit-safe-error: "[P]&c 你不能在不安全的地方坐下!"
   action-sit-region-error: "[P]&c 你不能在这个区域坐下!"
   action-sit-kick-error: "[P]&c 已经有人在这坐下了!"
-  action-sit-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
+  action-sit-info: "&a使用&6 <lang:key.sneak>&a 键起来"
 
-  action-playersit-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
+  action-playersit-info: "&a使用&6 <lang:key.sneak>&a 键起来"
 
   action-pose-now-error: "[P]&c 你现在不能躺下!"
   action-pose-world-error: "[P]&c 你不能在这个世界躺下!"
@@ -43,11 +43,11 @@ Messages:
   action-pose-safe-error: "[P]&c 你不能在不安全的地方躺下!"
   action-pose-region-error: "[P]&c 你不能在这个区域躺下!"
   action-pose-kick-error: "[P]&c 已经有人在这躺下了!"
-  action-pose-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
+  action-pose-info: "&a使用&6 <lang:key.sneak>&a 键起来"
 
   action-crawl-now-error: "[P]&c 你现在不能爬行!"
   action-crawl-world-error: "[P]&c 你不能在这个世界爬行!"
   action-crawl-region-error: "[P]&c 你不能在这个区域爬行!"
-  action-crawl-info: "&a使用&6 <translatekey:key.sneak>&a 键起来"
+  action-crawl-info: "&a使用&6 <lang:key.sneak>&a 键起来"
 
   action-blocked-error: "[P]&c 你现在不能执行此指令!"

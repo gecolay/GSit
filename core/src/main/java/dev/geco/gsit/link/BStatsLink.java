@@ -45,7 +45,7 @@ public class BStatsLink {
                                     + "performance penalty associated with having metrics enabled, and data sent to bStats is fully\n"
                                     + "anonymous.")
                     .copyDefaults(true);
-            try { config.save(configFile); } catch(IOException ignored) { }
+            try { config.save(configFile); } catch (IOException ignored) { }
         }
         boolean enabled = config.getBoolean("enabled", true);
         String serverUUID = config.getString("serverUuid");
@@ -75,7 +75,7 @@ public class BStatsLink {
         try {
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             return onlinePlayersMethod.getReturnType().equals(Collection.class) ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size() : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
-        } catch(Exception e) { return Bukkit.getOnlinePlayers().size(); }
+        } catch (Exception e) { return Bukkit.getOnlinePlayers().size(); }
     }
 
     public static class MetricsBase {
@@ -173,7 +173,7 @@ public class BStatsLink {
                     () -> {
                         try {
                             sendData(data);
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             if(logErrors) errorLogger.accept("Could not submit bStats metrics data", e);
                         }
                     });
@@ -334,7 +334,7 @@ public class BStatsLink {
                 JsonObjectBuilder.JsonObject data = getChartData();
                 if(data == null) return null;
                 builder.appendField("data", data);
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 if(logErrors) errorLogger.accept("Failed to get data for custom chart with id " + chartId, t);
                 return null;
             }

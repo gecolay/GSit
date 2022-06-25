@@ -8,8 +8,12 @@ public class PluginValues {
 
     public static final String LANG_PATH = "lang";
 
+    public static final String EMOTES_PATH = "emotes";
+
     public static final String DATA_FILETYP = ".data";
 
     public static final String YML_FILETYP = ".yml";
+
+    public static final String GEX_FILETYP = ".gex";
 
 }

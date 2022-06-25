@@ -8,20 +8,20 @@ import org.bukkit.command.*;
 import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.objects.*;
 
-public class GSitTabComplete implements TabCompleter {
+public class GEmoteTabComplete implements TabCompleter {
 
     private final GSitMain GPM;
 
-    public GSitTabComplete(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public GEmoteTabComplete(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
         List<String> ta = new ArrayList<>(), ts = new ArrayList<>();
         if(s instanceof Player) {
             if(a.length == 1) {
-                if(GPM.getPManager().hasNormalPermission(s, "SitToggle")) ta.add("toggle");
-                if(GPM.getPManager().hasNormalPermission(s, "PlayerSitToggle")) ta.add("playertoggle");
+                if(GPM.getPManager().hasNormalPermission(s, "Emote")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) ta.add(emote.getId());
                 if(!a[a.length - 1].isEmpty()) {
                     for(String r : ta) if(r.toLowerCase().startsWith(a[a.length - 1].toLowerCase())) ts.add(r);
                     ta.clear();

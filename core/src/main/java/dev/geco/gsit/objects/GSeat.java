@@ -1,9 +1,8 @@
 package dev.geco.gsit.objects;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
 
 public class GSeat {
 

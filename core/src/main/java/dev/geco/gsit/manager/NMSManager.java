@@ -3,8 +3,8 @@ package dev.geco.gsit.manager;
 import java.util.*;
 import java.lang.reflect.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
 public class NMSManager {
 
@@ -59,7 +59,7 @@ public class NMSManager {
             Field F = Class.getDeclaredField(Field);
             F.setAccessible(true);
             return F;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -69,18 +69,18 @@ public class NMSManager {
         try {
             Class<?> sm = Class.forName("dev.geco." + Name + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
             return O == null ? sm.getConstructor().newInstance() : sm.getConstructor(O.getClass()).newInstance(O);
-        } catch(Exception e) { return null; }
+        } catch (Exception e) { return null; }
     }
 
     public static Class<?> getNMSClass(String ClassName) {
         Class<?> C = null;
-        try { return Class.forName("net.minecraft.server." + getClassVersion() + "." + ClassName); } catch(Exception ignored) { }
+        try { return Class.forName("net.minecraft.server." + getClassVersion() + "." + ClassName); } catch (Exception ignored) { }
         return C;
     }
 
     public static Class<?> getOBCClass(String ClassName) {
         Class<?> C = null;
-        try { return Class.forName("org.bukkit.craftbukkit." + getClassVersion() + "." + ClassName); } catch(Exception ignored) { }
+        try { return Class.forName("org.bukkit.craftbukkit." + getClassVersion() + "." + ClassName); } catch (Exception ignored) { }
         return C;
     }
 
@@ -105,7 +105,7 @@ public class NMSManager {
 
     public static Object invokeMethod(String MethodName, Object Parameter) {
         try { return getMethod(MethodName, Parameter.getClass()).invoke(Parameter); }
-        catch(Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -116,7 +116,7 @@ public class NMSManager {
             Method m = O.getClass().getDeclaredMethod("getHandle");
             m.setAccessible(true);
             return m.invoke(O);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return O;
         }
@@ -128,7 +128,7 @@ public class NMSManager {
         try {
             Object p = P.getClass().getField("playerConnection").get(P);
             p.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(p, Packet);
-        } catch(Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public static boolean set(Object Object, String Field, Object Value) {
@@ -139,7 +139,7 @@ public class NMSManager {
                 F.setAccessible(true);
                 F.set(Object, Value);
                 return true;
-            } catch(NoSuchFieldException e) { C = C.getSuperclass(); } catch(Exception e) { throw new IllegalStateException(e); }
+            } catch (NoSuchFieldException e) { C = C.getSuperclass(); } catch (Exception e) { throw new IllegalStateException(e); }
         }
         return false;
     }

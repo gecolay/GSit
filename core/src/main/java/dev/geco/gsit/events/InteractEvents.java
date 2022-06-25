@@ -1,15 +1,15 @@
 package dev.geco.gsit.events;
 
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.*;
-import org.bukkit.block.data.Bisected.Half;
+import org.bukkit.block.data.Bisected.*;
 import org.bukkit.block.data.type.*;
-import org.bukkit.block.data.type.Slab.Type;
-import org.bukkit.entity.Player;
+import org.bukkit.block.data.type.Slab.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;

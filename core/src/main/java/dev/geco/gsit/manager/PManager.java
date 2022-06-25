@@ -1,7 +1,7 @@
 package dev.geco.gsit.manager;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.command.*;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
 

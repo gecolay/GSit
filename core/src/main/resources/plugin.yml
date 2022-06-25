@@ -39,6 +39,12 @@ commands:
     aliases: [crawl]
     description: Crawl-Command
 
+  gemote:
+
+    usage: /<command>
+    aliases: [emote]
+    description: Emote-Command
+
   gsitreload:
 
     usage: /<command>
@@ -63,6 +69,7 @@ permissions:
       GSit.BellyFlop: true
       GSit.Spin: true
       GSit.Crawl: true
+      GSit.Emote: true
       GSit.Kick.*: true
       GSit.ByPass.*: true
       GSit.Update: true
@@ -103,6 +110,10 @@ permissions:
   GSit.Crawl:
     default: op
     description: Crawl | Permission
+
+  GSit.Emote:
+    default: op
+    description: Emote | Permission
 
   GSit.Kick.*:
     default: op

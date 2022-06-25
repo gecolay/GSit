@@ -378,7 +378,7 @@ public class GPoseSeat implements IGPoseSeat {
     private ServerPlayer createNPC() {
         MinecraftServer mcs = ((CraftServer) Bukkit.getServer()).getServer();
         ServerLevel sl = ((CraftWorld) s.getLocation().getWorld()).getHandle();
-        GameProfile pf = new GameProfile(UUID.randomUUID(), GPM.getMManager().toColoredString(s.getPlayer().getName()));
+        GameProfile pf = new GameProfile(UUID.randomUUID(), s.getPlayer().getName());
         pf.getProperties().putAll(cp.getGameProfile().getProperties());
         return new ServerPlayer(mcs, sl, pf);
     }

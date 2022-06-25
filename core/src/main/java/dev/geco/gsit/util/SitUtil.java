@@ -3,8 +3,8 @@ package dev.geco.gsit.util;
 import java.util.*;
 
 import org.bukkit.block.*;
-import org.bukkit.block.data.Bisected;
-import org.bukkit.block.data.type.Stairs;
+import org.bukkit.block.data.*;
+import org.bukkit.block.data.type.*;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.*;
 

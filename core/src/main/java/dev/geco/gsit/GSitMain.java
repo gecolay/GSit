@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.*;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.*;
 
 import dev.geco.gsit.cmd.*;
 import dev.geco.gsit.cmd.tab.*;
@@ -47,6 +47,10 @@ public class GSitMain extends JavaPlugin {
 
     public ICrawlManager getCrawlManager() { return crawlmanager; }
 
+    private IEmoteManager emotemanager;
+
+    public IEmoteManager getEmoteManager() { return emotemanager; }
+
     private ToggleManager togglemanager;
 
     public ToggleManager getToggleManager() { return togglemanager; }
@@ -62,6 +66,10 @@ public class GSitMain extends JavaPlugin {
     private MManager mmanager;
 
     public MManager getMManager() { return mmanager; }
+
+    private EmoteUtil emoteutil;
+
+    public EmoteUtil getEmoteUtil() { return emoteutil; }
 
     private PassengerUtil passengerutil;
 
@@ -91,6 +99,8 @@ public class GSitMain extends JavaPlugin {
 
     public WoGuLink getWorldGuard() { return wogulink; }
 
+    public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : 0;
+
     public final String NAME = "GSit";
 
     public final String RESOURCE = "62325";
@@ -103,6 +113,7 @@ public class GSitMain extends JavaPlugin {
         copyLangFiles();
         messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
         prefix = getMessages().getString("Plugin.plugin-prefix");
+        getEmoteManager().reloadEmotes();
         getToggleManager().loadToggleData();
     }
 
@@ -133,9 +144,16 @@ public class GSitMain extends JavaPlugin {
             getCrawlManager().resetFeatureUsedCount();
             return c;
         }));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
+            if(getEmoteManager() == null) return 0;
+            int c = getEmoteManager().getFeatureUsedCount();
+            getEmoteManager().resetFeatureUsedCount();
+            return c;
+        }));
     }
 
     public void onLoad() {
+        Bukkit.getConsoleSender().sendMessage(Bukkit.getVersion());
         GPM = this;
         saveDefaultConfig();
         cmanager = new CManager(getInstance());
@@ -144,7 +162,9 @@ public class GSitMain extends JavaPlugin {
         mmanager = new MManager(getInstance());
         sitmanager = new SitManager(getInstance());
         playersitmanager = new PlayerSitManager(getInstance());
+        emotemanager = new EmoteManager(getInstance());
         togglemanager = new ToggleManager(getInstance());
+        emoteutil = new EmoteUtil();
         passengerutil = new PassengerUtil(getInstance());
         situtil = new SitUtil(getInstance());
         poseutil = new PoseUtil(getInstance());
@@ -173,6 +193,7 @@ public class GSitMain extends JavaPlugin {
         getSitManager().clearSeats();
         if(getPoseManager() != null) getPoseManager().clearPoses();
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
+        getEmoteManager().clearEmotes();
         getToggleManager().saveToggleData();
         if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
@@ -189,6 +210,8 @@ public class GSitMain extends JavaPlugin {
         getCommand("gspin").setTabCompleter(new EmptyTabComplete());
         getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
         getCommand("gcrawl").setTabCompleter(new EmptyTabComplete());
+        getCommand("gemote").setExecutor(new GEmoteCommand(getInstance()));
+        getCommand("gemote").setTabCompleter(new GEmoteTabComplete(getInstance()));
         getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
         getCommand("gsitreload").setTabCompleter(new EmptyTabComplete());
     }
@@ -223,6 +246,8 @@ public class GSitMain extends JavaPlugin {
         getSitManager().clearSeats();
         if(getPoseManager() != null) getPoseManager().clearPoses();
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
+        getEmoteManager().clearEmotes();
+        getEmoteManager().reloadEmotes();
         getToggleManager().saveToggleData();
         if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
         loadSettings();
@@ -242,9 +267,9 @@ public class GSitMain extends JavaPlugin {
     }
 
     private boolean versionCheck() {
-        if(!NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) == null)) {
+        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) == null)) {
             String v = Bukkit.getServer().getClass().getPackage().getName();
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", v.substring(v.lastIndexOf('.') + 1));
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", SERVER < 1 ? "Bukkit" : v.substring(v.lastIndexOf('.') + 1));
             checkForUpdates();
             Bukkit.getPluginManager().disablePlugin(getInstance());
             return false;

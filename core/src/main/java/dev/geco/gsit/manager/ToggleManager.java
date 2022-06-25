@@ -3,8 +3,8 @@ package dev.geco.gsit.manager;
 import java.io.*;
 import java.util.*;
 
+import org.bukkit.scheduler.*;
 import org.bukkit.configuration.file.*;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.values.*;
@@ -88,6 +88,6 @@ public class ToggleManager {
 
     private void stopAutoSave() { if(r != null) r.cancel(); }
 
-    private void saveFile(File f, FileConfiguration fc) { try { fc.save(f); } catch(IOException ignored) { } }
+    private void saveFile(File f, FileConfiguration fc) { try { fc.save(f); } catch (IOException ignored) { } }
 
 }

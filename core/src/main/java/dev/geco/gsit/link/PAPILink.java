@@ -4,8 +4,8 @@ import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
 import me.clip.placeholderapi.expansion.*;
 

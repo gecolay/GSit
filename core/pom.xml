@@ -9,17 +9,24 @@
     <parent>
         <groupId>dev.geco</groupId>
         <artifactId>GSit</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <properties>
         <spigot.version>1.19-R0.1-SNAPSHOT</spigot.version>
+        <paper.version>1.19-R0.1-SNAPSHOT</paper.version>
+        <worldguard.version>7.0.7</worldguard.version>
+        <placeholderapi.version>2.11.1</placeholderapi.version>
     </properties>
 
     <repositories>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>intellectualsites snapshots</id>
@@ -43,21 +50,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
-            <scope>compile</scope>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>${paper.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.7</version>
+            <version>${worldguard.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.1</version>
+            <version>${placeholderapi.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

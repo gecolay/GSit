@@ -5,10 +5,8 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import net.md_5.bungee.api.ChatMessageType;
+import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -86,7 +84,7 @@ public class SitManager implements ISitManager {
 
         Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
 
-        if(GPM.getCManager().S_SIT_MESSAGE) Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, GPM.getMManager().getComplexMessage(GPM.getMManager().getRawMessage("Messages.action-sit-info")));
+        if(GPM.getCManager().S_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-sit-info");
 
         GSeat seat = new GSeat(Block, l, Player, sa, r);
 

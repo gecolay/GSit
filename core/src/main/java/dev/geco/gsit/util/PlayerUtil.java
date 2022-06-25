@@ -1,7 +1,7 @@
 package dev.geco.gsit.util;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.manager.*;
 
@@ -19,7 +19,7 @@ public class PlayerUtil implements IPlayerUtil {
 
             NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, L.getX(), L.getY(), L.getZ());
 
-        } catch(Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
 }

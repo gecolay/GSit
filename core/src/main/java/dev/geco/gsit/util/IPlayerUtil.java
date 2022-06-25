@@ -1,6 +1,6 @@
 package dev.geco.gsit.util;
 
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 
 public interface IPlayerUtil {

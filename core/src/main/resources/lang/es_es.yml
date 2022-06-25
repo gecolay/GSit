@@ -33,9 +33,9 @@ Messages:
   action-sit-safe-error: "[P]&c ¡No es seguro sentarte aquí!"
   action-sit-region-error: "[P]&c ¡No puedes sentarte en ésta región!"
   action-sit-kick-error: "[P]&c ¡Hay otra persona sentada aquí!"
-  action-sit-info: "&aUtiliza la tecla&6 <translatekey:key.sneak>&a para levantarte."
+  action-sit-info: "&aUtiliza la tecla&6 <lang:key.sneak>&a para levantarte."
 
-  action-playersit-info: "&aUtiliza la tecla&6 <translatekey:key.sneak>&a para levantarte."
+  action-playersit-info: "&aUtiliza la tecla&6 <lang:key.sneak>&a para levantarte."
 
   action-pose-now-error: "[P]&c ¡No puedes recostarte ahora mismo!"
   action-pose-world-error: "[P]&c ¡No puedes recostarte en éste mundo!"
@@ -43,11 +43,11 @@ Messages:
   action-pose-safe-error: "[P]&c ¡No es seguro recostarte aquí!"
   action-pose-region-error: "[P]&c ¡No puedes recostarte en ésta región!"
   action-pose-kick-error: "[P]&c ¡Hay otra persona recostada aquí!"
-  action-pose-info: "&aUtiliza la tecla&6 <translatekey:key.sneak>&a para levantarte."
+  action-pose-info: "&aUtiliza la tecla&6 <lang:key.sneak>&a para levantarte."
 
   action-crawl-now-error: "[P]&c ¡No puedes agacharte ahora mismo!"
   action-crawl-world-error: "[P]&c ¡No puedes agacharte en éste mundo!"
   action-crawl-region-error: "[P]&c ¡No puedes agacharte en ésta región"
-  action-crawl-info: "&aUtiliza la tecla&6 <translatekey:key.sneak>&a para levantarte."
+  action-crawl-info: "&aUtiliza la tecla&6 <lang:key.sneak>&a para levantarte."
 
   action-blocked-error: "[P]&c ¡No tienes permitido utilizar éste comando ahora mismo!"

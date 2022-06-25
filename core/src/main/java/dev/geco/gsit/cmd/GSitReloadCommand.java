@@ -3,7 +3,7 @@ package dev.geco.gsit.cmd;
 import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.command.*;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
 

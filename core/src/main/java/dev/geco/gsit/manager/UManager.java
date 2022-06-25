@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.*;
 
 public class UManager {
 
@@ -29,7 +29,7 @@ public class UManager {
             con.setRequestMethod("GET");
             con.setConnectTimeout(1000);
             vs = c.register(new BufferedReader(c.register(new InputStreamReader(con.getInputStream())))).readLine();
-        } catch(IOException ignored) { }
+        } catch (IOException ignored) { }
         return vs;
     }
 
@@ -77,7 +77,7 @@ public class UManager {
         @Override
         public void close() { for(Closeable c : l) closeQuietly(c); }
 
-        public void closeQuietly(Closeable c) { try { c.close(); } catch(Exception ignored) { } }
+        public void closeQuietly(Closeable c) { try { c.close(); } catch (Exception ignored) { } }
     }
 
 }
