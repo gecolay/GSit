@@ -50,7 +50,7 @@ Messages:
   action-crawl-region-error: "[P]&c You can't crawl in this region!"
   action-crawl-info: "&aUse your&6 <lang:key.sneak>&a Key to get up."
 
-  action-emote-stop-error: "[P]&c You're not emoting right now!"
+  action-emote-stop-error: "[P]&c You can't stop emoting!"
   action-emote-stop: "[P]&a You stopped emoting."
   action-emote-exist-error: "[P]&c The Emote&6 %Emote%&c does not exist!"
   action-emote-now-error: "[P]&c You can't emote right now!"

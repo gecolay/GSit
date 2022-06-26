@@ -14,6 +14,7 @@ public class GEmote {
 
     protected final List<GEmotePart> parts;
 
+    //TODO: Change to long (-1 == true)
     protected final boolean loop;
 
     protected final boolean head;
@@ -87,7 +88,7 @@ public class GEmote {
             }
         };
 
-        task.runTaskTimerAsynchronously(GSitMain.getInstance(), 0, 1);
+        task.runTaskTimer(GSitMain.getInstance(), 0, 1);
 
         tasks.put(Entity, task);
     }

@@ -29,7 +29,9 @@ public class EmoteUtil {
 
             try {
 
-                Particle particle = Particle.valueOf(sPart.get().filter(s -> s.startsWith("particle:")).findFirst().orElse(":.").split(":")[1].toUpperCase());
+                Particle particle;
+
+                try { particle = Particle.valueOf(sPart.get().filter(s -> s.startsWith("particle:")).findFirst().orElse(":.").split(":")[1].toUpperCase()); } catch (Exception ignored) { continue; }
 
                 String sDelay = sPart.get().filter(s -> s.startsWith("delay:")).findFirst().orElse(":0").split(":")[1];
 

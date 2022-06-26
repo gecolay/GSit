@@ -111,6 +111,7 @@ public class GSitMain extends JavaPlugin {
 
     private void loadSettings() {
         copyLangFiles();
+        copyEmoteFiles();
         messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
         prefix = getMessages().getString("Plugin.plugin-prefix");
         getEmoteManager().reloadEmotes();
@@ -272,5 +273,7 @@ public class GSitMain extends JavaPlugin {
         }
         return true;
     }
+
+    private void copyEmoteFiles() { for(String l : Arrays.asList("smile")) if(!new File("plugins/" + NAME + "/" + PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP).exists()) saveResource(PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP, false); }
 
 }
