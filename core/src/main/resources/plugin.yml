@@ -112,7 +112,7 @@ permissions:
     description: Crawl | Permission
 
   GSit.Emote:
-    default: op
+    default: true
     description: Emote | Permission
 
   GSit.Kick.*:
