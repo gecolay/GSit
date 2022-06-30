@@ -62,7 +62,7 @@ public class MManager {
         for(Map.Entry<String, String> t : TAGS.entrySet()) r = r.replace(t.getKey(), t.getValue());
         Matcher m = Pattern.compile("(#[\\da-fA-F]{6})").matcher(r);
         while(m.find()) r = r.replace(m.group(), "<reset><color:" + m.group() + ">");
-        return MiniMessage.miniMessage().deserialize(r);
+        try { return MiniMessage.miniMessage().deserialize(r); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
     }
 
     public void sendMessage(CommandSender Sender, String Message, Object... ReplaceList) {
@@ -81,10 +81,7 @@ public class MManager {
 
     public Component getComponent(String Message, Object... ReplaceList) { return toFormattedComponent(getRawMessage(Message, ReplaceList)); }
 
-    private String getRawMessage(String Message, Object... ReplaceList) {
-        String r = Message == null || Message.equals("") ? "" : GPM.getMessages().getString(Message, Message);
-        return replace(r, ReplaceList);
-    }
+    private String getRawMessage(String Message, Object... ReplaceList) { return replace(Message == null || Message.isEmpty() ? "" : GPM.getMessages().getString(Message, Message), ReplaceList); }
 
     private String replace(String Message, Object... ReplaceList) {
         String r = Message;
