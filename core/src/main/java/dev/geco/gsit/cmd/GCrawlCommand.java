@@ -26,9 +26,11 @@ public class GCrawlCommand implements CommandExecutor {
                     } else {
                         if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
                             if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) || GPM.getPManager().hasPermission(s, "ByPass.World", "ByPass.*")) {
-                                if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(p.getLocation(), GPM.getWorldGuard().CRAWL_FLAG)) {
-                                    IGCrawl v = GPM.getCrawlManager().startCrawl(p);
-                                    if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
+                                if(GPM.getWorldGuardLink() == null || GPM.getWorldGuardLink().checkFlag(p.getLocation(), GPM.getWorldGuardLink().CRAWL_FLAG)) {
+                                    if(GPM.getGriefPreventionLink() == null || GPM.getGriefPreventionLink().check(p.getLocation())) {
+                                        IGCrawl v = GPM.getCrawlManager().startCrawl(p);
+                                        if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
+                                    } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
                             } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-world-error");
                         } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-now-error");

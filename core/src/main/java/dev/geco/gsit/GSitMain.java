@@ -91,13 +91,17 @@ public class GSitMain extends JavaPlugin {
 
     public IPlayerUtil getPlayerUtil() { return playerutil; }
 
-    private PAPILink papilink;
-
-    public PAPILink getPlaceholderAPI() { return papilink; }
-
     private WoGuLink wogulink;
 
-    public WoGuLink getWorldGuard() { return wogulink; }
+    public WoGuLink getWorldGuardLink() { return wogulink; }
+
+    private PAPILink papilink;
+
+    public PAPILink getPlaceholderAPILink() { return papilink; }
+
+    private GrPrLink grprlink;
+
+    public GrPrLink getGriefPreventionLink() { return grprlink; }
 
     public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : 0;
 
@@ -192,7 +196,7 @@ public class GSitMain extends JavaPlugin {
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
         getEmoteManager().clearEmotes();
         getToggleManager().saveToggleData();
-        if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
+        if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
 
@@ -221,18 +225,22 @@ public class GSitMain extends JavaPlugin {
     }
 
     private void loadPluginDepends(CommandSender s) {
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            papilink = new PAPILink(getInstance());
-            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
-            getPlaceholderAPI().register();
-        } else papilink = null;
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             if(wogulink == null) {
                 wogulink = new WoGuLink(getInstance());
-                getWorldGuard().registerFlags();
+                getWorldGuardLink().registerFlags();
             }
             getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "WorldGuard");
         } else wogulink = null;
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            papilink = new PAPILink(getInstance());
+            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
+            getPlaceholderAPILink().register();
+        } else papilink = null;
+        if(Bukkit.getPluginManager().getPlugin("GriefPrevention") != null && Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
+            grprlink = new GrPrLink(getInstance());
+            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "GriefPrevention");
+        } else grprlink = null;
     }
 
     private void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pl_pl", "pt_br", "ru_ru", "uk_ua", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }
@@ -246,7 +254,7 @@ public class GSitMain extends JavaPlugin {
         getEmoteManager().clearEmotes();
         getEmoteManager().reloadEmotes();
         getToggleManager().saveToggleData();
-        if(getPlaceholderAPI() != null) getPlaceholderAPI().unregister();
+        if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
         loadSettings();
         loadPluginDepends(s);
         checkForUpdates();

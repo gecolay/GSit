@@ -17,6 +17,7 @@
         <paper.version>1.19-R0.1-SNAPSHOT</paper.version>
         <worldguard.version>7.0.7</worldguard.version>
         <placeholderapi.version>2.11.1</placeholderapi.version>
+        <griefprevention.version>16.18</griefprevention.version>
     </properties>
 
     <repositories>
@@ -29,16 +30,16 @@
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>intellectualsites snapshots</id>
-            <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io/</url>
         </repository>
     </repositories>
 
@@ -65,6 +66,12 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>${placeholderapi.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.TechFortress</groupId>
+            <artifactId>GriefPrevention</artifactId>
+            <version>${griefprevention.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

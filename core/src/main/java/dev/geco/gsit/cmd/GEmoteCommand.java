@@ -28,7 +28,7 @@ public class GEmoteCommand implements CommandExecutor {
                     if(emote != null) {
                         if(p.isValid()) {
                             if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) || GPM.getPManager().hasPermission(s, "ByPass.World", "ByPass.*")) {
-                                if(GPM.getWorldGuard() == null || GPM.getWorldGuard().checkFlag(p.getLocation(), GPM.getWorldGuard().EMOTE_FLAG)) {
+                                if(GPM.getWorldGuardLink() == null || GPM.getWorldGuardLink().checkFlag(p.getLocation(), GPM.getWorldGuardLink().EMOTE_FLAG)) {
                                     GPM.getEmoteManager().startEmote(p, emote);
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-emote-region-error");
                             } else GPM.getMManager().sendMessage(s, "Messages.action-emote-world-error");
