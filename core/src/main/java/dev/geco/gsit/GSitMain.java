@@ -107,7 +107,7 @@ public class GSitMain extends JavaPlugin {
 
     public PlotSquaredLink getPlotSquaredLink() { return plotsquaredlink; }
 
-    public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : 0;
+    public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : Bukkit.getVersion().contains("Bukkit") ? 0 : 3;
 
     public final String NAME = "GSit";
 
