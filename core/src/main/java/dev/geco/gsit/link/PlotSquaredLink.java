@@ -14,24 +14,31 @@ public class PlotSquaredLink {
 
     public PlotSquaredLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean canCreateSeat(Location Location, Player Player) {
+    public boolean canCreateSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getSpawnUtil().checkLocation(Location)); }
+
+    public boolean canCreatePlayerSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getSpawnUtil().checkPlayerLocation(Player)); }
+
+    private boolean canCreate(Location Location, Player Player, boolean CheckLocation) {
+
+        if(!CheckLocation) return false;
 
         try {
 
             PlotAPI plapi = new PlotAPI();
 
-            Plot plot = plapi.wrapPlayer(Player.getUniqueId()).getCurrentPlot();
+            com.plotsquared.core.location.Location ploc = com.plotsquared.core.location.Location.at(plapi.wrapPlayer(Player.getUniqueId()).getLocation().getWorld(), Location.getBlockX(), Location.getBlockY(), Location.getBlockZ());
 
-            if(plot != null) {
+            PlotArea plotarea = plapi.getPlotSquared().getPlotAreaManager().getApplicablePlotArea(ploc);
 
-                boolean c = GPM.getSpawnUtil().checkLocation(Location);
+            if(plotarea == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
-                if((plot.getArea() == null || !plot.getArea().isSpawnCustom()) && !c) return false;
+            if(!plotarea.isSpawnCustom()) return false;
 
-                return (!GPM.getCManager().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId())) && c;
-            }
+            Plot plot = plotarea.getOwnedPlot(ploc);
 
-            return !GPM.getCManager().TRUSTED_REGION_ONLY && GPM.getSpawnUtil().checkLocation(Location);
+            if(plot == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
+
+            return !GPM.getCManager().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId());
 
         } catch (Exception | Error e) {
             e.printStackTrace();
