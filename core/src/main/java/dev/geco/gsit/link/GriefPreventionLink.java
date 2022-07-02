@@ -7,11 +7,11 @@ import me.ryanhamshire.GriefPrevention.*;
 
 import dev.geco.gsit.GSitMain;
 
-public class GrPrLink {
+public class GriefPreventionLink {
 
     private final GSitMain GPM;
 
-    public GrPrLink(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public GriefPreventionLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public boolean check(Location Location, Player Player) {
 

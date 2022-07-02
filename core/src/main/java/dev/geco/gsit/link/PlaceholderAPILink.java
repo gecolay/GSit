@@ -11,11 +11,11 @@ import me.clip.placeholderapi.expansion.*;
 
 import dev.geco.gsit.GSitMain;
 
-public class PAPILink extends PlaceholderExpansion {
+public class PlaceholderAPILink extends PlaceholderExpansion {
 
     private final GSitMain GPM;
 
-    public PAPILink(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public PlaceholderAPILink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
     public boolean canRegister() { return GPM.isEnabled(); }

@@ -8,11 +8,11 @@ import com.plotsquared.core.plot.*;
 
 import dev.geco.gsit.GSitMain;
 
-public class PlSqLink {
+public class PlotSquaredLink {
 
     private final GSitMain GPM;
 
-    public PlSqLink(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public PlotSquaredLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public boolean canCreateSeat(Location Location, Player Player) {
 

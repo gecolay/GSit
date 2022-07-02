@@ -91,21 +91,21 @@ public class GSitMain extends JavaPlugin {
 
     public IPlayerUtil getPlayerUtil() { return playerutil; }
 
-    private WoGuLink wogulink;
+    private WorldGuardLink worldguardlink;
 
-    public WoGuLink getWorldGuardLink() { return wogulink; }
+    public WorldGuardLink getWorldGuardLink() { return worldguardlink; }
 
-    private PAPILink papilink;
+    private PlaceholderAPILink placeholderapilink;
 
-    public PAPILink getPlaceholderAPILink() { return papilink; }
+    public PlaceholderAPILink getPlaceholderAPILink() { return placeholderapilink; }
 
-    private GrPrLink grprlink;
+    private GriefPreventionLink griefpreventionlink;
 
-    public GrPrLink getGriefPreventionLink() { return grprlink; }
+    public GriefPreventionLink getGriefPreventionLink() { return griefpreventionlink; }
 
-    private PlSqLink plsqlink;
+    private PlotSquaredLink plotsquaredlink;
 
-    public PlSqLink getPlotSquaredLink() { return plsqlink; }
+    public PlotSquaredLink getPlotSquaredLink() { return plotsquaredlink; }
 
     public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : 0;
 
@@ -174,8 +174,8 @@ public class GSitMain extends JavaPlugin {
         situtil = new SitUtil(getInstance());
         poseutil = new PoseUtil(getInstance());
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-            wogulink = new WoGuLink(getInstance());
-            wogulink.registerFlags();
+            worldguardlink = new WorldGuardLink(getInstance());
+            worldguardlink.registerFlags();
         }
     }
 
@@ -230,26 +230,26 @@ public class GSitMain extends JavaPlugin {
 
     private void loadPluginDepends(CommandSender s) {
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-            if(wogulink == null) {
-                wogulink = new WoGuLink(getInstance());
+            if(worldguardlink == null) {
+                worldguardlink = new WorldGuardLink(getInstance());
                 getWorldGuardLink().registerFlags();
             }
             getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "WorldGuard");
-        } else wogulink = null;
+        } else worldguardlink = null;
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            papilink = new PAPILink(getInstance());
+            placeholderapilink = new PlaceholderAPILink(getInstance());
             getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
             getPlaceholderAPILink().register();
-        } else papilink = null;
+        } else placeholderapilink = null;
         if(Bukkit.getPluginManager().getPlugin("GriefPrevention") != null && Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
-            grprlink = new GrPrLink(getInstance());
+            griefpreventionlink = new GriefPreventionLink(getInstance());
             getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "GriefPrevention");
-        } else grprlink = null;
+        } else griefpreventionlink = null;
         if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
-            plsqlink = new PlSqLink(getInstance());
+            plotsquaredlink = new PlotSquaredLink(getInstance());
             if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
-            else plsqlink = null;
-        } else plsqlink = null;
+            else plotsquaredlink = null;
+        } else plotsquaredlink = null;
     }
 
     private void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pl_pl", "pt_br", "ru_ru", "uk_ua", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }

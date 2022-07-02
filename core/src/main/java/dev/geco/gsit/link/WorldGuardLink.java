@@ -9,11 +9,11 @@ import com.sk89q.worldguard.protection.flags.registry.*;
 
 import dev.geco.gsit.GSitMain;
 
-public class WoGuLink {
+public class WorldGuardLink {
 
     private final GSitMain GPM;
 
-    public WoGuLink(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public WorldGuardLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public StateFlag SIT_FLAG;
     public StateFlag PLAYERSIT_FLAG;
