@@ -15,79 +15,108 @@ public class ToggleManager {
 
     public ToggleManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    private File TData;
+    private File toggleFile;
 
-    private FileConfiguration TD;
+    private FileConfiguration toggleData;
 
-    private final List<UUID> t = new ArrayList<>();
+    private final List<UUID> toggleList = new ArrayList<>();
 
-    private final List<UUID> pt = new ArrayList<>();
+    private final List<UUID> playerToggleList = new ArrayList<>();
 
-    private BukkitRunnable r;
+    private BukkitRunnable task;
 
 
-    public boolean canSit(UUID U) { return GPM.getCManager().S_DEFAULT_SIT_MODE != t.contains(U); }
+    public boolean canSit(UUID UUID) { return GPM.getCManager().S_DEFAULT_SIT_MODE != toggleList.contains(UUID); }
 
-    public boolean canPlayerSit(UUID U) { return GPM.getCManager().PS_DEFAULT_SIT_MODE != pt.contains(U); }
+    public boolean canPlayerSit(UUID UUID) { return GPM.getCManager().PS_DEFAULT_SIT_MODE != playerToggleList.contains(UUID); }
 
-    public void setCanSit(UUID U, boolean T) {
-        if((T && GPM.getCManager().S_DEFAULT_SIT_MODE) || (!T && !GPM.getCManager().S_DEFAULT_SIT_MODE)) {
-            t.remove(U);
+    public void setCanSit(UUID UUID, boolean Toggle) {
+
+        if((Toggle && GPM.getCManager().S_DEFAULT_SIT_MODE) || (!Toggle && !GPM.getCManager().S_DEFAULT_SIT_MODE)) {
+
+            toggleList.remove(UUID);
         } else {
-            t.add(U);
+
+            toggleList.add(UUID);
         }
     }
 
-    public void setCanPlayerSit(UUID U, boolean P) {
-        if((P && GPM.getCManager().PS_DEFAULT_SIT_MODE) || (!P && !GPM.getCManager().PS_DEFAULT_SIT_MODE)) {
-            pt.remove(U);
+    public void setCanPlayerSit(UUID UUID, boolean PlayerToggle) {
+
+        if((PlayerToggle && GPM.getCManager().PS_DEFAULT_SIT_MODE) || (!PlayerToggle && !GPM.getCManager().PS_DEFAULT_SIT_MODE)) {
+
+            playerToggleList.remove(UUID);
         } else {
-            pt.add(U);
+
+            playerToggleList.add(UUID);
         }
     }
 
 
     public void loadToggleData() {
-        t.clear();
-        pt.clear();
-        TData = new File("plugins/" + GPM.NAME, PluginValues.DATA_PATH + "/" + PluginValues.TOGGLE_FILE + PluginValues.DATA_FILETYP);
-        TD = YamlConfiguration.loadConfiguration(TData);
-        for(String z : TD.getStringList("T")) t.add(UUID.fromString(z));
-        for(String z : TD.getStringList("P")) pt.add(UUID.fromString(z));
+
+        toggleList.clear();
+
+        playerToggleList.clear();
+
+        toggleFile = new File("plugins/" + GPM.NAME, PluginValues.DATA_PATH + "/" + PluginValues.TOGGLE_FILE + PluginValues.DATA_FILETYP);
+
+        toggleData = YamlConfiguration.loadConfiguration(toggleFile);
+
+        for(String z : toggleData.getStringList("T")) toggleList.add(UUID.fromString(z));
+
+        for(String z : toggleData.getStringList("P")) playerToggleList.add(UUID.fromString(z));
+
         startAutoSave();
     }
 
     public void saveToggleData() {
+
         stopAutoSave();
+
         quickSaveToggleData();
     }
 
     private void quickSaveToggleData() {
-        TD.set("T", null);
-        TD.set("P", null);
-        List<String> tc = new ArrayList<>();
-        for(UUID z : t) tc.add(z.toString());
-        TD.set("T", tc);
-        List<String> pc = new ArrayList<>();
-        for(UUID z : pt) pc.add(z.toString());
-        TD.set("P", pc);
-        saveFile(TData, TD);
+
+        toggleData.set("T", null);
+        toggleData.set("P", null);
+
+        List<String> toggles = new ArrayList<>();
+
+        for(UUID uuid : toggleList) toggles.add(uuid.toString());
+
+        toggleData.set("T", toggles);
+
+        List<String> playerToggles = new ArrayList<>();
+
+        for(UUID uuid : playerToggleList) playerToggles.add(uuid.toString());
+
+        toggleData.set("P", playerToggles);
+
+        saveFile(toggleFile, toggleData);
     }
 
     private void startAutoSave() {
+
         stopAutoSave();
-        r = new BukkitRunnable() {
+
+        task = new BukkitRunnable() {
+
             @Override
             public void run() {
+
                 quickSaveToggleData();
             }
         };
+
         long t = 20 * 180;
-        r.runTaskTimerAsynchronously(GPM, t, t);
+
+        task.runTaskTimerAsynchronously(GPM, t, t);
     }
 
-    private void stopAutoSave() { if(r != null) r.cancel(); }
+    private void stopAutoSave() { if(task != null) task.cancel(); }
 
-    private void saveFile(File f, FileConfiguration fc) { try { fc.save(f); } catch (IOException ignored) { } }
+    private void saveFile(File f, FileConfiguration fc) { try { fc.save(f); } catch (Exception ignored) { } }
 
 }

@@ -11,18 +11,20 @@ public class PManager {
 
     public PManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean hasNormalPermission(CommandSender S, String... P) {
-        if(!(S instanceof Player) || !GPM.getCManager().CHECK_FEATURE_PERMISSIONS) return true;
-        return hasPermission(S, P);
-    }
+    public boolean hasNormalPermission(CommandSender Sender, String... Permissions) { return !(Sender instanceof Player) || !GPM.getCManager().CHECK_FEATURE_PERMISSIONS || hasPermission(Sender, Permissions); }
 
-    public boolean hasPermission(CommandSender S, String... P) {
-        if(!(S instanceof Player)) return true;
-        for(String i : P) {
-            if(S.isPermissionSet(GPM.NAME + "." + i)) return S.hasPermission(GPM.NAME + "." + i);
-            if(S.hasPermission(GPM.NAME + "." + i)) return true;
+    public boolean hasPermission(CommandSender Sender, String... Permissions) {
+
+        if(!(Sender instanceof Player)) return true;
+
+        for(String i : Permissions) {
+
+            if(Sender.isPermissionSet(GPM.NAME + "." + i)) return Sender.hasPermission(GPM.NAME + "." + i);
+
+            if(Sender.hasPermission(GPM.NAME + "." + i)) return true;
         }
-        return S.hasPermission(GPM.NAME + ".*");
+
+        return Sender.hasPermission(GPM.NAME + ".*");
     }
 
 }

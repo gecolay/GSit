@@ -8,7 +8,11 @@ import net.minecraft.world.entity.*;
 public class PlayerSeatEntity extends AreaEffectCloud {
 
     public PlayerSeatEntity(Location Location) {
+
         super(((CraftWorld) Location.getWorld()).getHandle(), Location.getX(), Location.getY(), Location.getZ());
+
+        persist = false;
+
         setRadius(0);
         setNoGravity(true);
         setInvulnerable(true);

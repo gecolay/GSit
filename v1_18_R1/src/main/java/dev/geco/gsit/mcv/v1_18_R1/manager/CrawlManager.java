@@ -30,19 +30,21 @@ public class CrawlManager implements ICrawlManager {
     public boolean isCrawling(Player Player) { return getCrawl(Player) != null; }
 
     public IGCrawl getCrawl(Player Player) {
-        for(IGCrawl s : getCrawls()) if(Player.equals(s.getPlayer())) return s;
+
+        for(IGCrawl crawl : getCrawls()) if(Player.equals(crawl.getPlayer())) return crawl;
+
         return null;
     }
 
-    public void clearCrawls() { for(IGCrawl c : getCrawls()) stopCrawl(c, GetUpReason.PLUGIN); }
+    public void clearCrawls() { for(IGCrawl crawl : getCrawls()) stopCrawl(crawl.getPlayer(), GetUpReason.PLUGIN); }
 
     public IGCrawl startCrawl(Player Player) {
 
-        PrePlayerCrawlEvent preevent = new PrePlayerCrawlEvent(Player);
+        PrePlayerCrawlEvent preEvent = new PrePlayerCrawlEvent(Player);
 
-        Bukkit.getPluginManager().callEvent(preevent);
+        Bukkit.getPluginManager().callEvent(preEvent);
 
-        if(preevent.isCancelled()) return null;
+        if(preEvent.isCancelled()) return null;
 
         IGCrawl crawl = new GCrawl(Player);
 
@@ -57,19 +59,23 @@ public class CrawlManager implements ICrawlManager {
         return crawl;
     }
 
-    public boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
+    public boolean stopCrawl(Player Player, GetUpReason Reason) {
 
-        PrePlayerGetUpCrawlEvent preevent = new PrePlayerGetUpCrawlEvent(Crawl, Reason);
+        if(!isCrawling(Player)) return true;
 
-        Bukkit.getPluginManager().callEvent(preevent);
+        IGCrawl crawl = getCrawl(Player);
 
-        if(preevent.isCancelled()) return false;
+        PrePlayerGetUpCrawlEvent preEvent = new PrePlayerGetUpCrawlEvent(crawl, Reason);
 
-        crawls.remove(Crawl);
+        Bukkit.getPluginManager().callEvent(preEvent);
 
-        Crawl.stop();
+        if(preEvent.isCancelled()) return false;
 
-        Bukkit.getPluginManager().callEvent(new PlayerGetUpCrawlEvent(Crawl, Reason));
+        crawls.remove(crawl);
+
+        crawl.stop();
+
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpCrawlEvent(crawl, Reason));
 
         return true;
     }

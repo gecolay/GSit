@@ -1,27 +1,19 @@
 package dev.geco.gsit.mcv.v1_17_R1.util;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 import org.bukkit.craftbukkit.v1_17_R1.entity.*;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.protocol.game.*;
 
 import dev.geco.gsit.util.*;
 
 public class PlayerUtil implements IPlayerUtil {
 
-    public void teleport(Player P, Location L) { teleport(P, L, false); }
+    public void teleportPlayer(Player Player, Location Location) { teleportPlayer(Player, Location, false); }
 
-    public void teleport(Player P, Location L, boolean D) {
+    public void teleportPlayer(Player Player, Location Location, boolean Dismount) { ((CraftPlayer) Player).getHandle().connection.send(new ClientboundPlayerPositionPacket(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch(), ClientboundPlayerPositionPacket.RelativeArgument.unpack(0), 0, Dismount)); }
 
-        ServerPlayer t = ((CraftPlayer) P).getHandle();
-
-        ClientboundPlayerPositionPacket u = new ClientboundPlayerPositionPacket(L.getX(), L.getY(), L.getZ(), L.getYaw(), L.getPitch(), ClientboundPlayerPositionPacket.RelativeArgument.unpack(0), 0, D);
-
-        t.connection.send(u);
-    }
-
-    public void pos(org.bukkit.entity.Entity E, Location L) { ((CraftEntity) E).getHandle().setPos(L.getX(), L.getY(), L.getZ()); }
+    public void teleportEntity(org.bukkit.entity.Entity Entity, Location Location) { ((CraftEntity) Entity).getHandle().setPos(Location.getX(), Location.getY(), Location.getZ()); }
 
 }

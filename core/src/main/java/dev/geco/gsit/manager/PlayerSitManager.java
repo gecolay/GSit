@@ -22,19 +22,19 @@ public class PlayerSitManager implements IPlayerSitManager {
 
     public boolean sitOnPlayer(Player Player, Player Target) {
 
-        PrePlayerPlayerSitEvent preevent = new PrePlayerPlayerSitEvent(Player, Target);
+        PrePlayerPlayerSitEvent preEvent = new PrePlayerPlayerSitEvent(Player, Target);
 
-        Bukkit.getPluginManager().callEvent(preevent);
+        Bukkit.getPluginManager().callEvent(preEvent);
 
-        if(preevent.isCancelled()) return false;
+        if(preEvent.isCancelled()) return false;
 
         if(!GPM.getSpawnUtil().checkPlayerLocation(Target)) return false;
 
-        Entity sa = GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
+        Entity playerSeatEntity = GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
 
         if(GPM.getCManager().PS_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-playersit-info");
 
-        sa.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, Player));
+        playerSeatEntity.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, Player));
 
         feature_used++;
 
@@ -47,31 +47,40 @@ public class PlayerSitManager implements IPlayerSitManager {
 
         if(Entity instanceof Player) {
 
-            PrePlayerGetUpPlayerSitEvent preevent = new PrePlayerGetUpPlayerSitEvent((Player) Entity, Reason);
+            PrePlayerGetUpPlayerSitEvent preEvent = new PrePlayerGetUpPlayerSitEvent((Player) Entity, Reason);
 
-            Bukkit.getPluginManager().callEvent(preevent);
+            Bukkit.getPluginManager().callEvent(preEvent);
 
-            if(preevent.isCancelled()) return false;
+            if(preEvent.isCancelled()) return false;
 
         }
 
         if(Entity.hasMetadata(GPM.NAME + "A")) {
+
             Entity.eject();
+
             Entity.remove();
         }
 
-        for(Entity e : Entity.getPassengers()) {
-            if(e.hasMetadata(GPM.NAME + "A")) {
-                e.eject();
-                e.remove();
+        for(Entity passenger : Entity.getPassengers()) {
+
+            if(passenger.hasMetadata(GPM.NAME + "A")) {
+
+                passenger.eject();
+
+                passenger.remove();
             }
         }
 
         if(Entity.isInsideVehicle()) {
-            Entity e = Entity.getVehicle();
-            if(e.hasMetadata(GPM.NAME + "A")) {
-                e.eject();
-                e.remove();
+
+            Entity vehicle = Entity.getVehicle();
+
+            if(vehicle.hasMetadata(GPM.NAME + "A")) {
+
+                vehicle.eject();
+
+                vehicle.remove();
             }
         }
 

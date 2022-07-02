@@ -2,9 +2,7 @@ package dev.geco.gsit.mcv.v1_17_R1_2.manager;
 
 import java.util.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.*;
@@ -37,11 +35,13 @@ public class PoseManager implements IPoseManager {
     public boolean isPosing(Player Player) { return getPose(Player) != null; }
 
     public IGPoseSeat getPose(Player Player) {
-        for(IGPoseSeat p : getPoses()) if(Player.equals(p.getSeat().getPlayer())) return p;
+
+        for(IGPoseSeat pose : getPoses()) if(Player.equals(pose.getSeat().getPlayer())) return pose;
+
         return null;
     }
 
-    public void clearPoses() { for(IGPoseSeat p : getPoses()) removePose(p, GetUpReason.PLUGIN); }
+    public void clearPoses() { for(IGPoseSeat pose : getPoses()) removePose(pose, GetUpReason.PLUGIN); }
 
     public boolean kickPose(Block Block, Player Player) {
 
@@ -59,44 +59,43 @@ public class PoseManager implements IPoseManager {
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
 
-        PrePlayerPoseEvent preevent = new PrePlayerPoseEvent(Player, Block);
+        PrePlayerPoseEvent preEvent = new PrePlayerPoseEvent(Player, Block);
 
-        Bukkit.getPluginManager().callEvent(preevent);
+        Bukkit.getPluginManager().callEvent(preEvent);
 
-        if(preevent.isCancelled()) return null;
+        if(preEvent.isCancelled()) return null;
 
-        double o = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
+        double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
-        o = (SitAtBlock ? o == 0d ? 1d : o - Block.getY() : o) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+        offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
-        Location l = Player.getLocation().clone();
+        Location playerLocation = Player.getLocation().clone();
 
-        Location r = l.clone();
+        Location returnLocation = playerLocation.clone();
 
         if(SitAtBlock) {
 
-            l = Block.getLocation().clone().add(0.5d + XOffset, YOffset + o - 0.2d, 0.5d + ZOffset);
-
+            playerLocation = Block.getLocation().clone().add(0.5d + XOffset, YOffset + offset - 0.2d, 0.5d + ZOffset);
         } else {
 
-            l = l.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
+            playerLocation = playerLocation.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
         }
 
-        if(!GPM.getSpawnUtil().checkLocation(l)) return null;
+        if(!GPM.getSpawnUtil().checkLocation(playerLocation)) return null;
 
-        l.setYaw(SeatRotation);
+        playerLocation.setYaw(SeatRotation);
 
-        Entity sa = GPM.getSpawnUtil().createSeatEntity(l, Player);
+        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(playerLocation, Player);
 
         if(GPM.getCManager().P_POSE_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
 
-        GSeat seat = new GSeat(Block, l, Player, sa, r);
+        GSeat seat = new GSeat(Block, playerLocation, Player, seatEntity, returnLocation);
 
         GPoseSeat poseseat = new GPoseSeat(seat, Pose);
 
         poseseat.spawn();
 
-        sa.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poseseat));
+        seatEntity.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poseseat));
 
         poses.add(poseseat);
 
@@ -111,37 +110,39 @@ public class PoseManager implements IPoseManager {
         return poseseat;
     }
 
-    protected void startRotateSeat(IGPoseSeat PoseSeat) {
+    private void startRotateSeat(IGPoseSeat PoseSeat) {
 
         if(rotate.containsKey(PoseSeat)) stopRotateSeat(PoseSeat);
 
-        BukkitRunnable r = new BukkitRunnable() {
+        BukkitRunnable task = new BukkitRunnable() {
+
             @Override
             public void run() {
 
                 if(!poses.contains(PoseSeat) || PoseSeat.getSeat().getEntity().getPassengers().isEmpty()) {
+
                     cancel();
+
                     return;
                 }
 
-                Location l = PoseSeat.getSeat().getEntity().getPassengers().get(0).getLocation();
-                PoseSeat.getSeat().getEntity().setRotation(l.getYaw(), l.getPitch());
-
+                Location location = PoseSeat.getSeat().getEntity().getPassengers().get(0).getLocation();
+                PoseSeat.getSeat().getEntity().setRotation(location.getYaw(), location.getPitch());
             }
         };
 
-        r.runTaskTimer(GPM, 0, 2);
+        task.runTaskTimer(GPM, 0, 2);
 
-        rotate.put(PoseSeat, r);
+        rotate.put(PoseSeat, task);
     }
 
     protected void stopRotateSeat(IGPoseSeat PoseSeat) {
 
         if(!rotate.containsKey(PoseSeat)) return;
 
-        BukkitRunnable r = rotate.get(PoseSeat);
+        BukkitRunnable task = rotate.get(PoseSeat);
 
-        if(r != null && !r.isCancelled()) r.cancel();
+        if(task != null && !task.isCancelled()) task.cancel();
 
         rotate.remove(PoseSeat);
     }
@@ -150,11 +151,11 @@ public class PoseManager implements IPoseManager {
 
     public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe) {
 
-        PrePlayerGetUpPoseEvent preevent = new PrePlayerGetUpPoseEvent(PoseSeat,Reason);
+        PrePlayerGetUpPoseEvent preEvent = new PrePlayerGetUpPoseEvent(PoseSeat,Reason);
 
-        Bukkit.getPluginManager().callEvent(preevent);
+        Bukkit.getPluginManager().callEvent(preEvent);
 
-        if(preevent.isCancelled()) return false;
+        if(preEvent.isCancelled()) return false;
 
         GPM.getPoseUtil().removePoseBlock(PoseSeat.getSeat().getBlock(), PoseSeat);
 
@@ -164,18 +165,17 @@ public class PoseManager implements IPoseManager {
 
         PoseSeat.remove();
 
-        Location l = (GPM.getCManager().GET_UP_RETURN ? PoseSeat.getSeat().getReturn() : PoseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(PoseSeat.getSeat().getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(PoseSeat.getSeat().getBlock().getType(), 0d), 0d));
+        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? PoseSeat.getSeat().getReturn() : PoseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(PoseSeat.getSeat().getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(PoseSeat.getSeat().getBlock().getType(), 0d), 0d));
 
         if(!GPM.getCManager().GET_UP_RETURN) {
-            l.setYaw(PoseSeat.getSeat().getPlayer().getLocation().getYaw());
-            l.setPitch(PoseSeat.getSeat().getPlayer().getLocation().getPitch());
+            returnLocation.setYaw(PoseSeat.getSeat().getPlayer().getLocation().getYaw());
+            returnLocation.setPitch(PoseSeat.getSeat().getPlayer().getLocation().getPitch());
         }
 
         if(PoseSeat.getSeat().getPlayer().isValid() && Safe) {
 
-            GPM.getPlayerUtil().pos(PoseSeat.getSeat().getPlayer(), l);
-
-            GPM.getPlayerUtil().teleport(PoseSeat.getSeat().getPlayer(), l, true);
+            GPM.getPlayerUtil().teleportEntity(PoseSeat.getSeat().getPlayer(), returnLocation);
+            GPM.getPlayerUtil().teleportPlayer(PoseSeat.getSeat().getPlayer(), returnLocation, true);
         }
 
         if(PoseSeat.getSeat().getEntity().isValid()) PoseSeat.getSeat().getEntity().remove();

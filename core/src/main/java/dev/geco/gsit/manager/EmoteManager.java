@@ -58,11 +58,11 @@ public class EmoteManager implements IEmoteManager {
 
     public boolean startEmote(LivingEntity Entity, GEmote Emote) {
 
-        PreEntityEmoteEvent preevent = new PreEntityEmoteEvent(Entity, Emote);
+        PreEntityEmoteEvent preEvent = new PreEntityEmoteEvent(Entity, Emote);
 
-        Bukkit.getPluginManager().callEvent(preevent);
+        Bukkit.getPluginManager().callEvent(preEvent);
 
-        if(preevent.isCancelled()) return false;
+        if(preEvent.isCancelled()) return false;
 
         if(!available_emotes.contains(Emote) || Emote.getParts().size() == 0) return false;
 
@@ -85,11 +85,11 @@ public class EmoteManager implements IEmoteManager {
 
         GEmote emote = getEmote(Entity);
 
-        PreEntityStopEmoteEvent preevent = new PreEntityStopEmoteEvent(Entity, emote);
+        PreEntityStopEmoteEvent preEvent = new PreEntityStopEmoteEvent(Entity, emote);
 
-        Bukkit.getPluginManager().callEvent(preevent);
+        Bukkit.getPluginManager().callEvent(preEvent);
 
-        if(preevent.isCancelled()) return false;
+        if(preEvent.isCancelled()) return false;
 
         emote.stop(Entity);
 

@@ -13,39 +13,53 @@ public class PassengerUtil {
 
     public PassengerUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public long getVehicleAmount(Entity E) {
-        long a = 0;
-        if(E.isInsideVehicle()) {
-            Entity e = E.getVehicle();
-            if(e instanceof Player) a++;
-            a += getVehicleAmount(e);
+    public long getVehicleAmount(Entity Entity) {
+
+        long amount = 0;
+
+        if(Entity.isInsideVehicle()) {
+
+            Entity entity = Entity.getVehicle();
+
+            if(entity instanceof Player) amount++;
+
+            amount += getVehicleAmount(entity);
         }
-        return a;
+
+        return amount;
     }
 
-    public long getPassengerAmount(Entity E) {
-        long a = 0;
-        for(Entity e : E.getPassengers()) {
-            if(e instanceof Player) a++;
-            a += getPassengerAmount(e);
+    public long getPassengerAmount(Entity Entity) {
+
+        long amount = 0;
+
+        for(Entity entity : Entity.getPassengers()) {
+
+            if(entity instanceof Player) amount++;
+
+            amount += getPassengerAmount(entity);
         }
-        return a;
+
+        return amount;
     }
 
-    public boolean isInPassengerList(Entity E, Entity S) {
-        List<Entity> e = E.getPassengers();
-        if(e.contains(S)) return true;
-        for(Entity i : e) {
-            boolean r = isInPassengerList(i, S);
+    public boolean isInPassengerList(Entity Entity, Entity Passenger) {
+
+        List<Entity> passengers = Entity.getPassengers();
+
+        if(passengers.contains(Passenger)) return true;
+
+        for(Entity i : passengers) {
+
+            boolean r = isInPassengerList(i, Passenger);
+
             if(r) return true;
         }
+
         return false;
     }
 
-    public Entity getHighestEntity(Entity E) {
-        List<Entity> e = E.getPassengers();
-        return e.size() == 0 ? E : getHighestEntity(e.get(0));
-    }
+    public Entity getHighestEntity(Entity Entity) { return Entity.getPassengers().size() == 0 ? Entity : getHighestEntity(Entity.getPassengers().get(0)); }
 
     public boolean isNPC(Player P) { return !Bukkit.getOnlinePlayers().contains(P); }
 

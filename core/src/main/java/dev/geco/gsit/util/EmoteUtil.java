@@ -17,9 +17,9 @@ public class EmoteUtil {
 
     public GEmote createEmoteFromRawData(File File) {
 
-        YamlConfiguration c = YamlConfiguration.loadConfiguration(File);
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(File);
 
-        List<String> pattern = c.getStringList("pattern");
+        List<String> pattern = configuration.getStringList("pattern");
 
         List<GEmotePart> parts = new ArrayList<>();
 
@@ -89,14 +89,11 @@ public class EmoteUtil {
                     data = Integer.parseInt(sData[1]);
                 } else if(Vibration.class.equals(particle.getDataType())) { }
 
-                for(int i = 0; i < repeat; i++) {
-                    parts.add(new GEmotePart(particle, delay, repeat, loop, amount, xoffset, yoffset, zoffset, extra, data));
-                }
-
+                for(int i = 0; i < repeat; i++) parts.add(new GEmotePart(particle, delay, repeat, loop, amount, xoffset, yoffset, zoffset, extra, data));
             } catch (Exception | Error e) { e.printStackTrace(); }
         }
 
-        return new GEmote(File.getName().replace(PluginValues.GEX_FILETYP, "").toLowerCase(), parts, c.getLong("loop", 0), c.getBoolean("head", true));
+        return new GEmote(File.getName().replace(PluginValues.GEX_FILETYP, "").toLowerCase(), parts, configuration.getLong("loop", 0), configuration.getBoolean("head", true));
     }
 
 }

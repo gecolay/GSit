@@ -25,22 +25,23 @@ public class GEmote {
     protected long range = 250;
 
     public GEmote(String Id, List<GEmotePart> Parts, long Loop, boolean Head) {
+
         id = Id;
         parts = new ArrayList<>(Parts);
         loop = Loop;
         head = Head;
 
-        long i = 0;
+        long partCounter = 0;
 
         for(GEmotePart part : parts) {
 
-            i += part.getDelay();
+            partCounter += part.getDelay();
 
-            List<GEmotePart> sParts = setParts.containsKey(i) ? setParts.get(i) : new ArrayList<>();
+            List<GEmotePart> sParts = setParts.containsKey(partCounter) ? setParts.get(partCounter) : new ArrayList<>();
 
             sParts.add(part);
 
-            setParts.put(i, sParts);
+            setParts.put(partCounter, sParts);
         }
     }
 
@@ -48,22 +49,22 @@ public class GEmote {
 
         if(parts.size() == 0) return;
 
-        boolean pe = Entity instanceof Player;
+        boolean isPlayer = Entity instanceof Player;
 
         BukkitRunnable task = new BukkitRunnable() {
 
-            long i = 0;
-            long l = 0;
-            final long t = Collections.max(setParts.keySet());
+            long tick = 0;
+            long loopTick = 0;
+            final long maxTick = Collections.max(setParts.keySet());
 
             @Override
             public void run() {
 
-                if(setParts.containsKey(i)) {
+                if(setParts.containsKey(tick)) {
 
-                    for(GEmotePart part : setParts.get(i)) {
+                    for(GEmotePart part : setParts.get(tick)) {
 
-                        if(pe) {
+                        if(isPlayer) {
 
                             Player p = (Player) Entity;
 
@@ -79,14 +80,15 @@ public class GEmote {
                     }
                 }
 
-                i++;
+                tick++;
 
-                if(i >= t) {
+                if(tick >= maxTick) {
 
-                    if(getLoop() > 0 && getLoop() <= l) GSitMain.getInstance().getEmoteManager().stopEmote(Entity);
+                    if(getLoop() > 0 && getLoop() <= loopTick) GSitMain.getInstance().getEmoteManager().stopEmote(Entity);
                     else {
-                        i = 0;
-                        l++;
+
+                        tick = 0;
+                        loopTick++;
                     }
                 }
             }

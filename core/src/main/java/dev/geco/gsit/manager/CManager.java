@@ -83,7 +83,9 @@ public class CManager {
     private final GSitMain GPM;
 
     public CManager(GSitMain GPluginMain) {
+
         GPM = GPluginMain;
+
         reload();
     }
 
@@ -101,12 +103,14 @@ public class CManager {
 
         S_SITMATERIALS.clear();
         for(String s : GPM.getConfig().getStringList("Options.Sit.SitMaterials")) {
+
             try {
+
                 String[] m = s.split(";");
+
                 if(m[0].startsWith("#")) {
-                    for(Material a : Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(m[0].substring(1).toLowerCase()), Material.class).getValues()) {
-                        S_SITMATERIALS.put(a, m.length > 1 ? Double.parseDouble(m[1]) : 0d);
-                    }
+
+                    for(Material a : Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(m[0].substring(1).toLowerCase()), Material.class).getValues()) S_SITMATERIALS.put(a, m.length > 1 ? Double.parseDouble(m[1]) : 0d);
                 } else S_SITMATERIALS.put(Material.valueOf(m[0].toUpperCase()), m.length > 1 ? Double.parseDouble(m[1]) : 0d);
             } catch (Exception | Error ignored) { }
         }
@@ -137,7 +141,9 @@ public class CManager {
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
         MATERIALBLACKLIST.clear();
         for(String s : GPM.getConfig().getStringList("Options.MaterialBlacklist")) {
+
             try {
+
                 if(s.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(s.substring(1).toLowerCase()), Material.class).getValues());
                 else MATERIALBLACKLIST.add(Material.valueOf(s.toUpperCase()));
             } catch (Exception | Error ignored) { }

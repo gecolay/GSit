@@ -7,19 +7,18 @@ import dev.geco.gsit.manager.*;
 
 public class PlayerUtil implements IPlayerUtil {
 
-    public void teleport(Player P, Location L) { }
+    public void teleportPlayer(Player Player, Location Location) { }
 
-    public void teleport(Player P, Location L, boolean D) { }
+    public void teleportPlayer(Player Player, Location Location, boolean Dismount) { }
 
-    public void pos(org.bukkit.entity.Entity E, Location L) {
+    public void teleportEntity(org.bukkit.entity.Entity Entity, Location Location) {
 
         try {
 
-            Object sa = NMSManager.getHandle(E);
+            Object entity = NMSManager.getHandle(Entity);
 
-            NMSManager.getMethod("setPosition", sa.getClass(), double.class, double.class, double.class).invoke(sa, L.getX(), L.getY(), L.getZ());
-
-        } catch (Exception e) { e.printStackTrace(); }
+            NMSManager.getMethod("setPosition", entity.getClass(), double.class, double.class, double.class).invoke(entity, Location.getX(), Location.getY(), Location.getZ());
+        } catch (Exception ignored) { }
     }
 
 }

@@ -441,12 +441,12 @@ public class GSitAPI {
      * Removes an existing Crawl-Object
      * @author Gecolay
      * @since 1.0.0
-     * @param Crawl The Crawl-Object
+     * @param Player Player for this Crawl-Object
      * @param Reason The Reason why the Crawl-Object gets removed
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean stopCrawl(IGCrawl Crawl, GetUpReason Reason) {
-        return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().stopCrawl(Crawl, Reason);
+    public static boolean stopCrawl(Player Player, GetUpReason Reason) {
+        return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().stopCrawl(Player, Reason);
     }
 
     /**

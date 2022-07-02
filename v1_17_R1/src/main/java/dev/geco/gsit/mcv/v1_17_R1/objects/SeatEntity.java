@@ -1,6 +1,6 @@
 package dev.geco.gsit.mcv.v1_17_R1.objects;
 
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 
 import net.minecraft.world.entity.decoration.*;
@@ -8,7 +8,11 @@ import net.minecraft.world.entity.decoration.*;
 public class SeatEntity extends ArmorStand {
 
     public SeatEntity(Location Location) {
+
         super(((CraftWorld) Location.getWorld()).getHandle(), Location.getX(), Location.getY(), Location.getZ());
+
+        persist = false;
+
         setInvisible(true);
         setNoGravity(true);
         setMarker(true);

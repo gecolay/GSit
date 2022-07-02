@@ -1,23 +1,18 @@
 package dev.geco.gsit.mcv.v1_17_R1.objects;
 
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.block.*;
+import org.bukkit.block.data.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.scheduler.*;
+import org.bukkit.craftbukkit.v1_17_R1.entity.*;
 
-import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.*;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.server.level.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
@@ -26,211 +21,224 @@ public class GCrawl implements IGCrawl {
 
     private final GSitMain GPM = GSitMain.getInstance();
 
-    private final Player p;
+    private final Player player;
 
-    private final ServerPlayer cp;
+    private final ServerPlayer serverPlayer;
 
-    protected final Shulker s;
+    protected final BoxEntity boxEntity;
 
-    private Location bloc;
+    private Location blockLocation;
 
-    private boolean build;
+    private boolean blockPresent;
 
-    private boolean svalid;
+    private boolean boxPresent;
 
-    protected final BlockData m = Material.BARRIER.createBlockData();
+    protected final BlockData blockData = Material.BARRIER.createBlockData();
 
-    private final Listener li;
-
-    private final Listener lim;
-
-    private final Listener lic;
+    private final Listener listener;
+    private final Listener moveListener;
+    private final Listener stopListener;
 
     public GCrawl(Player Player) {
 
-        p = Player;
+        player = Player;
 
-        cp = ((CraftPlayer) p).getHandle();
+        serverPlayer = ((CraftPlayer) player).getHandle();
 
-        s = createShulker();
+        boxEntity = new BoxEntity(player.getLocation());
 
-        li = new Listener() {
-
-            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void ETogSE(EntityToggleSwimEvent e) {
-                if(e.getEntity() == p) {
-                    e.setCancelled(true);
-                }
-            }
+        listener = new Listener() {
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void PIntE(PlayerInteractEvent e) {
-                if(e.getPlayer() == p && build && e.getClickedBlock().equals(bloc.getBlock()) && e.getHand() == EquipmentSlot.HAND) {
-                    e.setCancelled(true);
+            public void ETogSE(EntityToggleSwimEvent Event) { if(Event.getEntity() == player) Event.setCancelled(true); }
+
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+            public void PIntE(PlayerInteractEvent Event) {
+
+                if(Event.getPlayer() == player && blockPresent && Event.getClickedBlock().equals(blockLocation.getBlock()) && Event.getHand() == EquipmentSlot.HAND) {
+
+                    Event.setCancelled(true);
+
                     new BukkitRunnable() {
+
                         @Override
                         public void run() {
+
                             buildBlock();
                         }
                     }.runTaskAsynchronously(GPM);
                 }
             }
-
         };
 
-        lim = new Listener() {
+        moveListener = new Listener() {
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PMovE(PlayerMoveEvent e) {
-                if(e.getPlayer() == p) {
-                    Location lf = e.getFrom();
-                    Location lt = e.getTo();
-                    if(lf.getX() != lt.getX() || lf.getZ() != lt.getZ() || lf.getY() != lt.getY()) {
-                        tick(lf);
-                    }
+            public void PMovE(PlayerMoveEvent Event) {
+
+                if(Event.getPlayer() == player) {
+
+                    Location locationFrom = Event.getFrom(), locationTo = Event.getTo();
+
+                    if(locationFrom.getX() != locationTo.getX() || locationFrom.getZ() != locationTo.getZ() || locationFrom.getY() != locationTo.getY()) tick(locationFrom);
                 }
             }
-
         };
 
-        lic = new Listener() {
+        stopListener = new Listener() {
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PTogSE(PlayerToggleSneakEvent e) {
-                if(e.getPlayer() == p && e.isSneaking()) {
-                    GPM.getCrawlManager().stopCrawl(GCrawl.this, GetUpReason.GET_UP);
-                }
-            }
-
+            public void PTogSE(PlayerToggleSneakEvent Event) { if(Event.getPlayer() == player && Event.isSneaking()) GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP); }
         };
     }
 
     public void start() {
-        p.setSwimming(true);
-        Bukkit.getPluginManager().registerEvents(li, GPM);
+
+        player.setSwimming(true);
+
+        Bukkit.getPluginManager().registerEvents(listener, GPM);
+
         new BukkitRunnable() {
+
             @Override
             public void run() {
 
-                Bukkit.getPluginManager().registerEvents(lim, GPM);
-                if(GPM.getCManager().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(lic, GPM);
-                tick(p.getLocation());
+                Bukkit.getPluginManager().registerEvents(moveListener, GPM);
 
+                if(GPM.getCManager().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(stopListener, GPM);
+
+                tick(player.getLocation());
             }
         }.runTaskLaterAsynchronously(GPM, 1);
     }
 
     private void tick(Location L) {
+
         if(!checkCrawlValid()) return;
-        Location l = L.clone();
-        Block cblock = l.getBlock();
-        int bheight = (int) ((l.getY() - l.getBlockY()) * 100.0);
-        l.setY(l.getBlockY() + (bheight >= 40 ? 2.49 : 1.49));
-        Block topblock = l.getBlock();
-        boolean solidblock = topblock.getBoundingBox().contains(l.toVector()) && topblock.getCollisionShape().getBoundingBoxes().size() > 0;
-        boolean valid = isValidArea(cblock.getRelative(BlockFace.UP), topblock, bloc != null ? bloc.getBlock() : null);
-        boolean canreplace = valid && (topblock.getType().isAir() || solidblock);
-        if(bloc == null || !topblock.equals(bloc.getBlock())) {
+
+        Location location = L.clone();
+
+        Block locationBlock = location.getBlock();
+
+        int blockSize = (int) ((location.getY() - location.getBlockY()) * 100.0);
+
+        location.setY(location.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
+
+        Block aboveBlock = location.getBlock();
+
+        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(location.toVector()) && aboveBlock.getCollisionShape().getBoundingBoxes().size() > 0;
+        boolean canPlaceBlock = isValidArea(locationBlock.getRelative(BlockFace.UP), aboveBlock, blockLocation != null ? blockLocation.getBlock() : null);
+        boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
+
+        if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
+
             destoryBlock();
-            bloc = l;
-            if(canreplace && !solidblock) buildBlock();
+
+            blockLocation = location;
+
+            if(canSetBarrier && !aboveBlockSolid) buildBlock();
         }
-        if(!canreplace && !solidblock) {
+
+        if(!canSetBarrier && !aboveBlockSolid) {
 
             new BukkitRunnable() {
+
                 @Override
                 public void run() {
 
-                    Location les = L.clone();
-                    int h = cblock.getBoundingBox().getHeight() >= 0.4 || les.getY() % 0.015625 == 0.0 ? (p.getFallDistance() > 0.7 ? 0 : bheight) : 0;
-                    les.setY(les.getY() + (h >= 40 ? 1.5 : 0.5));
-                    s.setRawPeekAmount(h >= 40 ? 100 - h : 0);
+                    Location playerLocation = L.clone();
 
-                    if(svalid) {
+                    int h = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
-                        ClientboundSetEntityDataPacket pa = new ClientboundSetEntityDataPacket(s.getId(), s.getEntityData(), true);
-                        cp.connection.send(pa);
-                        s.teleportToWithTicket(les.getX(), les.getY(), les.getZ());
-                        ClientboundTeleportEntityPacket pa2 = new ClientboundTeleportEntityPacket(s);
-                        cp.connection.send(pa2);
+                    playerLocation.setY(playerLocation.getY() + (h >= 40 ? 1.5 : 0.5));
 
+                    boxEntity.setRawPeekAmount(h >= 40 ? 100 - h : 0);
+
+                    if(boxPresent) {
+
+                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
+
+                        boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+
+                        serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
                     } else {
 
-                        s.setPos(les.getX(), les.getY(), les.getZ());
-                        ClientboundAddEntityPacket pa = new ClientboundAddEntityPacket(s);
-                        cp.connection.send(pa);
-                        svalid = true;
-                        ClientboundSetEntityDataPacket pa2 = new ClientboundSetEntityDataPacket(s.getId(), s.getEntityData(), true);
-                        cp.connection.send(pa2);
+                        boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
 
+                        serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
+
+                        boxPresent = true;
+
+                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
                     }
-
                 }
             }.runTask(GPM);
-
         } else destoryEntity();
     }
 
     public void stop() {
-        HandlerList.unregisterAll(li);
-        HandlerList.unregisterAll(lim);
-        HandlerList.unregisterAll(lic);
-        p.setSwimming(false);
-        if(bloc != null) p.sendBlockChange(bloc, bloc.getBlock().getBlockData());
-        cp.connection.send(new ClientboundRemoveEntityPacket(s.getId()));
+
+        HandlerList.unregisterAll(listener);
+        HandlerList.unregisterAll(moveListener);
+        HandlerList.unregisterAll(stopListener);
+
+        player.setSwimming(false);
+
+        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+
+        serverPlayer.connection.send(new ClientboundRemoveEntityPacket(boxEntity.getId()));
     }
 
     private void buildBlock() {
-        p.sendBlockChange(bloc, m);
-        build = true;
+
+        player.sendBlockChange(blockLocation, blockData);
+
+        blockPresent = true;
     }
 
     private void destoryBlock() {
-        if(build) {
-            p.sendBlockChange(bloc, bloc.getBlock().getBlockData());
-            build = false;
+
+        if(blockPresent) {
+
+            player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+
+            blockPresent = false;
         }
     }
 
     private void destoryEntity() {
-        if(svalid) {
-            cp.connection.send(new ClientboundRemoveEntityPacket(s.getId()));
-            svalid = false;
+
+        if(boxPresent) {
+
+            serverPlayer.connection.send(new ClientboundRemoveEntityPacket(boxEntity.getId()));
+
+            boxPresent = false;
         }
     }
 
     private boolean checkCrawlValid() {
-        if(cp.isInWater() || p.isFlying()) {
+
+        if(serverPlayer.isInWater() || player.isFlying()) {
+
             new BukkitRunnable() {
+
                 @Override
                 public void run() {
 
-                    GPM.getCrawlManager().stopCrawl(GCrawl.this, GetUpReason.ACTION);
-
+                    GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
                 }
             }.runTask(GPM);
+
             return false;
         }
+
         return true;
     }
 
-    private boolean isValidArea(Block B, Block L, Block A) {
-        return B.equals(L) || B.equals(A);
-    }
+    private boolean isValidArea(Block B, Block L, Block A) { return B.equals(L) || B.equals(A); }
 
-    private Shulker createShulker() {
-        Shulker s = new Shulker(EntityType.SHULKER, ((CraftWorld) p.getWorld()).getHandle());
-        s.setInvisible(true);
-        s.setInvulnerable(true);
-        s.setNoAi(true);
-        s.setSilent(true);
-        s.setAttachFace(Direction.UP);
-        s.persist = false;
-        return s;
-    }
+    public Player getPlayer() { return player; }
 
-    public Player getPlayer() { return p; }
-
-    public String toString() { return s.getUUID().toString(); }
+    public String toString() { return boxEntity.getUUID().toString(); }
 
 }

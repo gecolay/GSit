@@ -17,9 +17,7 @@ public class GEmotePart {
     protected final int amount;
 
     protected final double xoffset;
-
     protected final double yoffset;
-
     protected final double zoffset;
 
     protected final double extra;
@@ -27,6 +25,7 @@ public class GEmotePart {
     protected final Object data;
 
     public GEmotePart(Particle Particle, long Delay, long Repeat, boolean Loop, int Amount, double XOffset, double YOffset, double ZOffset, double Extra, Object Data) {
+
         particle = Particle;
         delay = Math.max(Delay, 0);
         repeat = Math.max(Repeat, 1);
@@ -43,22 +42,22 @@ public class GEmotePart {
 
         float yaw = Entity.getLocation().getYaw(), yawF = yaw + 180.0f;
 
-        Vector v1 = new Vector(Math.cos(Math.toRadians(yawF)) * getXOffset(), 0, Math.sin(Math.toRadians(yawF)) * getXOffset());
+        Vector xVector = new Vector(Math.cos(Math.toRadians(yawF)) * getXOffset(), 0, Math.sin(Math.toRadians(yawF)) * getXOffset());
 
-        Vector v2 = new Vector(-Math.sin(Math.toRadians(yaw)) * getZOffset(), 0, Math.cos(Math.toRadians(yaw)) * getZOffset());
+        Vector zVector = new Vector(-Math.sin(Math.toRadians(yaw)) * getZOffset(), 0, Math.cos(Math.toRadians(yaw)) * getZOffset());
 
-        Location l = Entity.getLocation().clone().add(v1).add(v2);
+        Location location = Entity.getLocation().clone().add(xVector).add(zVector);
 
-        return new Vector(l.getX(), 0, l.getZ());
+        return new Vector(location.getX(), 0, location.getZ());
     }
 
     protected void start(Player Player, LivingEntity Origin, boolean Head) {
 
         if(getParticle() == null) return;
 
-        Vector v = getCords(Origin);
+        Vector vector = getCords(Origin);
 
-        Player.spawnParticle(getParticle(), v.getX(), (Head ? Origin.getEyeLocation() : Origin.getLocation()).getY() + getYOffset(), v.getZ(), getAmount(), 0, 0, 0, getExtra(), getData());
+        Player.spawnParticle(getParticle(), vector.getX(), (Head ? Origin.getEyeLocation() : Origin.getLocation()).getY() + getYOffset(), vector.getZ(), getAmount(), 0, 0, 0, getExtra(), getData());
     }
 
     public Particle getParticle() { return particle; }

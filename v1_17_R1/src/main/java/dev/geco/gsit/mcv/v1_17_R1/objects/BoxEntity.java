@@ -1,25 +1,26 @@
-package dev.geco.gsit.mcv.v1_17_R1_2.objects;
+package dev.geco.gsit.mcv.v1_17_R1.objects;
 
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 
-import net.minecraft.world.entity.decoration.*;
+import net.minecraft.core.*;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.*;
 
-public class SeatEntity extends ArmorStand {
+public class BoxEntity extends Shulker {
 
-    public SeatEntity(Location Location) {
+    public BoxEntity(Location Location) {
 
-        super(((CraftWorld) Location.getWorld()).getHandle(), Location.getX(), Location.getY(), Location.getZ());
+        super(EntityType.SHULKER, ((CraftWorld) Location.getWorld()).getHandle());
 
         persist = false;
 
         setInvisible(true);
         setNoGravity(true);
-        setMarker(true);
         setInvulnerable(true);
-        setSmall(true);
-        setNoBasePlate(true);
-        setRot(Location.getYaw(), Location.getPitch());
+        setNoAi(true);
+        setSilent(true);
+        setAttachFace(Direction.UP);
     }
 
     public boolean canChangeDimensions() { return false; }

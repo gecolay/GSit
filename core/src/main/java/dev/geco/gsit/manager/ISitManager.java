@@ -31,8 +31,10 @@ public interface ISitManager {
 
     GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak);
 
+    // TODO: change to player
     void moveSeat(GSeat Seat, BlockFace Face);
 
+    // TODO: change to player
     boolean removeSeat(GSeat Seat, GetUpReason Reason);
 
     boolean removeSeat(GSeat Seat, GetUpReason Reason, boolean Safe);

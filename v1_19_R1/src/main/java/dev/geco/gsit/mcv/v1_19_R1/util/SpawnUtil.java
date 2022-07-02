@@ -18,29 +18,29 @@ public class SpawnUtil implements ISpawnUtil {
 
     public Entity createSeatEntity(Location Location, Entity Rider) {
 
-        SeatEntity sas = new SeatEntity(Location);
+        SeatEntity seatEntity = new SeatEntity(Location);
 
-        if(Rider != null && Rider.isValid()) ((CraftEntity) Rider).getHandle().startRiding(sas, true);
+        if(Rider != null && Rider.isValid()) ((CraftEntity) Rider).getHandle().startRiding(seatEntity, true);
 
-        ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(sas);
+        ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(seatEntity);
 
-        return sas.getBukkitEntity();
+        return seatEntity.getBukkitEntity();
     }
 
     public Entity createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
-        PlayerSeatEntity sas = new PlayerSeatEntity(Holder.getLocation());
+        PlayerSeatEntity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
 
         if(Rider != null && Rider.isValid()) {
 
-            sas.startRiding(((CraftEntity) Holder).getHandle(), true);
+            playerSeatEntity.startRiding(((CraftEntity) Holder).getHandle(), true);
 
-            ((CraftEntity) Rider).getHandle().startRiding(sas, true);
+            ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
         }
 
-        ((CraftWorld) Holder.getWorld()).getHandle().entityManager.addNewEntity(sas);
+        ((CraftWorld) Holder.getWorld()).getHandle().entityManager.addNewEntity(playerSeatEntity);
 
-        return sas.getBukkitEntity();
+        return playerSeatEntity.getBukkitEntity();
     }
 
 }

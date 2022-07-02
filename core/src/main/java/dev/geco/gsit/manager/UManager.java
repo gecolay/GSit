@@ -8,58 +8,80 @@ import org.bukkit.plugin.*;
 
 public class UManager {
 
-    private final Plugin pl;
+    private final Plugin plugin;
 
-    private final String r;
+    private final String resource;
 
-    private String s = null;
+    private String spigotVersion = null;
 
-    private boolean v = true;
+    private boolean latestVersion = true;
 
-    public UManager(Plugin Pl, String Resource) {
-        pl = Pl;
-        r = Resource;
+    public UManager(Plugin Plugin, String Resource) {
+
+        plugin = Plugin;
+        resource = Resource;
     }
 
     private String requestSpigotVersion() {
+
         String vs = null;
+
         try(Closer c = Closer.create()) {
-            HttpURLConnection con = (HttpURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + r).openConnection();
+
+            HttpURLConnection con = (HttpURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resource).openConnection();
+
             con.setDoOutput(true);
             con.setRequestMethod("GET");
             con.setConnectTimeout(1000);
+
             vs = c.register(new BufferedReader(c.register(new InputStreamReader(con.getInputStream())))).readLine();
-        } catch (IOException ignored) { }
+        } catch (Exception ignored) { }
+
         return vs;
     }
 
-    public String getPluginVersion() { return pl.getDescription().getVersion(); }
+    public String getPluginVersion() { return plugin.getDescription().getVersion(); }
 
-    public String getLatestVersion() { return s; }
+    public String getLatestVersion() { return spigotVersion; }
 
     public boolean checkVersion() {
-        s = requestSpigotVersion();
+
+        spigotVersion = requestSpigotVersion();
+
         String cv = getPluginVersion();
-        if(s == null || cv == null) return true;
+
+        if(spigotVersion == null || cv == null) return true;
+
         List<Integer> pl = new ArrayList<>(), vl = new ArrayList<>();
+
         for(String i : shortVersion(cv).split("\\.")) pl.add(Integer.parseInt(i));
-        for(String i : shortVersion(s).split("\\.")) vl.add(Integer.parseInt(i));
+
+        for(String i : shortVersion(spigotVersion).split("\\.")) vl.add(Integer.parseInt(i));
+
         if(pl.size() > vl.size()) {
-            v = true;
+
+            latestVersion = true;
+
             return true;
         }
+
         for(int i = 0; i < pl.size(); i++) {
-            v = true;
+
+            latestVersion = true;
+
             if(pl.get(i) > vl.get(i)) return true;
             else if(pl.get(i) < vl.get(i)) {
-                v = false;
+
+                latestVersion = false;
+
                 return false;
             }
         }
-        return v;
+
+        return latestVersion;
     }
 
-    public boolean isLatestVersion() { return v; }
+    public boolean isLatestVersion() { return latestVersion; }
 
     private String shortVersion(String V) { return V.replace(" ", "").replace("[", "").replace("]", ""); }
 
@@ -70,7 +92,9 @@ public class UManager {
         public static Closer create() { return new Closer(); }
 
         public <C extends Closeable> C register(C c) {
+
             l.add(c);
+
             return c;
         }
 

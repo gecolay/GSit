@@ -13,55 +13,57 @@ public class SpawnUtil implements ISpawnUtil {
 
         if(!needCheck()) return true;
 
-        Entity e = createSeatEntity(Location, null);
+        Entity seatEntity = createSeatEntity(Location, null);
 
-        boolean v = e.isValid();
+        boolean valid = seatEntity.isValid();
 
-        e.remove();
+        seatEntity.remove();
 
-        return v;
+        return valid;
     }
 
     public boolean checkPlayerLocation(Entity Holder) {
 
         if(!needCheck()) return true;
 
-        Entity e = createPlayerSeatEntity(Holder, null);
+        Entity playerSeatEntity = createPlayerSeatEntity(Holder, null);
 
-        boolean v = e.isValid();
+        boolean valid = playerSeatEntity.isValid();
 
-        e.remove();
+        playerSeatEntity.remove();
 
-        return v;
+        return valid;
     }
 
     public Entity createSeatEntity(Location Location, Entity Rider) {
 
-        return Location.getWorld().spawn(Location, ArmorStand.class, b -> {
-            try { b.setInvisible(true); } catch (Error ignored) {
-                try { NMSManager.getMethod("setVisible", b.getClass(), boolean.class).invoke(b, false); } catch (Exception | Error ignored1) { }
-            }
-            try { b.setGravity(false); } catch (Error ignored) { }
-            try { b.setMarker(true); } catch (Error ignored) { }
-            try { b.setInvulnerable(true); } catch (Error ignored) { }
-            try { b.setSmall(true); } catch (Error ignored) { }
-            try { b.setBasePlate(false); } catch (Error ignored) { }
-            if(Rider != null && Rider.isValid()) b.addPassenger(Rider);
+        return Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
+
+            try { armorStand.setInvisible(true); } catch (Error ignored) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored1) { } }
+            try { armorStand.setGravity(false); } catch (Error ignored) { }
+            try { armorStand.setMarker(true); } catch (Error ignored) { }
+            try { armorStand.setInvulnerable(true); } catch (Error ignored) { }
+            try { armorStand.setSmall(true); } catch (Error ignored) { }
+            try { armorStand.setBasePlate(false); } catch (Error ignored) { }
+
+            if(Rider != null && Rider.isValid()) armorStand.addPassenger(Rider);
         });
     }
 
     public Entity createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
-        return Holder.getWorld().spawn(Holder.getLocation(), AreaEffectCloud.class, b -> {
-            try { b.setRadius(0); } catch (Exception ignored) { }
-            try { b.setGravity(false); } catch (Exception ignored) { }
-            try { b.setInvulnerable(true); } catch (Exception ignored) { }
-            try { b.setDuration(Integer.MAX_VALUE); } catch (Exception ignored) { }
-            try { b.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
-            try { b.setWaitTime(0); } catch (Exception ignored) { }
+        return Holder.getWorld().spawn(Holder.getLocation(), AreaEffectCloud.class, areaEffectCloud -> {
+
+            try { areaEffectCloud.setRadius(0); } catch (Exception ignored) { }
+            try { areaEffectCloud.setGravity(false); } catch (Exception ignored) { }
+            try { areaEffectCloud.setInvulnerable(true); } catch (Exception ignored) { }
+            try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Exception ignored) { }
+            try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
+            try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
+
             if(Rider != null && Rider.isValid()) {
-                Holder.addPassenger(b);
-                b.addPassenger(Rider);
+                Holder.addPassenger(areaEffectCloud);
+                areaEffectCloud.addPassenger(Rider);
             }
         });
     }

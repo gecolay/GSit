@@ -14,35 +14,49 @@ public class PoseUtil {
 
     public PoseUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean isPoseBlock(Block B) { return B.hasMetadata(GPM.NAME + "P"); }
+    public boolean isPoseBlock(Block Block) { return Block.hasMetadata(GPM.NAME + "P"); }
 
     @SuppressWarnings("unchecked")
-    public List<IGPoseSeat> getPoses(Block B) {
+    public List<IGPoseSeat> getPoses(Block Blocks) {
+
         List<IGPoseSeat> poses = new ArrayList<>();
-        if(isPoseBlock(B)) {
-            MetadataValue m = B.getMetadata(GPM.NAME + "P").stream().filter(s -> GPM.equals(s.getOwningPlugin())).findFirst().orElse(null);
-            if(m != null) poses = new ArrayList<>((List<IGPoseSeat>) m.value());
+
+        if(isPoseBlock(Blocks)) {
+
+            MetadataValue metadataValue = Blocks.getMetadata(GPM.NAME + "P").stream().filter(s -> GPM.equals(s.getOwningPlugin())).findFirst().orElse(null);
+
+            if(metadataValue != null) poses = new ArrayList<>((List<IGPoseSeat>) metadataValue.value());
         }
+
         return poses;
     }
 
-    public List<IGPoseSeat> getPoses(List<Block> B) {
+    public List<IGPoseSeat> getPoses(List<Block> Blocks) {
+
         List<IGPoseSeat> poses = new ArrayList<>();
-        for(Block b : B) for(IGPoseSeat c : getPoses(b)) if(!poses.contains(c)) poses.add(c);
+
+        for(Block block : Blocks) for(IGPoseSeat poseSeat : getPoses(block)) if(!poses.contains(poseSeat)) poses.add(poseSeat);
+
         return poses;
     }
 
-    public void setPoseBlock(Block B, IGPoseSeat P) {
-        List<IGPoseSeat> poses = getPoses(B);
-        if(!poses.contains(P)) poses.add(P);
-        B.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poses));
+    public void setPoseBlock(Block Block, IGPoseSeat PoseSeat) {
+
+        List<IGPoseSeat> poses = getPoses(Block);
+
+        if(!poses.contains(PoseSeat)) poses.add(PoseSeat);
+
+        Block.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poses));
     }
 
-    public void removePoseBlock(Block B, IGPoseSeat P) {
-        List<IGPoseSeat> poses = getPoses(B);
-        poses.remove(P);
-        if(poses.size() > 0) B.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poses));
-        else B.removeMetadata(GPM.NAME + "P", GPM);
+    public void removePoseBlock(Block Block, IGPoseSeat PoseSeat) {
+
+        List<IGPoseSeat> poses = getPoses(Block);
+
+        poses.remove(PoseSeat);
+
+        if(poses.size() > 0) Block.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poses));
+        else Block.removeMetadata(GPM.NAME + "P", GPM);
     }
 
 }

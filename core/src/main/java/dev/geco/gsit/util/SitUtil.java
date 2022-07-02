@@ -18,74 +18,99 @@ public class SitUtil {
 
     public SitUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean isSeatBlock(Block B) { return B.hasMetadata(GPM.NAME); }
+    public boolean isSeatBlock(Block Block) { return Block.hasMetadata(GPM.NAME); }
 
     @SuppressWarnings("unchecked")
-    public List<GSeat> getSeats(Block B) {
+    public List<GSeat> getSeats(Block Block) {
+
         List<GSeat> seats = new ArrayList<>();
-        if(isSeatBlock(B)) {
-            MetadataValue m = B.getMetadata(GPM.NAME).stream().filter(s -> GPM.equals(s.getOwningPlugin())).findFirst().orElse(null);
-            if(m != null) seats = new ArrayList<>((List<GSeat>) m.value());
+
+        if(isSeatBlock(Block)) {
+
+            MetadataValue metadataValue = Block.getMetadata(GPM.NAME).stream().filter(s -> GPM.equals(s.getOwningPlugin())).findFirst().orElse(null);
+
+            if(metadataValue != null) seats = new ArrayList<>((List<GSeat>) metadataValue.value());
         }
+
         return seats;
     }
 
-    public List<GSeat> getSeats(List<Block> B) {
+    public List<GSeat> getSeats(List<Block> Blocks) {
+
         List<GSeat> seats = new ArrayList<>();
-        for(Block b : B) for(GSeat c : getSeats(b)) if(!seats.contains(c)) seats.add(c);
+
+        for(Block block : Blocks) for(GSeat seat : getSeats(block)) if(!seats.contains(seat)) seats.add(seat);
+
         return seats;
     }
 
-    public void setSeatBlock(Block B, GSeat S) {
-        List<GSeat> seats = getSeats(B);
-        if(!seats.contains(S)) seats.add(S);
-        B.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seats));
+    public void setSeatBlock(Block Block, GSeat Seat) {
+
+        List<GSeat> seats = getSeats(Block);
+
+        if(!seats.contains(Seat)) seats.add(Seat);
+
+        Block.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seats));
     }
 
-    public void removeSeatBlock(Block B, GSeat S) {
-        List<GSeat> seats = getSeats(B);
-        seats.remove(S);
-        if(seats.size() > 0) B.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seats));
-        else B.removeMetadata(GPM.NAME, GPM);
+    public void removeSeatBlock(Block Block, GSeat Seat) {
+
+        List<GSeat> seats = getSeats(Block);
+
+        seats.remove(Seat);
+
+        if(seats.size() > 0) Block.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seats));
+        else Block.removeMetadata(GPM.NAME, GPM);
     }
 
     public GSeat createSeatForStair(Block Block, Player Player) {
 
         GSeat seat = null;
 
-        Stairs bd = (Stairs) Block.getBlockData();
+        Stairs blockData = (Stairs) Block.getBlockData();
 
-        if(bd.getHalf() != Bisected.Half.BOTTOM) return GPM.getSitManager().createSeat(Block, Player);
+        if(blockData.getHalf() != Bisected.Half.BOTTOM) return GPM.getSitManager().createSeat(Block, Player);
 
-        BlockFace f = bd.getFacing().getOppositeFace();
+        BlockFace blockFace = blockData.getFacing().getOppositeFace();
 
-        Stairs.Shape s = bd.getShape();
+        Stairs.Shape stairShape = blockData.getShape();
 
-        if(bd.getShape() == Stairs.Shape.STRAIGHT) {
-            switch(f) {
+        if(blockData.getShape() == Stairs.Shape.STRAIGHT) {
+
+            switch(blockFace) {
+
                 case EAST:
                     seat = GPM.getSitManager().createSeat(Block, Player, false, ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, 0d, -90f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
+
                 case SOUTH:
                     seat = GPM.getSitManager().createSeat(Block, Player, false, 0d, -ISitManager.STAIR_Y_OFFSET, ISitManager.STAIR_XZ_OFFSET, 0f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
+
                 case WEST:
                     seat = GPM.getSitManager().createSeat(Block, Player, false, -ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, 0d, 90f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
+
                 case NORTH:
                     seat = GPM.getSitManager().createSeat(Block, Player, false, 0d, -ISitManager.STAIR_Y_OFFSET, -ISitManager.STAIR_XZ_OFFSET, 180f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
+
                 default:
                     break;
             }
         } else {
-            if(f == BlockFace.NORTH && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.EAST && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.NORTH && s == Stairs.Shape.INNER_RIGHT || f == BlockFace.EAST && s == Stairs.Shape.INNER_LEFT) {
+
+            if(blockFace == BlockFace.NORTH && stairShape == Stairs.Shape.OUTER_RIGHT || blockFace == BlockFace.EAST && stairShape == Stairs.Shape.OUTER_LEFT || blockFace == BlockFace.NORTH && stairShape == Stairs.Shape.INNER_RIGHT || blockFace == BlockFace.EAST && stairShape == Stairs.Shape.INNER_LEFT) {
+
                 seat = GPM.getSitManager().createSeat(Block, Player, false, ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, -ISitManager.STAIR_XZ_OFFSET, -135f, true, GPM.getCManager().GET_UP_SNEAK);
-            } else if(f == BlockFace.NORTH && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.WEST && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.NORTH && s == Stairs.Shape.INNER_LEFT || f == BlockFace.WEST && s == Stairs.Shape.INNER_RIGHT) {
+            } else if(blockFace == BlockFace.NORTH && stairShape == Stairs.Shape.OUTER_LEFT || blockFace == BlockFace.WEST && stairShape == Stairs.Shape.OUTER_RIGHT || blockFace == BlockFace.NORTH && stairShape == Stairs.Shape.INNER_LEFT || blockFace == BlockFace.WEST && stairShape == Stairs.Shape.INNER_RIGHT) {
+
                 seat = GPM.getSitManager().createSeat(Block, Player, false, -ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, -ISitManager.STAIR_XZ_OFFSET, 135f, true, GPM.getCManager().GET_UP_SNEAK);
-            } else if(f == BlockFace.SOUTH && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.WEST && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.SOUTH && s == Stairs.Shape.INNER_RIGHT || f == BlockFace.WEST && s == Stairs.Shape.INNER_LEFT) {
+            } else if(blockFace == BlockFace.SOUTH && stairShape == Stairs.Shape.OUTER_RIGHT || blockFace == BlockFace.WEST && stairShape == Stairs.Shape.OUTER_LEFT || blockFace == BlockFace.SOUTH && stairShape == Stairs.Shape.INNER_RIGHT || blockFace == BlockFace.WEST && stairShape == Stairs.Shape.INNER_LEFT) {
+
                 seat = GPM.getSitManager().createSeat(Block, Player, false, -ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, ISitManager.STAIR_XZ_OFFSET, 45f, true, GPM.getCManager().GET_UP_SNEAK);
-            } else if(f == BlockFace.SOUTH && s == Stairs.Shape.OUTER_LEFT || f == BlockFace.EAST && s == Stairs.Shape.OUTER_RIGHT || f == BlockFace.SOUTH && s == Stairs.Shape.INNER_LEFT || f == BlockFace.EAST && s == Stairs.Shape.INNER_RIGHT) {
+            } else if(blockFace == BlockFace.SOUTH && stairShape == Stairs.Shape.OUTER_LEFT || blockFace == BlockFace.EAST && stairShape == Stairs.Shape.OUTER_RIGHT || blockFace == BlockFace.SOUTH && stairShape == Stairs.Shape.INNER_LEFT || blockFace == BlockFace.EAST && stairShape == Stairs.Shape.INNER_RIGHT) {
+
                 seat = GPM.getSitManager().createSeat(Block, Player, false, ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, ISitManager.STAIR_XZ_OFFSET, -45f, true, GPM.getCManager().GET_UP_SNEAK);
             }
         }

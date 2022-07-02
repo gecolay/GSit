@@ -19,6 +19,7 @@ public class MManager {
     private final GSitMain GPM;
 
     private final HashMap<String, String> TAGS = new HashMap<>(); {
+
         TAGS.put("&0", "<reset><black>");
         TAGS.put("&1", "<reset><dark_blue>");
         TAGS.put("&2", "<reset><dark_green>");
@@ -43,33 +44,51 @@ public class MManager {
         TAGS.put("&r", "<reset>");
     }
 
-    public MManager(GSitMain GPluginMain) {
-        GPM = GPluginMain;
-    }
+    public MManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public String toFormattedMessage(String Text) {
-        String r = org.bukkit.ChatColor.translateAlternateColorCodes('&', Text);
-        Matcher m = Pattern.compile("(#[\\da-fA-F]{6})").matcher(r);
-        while(m.find()) r = r.replace(m.group(), ChatColor.of(m.group()).toString());
-        return r.replace("<lang:key.sneak>", "Sneak");
+
+        String colorText = org.bukkit.ChatColor.translateAlternateColorCodes('&', Text);
+
+        Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(colorText);
+
+        while(matcher.find()) colorText = colorText.replace(matcher.group(), ChatColor.of(matcher.group()).toString());
+
+        return colorText.replace("<lang:key.sneak>", "Sneak");
     }
 
     public Object toFormattedComponent(String Text) {
-        String r = Text;
-        for(Map.Entry<String, String> t : TAGS.entrySet()) r = r.replace(t.getKey(), t.getValue());
-        Matcher m = Pattern.compile("(#[\\da-fA-F]{6})").matcher(r);
-        while(m.find()) r = r.replace(m.group(), "<reset><color:" + m.group() + ">");
-        try { return MiniMessage.miniMessage().deserialize(r); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
+
+        String text = Text;
+
+        for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue());
+
+        // TODO: Just replace when there is no :#******>
+        Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(text);
+
+        while(matcher.find()) text = text.replace(matcher.group(), "<reset><color:" + matcher.group() + ">");
+
+        try {
+
+            return MiniMessage.miniMessage().deserialize(text);
+        } catch (Exception e) {
+
+            return Component.text(toFormattedMessage(Text));
+        }
     }
 
     public void sendMessage(CommandSender Sender, String Message, Object... ReplaceList) {
+
         if(GPM.SERVER > 1) {
+
             ((Audience) Sender).sendMessage((Component) getComponent(Message, ReplaceList));
         } else Sender.sendMessage(getMessage(Message, ReplaceList));
     }
 
     public void sendActionBarMessage(Player Player, String Message, Object... ReplaceList) {
+
         if(GPM.SERVER > 1) {
+
             ((Audience) Player).sendActionBar((Component) getComponent(Message, ReplaceList));
         } else Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getMessage(Message, ReplaceList)));
     }
@@ -81,9 +100,12 @@ public class MManager {
     private String getRawMessage(String Message, Object... ReplaceList) { return replace(Message == null || Message.isEmpty() ? "" : GPM.getMessages().getString(Message, Message), ReplaceList); }
 
     private String replace(String Message, Object... ReplaceList) {
-        String r = Message;
-        if(ReplaceList != null && ReplaceList.length > 1) for(int i = 0; i < ReplaceList.length; i += 2) if(ReplaceList[i] != null && ReplaceList[i + 1] != null) r = r.replace(ReplaceList[i].toString(), ReplaceList[i + 1].toString());
-        return r.replace("[P]", GPM.getPrefix());
+
+        String message = Message;
+
+        if(ReplaceList != null && ReplaceList.length > 1) for(int count = 0; count < ReplaceList.length; count += 2) if(ReplaceList[count] != null && ReplaceList[count + 1] != null) message = message.replace(ReplaceList[count].toString(), ReplaceList[count + 1].toString());
+
+        return message.replace("[P]", GPM.getPrefix());
     }
 
 }

@@ -6,49 +6,56 @@ import org.bukkit.entity.*;
 
 public class GSeat {
 
-    protected Block b;
+    protected Block block;
 
-    protected Location l;
+    protected Location location;
 
-    protected final Player p;
+    protected final Player player;
 
-    protected final Entity e;
+    protected final Entity entity;
 
-    protected Location r;
+    protected Location returnLocation;
 
-    public GSeat(Block block, Location location, Player player, Entity entity, Location returnloc) {
-        b = block;
-        l = location;
-        p = player;
-        e = entity;
-        r = returnloc;
+    public GSeat(Block Block, Location Location, Player Player, Entity Entity, Location ReturnLocation) {
+
+        block = Block;
+        location = Location;
+        player = Player;
+        entity = Entity;
+        returnLocation = ReturnLocation;
     }
 
-    public Block getBlock() { return b; }
+    public Block getBlock() { return block; }
 
-    public GSeat setBlock(Block block) {
-        b = block;
+    public GSeat setBlock(Block Block) {
+
+        block = Block;
+
         return this;
     }
 
-    public Location getLocation() { return l.clone(); }
+    public Location getLocation() { return location.clone(); }
 
-    public GSeat setLocation(Location location) {
-        l = location.clone();
+    public GSeat setLocation(Location Location) {
+
+        location = Location.clone();
+
         return this;
     }
 
-    public Player getPlayer() { return p; }
+    public Player getPlayer() { return player; }
 
-    public Entity getEntity() { return e; }
+    public Entity getEntity() { return entity; }
 
-    public Location getReturn() { return r.clone(); }
+    public Location getReturn() { return returnLocation.clone(); }
 
-    public GSeat setReturn(Location returnloc) {
-        r = returnloc.clone();
+    public GSeat setReturn(Location ReturnLocation) {
+
+        returnLocation = ReturnLocation.clone();
+
         return this;
     }
 
-    public String toString() { return e.getUniqueId().toString(); }
+    public String toString() { return entity.getUniqueId().toString(); }
 
 }

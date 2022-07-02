@@ -5,10 +5,10 @@ import org.bukkit.entity.*;
 
 public interface IPlayerUtil {
 
-    void teleport(Player P, Location L);
+    void teleportPlayer(Player Player, Location Location);
 
-    void teleport(Player P, Location L, boolean D);
+    void teleportPlayer(Player Player, Location Location, boolean Dismount);
 
-    void pos(Entity E, Location L);
+    void teleportEntity(Entity Entity, Location Location);
 
 }
