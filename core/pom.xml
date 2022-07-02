@@ -18,6 +18,7 @@
         <worldguard.version>7.0.7</worldguard.version>
         <placeholderapi.version>2.11.1</placeholderapi.version>
         <griefprevention.version>16.18</griefprevention.version>
+        <plotsquared.version>6.9.0</plotsquared.version>
     </properties>
 
     <repositories>
@@ -81,7 +82,7 @@
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Core</artifactId>
-            <version>6.9.0</version>
+            <version>${plotsquared.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

@@ -39,13 +39,13 @@ Options:
     # Defines the blocks a player can sit on by clicking (Materials and Tags)
     # Separate a material or tag from its y-offset with a ; character "stone;0.5" to get a y-offset of 0.5 for the material
     SitMaterials:
-    - "#stairs"
-    - "#slabs"
-    - "#carpets"
-    - "#wool_carpets"
-    - "moss_carpet"
-    - "big_dripleaf"
-    - "snow"
+      - "#stairs"
+      - "#slabs"
+      - "#carpets"
+      - "#wool_carpets"
+      - "moss_carpet"
+      - "big_dripleaf"
+      - "snow"
 
     # Defines whether a player needs an empty main hand to sit down by clicking
     empty-hand-only: true
@@ -123,13 +123,13 @@ Options:
 
   # Defines the worlds in which a player cannot sit, pose, crawl or emote
   WorldBlacklist:
-  - "blocked_world"
+    - "blocked_world"
 
   # Defines the list of materials on which a player may not sit or pose
   MaterialBlacklist:
-  - "lava"
+    - "lava"
 
   # Defines the list of commands that cannot be executed while sitting or posing
   CommandBlacklist:
-  - "skin"
-  - "nick"
+    - "skin"
+    - "nick"

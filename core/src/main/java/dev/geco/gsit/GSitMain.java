@@ -122,7 +122,7 @@ public class GSitMain extends JavaPlugin {
         //copyEmoteFiles();
         messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
         prefix = getMessages().getString("Plugin.plugin-prefix");
-        //getEmoteManager().reloadEmotes();
+        getEmoteManager().reloadEmotes();
         getToggleManager().loadToggleData();
     }
 
@@ -151,11 +151,11 @@ public class GSitMain extends JavaPlugin {
             getCrawlManager().resetFeatureUsedCount();
             return c;
         }));
-        /*bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
             int c = getEmoteManager().getFeatureUsedCount();
             getEmoteManager().resetFeatureUsedCount();
             return c;
-        }));*/
+        }));
     }
 
     public void onLoad() {
@@ -198,7 +198,7 @@ public class GSitMain extends JavaPlugin {
         getSitManager().clearSeats();
         if(getPoseManager() != null) getPoseManager().clearPoses();
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
-        //getEmoteManager().clearEmotes();
+        getEmoteManager().clearEmotes();
         getToggleManager().saveToggleData();
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
@@ -260,7 +260,7 @@ public class GSitMain extends JavaPlugin {
         getSitManager().clearSeats();
         if(getPoseManager() != null) getPoseManager().clearPoses();
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
-        //getEmoteManager().reloadEmotes();
+        getEmoteManager().reloadEmotes();
         getToggleManager().saveToggleData();
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
         loadSettings();
