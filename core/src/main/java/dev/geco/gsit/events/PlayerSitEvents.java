@@ -70,9 +70,13 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && p.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 
-        if(!p.isValid() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
+        if(!p.isValid() || !t.isValid() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
 
         if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) return;
+
+        double d = GPM.getCManager().PS_MAX_DISTANCE;
+
+        if(d > 0d && t.getLocation().add(0, t.getHeight() / 2, 0).distance(p.getLocation().add(0, p.getHeight() / 2, 0)) > d) return;
 
         if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(t.getLocation(), GPM.getWorldGuardLink().PLAYERSIT_FLAG)) return;
 

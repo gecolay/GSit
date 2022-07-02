@@ -48,6 +48,8 @@ public class CManager {
 
     public boolean PS_EMPTY_HAND_ONLY;
 
+    public double PS_MAX_DISTANCE;
+
     public boolean PS_SIT_MESSAGE;
 
     public boolean PS_DEFAULT_SIT_MODE;
@@ -68,6 +70,8 @@ public class CManager {
 
     public boolean C_GET_UP_SNEAK;
 
+
+    public boolean TRUSTED_REGION_ONLY;
 
     public List<String> WORLDBLACKLIST = new ArrayList<>();
 
@@ -116,6 +120,7 @@ public class CManager {
         PS_MAX_STACK = GPM.getConfig().getLong("Options.PlayerSit.max-stack", 0);
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
         PS_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.PlayerSit.empty-hand-only", true);
+        PS_MAX_DISTANCE = GPM.getConfig().getDouble("Options.PlayerSit.max-distance", 0d);
         PS_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.sit-message", true);
         PS_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.PlayerSit.default-sit-mode", true);
 
@@ -128,6 +133,7 @@ public class CManager {
 
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
 
+        TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
         MATERIALBLACKLIST.clear();
         for(String s : GPM.getConfig().getStringList("Options.MaterialBlacklist")) {

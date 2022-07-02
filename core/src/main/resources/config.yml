@@ -78,6 +78,9 @@ Options:
     # Defines whether a player needs an empty main hand to sit on another player
     empty-hand-only: true
 
+    # Defines the maximum range in which a player can sit on another player (0 means unlimited)
+    max-distance: 0.00
+
     # Defines whether a player should receive a custom message when he starts to sit on another player
     sit-message: true
 
@@ -114,6 +117,9 @@ Options:
     get-up-sneak: true
 
 
+
+  # Defines whether a player can only sit or pose in a region where they are trusted
+  trusted-region-only: false
 
   # Defines the worlds in which a player cannot sit, pose, crawl or emote
   WorldBlacklist:
