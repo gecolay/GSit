@@ -30,6 +30,7 @@ public class EmoteManager implements IEmoteManager {
     public GEmote getEmoteByName(String Name) { return available_emotes.stream().filter(e -> e.getId().equalsIgnoreCase(Name)).findFirst().orElse(null); }
 
     public List<GEmote> reloadEmotes() {
+        clearEmotes();
         available_emotes.clear();
         try {
             File path = new File("plugins/" + GPM.NAME + "/" + PluginValues.EMOTES_PATH);
