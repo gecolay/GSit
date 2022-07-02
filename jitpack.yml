@@ -1,12 +1,14 @@
 before_install:
   - git config --global --unset core.autocrlf
   - curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-  - sdk install java 16.0.2-open
-  - sdk install java 17.0.3-tem
-  - sdk use java 16.0.2-open
+  - add-apt-repository ppa:linuxuprising/java
+  - apt update
+  - apt install oracle-java16-installer --install-recommends
   - java -jar BuildTools.jar --rev 1.17
   - java -jar BuildTools.jar --rev 1.17.1
-  - sdk use java 17.0.3-tem
+  - apt install oracle-java17-installer --install-recommends
   - java -jar BuildTools.jar --rev 1.18.1
   - java -jar BuildTools.jar --rev 1.18.2
   - java -jar BuildTools.jar --rev 1.19
+  - sdk install java 17.0.3-tem
+  - sdk use java 17.0.3-tem
