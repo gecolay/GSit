@@ -14,8 +14,7 @@ public class GEmote {
 
     protected final List<GEmotePart> parts;
 
-    //TODO: Change to long (-1 == true)
-    protected final boolean loop;
+    protected final long loop;
 
     protected final boolean head;
 
@@ -25,7 +24,7 @@ public class GEmote {
 
     protected long range = 250;
 
-    public GEmote(String Id, List<GEmotePart> Parts, boolean Loop, boolean Head) {
+    public GEmote(String Id, List<GEmotePart> Parts, long Loop, boolean Head) {
         id = Id;
         parts = new ArrayList<>(Parts);
         loop = Loop;
@@ -54,6 +53,7 @@ public class GEmote {
         BukkitRunnable task = new BukkitRunnable() {
 
             long i = 0;
+            long l = 0;
             final long t = Collections.max(setParts.keySet());
 
             @Override
@@ -82,8 +82,12 @@ public class GEmote {
                 i++;
 
                 if(i >= t) {
-                    if(isLoop()) i = 0;
-                    else GSitMain.getInstance().getEmoteManager().stopEmote(Entity);
+
+                    if(getLoop() > 0 && getLoop() <= l) GSitMain.getInstance().getEmoteManager().stopEmote(Entity);
+                    else {
+                        i = 0;
+                        l++;
+                    }
                 }
             }
         };
@@ -104,7 +108,7 @@ public class GEmote {
 
     public List<GEmotePart> getParts() { return parts; }
 
-    public boolean isLoop() { return loop; }
+    public long getLoop() { return loop; }
 
     public boolean isFromHead() { return head; }
 

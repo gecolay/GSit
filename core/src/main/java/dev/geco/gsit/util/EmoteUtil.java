@@ -96,7 +96,7 @@ public class EmoteUtil {
             } catch (Exception | Error e) { e.printStackTrace(); }
         }
 
-        return new GEmote(File.getName().replace(PluginValues.GEX_FILETYP, "").toLowerCase(), parts, c.getBoolean("loop", false), c.getBoolean("head", true));
+        return new GEmote(File.getName().replace(PluginValues.GEX_FILETYP, "").toLowerCase(), parts, c.getLong("loop", 0), c.getBoolean("head", true));
     }
 
 }

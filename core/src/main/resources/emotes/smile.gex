@@ -1,5 +1,5 @@
-# Defines whether the emote will be looped
-loop: true
+# Defines how often the emote is looped (-1 means unlimited)
+loop: 0
 
 # Defines whether the emote is played from the entity's head height
 head: true

@@ -50,7 +50,7 @@ Options:
     # Defines whether a player needs an empty main hand to sit down by clicking
     empty-hand-only: true
 
-    # Defines the maximum range in which a player can sit down by clicking (0 means unlimited!)
+    # Defines the maximum range in which a player can sit down by clicking (0 means unlimited)
     max-distance: 0.00
 
     # Defines whether a player should receive a custom message when he starts to sit
@@ -69,7 +69,7 @@ Options:
     # Defines whether a player can right-click to sit on an NPC
     allow-sit-npc: false
 
-    # Defines the maximum number of players that can be stacked (0 means unlimited!)
+    # Defines the maximum number of players that can be stacked (0 means unlimited)
     max-stack: 0
 
     # Defines whether a player should kick out all passengers when sneaking

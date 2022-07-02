@@ -115,7 +115,7 @@ public class GSitMain extends JavaPlugin {
 
     private void loadSettings() {
         copyLangFiles();
-        copyEmoteFiles();
+        //copyEmoteFiles();
         messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
         prefix = getMessages().getString("Plugin.plugin-prefix");
         getEmoteManager().reloadEmotes();
