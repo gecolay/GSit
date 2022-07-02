@@ -103,6 +103,10 @@ public class GSitMain extends JavaPlugin {
 
     public GrPrLink getGriefPreventionLink() { return grprlink; }
 
+    private PlSqLink plsqlink;
+
+    public PlSqLink getPlotSquaredLink() { return plsqlink; }
+
     public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : 0;
 
     public final String NAME = "GSit";
@@ -241,6 +245,11 @@ public class GSitMain extends JavaPlugin {
             grprlink = new GrPrLink(getInstance());
             getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "GriefPrevention");
         } else grprlink = null;
+        if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
+            plsqlink = new PlSqLink(getInstance());
+            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
+            else plsqlink = null;
+        } else plsqlink = null;
     }
 
     private void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pl_pl", "pt_br", "ru_ru", "uk_ua", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }

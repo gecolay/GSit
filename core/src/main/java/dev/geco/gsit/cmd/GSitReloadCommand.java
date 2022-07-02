@@ -1,6 +1,6 @@
 package dev.geco.gsit.cmd;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import org.bukkit.command.*;
 import org.bukkit.entity.*;

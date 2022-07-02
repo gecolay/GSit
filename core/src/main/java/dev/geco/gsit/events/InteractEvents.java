@@ -53,6 +53,8 @@ public class InteractEvents implements Listener {
 
         if(!GPM.getCManager().ALLOW_UNSAFE && !(b.getRelative(BlockFace.UP).isPassable())) return;
 
+        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(b.getLocation(), p)) return;
+
         if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(b.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) return;
 
         if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(b.getLocation(), p)) return;

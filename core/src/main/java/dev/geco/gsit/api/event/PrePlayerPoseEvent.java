@@ -1,6 +1,6 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import org.bukkit.block.*;
 import org.bukkit.entity.*;

@@ -2,7 +2,7 @@ package dev.geco.gsit.link;
 
 import java.util.*;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;

@@ -1,6 +1,6 @@
 package dev.geco.gsit.cmd;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import org.bukkit.*;
 import org.bukkit.command.*;
@@ -27,10 +27,8 @@ public class GCrawlCommand implements CommandExecutor {
                         if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
                             if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) || GPM.getPManager().hasPermission(s, "ByPass.World", "ByPass.*")) {
                                 if(GPM.getWorldGuardLink() == null || GPM.getWorldGuardLink().checkFlag(p.getLocation(), GPM.getWorldGuardLink().CRAWL_FLAG)) {
-                                    if(GPM.getGriefPreventionLink() == null || GPM.getGriefPreventionLink().check(p.getLocation(), p)) {
-                                        IGCrawl v = GPM.getCrawlManager().startCrawl(p);
-                                        if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
-                                    } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
+                                    IGCrawl v = GPM.getCrawlManager().startCrawl(p);
+                                    if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
                                 } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-region-error");
                             } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-world-error");
                         } else GPM.getMManager().sendMessage(s, "Messages.action-crawl-now-error");
