@@ -32,7 +32,7 @@ public class GSitCommand implements CommandExecutor {
                                 if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {
                                     if(GPM.getCManager().ALLOW_UNSAFE || (b.getRelative(BlockFace.UP).isPassable() && (!b.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
                                         if(GPM.getWorldGuardLink() == null || GPM.getWorldGuardLink().checkFlag(b.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) {
-                                            if(GPM.getGriefPreventionLink() == null || GPM.getGriefPreventionLink().check(b.getLocation())) {
+                                            if(GPM.getGriefPreventionLink() == null || GPM.getGriefPreventionLink().check(b.getLocation(), p)) {
                                                 if(GPM.getCManager().SAME_BLOCK_REST || GPM.getSitManager().kickSeat(b, p)) {
                                                     if(Tag.STAIRS.isTagged(b.getType())) {
                                                         GSeat v = GPM.getSitUtil().createSeatForStair(b, p);

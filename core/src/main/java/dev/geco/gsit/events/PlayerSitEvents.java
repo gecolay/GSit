@@ -76,7 +76,7 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(t.getLocation(), GPM.getWorldGuardLink().PLAYERSIT_FLAG)) return;
 
-        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(t.getLocation())) return;
+        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(t.getLocation(), p)) return;
 
         if(GPM.getPassengerUtil().isInPassengerList(t, p) || GPM.getPassengerUtil().isInPassengerList(p, t)) return;
 

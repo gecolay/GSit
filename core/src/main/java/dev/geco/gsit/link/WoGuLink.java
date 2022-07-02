@@ -97,15 +97,15 @@ public class WoGuLink {
 
     }
 
-    public boolean checkFlag(Location L, StateFlag Flag) {
+    public boolean checkFlag(Location Location, StateFlag Flag) {
 
         if(Flag == null) return true;
 
         try {
 
-            return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(L)).testState(null, Flag);
+            return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(Location)).testState(null, Flag);
 
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             e.printStackTrace();
         }
 
