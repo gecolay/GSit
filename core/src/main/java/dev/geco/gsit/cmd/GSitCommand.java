@@ -81,6 +81,12 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
+            if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(block.getLocation(), player)) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+                return true;
+            }
+
             if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getSitManager().kickSeat(block, player)) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-sit-kick-error");
