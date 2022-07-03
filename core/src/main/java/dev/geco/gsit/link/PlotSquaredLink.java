@@ -32,8 +32,6 @@ public class PlotSquaredLink {
 
             if(plotArea == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
-            if(!plotArea.isSpawnCustom()) return false;
-
             Plot plot = plotArea.getOwnedPlot(location);
 
             if(plot == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
