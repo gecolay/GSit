@@ -65,7 +65,7 @@ public class MManager {
 
         Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(text);
 
-        while(matcher.find()) if(text.indexOf(matcher.group()) == 0 || !text.substring(text.indexOf(matcher.group()) - 1, 1).equals(":")) text = text.replaceFirst(matcher.group(), "<reset><color:" + matcher.group() + ">");
+        while(matcher.find()) if(text.indexOf(matcher.group()) == 0 || text.charAt(text.indexOf(matcher.group()) - 1) != ':') text = text.replaceFirst(matcher.group(), "<reset><color:" + matcher.group() + ">");
 
         try { return MiniMessage.miniMessage().deserialize(text); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
     }
