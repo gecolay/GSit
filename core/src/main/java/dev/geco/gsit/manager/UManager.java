@@ -46,37 +46,40 @@ public class UManager {
 
     public boolean checkVersion() {
 
-        spigotVersion = requestSpigotVersion();
+        try {
 
-        String cv = getPluginVersion();
+            spigotVersion = requestSpigotVersion();
 
-        if(spigotVersion == null || cv == null) return true;
+            String cv = getPluginVersion();
 
-        List<Integer> pl = new ArrayList<>(), vl = new ArrayList<>();
+            if(spigotVersion == null || cv == null) return true;
 
-        for(String i : shortVersion(cv).split("\\.")) pl.add(Integer.parseInt(i));
+            List<Integer> pl = new ArrayList<>(), vl = new ArrayList<>();
 
-        for(String i : shortVersion(spigotVersion).split("\\.")) vl.add(Integer.parseInt(i));
+            for(String i : shortVersion(cv).split("\\.")) pl.add(Integer.parseInt(i));
 
-        if(pl.size() > vl.size()) {
+            for(String i : shortVersion(spigotVersion).split("\\.")) vl.add(Integer.parseInt(i));
 
-            latestVersion = true;
+            if(pl.size() > vl.size()) {
 
-            return true;
-        }
+                latestVersion = true;
 
-        for(int i = 0; i < pl.size(); i++) {
-
-            latestVersion = true;
-
-            if(pl.get(i) > vl.get(i)) return true;
-            else if(pl.get(i) < vl.get(i)) {
-
-                latestVersion = false;
-
-                return false;
+                return true;
             }
-        }
+
+            for(int i = 0; i < pl.size(); i++) {
+
+                latestVersion = true;
+
+                if(pl.get(i) > vl.get(i)) return true;
+                else if(pl.get(i) < vl.get(i)) {
+
+                    latestVersion = false;
+
+                    return false;
+                }
+            }
+        } catch (Exception | Error e) { latestVersion = true; }
 
         return latestVersion;
     }
