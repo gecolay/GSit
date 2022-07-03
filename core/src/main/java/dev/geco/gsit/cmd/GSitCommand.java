@@ -93,8 +93,7 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(Tag.STAIRS.isTagged(block.getType())) if(GPM.getSitUtil().createSeatForStair(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
-            else if(GPM.getSitManager().createSeat(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+            if(Tag.STAIRS.isTagged(block.getType()) ? GPM.getSitUtil().createSeatForStair(block, player) == null : GPM.getSitManager().createSeat(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
             return true;
         }
 
