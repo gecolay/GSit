@@ -17,69 +17,127 @@ public class GSitCommand implements CommandExecutor {
     public GSitCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
-        if(s instanceof Player) {
-            Player p = (Player) s;
-            if(a.length == 0) {
-                if(GPM.getPManager().hasNormalPermission(s, "Sit")) {
-                    if(GPM.getSitManager().isSitting(p)) {
-                        GPM.getSitManager().removeSeat(GPM.getSitManager().getSeat(p), GetUpReason.GET_UP);
-                    } else {
-                        if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
-                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) || GPM.getPManager().hasPermission(s, "ByPass.World", "ByPass.*")) {
-                                Location pl = p.getLocation();
-                                Block b = pl.getBlock().isPassable() ? pl.subtract(0, 0.0625, 0).getBlock() : pl.getBlock();
-                                if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {
-                                    if(GPM.getCManager().ALLOW_UNSAFE || (b.getRelative(BlockFace.UP).isPassable() && (!b.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
-                                        if(GPM.getWorldGuardLink() == null || GPM.getWorldGuardLink().checkFlag(b.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) {
-                                            if(GPM.getGriefPreventionLink() == null || GPM.getGriefPreventionLink().check(b.getLocation(), p)) {
-                                                if(GPM.getCManager().SAME_BLOCK_REST || GPM.getSitManager().kickSeat(b, p)) {
-                                                    if(Tag.STAIRS.isTagged(b.getType())) {
-                                                        GSeat v = GPM.getSitUtil().createSeatForStair(b, p);
-                                                        if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
-                                                    } else {
-                                                        GSeat v = GPM.getSitManager().createSeat(b, p);
-                                                        if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
-                                                    }
-                                                } else GPM.getMManager().sendMessage(s, "Messages.action-sit-kick-error");
-                                            } else GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
-                                        } else GPM.getMManager().sendMessage(s, "Messages.action-sit-region-error");
-                                    } else GPM.getMManager().sendMessage(s, "Messages.action-sit-location-error");
-                                } else GPM.getMManager().sendMessage(s, "Messages.action-sit-location-error");
-                            } else GPM.getMManager().sendMessage(s, "Messages.action-sit-world-error");
-                        } else GPM.getMManager().sendMessage(s, "Messages.action-sit-now-error");
-                    }
-                } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
-            } else {
-                switch(a[0]) {
-                    case "toggle":
-                        if(GPM.getPManager().hasNormalPermission(s, "SitToggle")) {
-                            if(GPM.getToggleManager().canSit(p.getUniqueId())) {
-                                GPM.getToggleManager().setCanSit(p.getUniqueId(), false);
-                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-toggle-off");
-                            } else {
-                                GPM.getToggleManager().setCanSit(p.getUniqueId(), true);
-                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-toggle-on");
-                            }
-                            break;
-                        }
-                    case "playertoggle":
-                        if(GPM.getPManager().hasNormalPermission(s, "PlayerSitToggle")) {
-                            if(GPM.getToggleManager().canPlayerSit(p.getUniqueId())) {
-                                GPM.getToggleManager().setCanPlayerSit(p.getUniqueId(), false);
-                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-playertoggle-off");
-                            } else {
-                                GPM.getToggleManager().setCanPlayerSit(p.getUniqueId(), true);
-                                GPM.getMManager().sendMessage(s, "Messages.command-gsit-playertoggle-on");
-                            }
-                            break;
-                        }
-                    default:
-                        Bukkit.dispatchCommand(s, l);
-                        break;
-                }
+    public boolean onCommand(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
+
+        if(!(Sender instanceof Player)) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.command-sender-error");
+            return true;
+        }
+
+        Player player = (Player) Sender;
+
+        if(Args.length == 0) {
+
+            if(!GPM.getPManager().hasNormalPermission(Sender, "Sit")) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
+                return true;
             }
-        } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
+
+            if(GPM.getSitManager().isSitting(player)) {
+
+                GPM.getSitManager().removeSeat(player, GetUpReason.GET_UP);
+                return true;
+            }
+
+            if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping()) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-now-error");
+                return true;
+            }
+
+            if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-world-error");
+                return true;
+            }
+
+            Location playerLocation = player.getLocation();
+
+            Block block = playerLocation.getBlock().isPassable() ? playerLocation.subtract(0, 0.0625, 0).getBlock() : playerLocation.getBlock();
+
+            if(GPM.getCManager().MATERIALBLACKLIST.contains(block.getType())) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-location-error");
+                return true;
+            }
+
+            if(!GPM.getCManager().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && (!block.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-location-error");
+                return true;
+            }
+
+            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+                return true;
+            }
+
+            if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(block.getLocation(), player)) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+                return true;
+            }
+
+            if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getSitManager().kickSeat(block, player)) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-sit-kick-error");
+                return true;
+            }
+
+            if(Tag.STAIRS.isTagged(block.getType())) if(GPM.getSitUtil().createSeatForStair(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+            else if(GPM.getSitManager().createSeat(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+            return true;
+        }
+
+        switch(Args[0]) {
+
+            case "toggle":
+
+                if(GPM.getPManager().hasNormalPermission(Sender, "SitToggle")) {
+
+                    if(GPM.getToggleManager().canSit(player.getUniqueId())) {
+
+                        GPM.getToggleManager().setCanSit(player.getUniqueId(), false);
+
+                        GPM.getMManager().sendMessage(Sender, "Messages.command-gsit-toggle-off");
+                    } else {
+
+                        GPM.getToggleManager().setCanSit(player.getUniqueId(), true);
+
+                        GPM.getMManager().sendMessage(Sender, "Messages.command-gsit-toggle-on");
+                    }
+
+                    break;
+                }
+
+            case "playertoggle":
+
+                if(GPM.getPManager().hasNormalPermission(Sender, "PlayerSitToggle")) {
+
+                    if(GPM.getToggleManager().canPlayerSit(player.getUniqueId())) {
+
+                        GPM.getToggleManager().setCanPlayerSit(player.getUniqueId(), false);
+
+                        GPM.getMManager().sendMessage(Sender, "Messages.command-gsit-playertoggle-off");
+                    } else {
+
+                        GPM.getToggleManager().setCanPlayerSit(player.getUniqueId(), true);
+
+                        GPM.getMManager().sendMessage(Sender, "Messages.command-gsit-playertoggle-on");
+                    }
+
+                    break;
+                }
+
+            default:
+
+                Bukkit.dispatchCommand(Sender, Label);
+                break;
+        }
+
         return true;
     }
 

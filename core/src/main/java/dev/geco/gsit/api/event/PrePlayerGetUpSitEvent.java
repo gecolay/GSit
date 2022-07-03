@@ -13,27 +13,25 @@ public class PrePlayerGetUpSitEvent extends PlayerEvent implements Cancellable {
 
     private boolean cancel = false;
 
-    private final GSeat s;
+    private final GSeat seat;
 
-    private final GetUpReason r;
+    private final GetUpReason reason;
 
     public PrePlayerGetUpSitEvent(GSeat Seat, GetUpReason Reason) {
+
         super(Seat.getPlayer());
-        s = Seat;
-        r = Reason;
+
+        seat = Seat;
+        reason = Reason;
     }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public GSeat getSeat() { return s; }
+    public GSeat getSeat() { return seat; }
 
-    public GetUpReason getReason() { return r; }
+    public GetUpReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

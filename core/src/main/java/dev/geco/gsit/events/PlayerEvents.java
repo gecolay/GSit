@@ -17,120 +17,96 @@ public class PlayerEvents implements Listener {
     public PlayerEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @EventHandler
-    public void PJoiE(PlayerJoinEvent e) {
+    public void PJoiE(PlayerJoinEvent Event) {
 
-        Player p = e.getPlayer();
+        Player player = Event.getPlayer();
 
         if(GPM.getCManager().CHECK_FOR_UPDATES && !GPM.getUManager().isLatestVersion()) {
-            String me = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", GPM.getUManager().getLatestVersion(), "%Version%", GPM.getUManager().getPluginVersion(), "%Path%", GPM.getDescription().getWebsite());
-            if(GPM.getPManager().hasPermission(p, "Update")) p.sendMessage(me);
+
+            String message = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", GPM.getUManager().getLatestVersion(), "%Version%", GPM.getUManager().getPluginVersion(), "%Path%", GPM.getDescription().getWebsite());
+
+            if(GPM.getPManager().hasPermission(player, "Update")) player.sendMessage(message);
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void PQuiE(PlayerQuitEvent e) {
+    public void PQuiE(PlayerQuitEvent Event) {
 
-        Player p = e.getPlayer();
+        Player player = Event.getPlayer();
 
-        if(GPM.getSitManager().isSitting(p)) {
-            GPM.getSitManager().removeSeat(GPM.getSitManager().getSeat(p), GetUpReason.QUIT, true);
-        }
+        if(GPM.getSitManager().isSitting(player)) GPM.getSitManager().removeSeat(player, GetUpReason.QUIT, true);
 
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(p)) {
-            GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.QUIT, true);
-        }
+        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) {
-            GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.QUIT);
-        }
+        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void PTelE(PlayerTeleportEvent e) {
+    public void PTelE(PlayerTeleportEvent Event) {
 
-        Player p = e.getPlayer();
+        Player player = Event.getPlayer();
 
-        if(GPM.getSitManager().isSitting(p)) {
-            boolean r = GPM.getSitManager().removeSeat(GPM.getSitManager().getSeat(p), GetUpReason.TELEPORT, false);
-            if(!r) e.setCancelled(true);
-        }
+        if(GPM.getSitManager().isSitting(player) && !GPM.getSitManager().removeSeat(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
 
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(p)) {
-            boolean r = GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.TELEPORT, false);
-            if(!r) e.setCancelled(true);
-        }
+        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player) && !GPM.getPoseManager().removePose(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) {
-            boolean r = GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.TELEPORT);
-            if(!r) e.setCancelled(true);
-        }
+        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player) && !GPM.getCrawlManager().stopCrawl(player, GetUpReason.TELEPORT)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void EDisE(EntityDismountEvent e) {
+    public void EDisE(EntityDismountEvent Event) {
 
-        Entity E = e.getEntity();
+        Entity entity = Event.getEntity();
 
-        if(!(E instanceof Player)) return;
+        if(!(entity instanceof Player)) return;
 
-        Player p = (Player) E;
+        Player player = (Player) entity;
 
-        if(GPM.getSitManager().isSitting(p)) {
-            if(!GPM.getCManager().GET_UP_SNEAK) {
-                e.setCancelled(true);
-            } else {
-                boolean r = GPM.getSitManager().removeSeat(GPM.getSitManager().getSeat(p), GetUpReason.GET_UP, true);
-                if(!r) e.setCancelled(true);
-            }
+        if(GPM.getSitManager().isSitting(player)) {
+
+            if(!GPM.getCManager().GET_UP_SNEAK) Event.setCancelled(true);
+            else if(!GPM.getSitManager().removeSeat(player, GetUpReason.GET_UP, true)) Event.setCancelled(true);
         }
 
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(p)) {
-            if(!GPM.getCManager().GET_UP_SNEAK) {
-                e.setCancelled(true);
-            } else {
-                boolean r = GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP, true);
-                if(!r) e.setCancelled(true);
-            }
+        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)) {
+
+            if(!GPM.getCManager().GET_UP_SNEAK) Event.setCancelled(true);
+            else if(!GPM.getPoseManager().removePose(player, GetUpReason.GET_UP, true)) Event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void EDamE(EntityDamageEvent e) {
+    public void EDamE(EntityDamageEvent Event) {
 
-        Entity E = e.getEntity();
+        Entity entity = Event.getEntity();
 
-        if(!GPM.getCManager().GET_UP_DAMAGE || !(E instanceof Player) || e.getFinalDamage() <= 0d) return;
+        if(!GPM.getCManager().GET_UP_DAMAGE || !(entity instanceof Player) || Event.getFinalDamage() <= 0d) return;
 
-        Player p = (Player) E;
+        Player player = (Player) entity;
 
-        if(GPM.getSitManager().isSitting(p)) {
-            GPM.getSitManager().removeSeat(GPM.getSitManager().getSeat(p), GetUpReason.DAMAGE, true);
-        }
+        if(GPM.getSitManager().isSitting(player)) GPM.getSitManager().removeSeat(player, GetUpReason.DAMAGE, true);
 
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(p)) {
-            GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.DAMAGE, true);
-        }
+        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.DAMAGE, true);
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) {
-            GPM.getCrawlManager().stopCrawl(GPM.getCrawlManager().getCrawl(p), GetUpReason.DAMAGE);
-        }
+        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.DAMAGE);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void PComPE(PlayerCommandPreprocessEvent e) {
+    public void PComPE(PlayerCommandPreprocessEvent Event) {
 
-        Player p = e.getPlayer();
-        String m = e.getMessage();
+        Player player = Event.getPlayer();
 
-        if(m.length() > 1 && (GPM.getSitManager().isSitting(p) || (GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(p)))) {
+        String message = Event.getMessage();
 
-            m = m.substring(1).split(" ")[0].toLowerCase();
+        if(message.length() > 1 && (GPM.getSitManager().isSitting(player) || (GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)))) {
 
-            if(GPM.getCManager().COMMANDBLACKLIST.stream().anyMatch(m::equalsIgnoreCase)) {
+            message = message.substring(1).split(" ")[0].toLowerCase();
 
-                GPM.getMManager().sendMessage(p, "Messages.action-blocked-error");
+            if(GPM.getCManager().COMMANDBLACKLIST.stream().anyMatch(message::equalsIgnoreCase)) {
 
-                e.setCancelled(true);
+                GPM.getMManager().sendMessage(player, "Messages.action-blocked-error");
+
+                Event.setCancelled(true);
             }
         }
     }

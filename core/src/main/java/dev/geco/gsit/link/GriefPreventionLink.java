@@ -19,11 +19,9 @@ public class GriefPreventionLink {
 
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(Location, false, null);
 
-            return claim == null || claim.canSiege(Player);
+            return claim == null || (!GPM.getCManager().TRUSTED_REGION_ONLY || claim.canSiege(Player));
 
-        } catch (Exception | Error e) {
-            e.printStackTrace();
-        }
+        } catch (Exception | Error e) { e.printStackTrace(); }
 
         return true;
     }

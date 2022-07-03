@@ -14,13 +14,23 @@ public class GSitReloadCommand implements CommandExecutor {
     public GSitReloadCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
-        if(s instanceof Player || s instanceof ConsoleCommandSender || s instanceof RemoteConsoleCommandSender) {
-            if(GPM.getPManager().hasPermission(s, GPM.NAME + "Reload")) {
-                GPM.reload(s);
-                GPM.getMManager().sendMessage(s, "Messages.command-reload");
-            } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
-        } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
+    public boolean onCommand(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
+
+        if(!(Sender instanceof Player || Sender instanceof ConsoleCommandSender || Sender instanceof RemoteConsoleCommandSender)) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.command-sender-error");
+            return true;
+        }
+
+        if(!GPM.getPManager().hasPermission(Sender, GPM.NAME + "Reload")) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
+            return true;
+        }
+
+        GPM.reload(Sender);
+
+        GPM.getMManager().sendMessage(Sender, "Messages.command-reload");
         return true;
     }
 

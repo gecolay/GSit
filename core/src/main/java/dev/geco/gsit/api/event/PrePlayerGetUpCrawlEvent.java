@@ -13,27 +13,25 @@ public class PrePlayerGetUpCrawlEvent extends PlayerEvent implements Cancellable
 
     private boolean cancel = false;
 
-    private final IGCrawl c;
+    private final IGCrawl crawl;
 
-    private final GetUpReason r;
+    private final GetUpReason reason;
 
     public PrePlayerGetUpCrawlEvent(IGCrawl Crawl, GetUpReason Reason) {
+
         super(Crawl.getPlayer());
-        c = Crawl;
-        r = Reason;
+
+        crawl = Crawl;
+        reason = Reason;
     }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public IGCrawl getCrawl() { return c; }
+    public IGCrawl getCrawl() { return crawl; }
 
-    public GetUpReason getReason() { return r; }
+    public GetUpReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

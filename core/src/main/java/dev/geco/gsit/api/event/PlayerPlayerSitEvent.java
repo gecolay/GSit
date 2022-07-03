@@ -10,14 +10,16 @@ public class PlayerPlayerSitEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final Player t;
+    private final Player target;
 
     public PlayerPlayerSitEvent(Player Player, Player Target) {
+
         super(Player);
-        t = Target;
+
+        target = Target;
     }
 
-    public Player getTarget() { return t; }
+    public Player getTarget() { return target; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

@@ -23,76 +23,61 @@ public class WorldGuardLink {
 
     public void registerFlags() {
 
-        FlagRegistry fr = WorldGuard.getInstance().getFlagRegistry();
+        FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
 
         try {
 
-            StateFlag sf = new StateFlag("sit", true);
-            fr.register(sf);
-            SIT_FLAG = sf;
-
+            StateFlag stateFlag = new StateFlag("sit", true);
+            flagRegistry.register(stateFlag);
+            SIT_FLAG = stateFlag;
         } catch (FlagConflictException | IllegalStateException e) {
 
-            Flag<?> sf = fr.get("sit");
-            if(sf instanceof StateFlag) {
-                SIT_FLAG = (StateFlag) sf;
-            }
+            Flag<?> flag = flagRegistry.get("sit");
+            if(flag instanceof StateFlag) SIT_FLAG = (StateFlag) flag;
         }
 
         try {
 
-            StateFlag sf = new StateFlag("playersit", true);
-            fr.register(sf);
-            PLAYERSIT_FLAG = sf;
-
+            StateFlag stateFlag = new StateFlag("playersit", true);
+            flagRegistry.register(stateFlag);
+            PLAYERSIT_FLAG = stateFlag;
         } catch (FlagConflictException | IllegalStateException e) {
 
-            Flag<?> sf = fr.get("playersit");
-            if(sf instanceof StateFlag) {
-                PLAYERSIT_FLAG = (StateFlag) sf;
-            }
+            Flag<?> flag = flagRegistry.get("playersit");
+            if(flag instanceof StateFlag) PLAYERSIT_FLAG = (StateFlag) flag;
         }
 
         try {
 
-            StateFlag sf = new StateFlag("pose", true);
-            fr.register(sf);
-            POSE_FLAG = sf;
-
+            StateFlag stateFlag = new StateFlag("pose", true);
+            flagRegistry.register(stateFlag);
+            POSE_FLAG = stateFlag;
         } catch (FlagConflictException | IllegalStateException e) {
 
-            Flag<?> sf = fr.get("pose");
-            if(sf instanceof StateFlag) {
-                POSE_FLAG = (StateFlag) sf;
-            }
+            Flag<?> flag = flagRegistry.get("pose");
+            if(flag instanceof StateFlag) POSE_FLAG = (StateFlag) flag;
         }
 
         try {
 
-            StateFlag sf = new StateFlag("crawl", true);
-            fr.register(sf);
-            CRAWL_FLAG = sf;
-
+            StateFlag stateFlag = new StateFlag("crawl", true);
+            flagRegistry.register(stateFlag);
+            CRAWL_FLAG = stateFlag;
         } catch (FlagConflictException | IllegalStateException e) {
 
-            Flag<?> sf = fr.get("crawl");
-            if(sf instanceof StateFlag) {
-                CRAWL_FLAG = (StateFlag) sf;
-            }
+            Flag<?> flag = flagRegistry.get("crawl");
+            if(flag instanceof StateFlag) CRAWL_FLAG = (StateFlag) flag;
         }
 
         try {
 
-            StateFlag sf = new StateFlag("emote", true);
-            fr.register(sf);
-            EMOTE_FLAG = sf;
-
+            StateFlag stateFlag = new StateFlag("emote", true);
+            flagRegistry.register(stateFlag);
+            EMOTE_FLAG = stateFlag;
         } catch (FlagConflictException | IllegalStateException e) {
 
-            Flag<?> sf = fr.get("emote");
-            if(sf instanceof StateFlag) {
-                EMOTE_FLAG = (StateFlag) sf;
-            }
+            Flag<?> flag = flagRegistry.get("emote");
+            if(flag instanceof StateFlag) EMOTE_FLAG = (StateFlag) flag;
         }
 
     }
@@ -104,10 +89,7 @@ public class WorldGuardLink {
         try {
 
             return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(Location)).testState(null, Flag);
-
-        } catch (Exception | Error e) {
-            e.printStackTrace();
-        }
+        } catch (Exception | Error e) { e.printStackTrace(); }
 
         return true;
     }

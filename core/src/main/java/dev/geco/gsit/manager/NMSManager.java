@@ -76,12 +76,9 @@ public class NMSManager {
             F.setAccessible(true);
 
             return F;
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace(); }
 
-            e.printStackTrace();
-
-            return null;
-        }
+        return null;
     }
 
     public static Object getPackageObject(String Name, String ClassName, Object O) {
@@ -145,12 +142,9 @@ public class NMSManager {
         try {
 
             return getMethod(MethodName, Parameter.getClass()).invoke(Parameter);
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace(); }
 
-            e.printStackTrace();
-
-            return null;
-        }
+        return null;
     }
 
     public static Object getHandle(Object O) {
@@ -162,12 +156,9 @@ public class NMSManager {
             m.setAccessible(true);
 
             return m.invoke(O);
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace(); }
 
-            e.printStackTrace();
-
-            return O;
-        }
+        return O;
     }
 
     public static boolean set(Object Object, String Field, Object Value) {
@@ -185,13 +176,7 @@ public class NMSManager {
                 F.set(Object, Value);
 
                 return true;
-            } catch (NoSuchFieldException e) {
-
-                C = C.getSuperclass();
-            } catch (Exception e) {
-
-                throw new IllegalStateException(e);
-            }
+            } catch (NoSuchFieldException e) { C = C.getSuperclass(); } catch (Exception e) { throw new IllegalStateException(e); }
         }
 
         return false;

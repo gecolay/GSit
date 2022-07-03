@@ -13,26 +13,23 @@ public class PreEntityEmoteEvent extends Event implements Cancellable {
 
     private boolean cancel = false;
 
-    private final LivingEntity e;
+    private final LivingEntity entity;
 
-    private final GEmote g;
+    private final GEmote emote;
 
     public PreEntityEmoteEvent(LivingEntity Entity, GEmote Emote) {
-        e = Entity;
-        g = Emote;
+
+        entity = Entity;
+        emote = Emote;
     }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public LivingEntity getEntity() { return e; }
+    public LivingEntity getEntity() { return entity; }
 
-    public GEmote getEmote() { return g; }
+    public GEmote getEmote() { return emote; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

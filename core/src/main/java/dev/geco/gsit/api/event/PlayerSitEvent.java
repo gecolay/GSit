@@ -11,14 +11,16 @@ public class PlayerSitEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final GSeat s;
+    private final GSeat seat;
 
     public PlayerSitEvent(GSeat Seat) {
+
         super(Seat.getPlayer());
-        s = Seat;
+
+        seat = Seat;
     }
 
-    public GSeat getSeat() { return s; }
+    public GSeat getSeat() { return seat; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

@@ -33,20 +33,24 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
     public @NotNull String getVersion() { return GPM.getDescription().getVersion(); }
 
     @Override
-    public @NotNull List<String> getPlaceholders() { return Arrays.asList("playertoggle", "posing", "sitting", "toggle"); }
+    public @NotNull List<String> getPlaceholders() { return Arrays.asList("crawling", "emoting", "playertoggle", "posing", "sitting", "toggle"); }
 
     @Override
-    public String onRequest(OfflinePlayer player, @NotNull String params) {
+    public String onRequest(OfflinePlayer Player, @NotNull String Params) {
 
-        if(player == null) return null;
+        if(Player == null) return null;
 
-        if(params.equalsIgnoreCase("playertoggle")) return "" + GPM.getToggleManager().canPlayerSit(player.getUniqueId());
+        if(Params.equalsIgnoreCase("crawling")) return Player.isOnline() ? "" + (GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling((Player) Player)) : "" + false;
 
-        if(params.equalsIgnoreCase("posing")) return player.isOnline() ? "" + GPM.getPoseManager().isPosing((Player) player) : "" + false;
+        if(Params.equalsIgnoreCase("emoting")) return Player.isOnline() ? "" + GPM.getEmoteManager().isEmoting((Player) Player) : "" + false;
 
-        if(params.equalsIgnoreCase("sitting")) return player.isOnline() ? "" + GPM.getSitManager().isSitting((Player) player) : "" + false;
+        if(Params.equalsIgnoreCase("playertoggle")) return "" + GPM.getToggleManager().canPlayerSit(Player.getUniqueId());
 
-        if(params.equalsIgnoreCase("toggle")) return "" + GPM.getToggleManager().canSit(player.getUniqueId());
+        if(Params.equalsIgnoreCase("posing")) return Player.isOnline() ? "" + (GPM.getPoseManager() != null && GPM.getPoseManager().isPosing((Player) Player)) : "" + false;
+
+        if(Params.equalsIgnoreCase("sitting")) return Player.isOnline() ? "" + GPM.getSitManager().isSitting((Player) Player) : "" + false;
+
+        if(Params.equalsIgnoreCase("toggle")) return "" + GPM.getToggleManager().canSit(Player.getUniqueId());
 
         return null;
     }

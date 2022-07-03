@@ -24,34 +24,36 @@ public class PlotSquaredLink {
 
         try {
 
-            PlotAPI plapi = new PlotAPI();
+            PlotAPI plotAPI = new PlotAPI();
 
-            com.plotsquared.core.location.Location ploc = com.plotsquared.core.location.Location.at(plapi.wrapPlayer(Player.getUniqueId()).getLocation().getWorld(), Location.getBlockX(), Location.getBlockY(), Location.getBlockZ());
+            com.plotsquared.core.location.Location location = com.plotsquared.core.location.Location.at(plotAPI.wrapPlayer(Player.getUniqueId()).getLocation().getWorld(), Location.getBlockX(), Location.getBlockY(), Location.getBlockZ());
 
-            PlotArea plotarea = plapi.getPlotSquared().getPlotAreaManager().getApplicablePlotArea(ploc);
+            PlotArea plotArea = plotAPI.getPlotSquared().getPlotAreaManager().getApplicablePlotArea(location);
 
-            if(plotarea == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
+            if(plotArea == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
-            if(!plotarea.isSpawnCustom()) return false;
+            if(!plotArea.isSpawnCustom()) return false;
 
-            Plot plot = plotarea.getOwnedPlot(ploc);
+            Plot plot = plotArea.getOwnedPlot(location);
 
             if(plot == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
             return !GPM.getCManager().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId());
 
-        } catch (Exception | Error e) {
-            e.printStackTrace();
-        }
+        } catch (Exception | Error e) { e.printStackTrace(); }
 
         return true;
     }
 
     public boolean isVersionSupported() {
+
         try {
+
             new PlotAPI();
+
             return true;
         } catch(Exception | Error ignored) { }
+
         return false;
     }
 

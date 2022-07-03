@@ -27,9 +27,8 @@ public interface IPoseManager {
 
     IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak);
 
-    // TODO: change to player
-    boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason);
+    boolean removePose(Player Player, GetUpReason Reason);
 
-    boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe);
+    boolean removePose(Player Player, GetUpReason Reason, boolean Safe);
 
 }

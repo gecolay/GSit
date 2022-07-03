@@ -18,95 +18,85 @@ public class PlayerSitEvents implements Listener {
     public PlayerSitEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void PTogSE(PlayerToggleSneakEvent e) {
+    public void PTogSE(PlayerToggleSneakEvent Event) {
 
-        Player p = e.getPlayer();
+        Player player = Event.getPlayer();
 
-        if(!GPM.getCManager().PS_SNEAK_EJECTS || !e.isSneaking() || p.isFlying() || p.isInsideVehicle()) return;
+        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle()) return;
 
-        boolean r = GPM.getPlayerSitManager().stopPlayerSit(p, GetUpReason.KICKED);
-
-        if(!r) e.setCancelled(true);
+        if(!GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void PDeaE(PlayerDeathEvent e) {
-
-        if(e.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getEntity(), GetUpReason.DEATH);
-    }
+    public void PDeaE(PlayerDeathEvent Event) { if(Event.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(Event.getEntity(), GetUpReason.DEATH); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void PQuiE(PlayerQuitEvent e) {
-
-        if(e.getPlayer().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(e.getPlayer(), GetUpReason.QUIT);
-    }
+    public void PQuiE(PlayerQuitEvent Event) { if(Event.getPlayer().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.QUIT); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void EDisE(EntityDismountEvent e) {
+    public void EDisE(EntityDismountEvent Event) {
 
-        boolean r = GPM.getPlayerSitManager().stopPlayerSit(e.getEntity(), GetUpReason.GET_UP);
+        if(!GPM.getPlayerSitManager().stopPlayerSit(Event.getEntity(), GetUpReason.GET_UP)) Event.setCancelled(true);
 
-        if(!r) e.setCancelled(true);
-
-        GPM.getPlayerSitManager().stopPlayerSit(e.getDismounted(), GetUpReason.GET_UP);
+        GPM.getPlayerSitManager().stopPlayerSit(Event.getDismounted(), GetUpReason.GET_UP);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void PIntAEE(PlayerInteractAtEntityEvent e) {
+    public void PIntAEE(PlayerInteractAtEntityEvent Event) {
 
-        Entity E = e.getRightClicked();
+        Entity rightClicked = Event.getRightClicked();
 
-        if(!(E instanceof Player)) return;
+        if(!(rightClicked instanceof Player)) return;
 
-        Player p = e.getPlayer();
+        Player player = Event.getPlayer();
 
-        Player t = (Player) E;
+        Player target = (Player) rightClicked;
 
         if(!GPM.getCManager().PS_ALLOW_SIT && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
 
-        if(!GPM.getPManager().hasNormalPermission(p, "PlayerSit")) return;
+        if(!GPM.getPManager().hasNormalPermission(player, "PlayerSit")) return;
 
-        if(GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) && !GPM.getPManager().hasPermission(p, "ByPass.World", "ByPass.*")) return;
+        if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(player, "ByPass.World", "ByPass.*")) return;
 
-        if(GPM.getCManager().PS_EMPTY_HAND_ONLY && p.getInventory().getItemInMainHand().getType() != Material.AIR) return;
+        if(GPM.getCManager().PS_EMPTY_HAND_ONLY && player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 
-        if(!p.isValid() || !t.isValid() || p.isSneaking() || p.isInsideVehicle() || p.getGameMode() == GameMode.SPECTATOR) return;
+        if(!player.isValid() || !target.isValid() || player.isSneaking() || player.isInsideVehicle() || player.getGameMode() == GameMode.SPECTATOR) return;
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) return;
+        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) return;
 
-        double d = GPM.getCManager().PS_MAX_DISTANCE;
+        double distance = GPM.getCManager().PS_MAX_DISTANCE;
 
-        if(d > 0d && t.getLocation().add(0, t.getHeight() / 2, 0).distance(p.getLocation().add(0, p.getHeight() / 2, 0)) > d) return;
+        if(distance > 0d && target.getLocation().add(0, target.getHeight() / 2, 0).distance(player.getLocation().add(0, player.getHeight() / 2, 0)) > distance) return;
 
-        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(t.getLocation(), p)) return;
+        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(target.getLocation(), player)) return;
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(t.getLocation(), GPM.getWorldGuardLink().PLAYERSIT_FLAG)) return;
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(target.getLocation(), GPM.getWorldGuardLink().PLAYERSIT_FLAG)) return;
 
-        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(t.getLocation(), p)) return;
+        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(target.getLocation(), player)) return;
 
-        if(GPM.getPassengerUtil().isInPassengerList(t, p) || GPM.getPassengerUtil().isInPassengerList(p, t)) return;
+        if(GPM.getPassengerUtil().isInPassengerList(target, player) || GPM.getPassengerUtil().isInPassengerList(player, target)) return;
 
-        long a = GPM.getPassengerUtil().getPassengerAmount(t) + 1 + GPM.getPassengerUtil().getVehicleAmount(t) + GPM.getPassengerUtil().getPassengerAmount(p);
+        long amount = GPM.getPassengerUtil().getPassengerAmount(target) + 1 + GPM.getPassengerUtil().getVehicleAmount(target) + GPM.getPassengerUtil().getPassengerAmount(player);
 
-        if(GPM.getCManager().PS_MAX_STACK > 0 && GPM.getCManager().PS_MAX_STACK <= a) return;
+        if(GPM.getCManager().PS_MAX_STACK > 0 && GPM.getCManager().PS_MAX_STACK <= amount) return;
 
-        Entity s = GPM.getPassengerUtil().getHighestEntity(t);
+        Entity highestEntity = GPM.getPassengerUtil().getHighestEntity(target);
 
-        if(!(s instanceof Player)) return;
+        if(!(highestEntity instanceof Player)) return;
 
-        Player z = (Player) s;
+        Player highestPlayer = (Player) highestEntity;
 
-        if(!GPM.getToggleManager().canPlayerSit(p.getUniqueId()) || !GPM.getToggleManager().canPlayerSit(z.getUniqueId())) return;
+        if(!GPM.getToggleManager().canPlayerSit(player.getUniqueId()) || !GPM.getToggleManager().canPlayerSit(highestPlayer.getUniqueId())) return;
 
-        boolean n = GPM.getPassengerUtil().isNPC(z);
+        boolean isNPC = GPM.getPassengerUtil().isNPC(highestPlayer);
 
-        if(n && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
+        if(isNPC && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
 
-        if(!n && !GPM.getCManager().PS_ALLOW_SIT) return;
+        if(!isNPC && !GPM.getCManager().PS_ALLOW_SIT) return;
 
-        boolean r = GPM.getPlayerSitManager().sitOnPlayer(p, z);
+        boolean cancel = GPM.getPlayerSitManager().sitOnPlayer(player, highestPlayer);
 
-        if(r) e.setCancelled(true);
+        if(cancel) Event.setCancelled(true);
     }
 
 }

@@ -12,22 +12,20 @@ public class PrePlayerPlayerSitEvent extends PlayerEvent implements Cancellable 
 
     private boolean cancel = false;
 
-    private final Player t;
+    private final Player target;
 
     public PrePlayerPlayerSitEvent(Player Player, Player Target) {
+
         super(Player);
-        t = Target;
+
+        target = Target;
     }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public Player getTarget() { return t; }
+    public Player getTarget() { return target; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

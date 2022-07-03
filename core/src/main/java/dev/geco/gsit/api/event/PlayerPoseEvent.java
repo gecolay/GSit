@@ -11,14 +11,16 @@ public class PlayerPoseEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final IGPoseSeat p;
+    private final IGPoseSeat poseSeat;
 
     public PlayerPoseEvent(IGPoseSeat PoseSeat) {
+
         super(PoseSeat.getSeat().getPlayer());
-        p = PoseSeat;
+
+        poseSeat = PoseSeat;
     }
 
-    public IGPoseSeat getPoseSeat() { return p; }
+    public IGPoseSeat getPoseSeat() { return poseSeat; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

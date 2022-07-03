@@ -12,17 +12,11 @@ public class PrePlayerCrawlEvent extends PlayerEvent implements Cancellable {
 
     private boolean cancel = false;
 
-    public PrePlayerCrawlEvent(Player Player) {
-        super(Player);
-    }
+    public PrePlayerCrawlEvent(Player Player) { super(Player); }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

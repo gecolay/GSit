@@ -9,6 +9,6 @@ import org.bukkit.command.*;
 public class EmptyTabComplete implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) { return new ArrayList<>(); }
+    public List<String> onTabComplete(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) { return new ArrayList<>(); }
 
 }

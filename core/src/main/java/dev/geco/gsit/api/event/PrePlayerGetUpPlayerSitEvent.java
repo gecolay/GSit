@@ -14,22 +14,20 @@ public class PrePlayerGetUpPlayerSitEvent extends PlayerEvent implements Cancell
 
     private boolean cancel = false;
 
-    private final GetUpReason r;
+    private final GetUpReason reason;
 
     public PrePlayerGetUpPlayerSitEvent(Player Player, GetUpReason Reason) {
+
         super(Player);
-        r = Reason;
+
+        reason = Reason;
     }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public GetUpReason getReason() { return r; }
+    public GetUpReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

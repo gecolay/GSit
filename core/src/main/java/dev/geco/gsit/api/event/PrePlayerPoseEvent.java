@@ -13,22 +13,20 @@ public class PrePlayerPoseEvent extends PlayerEvent implements Cancellable {
 
     private boolean cancel = false;
 
-    private final Block b;
+    private final Block block;
 
     public PrePlayerPoseEvent(Player Player, Block Block) {
+
         super(Player);
-        b = Block;
+
+        block = Block;
     }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public Block getBlock() { return b; }
+    public Block getBlock() { return block; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

@@ -80,22 +80,27 @@ public class SitUtil {
             switch(blockFace) {
 
                 case EAST:
+
                     seat = GPM.getSitManager().createSeat(Block, Player, false, ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, 0d, -90f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
 
                 case SOUTH:
+
                     seat = GPM.getSitManager().createSeat(Block, Player, false, 0d, -ISitManager.STAIR_Y_OFFSET, ISitManager.STAIR_XZ_OFFSET, 0f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
 
                 case WEST:
+
                     seat = GPM.getSitManager().createSeat(Block, Player, false, -ISitManager.STAIR_XZ_OFFSET, -ISitManager.STAIR_Y_OFFSET, 0d, 90f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
 
                 case NORTH:
+
                     seat = GPM.getSitManager().createSeat(Block, Player, false, 0d, -ISitManager.STAIR_Y_OFFSET, -ISitManager.STAIR_XZ_OFFSET, 180f, true, GPM.getCManager().GET_UP_SNEAK);
                     break;
 
                 default:
+
                     break;
             }
         } else {

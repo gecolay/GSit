@@ -11,19 +11,21 @@ public class PlayerGetUpPoseEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final IGPoseSeat p;
+    private final IGPoseSeat poseSeat;
 
-    private final GetUpReason r;
+    private final GetUpReason reason;
 
     public PlayerGetUpPoseEvent(IGPoseSeat PoseSeat, GetUpReason Reason) {
+
         super(PoseSeat.getSeat().getPlayer());
-        p = PoseSeat;
-        r = Reason;
+
+        poseSeat = PoseSeat;
+        reason = Reason;
     }
 
-    public IGPoseSeat getPoseSeat() { return p; }
+    public IGPoseSeat getPoseSeat() { return poseSeat; }
 
-    public GetUpReason getReason() { return r; }
+    public GetUpReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

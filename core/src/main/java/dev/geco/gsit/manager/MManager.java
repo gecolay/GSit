@@ -52,7 +52,7 @@ public class MManager {
 
         Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(colorText);
 
-        while(matcher.find()) colorText = colorText.replace(matcher.group(), ChatColor.of(matcher.group()).toString());
+        while(matcher.find()) colorText = colorText.replaceFirst(matcher.group(), ChatColor.of(matcher.group()).toString());
 
         return colorText.replace("<lang:key.sneak>", "Sneak");
     }
@@ -63,23 +63,16 @@ public class MManager {
 
         for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue());
 
-        // TODO: Just replace when there is no :#******>
         Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(text);
 
-        while(matcher.find()) text = text.replace(matcher.group(), "<reset><color:" + matcher.group() + ">");
+        while(matcher.find()) if(text.indexOf(matcher.group()) == 0 || !text.substring(text.indexOf(matcher.group()) - 1, 1).equals(":")) text = text.replaceFirst(matcher.group(), "<reset><color:" + matcher.group() + ">");
 
-        try {
-
-            return MiniMessage.miniMessage().deserialize(text);
-        } catch (Exception e) {
-
-            return Component.text(toFormattedMessage(Text));
-        }
+        try { return MiniMessage.miniMessage().deserialize(text); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
     }
 
     public void sendMessage(CommandSender Sender, String Message, Object... ReplaceList) {
 
-        if(GPM.SERVER > 1) {
+        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(19, 0)) {
 
             ((Audience) Sender).sendMessage((Component) getComponent(Message, ReplaceList));
         } else Sender.sendMessage(getMessage(Message, ReplaceList));
@@ -87,7 +80,7 @@ public class MManager {
 
     public void sendActionBarMessage(Player Player, String Message, Object... ReplaceList) {
 
-        if(GPM.SERVER > 1) {
+        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(19, 0)) {
 
             ((Audience) Player).sendActionBar((Component) getComponent(Message, ReplaceList));
         } else Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getMessage(Message, ReplaceList)));

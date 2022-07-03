@@ -166,23 +166,23 @@ public class GSitAPI {
      * Moves an existing Seat
      * @author Gecolay
      * @since 1.0.4
-     * @param Seat The Seat
+     * @param Player Player for this Seat
      * @param Direction The Direction in which the Seat should get moved
      */
-    public static void moveSeat(GSeat Seat, BlockFace Direction) {
-        getInstance().getSitManager().moveSeat(Seat, Direction);
+    public static void moveSeat(Player Player, BlockFace Direction) {
+        getInstance().getSitManager().moveSeat(Player, Direction);
     }
 
     /**
      * Removes an existing Seat
      * @author Gecolay
      * @since 1.0.0
-     * @param Seat The Seat
+     * @param Player Player for this Seat
      * @param Reason The Reason why the Seat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removeSeat(GSeat Seat, GetUpReason Reason) {
-        return getInstance().getSitManager().removeSeat(Seat, Reason);
+    public static boolean removeSeat(Player Player, GetUpReason Reason) {
+        return getInstance().getSitManager().removeSeat(Player, Reason);
     }
 
     /**
@@ -190,13 +190,13 @@ public class GSitAPI {
      * The Get-Up-Safe-Teleport can be disabled
      * @author Gecolay
      * @since 1.0.0
-     * @param Seat The Seat
+     * @param Player Player for this Seat
      * @param Reason The Reason why the Seat gets removed
      * @param Safe Should the Player get teleported to a safe Position
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removeSeat(GSeat Seat, GetUpReason Reason, boolean Safe) {
-        return getInstance().getSitManager().removeSeat(Seat, Reason, Safe);
+    public static boolean removeSeat(Player Player, GetUpReason Reason, boolean Safe) {
+        return getInstance().getSitManager().removeSeat(Player, Reason, Safe);
     }
 
     /**
@@ -372,12 +372,12 @@ public class GSitAPI {
      * Removes an existing PoseSeat
      * @author Gecolay
      * @since 1.0.0
-     * @param PoseSeat The PoseSeat
+     * @param Player Player for this PoseSeat
      * @param Reason The Reason why the PoseSeat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason) {
-        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(PoseSeat, Reason);
+    public static boolean removePose(Player Player, GetUpReason Reason) {
+        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(Player, Reason);
     }
 
     /**
@@ -385,13 +385,13 @@ public class GSitAPI {
      * The Get-Up-Safe-Teleport can be disabled
      * @author Gecolay
      * @since 1.0.0
-     * @param PoseSeat The PoseSeat
+     * @param Player Player for this PoseSeat
      * @param Reason The Reason why the PoseSeat gets removed
      * @param Safe Should the Player get teleported to a safe Position
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe) {
-        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(PoseSeat, Reason, Safe);
+    public static boolean removePose(Player Player, GetUpReason Reason, boolean Safe) {
+        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(Player, Reason, Safe);
     }
 
     /**

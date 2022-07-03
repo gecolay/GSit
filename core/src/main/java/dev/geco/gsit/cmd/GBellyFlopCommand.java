@@ -17,42 +17,90 @@ public class GBellyFlopCommand implements CommandExecutor {
     public GBellyFlopCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
-        if(s instanceof Player) {
-            Player p = (Player) s;
-            if(GPM.getPManager().hasNormalPermission(s, "BellyFlop")) {
-                if(GPM.getPoseManager() != null) {
-                    if(GPM.getPoseManager().isPosing(p) && GPM.getPoseManager().getPose(p).getPose() == Pose.SWIMMING) {
-                        GPM.getPoseManager().removePose(GPM.getPoseManager().getPose(p), GetUpReason.GET_UP);
-                    } else {
-                        if(p.isValid() && !p.isSneaking() && p.isOnGround() && !p.isInsideVehicle() && !p.isSleeping()) {
-                            if(!GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) || GPM.getPManager().hasPermission(s, "ByPass.World", "ByPass.*")) {
-                                Location pl = p.getLocation();
-                                Block b = pl.getBlock().isPassable() ? pl.subtract(0, 0.0625, 0).getBlock() : pl.getBlock();
-                                if(!GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) {
-                                    if(GPM.getCManager().ALLOW_UNSAFE || (b.getRelative(BlockFace.UP).isPassable() && (!b.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
-                                        if(GPM.getWorldGuardLink() == null || GPM.getWorldGuardLink().checkFlag(b.getLocation(), GPM.getWorldGuardLink().POSE_FLAG)) {
-                                            if(GPM.getGriefPreventionLink() == null || GPM.getGriefPreventionLink().check(b.getLocation(), p)) {
-                                                if(GPM.getPlotSquaredLink() == null || GPM.getPlotSquaredLink().canCreateSeat(b.getLocation(), p)) {
-                                                    if(GPM.getCManager().SAME_BLOCK_REST || GPM.getPoseManager().kickPose(b, p)) {
-                                                        IGPoseSeat v = GPM.getPoseManager().createPose(b, p, Pose.SWIMMING);
-                                                        if(v == null) GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
-                                                    } else GPM.getMManager().sendMessage(s, "Messages.action-pose-kick-error");
-                                                } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
-                                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
-                                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-region-error");
-                                    } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
-                                } else GPM.getMManager().sendMessage(s, "Messages.action-pose-location-error");
-                            } else GPM.getMManager().sendMessage(s, "Messages.action-pose-world-error");
-                        } else GPM.getMManager().sendMessage(s, "Messages.action-pose-now-error");
-                    }
-                } else {
-                    String v = Bukkit.getServer().getClass().getPackage().getName();
-                    v = v.substring(v.lastIndexOf('.') + 1);
-                    GPM.getMManager().sendMessage(s, "Messages.command-version-error", "%Version%", v);
-                }
-            } else GPM.getMManager().sendMessage(s, "Messages.command-permission-error");
-        } else GPM.getMManager().sendMessage(s, "Messages.command-sender-error");
+    public boolean onCommand(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
+
+        if(!(Sender instanceof Player)) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.command-sender-error");
+            return true;
+        }
+
+        Player player = (Player) Sender;
+
+        if(!GPM.getPManager().hasNormalPermission(Sender, "BellyFlop")) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
+            return true;
+        }
+
+        if(GPM.getPoseManager() == null) {
+
+            String v = Bukkit.getServer().getClass().getPackage().getName();
+            v = v.substring(v.lastIndexOf('.') + 1);
+
+            GPM.getMManager().sendMessage(Sender, "Messages.command-version-error", "%Version%", v);
+            return true;
+        }
+
+        if(GPM.getPoseManager().isPosing(player) && GPM.getPoseManager().getPose(player).getPose() == Pose.SWIMMING) {
+
+            GPM.getPoseManager().removePose(player, GetUpReason.GET_UP);
+            return true;
+        }
+
+        if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping()) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-now-error");
+            return true;
+        }
+
+        if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-world-error");
+            return true;
+        }
+
+        Location playerLocation = player.getLocation();
+
+        Block block = playerLocation.getBlock().isPassable() ? playerLocation.subtract(0, 0.0625, 0).getBlock() : playerLocation.getBlock();
+
+        if(GPM.getCManager().MATERIALBLACKLIST.contains(block.getType())) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-location-error");
+            return true;
+        }
+
+        if(!GPM.getCManager().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && (!block.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-location-error");
+            return true;
+        }
+
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().POSE_FLAG)) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
+            return true;
+        }
+
+        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(block.getLocation(), player)) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
+            return true;
+        }
+
+        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(block.getLocation(), player)) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
+            return true;
+        }
+
+        if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getPoseManager().kickPose(block, player)) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-kick-error");
+            return true;
+        }
+
+        if(GPM.getPoseManager().createPose(block, player, Pose.SWIMMING) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
         return true;
     }
 

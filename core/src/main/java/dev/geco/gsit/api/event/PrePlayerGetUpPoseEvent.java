@@ -13,27 +13,25 @@ public class PrePlayerGetUpPoseEvent extends PlayerEvent implements Cancellable 
 
     private boolean cancel = false;
 
-    private final IGPoseSeat p;
+    private final IGPoseSeat poseSeat;
 
-    private final GetUpReason r;
+    private final GetUpReason reason;
 
     public PrePlayerGetUpPoseEvent(IGPoseSeat PoseSeat, GetUpReason Reason) {
+
         super(PoseSeat.getSeat().getPlayer());
-        p = PoseSeat;
-        r = Reason;
+
+        poseSeat = PoseSeat;
+        reason = Reason;
     }
 
-    public boolean isCancelled() {
-        return cancel;
-    }
+    public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public IGPoseSeat getPoseSeat() { return p; }
+    public IGPoseSeat getPoseSeat() { return poseSeat; }
 
-    public GetUpReason getReason() { return r; }
+    public GetUpReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

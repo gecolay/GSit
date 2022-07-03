@@ -32,7 +32,6 @@ public class CrawlManager implements ICrawlManager {
     public IGCrawl getCrawl(Player Player) {
 
         for(IGCrawl crawl : getCrawls()) if(Player.equals(crawl.getPlayer())) return crawl;
-
         return null;
     }
 

@@ -17,17 +17,25 @@ public class GEmoteTabComplete implements TabCompleter {
     public GEmoteTabComplete(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, String[] a) {
+    public List<String> onTabComplete(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
+
         List<String> ta = new ArrayList<>(), ts = new ArrayList<>();
-        if(s instanceof Player) {
-            if(a.length == 1) {
-                if(GPM.getPManager().hasNormalPermission(s, "Emote")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) ta.add(emote.getId());
-                if(!a[a.length - 1].isEmpty()) {
-                    for(String r : ta) if(r.toLowerCase().startsWith(a[a.length - 1].toLowerCase())) ts.add(r);
+
+        if(Sender instanceof Player) {
+
+            if(Args.length == 1) {
+
+                if(GPM.getPManager().hasNormalPermission(Sender, "Emote")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) ta.add(emote.getId());
+
+                if(!Args[Args.length - 1].isEmpty()) {
+
+                    for(String r : ta) if(r.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) ts.add(r);
+
                     ta.clear();
                 }
             }
         }
+
         return ta.size() == 0 ? ts : ta;
     }
 

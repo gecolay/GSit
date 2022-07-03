@@ -37,11 +37,10 @@ public class PoseManager implements IPoseManager {
     public IGPoseSeat getPose(Player Player) {
 
         for(IGPoseSeat pose : getPoses()) if(Player.equals(pose.getSeat().getPlayer())) return pose;
-
         return null;
     }
 
-    public void clearPoses() { for(IGPoseSeat pose : getPoses()) removePose(pose, GetUpReason.PLUGIN); }
+    public void clearPoses() { for(IGPoseSeat pose : getPoses()) removePose(pose.getSeat().getPlayer(), GetUpReason.PLUGIN); }
 
     public boolean kickPose(Block Block, Player Player) {
 
@@ -49,7 +48,7 @@ public class PoseManager implements IPoseManager {
 
             if(!GPM.getPManager().hasPermission(Player, "Kick.Pose", "Kick.*")) return false;
 
-            for(IGPoseSeat p : GPM.getPoseUtil().getPoses(Block)) if(!removePose(p, GetUpReason.KICKED)) return false;
+            for(IGPoseSeat p : GPM.getPoseUtil().getPoses(Block)) if(!removePose(p.getSeat().getPlayer(), GetUpReason.KICKED)) return false;
         }
 
         return true;
@@ -147,40 +146,44 @@ public class PoseManager implements IPoseManager {
         rotate.remove(PoseSeat);
     }
 
-    public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason) { return removePose(PoseSeat, Reason, true); }
+    public boolean removePose(Player Player, GetUpReason Reason) { return removePose(Player, Reason, true); }
 
-    public boolean removePose(IGPoseSeat PoseSeat, GetUpReason Reason, boolean Safe) {
+    public boolean removePose(Player Player, GetUpReason Reason, boolean Safe) {
 
-        PrePlayerGetUpPoseEvent preEvent = new PrePlayerGetUpPoseEvent(PoseSeat,Reason);
+        if(!isPosing(Player)) return true;
+
+        IGPoseSeat poseSeat = getPose(Player);
+
+        PrePlayerGetUpPoseEvent preEvent = new PrePlayerGetUpPoseEvent(poseSeat, Reason);
 
         Bukkit.getPluginManager().callEvent(preEvent);
 
         if(preEvent.isCancelled()) return false;
 
-        GPM.getPoseUtil().removePoseBlock(PoseSeat.getSeat().getBlock(), PoseSeat);
+        GPM.getPoseUtil().removePoseBlock(poseSeat.getSeat().getBlock(), poseSeat);
 
-        poses.remove(PoseSeat);
+        poses.remove(poseSeat);
 
-        stopRotateSeat(PoseSeat);
+        stopRotateSeat(poseSeat);
 
-        PoseSeat.remove();
+        poseSeat.remove();
 
-        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? PoseSeat.getSeat().getReturn() : PoseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(PoseSeat.getSeat().getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(PoseSeat.getSeat().getBlock().getType(), 0d), 0d));
+        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? poseSeat.getSeat().getReturn() : poseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(poseSeat.getSeat().getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(poseSeat.getSeat().getBlock().getType(), 0d), 0d));
 
         if(!GPM.getCManager().GET_UP_RETURN) {
-            returnLocation.setYaw(PoseSeat.getSeat().getPlayer().getLocation().getYaw());
-            returnLocation.setPitch(PoseSeat.getSeat().getPlayer().getLocation().getPitch());
+            returnLocation.setYaw(poseSeat.getSeat().getPlayer().getLocation().getYaw());
+            returnLocation.setPitch(poseSeat.getSeat().getPlayer().getLocation().getPitch());
         }
 
-        if(PoseSeat.getSeat().getPlayer().isValid() && Safe) {
+        if(poseSeat.getSeat().getPlayer().isValid() && Safe) {
 
-            GPM.getPlayerUtil().teleportEntity(PoseSeat.getSeat().getPlayer(), returnLocation);
-            GPM.getPlayerUtil().teleportPlayer(PoseSeat.getSeat().getPlayer(), returnLocation, true);
+            GPM.getPlayerUtil().teleportEntity(poseSeat.getSeat().getPlayer(), returnLocation);
+            GPM.getPlayerUtil().teleportPlayer(poseSeat.getSeat().getPlayer(), returnLocation, true);
         }
 
-        if(PoseSeat.getSeat().getEntity().isValid()) PoseSeat.getSeat().getEntity().remove();
+        if(poseSeat.getSeat().getEntity().isValid()) poseSeat.getSeat().getEntity().remove();
 
-        Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(PoseSeat, Reason));
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseSeat, Reason));
 
         return true;
     }

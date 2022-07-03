@@ -12,7 +12,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.*;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.*;
 
 public class InteractEvents implements Listener {
 
@@ -21,71 +20,65 @@ public class InteractEvents implements Listener {
     public InteractEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void PIntE(PlayerInteractEvent e) {
+    public void PIntE(PlayerInteractEvent Event) {
 
-        Block b = e.getClickedBlock();
-        Action a = e.getAction();
-        Player p = e.getPlayer();
+        Block clickedBlock = Event.getClickedBlock();
 
-        if(e.getHand() != EquipmentSlot.HAND || a != Action.RIGHT_CLICK_BLOCK) return;
+        Action action = Event.getAction();
 
-        if(e.getBlockFace() != BlockFace.UP) return;
+        Player player = Event.getPlayer();
 
-        if(GPM.getCManager().S_EMPTY_HAND_ONLY && e.getItem() != null) return;
+        if(Event.getHand() != EquipmentSlot.HAND || action != Action.RIGHT_CLICK_BLOCK) return;
 
-        if(b == null || !GPM.getPManager().hasNormalPermission(p, "SitClick")) return;
+        if(Event.getBlockFace() != BlockFace.UP) return;
 
-        if(!GPM.getCManager().S_SITMATERIALS.containsKey(b.getType())) return;
+        if(GPM.getCManager().S_EMPTY_HAND_ONLY && Event.getItem() != null) return;
 
-        if(GPM.getCManager().MATERIALBLACKLIST.contains(b.getType())) return;
+        if(clickedBlock == null || !GPM.getPManager().hasNormalPermission(player, "SitClick")) return;
 
-        if(GPM.getCManager().WORLDBLACKLIST.contains(p.getWorld().getName()) && !GPM.getPManager().hasPermission(p, "ByPass.World", "ByPass.*")) return;
+        if(!GPM.getCManager().S_SITMATERIALS.containsKey(clickedBlock.getType())) return;
 
-        if(!p.isValid() || !p.isOnGround() || p.isSneaking() || p.isInsideVehicle()) return;
+        if(GPM.getCManager().MATERIALBLACKLIST.contains(clickedBlock.getType())) return;
 
-        if(!GPM.getToggleManager().canSit(p.getUniqueId())) return;
+        if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(player, "ByPass.World", "ByPass.*")) return;
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(p)) return;
+        if(!player.isValid() || !player.isOnGround() || player.isSneaking() || player.isInsideVehicle()) return;
 
-        double d = GPM.getCManager().S_MAX_DISTANCE;
+        if(!GPM.getToggleManager().canSit(player.getUniqueId())) return;
 
-        if(d > 0d && b.getLocation().add(0.5, 0.5, 0.5).distance(p.getLocation()) > d) return;
+        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) return;
 
-        if(!GPM.getCManager().ALLOW_UNSAFE && !(b.getRelative(BlockFace.UP).isPassable())) return;
+        double distance = GPM.getCManager().S_MAX_DISTANCE;
 
-        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreatePlayerSeat(b.getLocation(), p)) return;
+        if(distance > 0d && clickedBlock.getLocation().add(0.5, 0.5, 0.5).distance(player.getLocation()) > distance) return;
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(b.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) return;
+        if(!GPM.getCManager().ALLOW_UNSAFE && !(clickedBlock.getRelative(BlockFace.UP).isPassable())) return;
 
-        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(b.getLocation(), p)) return;
+        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreatePlayerSeat(clickedBlock.getLocation(), player)) return;
 
-        if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getSitManager().kickSeat(b, p)) return;
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(clickedBlock.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) return;
 
-        if(Tag.STAIRS.isTagged(b.getType())) {
+        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(clickedBlock.getLocation(), player)) return;
 
-            Stairs bd = (Stairs) b.getBlockData();
+        if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getSitManager().kickSeat(clickedBlock, player)) return;
 
-            if(bd.getHalf() != Half.BOTTOM) return;
+        if(Tag.STAIRS.isTagged(clickedBlock.getType())) {
 
-            GSeat seat = GPM.getSitUtil().createSeatForStair(b, p);
+            if(((Stairs) clickedBlock.getBlockData()).getHalf() != Half.BOTTOM) return;
 
-            if(seat != null) {
+            if(GPM.getSitUtil().createSeatForStair(clickedBlock, player) != null) {
 
-                e.setCancelled(true);
+                Event.setCancelled(true);
 
                 return;
             }
 
-        } else if(Tag.SLABS.isTagged(b.getType())) {
+        } else if(Tag.SLABS.isTagged(clickedBlock.getType())) {
 
-            Slab bd = (Slab) b.getBlockData();
-
-            if(bd.getType() != Type.BOTTOM) return;
+            if(((Slab) clickedBlock.getBlockData()).getType() != Type.BOTTOM) return;
         }
 
-        GSeat seat = GPM.getSitManager().createSeat(b, p, true, 0d, 0d, 0d, p.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK);
-
-        if(seat != null) e.setCancelled(true);
+        if(GPM.getSitManager().createSeat(clickedBlock, player, true, 0d, 0d, 0d, player.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK) != null) Event.setCancelled(true);
     }
 
 }

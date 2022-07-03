@@ -30,16 +30,25 @@ public class EmoteManager implements IEmoteManager {
     public GEmote getEmoteByName(String Name) { return available_emotes.stream().filter(e -> e.getId().equalsIgnoreCase(Name)).findFirst().orElse(null); }
 
     public List<GEmote> reloadEmotes() {
+
         clearEmotes();
+
         available_emotes.clear();
+
         try {
+
             File path = new File("plugins/" + GPM.NAME + "/" + PluginValues.EMOTES_PATH);
+
             if(!path.exists()) path.mkdirs();
+
             for(File f : path.listFiles()) {
+
                 String fn = f.getName().toLowerCase();
+
                 if(fn.endsWith(PluginValues.GEX_FILETYP)) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(f));
             }
         } catch (Exception ignored) { }
+
         return getAvailableEmotes();
     }
 
@@ -50,11 +59,12 @@ public class EmoteManager implements IEmoteManager {
     public boolean isEmoting(LivingEntity Entity) { return getEmote(Entity) != null; }
 
     public GEmote getEmote(LivingEntity Entity) {
-        for(Map.Entry<LivingEntity, GEmote> e : getEmotes().entrySet()) if(Entity.equals(e.getKey())) return e.getValue();
+
+        for(Map.Entry<LivingEntity, GEmote> emote : getEmotes().entrySet()) if(Entity.equals(emote.getKey())) return emote.getValue();
         return null;
     }
 
-    public void clearEmotes() { for(LivingEntity e : getEmotes().keySet()) stopEmote(e); }
+    public void clearEmotes() { for(LivingEntity entity : getEmotes().keySet()) stopEmote(entity); }
 
     public boolean startEmote(LivingEntity Entity, GEmote Emote) {
 

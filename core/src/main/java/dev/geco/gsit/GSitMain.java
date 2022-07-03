@@ -20,91 +20,69 @@ import dev.geco.gsit.values.*;
 public class GSitMain extends JavaPlugin {
 
     private FileConfiguration messages;
-
     public FileConfiguration getMessages() { return messages; }
 
     private CManager cManager;
-
     public CManager getCManager() { return cManager; }
 
     private String prefix;
-
     public String getPrefix() { return prefix; }
 
     private ISitManager sitManager;
-
     public ISitManager getSitManager() { return sitManager; }
 
     private IPoseManager poseManager;
-
     public IPoseManager getPoseManager() { return poseManager; }
 
     private IPlayerSitManager playerSitManager;
-
     public IPlayerSitManager getPlayerSitManager() { return playerSitManager; }
 
     private ICrawlManager crawlManager;
-
     public ICrawlManager getCrawlManager() { return crawlManager; }
 
     private IEmoteManager emoteManager;
-
     public IEmoteManager getEmoteManager() { return emoteManager; }
 
     private ToggleManager toggleManager;
-
     public ToggleManager getToggleManager() { return toggleManager; }
 
     private UManager uManager;
-
     public UManager getUManager() { return uManager; }
 
     private PManager pManager;
-
     public PManager getPManager() { return pManager; }
 
     private MManager mManager;
-
     public MManager getMManager() { return mManager; }
 
     private EmoteUtil emoteUtil;
-
     public EmoteUtil getEmoteUtil() { return emoteUtil; }
 
     private PassengerUtil passengerUtil;
-
     public PassengerUtil getPassengerUtil() { return passengerUtil; }
 
     private SitUtil sitUtil;
-
     public SitUtil getSitUtil() { return sitUtil; }
 
     private PoseUtil poseUtil;
-
     public PoseUtil getPoseUtil() { return poseUtil; }
 
     private ISpawnUtil spawnUtil;
-
     public ISpawnUtil getSpawnUtil() { return spawnUtil; }
 
     private IPlayerUtil playerUtil;
-
     public IPlayerUtil getPlayerUtil() { return playerUtil; }
 
     private WorldGuardLink worldGuardLink;
-
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
 
     private PlaceholderAPILink placeholderAPILink;
-
     public PlaceholderAPILink getPlaceholderAPILink() { return placeholderAPILink; }
 
     private GriefPreventionLink griefPreventionLink;
-
     public GriefPreventionLink getGriefPreventionLink() { return griefPreventionLink; }
 
     private PlotSquaredLink plotSquaredLink;
-
     public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
 
     public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : Bukkit.getVersion().contains("Bukkit") ? 0 : 3;
@@ -139,35 +117,35 @@ public class GSitMain extends JavaPlugin {
         bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getConfig().getString("Lang.lang", "en_en").toLowerCase()));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> {
-            int c = getSitManager().getFeatureUsedCount();
+            int count = getSitManager().getFeatureUsedCount();
             getSitManager().resetFeatureUsedCount();
-            return c;
+            return count;
         }));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> {
             if(getPoseManager() == null) return 0;
-            int c = getPoseManager().getFeatureUsedCount();
+            int count = getPoseManager().getFeatureUsedCount();
             getPoseManager().resetFeatureUsedCount();
-            return c;
+            return count;
         }));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> {
-            int c = getPlayerSitManager().getFeatureUsedCount();
+            int count = getPlayerSitManager().getFeatureUsedCount();
             getPlayerSitManager().resetFeatureUsedCount();
-            return c;
+            return count;
         }));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> {
             if(getCrawlManager() == null) return 0;
-            int c = getCrawlManager().getFeatureUsedCount();
+            int count = getCrawlManager().getFeatureUsedCount();
             getCrawlManager().resetFeatureUsedCount();
-            return c;
+            return count;
         }));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
-            int c = getEmoteManager().getFeatureUsedCount();
+            int count = getEmoteManager().getFeatureUsedCount();
             getEmoteManager().resetFeatureUsedCount();
-            return c;
+            return count;
         }));
     }
 
@@ -313,11 +291,11 @@ public class GSitMain extends JavaPlugin {
 
             if(!getUManager().isLatestVersion()) {
 
-                String me = getMManager().getMessage("Plugin.plugin-update", "%Name%", NAME, "%NewVersion%", getUManager().getLatestVersion(), "%Version%", getUManager().getPluginVersion(), "%Path%", getDescription().getWebsite());
+                String message = getMManager().getMessage("Plugin.plugin-update", "%Name%", NAME, "%NewVersion%", getUManager().getLatestVersion(), "%Version%", getUManager().getPluginVersion(), "%Path%", getDescription().getWebsite());
 
-                for(Player p : Bukkit.getOnlinePlayers()) if(getPManager().hasPermission(p, "Update")) p.sendMessage(me);
+                for(Player player : Bukkit.getOnlinePlayers()) if(getPManager().hasPermission(player, "Update")) player.sendMessage(message);
 
-                Bukkit.getConsoleSender().sendMessage(me);
+                Bukkit.getConsoleSender().sendMessage(message);
             }
         }
     }
@@ -326,9 +304,9 @@ public class GSitMain extends JavaPlugin {
 
         if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) == null)) {
 
-            String v = Bukkit.getServer().getClass().getPackage().getName();
+            String version = Bukkit.getServer().getClass().getPackage().getName();
 
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", SERVER < 1 ? "Bukkit" : v.substring(v.lastIndexOf('.') + 1));
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", SERVER < 1 ? "Bukkit" : version.substring(version.lastIndexOf('.') + 1));
 
             checkForUpdates();
 

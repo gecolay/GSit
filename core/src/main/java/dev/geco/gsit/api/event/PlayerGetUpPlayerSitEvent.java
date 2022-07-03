@@ -12,14 +12,16 @@ public class PlayerGetUpPlayerSitEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final GetUpReason r;
+    private final GetUpReason reason;
 
     public PlayerGetUpPlayerSitEvent(Player Player, GetUpReason Reason) {
+
         super(Player);
-        r = Reason;
+
+        reason = Reason;
     }
 
-    public GetUpReason getReason() { return r; }
+    public GetUpReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 
