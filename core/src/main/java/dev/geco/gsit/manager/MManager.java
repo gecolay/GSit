@@ -72,7 +72,7 @@ public class MManager {
 
     public void sendMessage(CommandSender Sender, String Message, Object... ReplaceList) {
 
-        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(19, 0)) {
+        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(18, 2)) {
 
             ((Audience) Sender).sendMessage((Component) getComponent(Message, ReplaceList));
         } else Sender.sendMessage(getMessage(Message, ReplaceList));
@@ -80,7 +80,7 @@ public class MManager {
 
     public void sendActionBarMessage(Player Player, String Message, Object... ReplaceList) {
 
-        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(19, 0)) {
+        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(18, 2)) {
 
             ((Audience) Player).sendActionBar((Component) getComponent(Message, ReplaceList));
         } else Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getMessage(Message, ReplaceList)));
