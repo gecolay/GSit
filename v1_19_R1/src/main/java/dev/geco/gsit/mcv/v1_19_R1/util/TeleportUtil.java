@@ -10,8 +10,6 @@ import dev.geco.gsit.util.*;
 
 public class TeleportUtil implements ITeleportUtil {
 
-    public void teleportEntity(Entity Entity, Location Location) { teleportEntity(Entity, Location, false); }
-
     public void teleportEntity(Entity Entity, Location Location, boolean Dismount) {
 
         if(Entity instanceof Player) {

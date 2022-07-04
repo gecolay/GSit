@@ -7,8 +7,6 @@ import dev.geco.gsit.manager.*;
 
 public class TeleportUtil implements ITeleportUtil {
 
-    public void teleportEntity(Entity Entity, Location Location) { }
-
     public void teleportEntity(Entity Entity, Location Location, boolean Dismount) { }
 
     public void posEntity(Entity Entity, Location Location) {

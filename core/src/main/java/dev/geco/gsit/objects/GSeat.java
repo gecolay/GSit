@@ -12,16 +12,16 @@ public class GSeat {
 
     protected final Player player;
 
-    protected final Entity entity;
+    protected final Entity seatEntity;
 
     protected Location returnLocation;
 
-    public GSeat(Block Block, Location Location, Player Player, Entity Entity, Location ReturnLocation) {
+    public GSeat(Block Block, Location Location, Player Player, Entity SeatEntity, Location ReturnLocation) {
 
         block = Block;
         location = Location;
         player = Player;
-        entity = Entity;
+        seatEntity = SeatEntity;
         returnLocation = ReturnLocation;
     }
 
@@ -30,7 +30,6 @@ public class GSeat {
     public GSeat setBlock(Block Block) {
 
         block = Block;
-
         return this;
     }
 
@@ -39,23 +38,21 @@ public class GSeat {
     public GSeat setLocation(Location Location) {
 
         location = Location.clone();
-
         return this;
     }
 
     public Player getPlayer() { return player; }
 
-    public Entity getEntity() { return entity; }
+    public Entity getSeatEntity() { return seatEntity; }
 
     public Location getReturn() { return returnLocation.clone(); }
 
     public GSeat setReturn(Location ReturnLocation) {
 
         returnLocation = ReturnLocation.clone();
-
         return this;
     }
 
-    public String toString() { return entity.getUniqueId().toString(); }
+    public String toString() { return seatEntity.getUniqueId().toString(); }
 
 }

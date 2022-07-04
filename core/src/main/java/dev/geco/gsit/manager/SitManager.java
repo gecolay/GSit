@@ -123,7 +123,7 @@ public class SitManager implements ISitManager {
 
                 GPM.getSitUtil().setSeatBlock(seat.getBlock(), seat);
 
-                GPM.getPlayerUtil().posEntity(seat.getEntity(), seat.getLocation());
+                GPM.getPlayerUtil().posEntity(seat.getSeatEntity(), seat.getLocation());
             }
         }.runTaskLater(GPM, 0);
     }
@@ -137,15 +137,15 @@ public class SitManager implements ISitManager {
             @Override
             public void run() {
 
-                if(!seats.contains(Seat) || Seat.getEntity().getPassengers().isEmpty()) {
+                if(!seats.contains(Seat) || Seat.getSeatEntity().getPassengers().isEmpty()) {
 
                     cancel();
 
                     return;
                 }
 
-                Location location = Seat.getEntity().getPassengers().get(0).getLocation();
-                Seat.getEntity().setRotation(location.getYaw(), location.getPitch());
+                Location location = Seat.getSeatEntity().getPassengers().get(0).getLocation();
+                Seat.getSeatEntity().setRotation(location.getYaw(), location.getPitch());
             }
         };
 
@@ -199,11 +199,11 @@ public class SitManager implements ISitManager {
             GPM.getPlayerUtil().teleportEntity(seat.getPlayer(), returnLocation, true);
         }
 
-        if(seat.getEntity().isValid()) {
+        if(seat.getSeatEntity().isValid()) {
 
-            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().posEntity(seat.getEntity(), returnLocation);
+            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().posEntity(seat.getSeatEntity(), returnLocation);
 
-            seat.getEntity().remove();
+            seat.getSeatEntity().remove();
         }
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpSitEvent(seat, Reason));

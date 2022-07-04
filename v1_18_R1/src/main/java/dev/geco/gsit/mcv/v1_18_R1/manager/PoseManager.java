@@ -118,15 +118,15 @@ public class PoseManager implements IPoseManager {
             @Override
             public void run() {
 
-                if(!poses.contains(PoseSeat) || PoseSeat.getSeat().getEntity().getPassengers().isEmpty()) {
+                if(!poses.contains(PoseSeat) || PoseSeat.getSeat().getSeatEntity().getPassengers().isEmpty()) {
 
                     cancel();
 
                     return;
                 }
 
-                Location location = PoseSeat.getSeat().getEntity().getPassengers().get(0).getLocation();
-                PoseSeat.getSeat().getEntity().setRotation(location.getYaw(), location.getPitch());
+                Location location = PoseSeat.getSeat().getSeatEntity().getPassengers().get(0).getLocation();
+                PoseSeat.getSeat().getSeatEntity().setRotation(location.getYaw(), location.getPitch());
             }
         };
 
@@ -181,7 +181,7 @@ public class PoseManager implements IPoseManager {
             GPM.getPlayerUtil().teleportEntity(poseSeat.getSeat().getPlayer(), returnLocation, true);
         }
 
-        if(poseSeat.getSeat().getEntity().isValid()) poseSeat.getSeat().getEntity().remove();
+        if(poseSeat.getSeat().getSeatEntity().isValid()) poseSeat.getSeat().getSeatEntity().remove();
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseSeat, Reason));
 
