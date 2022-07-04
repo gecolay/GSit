@@ -5,13 +5,13 @@ import org.bukkit.entity.*;
 
 import dev.geco.gsit.manager.*;
 
-public class PlayerUtil implements IPlayerUtil {
+public class TeleportUtil implements ITeleportUtil {
 
-    public void teleportPlayer(Player Player, Location Location) { }
+    public void teleportEntity(Entity Entity, Location Location) { }
 
-    public void teleportPlayer(Player Player, Location Location, boolean Dismount) { }
+    public void teleportEntity(Entity Entity, Location Location, boolean Dismount) { }
 
-    public void teleportEntity(org.bukkit.entity.Entity Entity, Location Location) {
+    public void posEntity(Entity Entity, Location Location) {
 
         try {
 

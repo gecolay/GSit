@@ -123,7 +123,7 @@ public class SitManager implements ISitManager {
 
                 GPM.getSitUtil().setSeatBlock(seat.getBlock(), seat);
 
-                GPM.getPlayerUtil().teleportEntity(seat.getEntity(), seat.getLocation());
+                GPM.getPlayerUtil().posEntity(seat.getEntity(), seat.getLocation());
             }
         }.runTaskLater(GPM, 0);
     }
@@ -195,13 +195,13 @@ public class SitManager implements ISitManager {
 
         if(seat.getPlayer().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) {
 
-            GPM.getPlayerUtil().teleportEntity(seat.getPlayer(), returnLocation);
-            GPM.getPlayerUtil().teleportPlayer(seat.getPlayer(), returnLocation, true);
+            GPM.getPlayerUtil().posEntity(seat.getPlayer(), returnLocation);
+            GPM.getPlayerUtil().teleportEntity(seat.getPlayer(), returnLocation, true);
         }
 
         if(seat.getEntity().isValid()) {
 
-            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().teleportEntity(seat.getEntity(), returnLocation);
+            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().posEntity(seat.getEntity(), returnLocation);
 
             seat.getEntity().remove();
         }

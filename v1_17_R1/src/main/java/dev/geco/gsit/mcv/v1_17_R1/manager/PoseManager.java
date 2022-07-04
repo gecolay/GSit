@@ -177,8 +177,8 @@ public class PoseManager implements IPoseManager {
 
         if(poseSeat.getSeat().getPlayer().isValid() && Safe) {
 
-            GPM.getPlayerUtil().teleportEntity(poseSeat.getSeat().getPlayer(), returnLocation);
-            GPM.getPlayerUtil().teleportPlayer(poseSeat.getSeat().getPlayer(), returnLocation, true);
+            GPM.getPlayerUtil().posEntity(poseSeat.getSeat().getPlayer(), returnLocation);
+            GPM.getPlayerUtil().teleportEntity(poseSeat.getSeat().getPlayer(), returnLocation, true);
         }
 
         if(poseSeat.getSeat().getEntity().isValid()) poseSeat.getSeat().getEntity().remove();

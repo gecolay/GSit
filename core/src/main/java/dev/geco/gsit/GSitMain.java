@@ -70,8 +70,8 @@ public class GSitMain extends JavaPlugin {
     private ISpawnUtil spawnUtil;
     public ISpawnUtil getSpawnUtil() { return spawnUtil; }
 
-    private IPlayerUtil playerUtil;
-    public IPlayerUtil getPlayerUtil() { return playerUtil; }
+    private ITeleportUtil teleportUtil;
+    public ITeleportUtil getPlayerUtil() { return teleportUtil; }
 
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
@@ -184,7 +184,7 @@ public class GSitMain extends JavaPlugin {
         poseManager = NMSManager.isNewerOrVersion(17, 0) ? (IPoseManager) NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) : null;
         crawlManager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
         spawnUtil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("gsit", "util.SpawnUtil", null) : new SpawnUtil();
-        playerUtil = NMSManager.isNewerOrVersion(17, 0) ? (IPlayerUtil) NMSManager.getPackageObject("gsit", "util.PlayerUtil", null) : new PlayerUtil();
+        teleportUtil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("gsit", "util.TeleportUtil", null) : new TeleportUtil();
 
         setupCommands();
         setupEvents();
