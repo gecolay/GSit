@@ -53,10 +53,13 @@ public class GCrawlCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+        if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-world-error");
-            return true;
+            if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-world-error");
+                return true;
+            }
         }
 
         if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().CRAWL_FLAG)) {

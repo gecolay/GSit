@@ -76,22 +76,25 @@ public class GSpinCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().POSE_FLAG)) {
+        if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
-            return true;
-        }
+            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().POSE_FLAG)) {
 
-        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(block.getLocation(), player)) {
+                GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
+                return true;
+            }
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
-            return true;
-        }
+            if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(block.getLocation(), player)) {
 
-        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(block.getLocation(), player)) {
+                GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
+                return true;
+            }
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
-            return true;
+            if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(block.getLocation(), player)) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
+                return true;
+            }
         }
 
         if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getPoseManager().kickPose(block, player)) {

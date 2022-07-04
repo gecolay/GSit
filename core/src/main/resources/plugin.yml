@@ -135,10 +135,15 @@ permissions:
     description: ByPass | Permission
     children:
       GSit.ByPass.World: true
+      GSit.ByPass.Region: true
 
   GSit.ByPass.World:
     default: op
     description: ByPass World | Permission
+
+  GSit.ByPass.Region:
+    default: op
+    description: ByPass Region | Permission
 
   GSit.Update:
     default: op

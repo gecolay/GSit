@@ -63,10 +63,13 @@ public class GEmoteCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().EMOTE_FLAG)) {
+        if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-emote-region-error");
-            return true;
+            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().EMOTE_FLAG)) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-emote-region-error");
+                return true;
+            }
         }
 
         GPM.getEmoteManager().startEmote(player, emote);
