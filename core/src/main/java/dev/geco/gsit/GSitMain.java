@@ -263,7 +263,7 @@ public class GSitMain extends JavaPlugin {
         } else plotSquaredLink = null;
     }
 
-    private void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "pl_pl", "pt_br", "ru_ru", "uk_ua", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }
+    private void copyLangFiles() { for(String l : Arrays.asList("de_de", "en_en", "es_es", "fi_fi", "fr_fr", "it_it", "ja_jp", "pl_pl", "pt_br", "ru_ru", "uk_ua", "zh_cn", "zh_tw")) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + l + PluginValues.YML_FILETYP, false); }
 
     public void reload(CommandSender s) {
 
