@@ -90,23 +90,23 @@ public class PoseManager implements IPoseManager {
 
         GSeat seat = new GSeat(Block, playerLocation, Player, seatEntity, returnLocation);
 
-        GPoseSeat poseseat = new GPoseSeat(seat, Pose);
+        GPoseSeat poseSeat = new GPoseSeat(seat, Pose);
 
-        poseseat.spawn();
+        poseSeat.spawn();
 
-        seatEntity.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poseseat));
+        seatEntity.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poseSeat));
 
-        poses.add(poseseat);
+        poses.add(poseSeat);
 
-        GPM.getPoseUtil().setPoseBlock(Block, poseseat);
+        GPM.getPoseUtil().setPoseBlock(Block, poseSeat);
 
-        startRotateSeat(poseseat);
+        startRotateSeat(poseSeat);
 
         feature_used++;
 
-        Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseseat));
+        Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseSeat));
 
-        return poseseat;
+        return poseSeat;
     }
 
     private void startRotateSeat(IGPoseSeat PoseSeat) {
@@ -121,7 +121,6 @@ public class PoseManager implements IPoseManager {
                 if(!poses.contains(PoseSeat) || PoseSeat.getSeat().getSeatEntity().getPassengers().isEmpty()) {
 
                     cancel();
-
                     return;
                 }
 

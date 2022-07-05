@@ -140,7 +140,6 @@ public class SitManager implements ISitManager {
                 if(!seats.contains(Seat) || Seat.getSeatEntity().getPassengers().isEmpty()) {
 
                     cancel();
-
                     return;
                 }
 

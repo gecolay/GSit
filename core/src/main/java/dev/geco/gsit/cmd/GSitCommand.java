@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
+import org.bukkit.util.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
@@ -63,7 +64,11 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(!GPM.getCManager().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && (!block.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
+            boolean overSize = false;
+
+            for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) overSize = true;
+
+            if(!GPM.getCManager().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && !overSize && (!block.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-sit-location-error");
                 return true;

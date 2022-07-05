@@ -121,7 +121,6 @@ public class PoseManager implements IPoseManager {
                 if(!poses.contains(PoseSeat) || PoseSeat.getSeat().getSeatEntity().getPassengers().isEmpty()) {
 
                     cancel();
-
                     return;
                 }
 
