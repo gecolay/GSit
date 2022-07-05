@@ -15,7 +15,7 @@ public class PlayerPoseEvent extends PlayerEvent {
 
     public PlayerPoseEvent(IGPoseSeat PoseSeat) {
 
-        super(PoseSeat.getSeat().getPlayer());
+        super(PoseSeat.getPlayer());
 
         poseSeat = PoseSeat;
     }

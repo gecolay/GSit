@@ -10,6 +10,8 @@ public interface IGPoseSeat {
 
     GSeat getSeat();
 
+    Player getPlayer();
+
     Pose getPose();
 
 }

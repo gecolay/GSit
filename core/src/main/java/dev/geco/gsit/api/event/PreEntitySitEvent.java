@@ -2,36 +2,33 @@ package dev.geco.gsit.api.event;
 
 import org.jetbrains.annotations.*;
 
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import org.bukkit.event.entity.*;
 
-import dev.geco.gsit.objects.*;
-
-public class PrePlayerGetUpSitEvent extends PlayerEvent implements Cancellable {
+public class PreEntitySitEvent extends EntityEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
     private boolean cancel = false;
 
-    private final GSeat seat;
+    private final Block block;
 
-    private final GetUpReason reason;
+    public PreEntitySitEvent(LivingEntity Entity, Block Block) {
 
-    public PrePlayerGetUpSitEvent(GSeat Seat, GetUpReason Reason) {
+        super(Entity);
 
-        super(Seat.getPlayer());
-
-        seat = Seat;
-        reason = Reason;
+        block = Block;
     }
 
     public boolean isCancelled() { return cancel; }
 
     public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
-    public GSeat getSeat() { return seat; }
+    public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
-    public GetUpReason getReason() { return reason; }
+    public Block getBlock() { return block; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

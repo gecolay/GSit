@@ -8,28 +8,27 @@ import org.bukkit.event.entity.*;
 
 import dev.geco.gsit.objects.*;
 
-public class PreEntityStopEmoteEvent extends EntityEvent implements Cancellable {
+public class EntityGetUpSitEvent extends EntityEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private boolean cancel = false;
+    private final GSeat seat;
 
-    private final GEmote emote;
+    private final GetUpReason reason;
 
-    public PreEntityStopEmoteEvent(LivingEntity Entity, GEmote Emote) {
+    public EntityGetUpSitEvent(GSeat Seat, GetUpReason Reason) {
 
-        super(Entity);
+        super(Seat.getEntity());
 
-        emote = Emote;
+        seat = Seat;
+        reason = Reason;
     }
-
-    public boolean isCancelled() { return cancel; }
-
-    public void setCancelled(boolean Cancel) { cancel = Cancel; }
 
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
-    public GEmote getEmote() { return emote; }
+    public GSeat getSeat() { return seat; }
+
+    public GetUpReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 

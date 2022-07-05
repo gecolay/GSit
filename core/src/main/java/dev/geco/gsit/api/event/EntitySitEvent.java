@@ -2,23 +2,26 @@ package dev.geco.gsit.api.event;
 
 import org.jetbrains.annotations.*;
 
+import org.bukkit.entity.*;
 import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import org.bukkit.event.entity.*;
 
 import dev.geco.gsit.objects.*;
 
-public class PlayerSitEvent extends PlayerEvent {
+public class EntitySitEvent extends EntityEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final GSeat seat;
 
-    public PlayerSitEvent(GSeat Seat) {
+    public EntitySitEvent(GSeat Seat) {
 
-        super(Seat.getPlayer());
+        super(Seat.getEntity());
 
         seat = Seat;
     }
+
+    public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
     public GSeat getSeat() { return seat; }
 

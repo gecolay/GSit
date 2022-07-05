@@ -30,34 +30,34 @@ public class SitManager implements ISitManager {
 
     public List<GSeat> getSeats() { return new ArrayList<>(seats); }
 
-    public boolean isSitting(Player Player) { return getSeat(Player) != null; }
+    public boolean isSitting(LivingEntity Entity) { return getSeat(Entity) != null; }
 
-    public GSeat getSeat(Player Player) {
+    public GSeat getSeat(LivingEntity Entity) {
 
-        for(GSeat seat : getSeats()) if(Player.equals(seat.getPlayer())) return seat;
+        for(GSeat seat : getSeats()) if(Entity.equals(seat.getEntity())) return seat;
 
         return null;
     }
 
-    public void clearSeats() { for(GSeat seat : getSeats()) removeSeat(seat.getPlayer(), GetUpReason.PLUGIN); }
+    public void clearSeats() { for(GSeat seat : getSeats()) removeSeat(seat.getEntity(), GetUpReason.PLUGIN); }
 
-    public boolean kickSeat(Block Block, Player Player) {
+    public boolean kickSeat(Block Block, LivingEntity Entity) {
 
         if(GPM.getSitUtil().isSeatBlock(Block)) {
 
-            if(!GPM.getPManager().hasPermission(Player, "Kick.Sit")) return false;
+            if(!GPM.getPManager().hasPermission(Entity, "Kick.Sit")) return false;
 
-            for(GSeat seat : GPM.getSitUtil().getSeats(Block)) if(!removeSeat(seat.getPlayer(), GetUpReason.KICKED)) return false;
+            for(GSeat seat : GPM.getSitUtil().getSeats(Block)) if(!removeSeat(seat.getEntity(), GetUpReason.KICKED)) return false;
         }
 
         return true;
     }
 
-    public GSeat createSeat(Block Block, Player Player) { return createSeat(Block, Player, true, 0d, 0d, 0d, Player.getLocation().getYaw(), GPM.getCManager().CENTER_BLOCK, true); }
+    public GSeat createSeat(Block Block, LivingEntity Entity) { return createSeat(Block, Entity, true, 0d, 0d, 0d, Entity.getLocation().getYaw(), GPM.getCManager().CENTER_BLOCK, true); }
 
-    public GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
+    public GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak) {
 
-        PrePlayerSitEvent preEvent = new PrePlayerSitEvent(Player, Block);
+        PreEntitySitEvent preEvent = new PreEntitySitEvent(Entity, Block);
 
         Bukkit.getPluginManager().callEvent(preEvent);
 
@@ -67,7 +67,7 @@ public class SitManager implements ISitManager {
 
         offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
-        Location location = Player.getLocation().clone();
+        Location location = Entity.getLocation().clone();
 
         Location returnLocation = location.clone();
 
@@ -83,11 +83,11 @@ public class SitManager implements ISitManager {
 
         location.setYaw(SeatRotation);
 
-        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(location, Player);
+        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(location, Entity);
 
-        if(GPM.getCManager().S_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-sit-info");
+        if(GPM.getCManager().S_SIT_MESSAGE && Entity instanceof Player) GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
 
-        GSeat seat = new GSeat(Block, location, Player, seatEntity, returnLocation);
+        GSeat seat = new GSeat(Block, location, Entity, seatEntity, returnLocation);
 
         seatEntity.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seat));
 
@@ -99,16 +99,16 @@ public class SitManager implements ISitManager {
 
         feature_used++;
 
-        Bukkit.getPluginManager().callEvent(new PlayerSitEvent(seat));
+        Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
         return seat;
     }
 
-    public void moveSeat(Player Player, BlockFace BlockFace) {
+    public void moveSeat(LivingEntity Entity, BlockFace BlockFace) {
 
-        if(!isSitting(Player)) return;
+        if(!isSitting(Entity)) return;
 
-        GSeat seat = getSeat(Player);
+        GSeat seat = getSeat(Entity);
 
         new BukkitRunnable() {
 
@@ -164,15 +164,15 @@ public class SitManager implements ISitManager {
         rotate.remove(Seat);
     }
 
-    public boolean removeSeat(Player Player, GetUpReason Reason) { return removeSeat(Player, Reason, true); }
+    public boolean removeSeat(LivingEntity Entity, GetUpReason Reason) { return removeSeat(Entity, Reason, true); }
 
-    public boolean removeSeat(Player Player, GetUpReason Reason, boolean Safe) {
+    public boolean removeSeat(LivingEntity Entity, GetUpReason Reason, boolean Safe) {
 
-        if(!isSitting(Player)) return true;
+        if(!isSitting(Entity)) return true;
 
-        GSeat seat = getSeat(Player);
+        GSeat seat = getSeat(Entity);
 
-        PrePlayerGetUpSitEvent preEvent = new PrePlayerGetUpSitEvent(seat, Reason);
+        PreEntityGetUpSitEvent preEvent = new PreEntityGetUpSitEvent(seat, Reason);
 
         Bukkit.getPluginManager().callEvent(preEvent);
 
@@ -188,14 +188,14 @@ public class SitManager implements ISitManager {
 
         if(!GPM.getCManager().GET_UP_RETURN) {
 
-            returnLocation.setYaw(seat.getPlayer().getLocation().getYaw());
-            returnLocation.setPitch(seat.getPlayer().getLocation().getPitch());
+            returnLocation.setYaw(seat.getEntity().getLocation().getYaw());
+            returnLocation.setPitch(seat.getEntity().getLocation().getPitch());
         }
 
-        if(seat.getPlayer().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) {
+        if(seat.getEntity().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) {
 
-            GPM.getPlayerUtil().posEntity(seat.getPlayer(), returnLocation);
-            GPM.getPlayerUtil().teleportEntity(seat.getPlayer(), returnLocation, true);
+            GPM.getPlayerUtil().posEntity(seat.getEntity(), returnLocation);
+            GPM.getPlayerUtil().teleportEntity(seat.getEntity(), returnLocation, true);
         }
 
         if(seat.getSeatEntity().isValid()) {
@@ -205,7 +205,7 @@ public class SitManager implements ISitManager {
             seat.getSeatEntity().remove();
         }
 
-        Bukkit.getPluginManager().callEvent(new PlayerGetUpSitEvent(seat, Reason));
+        Bukkit.getPluginManager().callEvent(new EntityGetUpSitEvent(seat, Reason));
 
         return true;
     }

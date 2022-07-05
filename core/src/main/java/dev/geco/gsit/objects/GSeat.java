@@ -10,17 +10,17 @@ public class GSeat {
 
     protected Location location;
 
-    protected final Player player;
+    protected final LivingEntity entity;
 
     protected final Entity seatEntity;
 
     protected Location returnLocation;
 
-    public GSeat(Block Block, Location Location, Player Player, Entity SeatEntity, Location ReturnLocation) {
+    public GSeat(Block Block, Location Location, LivingEntity Entity, Entity SeatEntity, Location ReturnLocation) {
 
         block = Block;
         location = Location;
-        player = Player;
+        entity = Entity;
         seatEntity = SeatEntity;
         returnLocation = ReturnLocation;
     }
@@ -41,7 +41,7 @@ public class GSeat {
         return this;
     }
 
-    public Player getPlayer() { return player; }
+    public LivingEntity getEntity() { return entity; }
 
     public Entity getSeatEntity() { return seatEntity; }
 

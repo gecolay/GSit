@@ -4,24 +4,24 @@ import org.jetbrains.annotations.*;
 
 import org.bukkit.event.*;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.*;
 
 import dev.geco.gsit.objects.*;
 
-public class EntityEmoteEvent extends Event {
+public class EntityEmoteEvent extends EntityEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
-
-    private final LivingEntity entity;
 
     private final GEmote emote;
 
     public EntityEmoteEvent(LivingEntity Entity, GEmote Emote) {
 
-        entity = Entity;
+        super(Entity);
+
         emote = Emote;
     }
 
-    public LivingEntity getEntity() { return entity; }
+    public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
     public GEmote getEmote() { return emote; }
 

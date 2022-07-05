@@ -36,11 +36,11 @@ public class PoseManager implements IPoseManager {
 
     public IGPoseSeat getPose(Player Player) {
 
-        for(IGPoseSeat pose : getPoses()) if(Player.equals(pose.getSeat().getPlayer())) return pose;
+        for(IGPoseSeat pose : getPoses()) if(Player.equals(pose.getPlayer())) return pose;
         return null;
     }
 
-    public void clearPoses() { for(IGPoseSeat pose : getPoses()) removePose(pose.getSeat().getPlayer(), GetUpReason.PLUGIN); }
+    public void clearPoses() { for(IGPoseSeat pose : getPoses()) removePose(pose.getPlayer(), GetUpReason.PLUGIN); }
 
     public boolean kickPose(Block Block, Player Player) {
 
@@ -48,7 +48,7 @@ public class PoseManager implements IPoseManager {
 
             if(!GPM.getPManager().hasPermission(Player, "Kick.Pose", "Kick.*")) return false;
 
-            for(IGPoseSeat p : GPM.getPoseUtil().getPoses(Block)) if(!removePose(p.getSeat().getPlayer(), GetUpReason.KICKED)) return false;
+            for(IGPoseSeat p : GPM.getPoseUtil().getPoses(Block)) if(!removePose(p.getPlayer(), GetUpReason.KICKED)) return false;
         }
 
         return true;
@@ -170,14 +170,14 @@ public class PoseManager implements IPoseManager {
         Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? poseSeat.getSeat().getReturn() : poseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(poseSeat.getSeat().getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(poseSeat.getSeat().getBlock().getType(), 0d), 0d));
 
         if(!GPM.getCManager().GET_UP_RETURN) {
-            returnLocation.setYaw(poseSeat.getSeat().getPlayer().getLocation().getYaw());
-            returnLocation.setPitch(poseSeat.getSeat().getPlayer().getLocation().getPitch());
+            returnLocation.setYaw(poseSeat.getPlayer().getLocation().getYaw());
+            returnLocation.setPitch(poseSeat.getPlayer().getLocation().getPitch());
         }
 
-        if(poseSeat.getSeat().getPlayer().isValid() && Safe) {
+        if(poseSeat.getPlayer().isValid() && Safe) {
 
-            GPM.getPlayerUtil().posEntity(poseSeat.getSeat().getPlayer(), returnLocation);
-            GPM.getPlayerUtil().teleportEntity(poseSeat.getSeat().getPlayer(), returnLocation, true);
+            GPM.getPlayerUtil().posEntity(poseSeat.getPlayer(), returnLocation);
+            GPM.getPlayerUtil().teleportEntity(poseSeat.getPlayer(), returnLocation, true);
         }
 
         if(poseSeat.getSeat().getSeatEntity().isValid()) poseSeat.getSeat().getSeatEntity().remove();

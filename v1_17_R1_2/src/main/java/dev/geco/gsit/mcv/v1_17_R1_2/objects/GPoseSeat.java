@@ -39,6 +39,7 @@ public class GPoseSeat implements IGPoseSeat {
     private Set<Player> nearPlayers = new HashSet<>();
 
     private final ServerPlayer serverPlayer;
+    private final Player seatPlayer;
     protected final ServerPlayer playerNpc;
 
     private final Location blockLocation;
@@ -64,11 +65,12 @@ public class GPoseSeat implements IGPoseSeat {
     public GPoseSeat(GSeat Seat, Pose Pose) {
 
         seat = Seat;
+        seatPlayer = (Player) Seat.getEntity();
         pose = Pose;
 
         Location seatLocation = seat.getLocation();
 
-        serverPlayer = ((CraftPlayer) seat.getPlayer()).getHandle();
+        serverPlayer = ((CraftPlayer) seatPlayer).getHandle();
 
         playerNpc = createNPC();
         playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + (pose == org.bukkit.entity.Pose.SLEEPING ? 0.3125d : pose == org.bukkit.entity.Pose.SPIN_ATTACK ? 0.2d : 0d), seatLocation.getZ(), 0f, 0f);
@@ -95,25 +97,25 @@ public class GPoseSeat implements IGPoseSeat {
         listener = new Listener() {
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PIntE(PlayerInteractEvent Event) { if(Event.getPlayer() == seat.getPlayer() && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
+            public void PIntE(PlayerInteractEvent Event) { if(Event.getPlayer() == seatPlayer && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void PIntE(PlayerInteractEntityEvent Event) { if(Event.getPlayer() == seat.getPlayer()) Event.setCancelled(true); }
+            public void PIntE(PlayerInteractEntityEvent Event) { if(Event.getPlayer() == seatPlayer) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void EDamBEE(EntityDamageByEntityEvent Event) { if(Event.getDamager() == seat.getPlayer() && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
+            public void EDamBEE(EntityDamageByEntityEvent Event) { if(Event.getDamager() == seatPlayer && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void EDamE(EntityDamageEvent Event) { if(Event.getEntity() == seat.getPlayer()) playAnimation(1); }
+            public void EDamE(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playAnimation(1); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PLauE(ProjectileLaunchEvent Event) { if(Event.getEntity().getShooter() == seat.getPlayer() && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
+            public void PLauE(ProjectileLaunchEvent Event) { if(Event.getEntity().getShooter() == seatPlayer && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PAniE(PlayerAnimationEvent Event) { if(Event.getPlayer() == seat.getPlayer() && Event.getAnimationType() == PlayerAnimationType.ARM_SWING) playAnimation(Event.getPlayer().getMainHand().equals(MainHand.RIGHT) ? 0 : 3); }
+            public void PAniE(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getAnimationType() == PlayerAnimationType.ARM_SWING) playAnimation(Event.getPlayer().getMainHand().equals(MainHand.RIGHT) ? 0 : 3); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PGamMCE(PlayerGameModeChangeEvent Event) { if(Event.getPlayer() == seat.getPlayer() && Event.getNewGameMode() == GameMode.CREATIVE) setEquipmentVisibility(true); }
+            public void PGamMCE(PlayerGameModeChangeEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getNewGameMode() == GameMode.CREATIVE) setEquipmentVisibility(true); }
         };
     }
 
@@ -135,9 +137,9 @@ public class GPoseSeat implements IGPoseSeat {
 
         if(pose == Pose.SLEEPING) {
 
-            if(GPM.getCManager().P_LAY_NIGHT_SKIP) seat.getPlayer().setSleepingIgnored(true);
+            if(GPM.getCManager().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(true);
 
-            if(GPM.getCManager().P_LAY_REST) seat.getPlayer().setStatistic(Statistic.TIME_SINCE_REST, 0);
+            if(GPM.getCManager().P_LAY_REST) seatPlayer.setStatistic(Statistic.TIME_SINCE_REST, 0);
         }
 
         for(Player nearPlayer : nearPlayers) spawnToPlayer(nearPlayer);
@@ -176,13 +178,13 @@ public class GPoseSeat implements IGPoseSeat {
 
         for(Player nearPlayer : nearPlayers) removeToPlayer(nearPlayer);
 
-        if(pose == Pose.SLEEPING && GPM.getCManager().P_LAY_NIGHT_SKIP) seat.getPlayer().setSleepingIgnored(false);
+        if(pose == Pose.SLEEPING && GPM.getCManager().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
 
         serverPlayer.setInvisible(false);
 
         setEquipmentVisibility(true);
 
-        seat.getPlayer().setInvisible(false);
+        seatPlayer.setInvisible(false);
 
         serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), playerNpc.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
         serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), playerNpc.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
@@ -203,7 +205,7 @@ public class GPoseSeat implements IGPoseSeat {
     private Set<Player> getNearPlayers() {
 
         HashSet<Player> playerList = new HashSet<>();
-        seat.getLocation().getWorld().getPlayers().stream().filter(o -> seat.getLocation().distance(o.getLocation()) <= 250 && o.canSee(seat.getPlayer())).forEach(playerList::add);
+        seat.getLocation().getWorld().getPlayers().stream().filter(o -> seat.getLocation().distance(o.getLocation()) <= 250 && o.canSee(seatPlayer)).forEach(playerList::add);
         return playerList;
     }
 
@@ -256,7 +258,7 @@ public class GPoseSeat implements IGPoseSeat {
 
                         if(sleepTick >= 90) {
 
-                            long tick = seat.getPlayer().getPlayerTime();
+                            long tick = seatPlayer.getPlayerTime();
 
                             if(!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) for(Player nearPlayer : nearPlayers) nearPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
 
@@ -287,7 +289,7 @@ public class GPoseSeat implements IGPoseSeat {
 
         if(pose == Pose.SWIMMING) {
 
-            byte fixedRotation = getFixedRotation(seat.getPlayer().getLocation().getYaw());
+            byte fixedRotation = getFixedRotation(seatPlayer.getLocation().getYaw());
 
             ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(playerNpc, fixedRotation);
             ClientboundMoveEntityPacket.PosRot moveEntityPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, fixedRotation, (byte) 0, true);
@@ -303,7 +305,7 @@ public class GPoseSeat implements IGPoseSeat {
             return;
         }
 
-        float playerYaw = seat.getPlayer().getLocation().getYaw();
+        float playerYaw = seatPlayer.getLocation().getYaw();
 
         if(direction == Direction.WEST) playerYaw -= 90;
         if(direction == Direction.EAST) playerYaw += 90;
@@ -363,14 +365,14 @@ public class GPoseSeat implements IGPoseSeat {
 
         for(Player nearPlayer : nearPlayers) {
 
-            if(nearPlayer == seat.getPlayer()) continue;
+            if(nearPlayer == seatPlayer) continue;
 
             ((CraftPlayer) nearPlayer).getHandle().connection.send(setEquipmentPacket);
         }
 
-        if(seat.getPlayer().getGameMode() != GameMode.CREATIVE) {
+        if(seatPlayer.getGameMode() != GameMode.CREATIVE) {
 
-            seat.getPlayer().updateInventory();
+            seatPlayer.updateInventory();
 
             if(!Visibility) serverPlayer.connection.send(setEquipmentPacket);
         }
@@ -398,7 +400,7 @@ public class GPoseSeat implements IGPoseSeat {
 
         ServerLevel serverLevel = ((CraftWorld) seat.getLocation().getWorld()).getHandle();
 
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), seat.getPlayer().getName());
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), seatPlayer.getName());
 
         gameProfile.getProperties().putAll(serverPlayer.getGameProfile().getProperties());
 
@@ -406,6 +408,8 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     public GSeat getSeat() { return seat; }
+
+    public Player getPlayer() { return seatPlayer; }
 
     public Pose getPose() { return pose; }
 

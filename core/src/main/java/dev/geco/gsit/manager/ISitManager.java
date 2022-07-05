@@ -19,22 +19,22 @@ public interface ISitManager {
 
     List<GSeat> getSeats();
 
-    boolean isSitting(Player Player);
+    boolean isSitting(LivingEntity Entity);
 
-    GSeat getSeat(Player Player);
+    GSeat getSeat(LivingEntity Entity);
 
     void clearSeats();
 
-    boolean kickSeat(Block Block, Player Player);
+    boolean kickSeat(Block Block, LivingEntity Entity);
 
-    GSeat createSeat(Block Block, Player Player);
+    GSeat createSeat(Block Block, LivingEntity Entity);
 
-    GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak);
+    GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock, boolean GetUpSneak);
 
-    void moveSeat(Player Player, BlockFace Face);
+    void moveSeat(LivingEntity Entity, BlockFace Face);
 
-    boolean removeSeat(Player Player, GetUpReason Reason);
+    boolean removeSeat(LivingEntity Entity, GetUpReason Reason);
 
-    boolean removeSeat(Player Player, GetUpReason Reason, boolean Safe);
+    boolean removeSeat(LivingEntity Entity, GetUpReason Reason, boolean Safe);
 
 }

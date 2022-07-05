@@ -40,14 +40,14 @@ public class GSitAPI {
     }
 
     /**
-     * Checks if a Player is currently sitting
+     * Checks if an Entity is currently sitting
      * @author Gecolay
      * @since 1.0.0
-     * @param Player Player for this Seat
-     * @return <code>true</code> if the Player is sitting
+     * @param Entity Entity for this Seat
+     * @return <code>true</code> if the Entity is sitting
      */
-    public static boolean isSitting(Player Player) {
-        return getInstance().getSitManager().isSitting(Player);
+    public static boolean isSitting(LivingEntity Entity) {
+        return getInstance().getSitManager().isSitting(Entity);
     }
 
     /**
@@ -61,14 +61,14 @@ public class GSitAPI {
     }
 
     /**
-     * Gets the Seat of a Player
+     * Gets the Seat of an Entity
      * @author Gecolay
      * @since 1.0.0
-     * @param Player Player for this Seat
+     * @param Entity Entity for this Seat
      * @return Seat-Object or <code>null</code> if there was no Seat
      */
-    public static GSeat getSeat(Player Player) {
-        return getInstance().getSitManager().getSeat(Player);
+    public static GSeat getSeat(LivingEntity Entity) {
+        return getInstance().getSitManager().getSeat(Entity);
     }
 
     /**
@@ -94,95 +94,95 @@ public class GSitAPI {
     }
 
     /**
-     * Creates a new Seat on a Block for a Player
+     * Creates a new Seat on a Block for an Entity
      * @author Gecolay
      * @since 1.0.0
      * @param Block Block which should be connected to the Seat-Object
-     * @param Player Player for this Seat
+     * @param Entity Entity for this Seat
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
-    public static GSeat createSeat(Block Block, Player Player) {
-        return getInstance().getSitManager().createSeat(Block, Player);
+    public static GSeat createSeat(Block Block, LivingEntity Entity) {
+        return getInstance().getSitManager().createSeat(Block, Entity);
     }
 
     /**
-     * Creates a new Seat on a Block for a Player.
+     * Creates a new Seat on a Block for an Entity.
      * The Seat can be static or rotating.
      * @author Gecolay
      * @since 1.0.0
      * @param Block Block which should be connected to the Seat-Object
-     * @param Player Player for this Seat
-     * @param Rotate Should this Seat rotate with direction the player is facing
+     * @param Entity Entity for this Seat
+     * @param Rotate Should this Seat rotate with direction the entity is facing
      * @param SeatRotationYaw The default Rotation of the Seat
-     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
+     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Entity (<code>false</code>)
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
-    public static GSeat createSeat(Block Block, Player Player, boolean Rotate, float SeatRotationYaw, boolean SitAtBlock) {
-        return createSeat(Block, Player, Rotate, 0d, 0d, 0d, SeatRotationYaw, SitAtBlock);
+    public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, float SeatRotationYaw, boolean SitAtBlock) {
+        return createSeat(Block, Entity, Rotate, 0d, 0d, 0d, SeatRotationYaw, SitAtBlock);
     }
 
     /**
-     * Creates a new Seat on a Block for a Player.
+     * Creates a new Seat on a Block for an Entity.
      * The Seat can be static or rotating.
      * The seat can be moved to with an Offset
      * @author Gecolay
      * @since 1.0.0
      * @param Block Block which should be connected to the Seat-Object
-     * @param Player Player for this Seat
-     * @param Rotate Should this Seat rotate with direction the player is facing
+     * @param Entity Entity for this Seat
+     * @param Rotate Should this Seat rotate with direction the entity is facing
      * @param XOffset The X-Coordinate-Offset for the Seat
      * @param YOffset The Y-Coordinate-Offset for the Seat
      * @param ZOffset The Z-Coordinate-Offset for the Seat
      * @param SeatRotationYaw The default Rotation of the Seat
-     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
+     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Entity (<code>false</code>)
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
-    public static GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return createSeat(Block, Player, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, true);
+    public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
+        return createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, true);
     }
 
     /**
-     * Creates a new Seat on a Block for a Player.
+     * Creates a new Seat on a Block for an Entity.
      * The Seat can be static or rotating.
      * The seat can be moved to with an Offset
      * @author Gecolay
      * @since 1.0.4
      * @param Block Block which should be connected to the Seat-Object
-     * @param Player Player for this Seat
-     * @param Rotate Should this Seat rotate with direction the player is facing
+     * @param Entity Entity for this Seat
+     * @param Rotate Should this Seat rotate with direction the entity is facing
      * @param XOffset The X-Coordinate-Offset for the Seat
      * @param YOffset The Y-Coordinate-Offset for the Seat
      * @param ZOffset The Z-Coordinate-Offset for the Seat
      * @param SeatRotationYaw The default Rotation of the Seat
-     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
-     * @param GetUpSneak Should the Player be able to get up by sneaking
+     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Entity (<code>false</code>)
+     * @param GetUpSneak Should the Entity be able to get up by sneaking
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
-    public static GSeat createSeat(Block Block, Player Player, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock, boolean GetUpSneak) {
-        return getInstance().getSitManager().createSeat(Block, Player, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, GetUpSneak);
+    public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock, boolean GetUpSneak) {
+        return getInstance().getSitManager().createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, GetUpSneak);
     }
 
     /**
      * Moves an existing Seat
      * @author Gecolay
      * @since 1.0.4
-     * @param Player Player for this Seat
+     * @param Entity Entity for this Seat
      * @param Direction The Direction in which the Seat should get moved
      */
-    public static void moveSeat(Player Player, BlockFace Direction) {
-        getInstance().getSitManager().moveSeat(Player, Direction);
+    public static void moveSeat(LivingEntity Entity, BlockFace Direction) {
+        getInstance().getSitManager().moveSeat(Entity, Direction);
     }
 
     /**
      * Removes an existing Seat
      * @author Gecolay
      * @since 1.0.0
-     * @param Player Player for this Seat
+     * @param Entity Entity for this Seat
      * @param Reason The Reason why the Seat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removeSeat(Player Player, GetUpReason Reason) {
-        return getInstance().getSitManager().removeSeat(Player, Reason);
+    public static boolean removeSeat(LivingEntity Entity, GetUpReason Reason) {
+        return getInstance().getSitManager().removeSeat(Entity, Reason);
     }
 
     /**
@@ -190,13 +190,13 @@ public class GSitAPI {
      * The Get-Up-Safe-Teleport can be disabled
      * @author Gecolay
      * @since 1.0.0
-     * @param Player Player for this Seat
+     * @param Entity Entity for this Seat
      * @param Reason The Reason why the Seat gets removed
-     * @param Safe Should the Player get teleported to a safe Position
+     * @param Safe Should the Entity get teleported to a safe Position
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removeSeat(Player Player, GetUpReason Reason, boolean Safe) {
-        return getInstance().getSitManager().removeSeat(Player, Reason, Safe);
+    public static boolean removeSeat(LivingEntity Entity, GetUpReason Reason, boolean Safe) {
+        return getInstance().getSitManager().removeSeat(Entity, Reason, Safe);
     }
 
     /**
