@@ -52,7 +52,6 @@ public class PlayerSitManager implements IPlayerSitManager {
             Bukkit.getPluginManager().callEvent(preEvent);
 
             if(preEvent.isCancelled()) return false;
-
         }
 
         if(Entity.hasMetadata(GPM.NAME + "A")) {

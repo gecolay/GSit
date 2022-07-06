@@ -39,7 +39,7 @@ public class SpawnUtil implements ISpawnUtil {
 
         return Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-            try { armorStand.setInvisible(true); } catch (Error ignored) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored1) { } }
+            try { armorStand.setInvisible(true); } catch (Error e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored) { } }
             try { armorStand.setGravity(false); } catch (Error ignored) { }
             try { armorStand.setMarker(true); } catch (Error ignored) { }
             try { armorStand.setInvulnerable(true); } catch (Error ignored) { }

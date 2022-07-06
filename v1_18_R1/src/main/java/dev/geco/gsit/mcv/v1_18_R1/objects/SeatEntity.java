@@ -1,7 +1,7 @@
 package dev.geco.gsit.mcv.v1_18_R1.objects;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.*;
 
 import net.minecraft.world.entity.decoration.*;
 

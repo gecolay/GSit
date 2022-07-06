@@ -2,8 +2,8 @@ package dev.geco.gsit.mcv.v1_18_R2.util;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_18_R2.*;
+import org.bukkit.craftbukkit.v1_18_R2.entity.*;
 
 import dev.geco.gsit.util.*;
 import dev.geco.gsit.mcv.v1_18_R2.objects.*;
