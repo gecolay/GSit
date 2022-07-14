@@ -25,7 +25,7 @@ public class GEmoteCommand implements CommandExecutor {
 
         Player player = (Player) Sender;
 
-        if(!GPM.getPManager().hasNormalPermission(Sender, "Emote")) {
+        if(!GPM.getPManager().hasPermission(Sender, "Emote")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
             return true;

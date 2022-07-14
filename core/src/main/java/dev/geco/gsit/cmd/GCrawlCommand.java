@@ -26,7 +26,7 @@ public class GCrawlCommand implements CommandExecutor {
 
         Player player = (Player) Sender;
 
-        if(!GPM.getPManager().hasNormalPermission(Sender, "Crawl")) {
+        if(!GPM.getPManager().hasPermission(Sender, "Crawl")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
             return true;

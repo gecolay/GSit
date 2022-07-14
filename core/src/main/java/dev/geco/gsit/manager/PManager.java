@@ -11,8 +11,6 @@ public class PManager {
 
     public PManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean hasNormalPermission(CommandSender Sender, String... Permissions) { return !(Sender instanceof Player) || !GPM.getCManager().CHECK_FEATURE_PERMISSIONS || hasPermission(Sender, Permissions); }
-
     public boolean hasPermission(CommandSender Sender, String... Permissions) {
 
         if(!(Sender instanceof Player)) return true;

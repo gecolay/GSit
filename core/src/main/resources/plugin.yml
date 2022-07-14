@@ -96,19 +96,19 @@ permissions:
     description: Toggle PlayerSit-Ability | Permission
 
   GSit.Lay:
-    default: op
+    default: true
     description: Lay | Permission
 
   GSit.BellyFlop:
-    default: op
+    default: true
     description: BellyFlop | Permission
 
   GSit.Spin:
-    default: op
+    default: true
     description: Spin | Permission
 
   GSit.Crawl:
-    default: op
+    default: true
     description: Crawl | Permission
 
   GSit.Emote:

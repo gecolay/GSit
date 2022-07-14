@@ -10,9 +10,6 @@ Options:
   # Defines whether the plugin should notify when a new version is available
   check-for-update: true
 
-  # Defines whether the plugin should check permissions for standard functions
-  check-feature-permissions: true
-
   # Defines whether a player gets up when he suffers damage
   get-up-damage: false
 

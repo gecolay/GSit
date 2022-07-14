@@ -28,7 +28,7 @@ public class GSpinCommand implements CommandExecutor {
 
         Player player = (Player) Sender;
 
-        if(!GPM.getPManager().hasNormalPermission(Sender, "Spin")) {
+        if(!GPM.getPManager().hasPermission(Sender, "Spin")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
             return true;

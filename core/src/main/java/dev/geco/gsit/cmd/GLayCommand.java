@@ -28,7 +28,7 @@ public class GLayCommand implements CommandExecutor {
 
         Player player = (Player) Sender;
 
-        if(!GPM.getPManager().hasNormalPermission(Sender, "Lay")) {
+        if(!GPM.getPManager().hasPermission(Sender, "Lay")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
             return true;

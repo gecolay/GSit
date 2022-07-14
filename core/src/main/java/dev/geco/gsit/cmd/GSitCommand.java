@@ -30,7 +30,7 @@ public class GSitCommand implements CommandExecutor {
 
         if(Args.length == 0) {
 
-            if(!GPM.getPManager().hasNormalPermission(Sender, "Sit")) {
+            if(!GPM.getPManager().hasPermission(Sender, "Sit")) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
                 return true;
@@ -112,7 +112,7 @@ public class GSitCommand implements CommandExecutor {
 
             case "toggle":
 
-                if(GPM.getPManager().hasNormalPermission(Sender, "SitToggle")) {
+                if(GPM.getPManager().hasPermission(Sender, "SitToggle")) {
 
                     if(GPM.getToggleManager().canSit(player.getUniqueId())) {
 
@@ -131,7 +131,7 @@ public class GSitCommand implements CommandExecutor {
 
             case "playertoggle":
 
-                if(GPM.getPManager().hasNormalPermission(Sender, "PlayerSitToggle")) {
+                if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle")) {
 
                     if(GPM.getToggleManager().canPlayerSit(player.getUniqueId())) {
 
