@@ -25,7 +25,7 @@ public class WorldGuardLink {
         FLAGS.put("emote", new StateFlag("emote", true));
     }
 
-    public StateFlag getFlag(String FlagName) { return FLAGS.getOrDefault(FlagName, null); }
+    public StateFlag getFlag(String FlagName) { return FlagName != null ? FLAGS.getOrDefault(FlagName.toLowerCase(), null) : null; }
 
     public void registerFlags() {
 
