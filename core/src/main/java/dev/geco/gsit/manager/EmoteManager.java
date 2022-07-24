@@ -37,15 +37,15 @@ public class EmoteManager implements IEmoteManager {
 
         try {
 
-            File path = new File("plugins/" + GPM.NAME + "/" + PluginValues.EMOTES_PATH);
+            File directory = new File("plugins/" + GPM.NAME + "/" + PluginValues.EMOTES_PATH);
 
-            if(!path.exists()) path.mkdirs();
+            if(!directory.exists()) return getAvailableEmotes();
 
-            for(File f : path.listFiles()) {
+            for(File emoteFile : directory.listFiles()) {
 
-                String fn = f.getName().toLowerCase();
+                String fn = emoteFile.getName().toLowerCase();
 
-                if(fn.endsWith(PluginValues.GEX_FILETYP)) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(f));
+                if(fn.endsWith(PluginValues.GEX_FILETYP)) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
             }
         } catch (Exception ignored) { }
 
