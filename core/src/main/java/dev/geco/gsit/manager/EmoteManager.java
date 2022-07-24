@@ -43,9 +43,9 @@ public class EmoteManager implements IEmoteManager {
 
             for(File emoteFile : directory.listFiles()) {
 
-                String fn = emoteFile.getName().toLowerCase();
+                String fileName = emoteFile.getName().toLowerCase();
 
-                if(fn.endsWith(PluginValues.GEX_FILETYP)) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
+                if(fileName.endsWith(PluginValues.GEX_FILETYP)) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
             }
         } catch (Exception ignored) { }
 

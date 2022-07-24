@@ -91,20 +91,20 @@ public class GSitMain extends JavaPlugin {
 
     public final String RESOURCE = "62325";
 
-    private final List<String> LANG_LIST = new ArrayList<>(); {
-        LANG_LIST.add("de_de");
-        LANG_LIST.add("en_en");
-        LANG_LIST.add("es_es");
-        LANG_LIST.add("fi_fi");
-        LANG_LIST.add("fr_fr");
-        LANG_LIST.add("it_it");
-        LANG_LIST.add("ja_jp");
-        LANG_LIST.add("pl_pl");
-        LANG_LIST.add("pt_br");
-        LANG_LIST.add("ru_ru");
-        LANG_LIST.add("uk_ua");
-        LANG_LIST.add("zh_cn");
-        LANG_LIST.add("zh_tw");
+    private final List<String> LANGS = new ArrayList<>(); {
+        LANGS.add("de_de");
+        LANGS.add("en_en");
+        LANGS.add("es_es");
+        LANGS.add("fi_fi");
+        LANGS.add("fr_fr");
+        LANGS.add("it_it");
+        LANGS.add("ja_jp");
+        LANGS.add("pl_pl");
+        LANGS.add("pt_br");
+        LANGS.add("ru_ru");
+        LANGS.add("uk_ua");
+        LANGS.add("zh_cn");
+        LANGS.add("zh_tw");
     }
 
     private final List<String> EMOTES = new ArrayList<>(); {
@@ -283,7 +283,9 @@ public class GSitMain extends JavaPlugin {
         } else plotSquaredLink = null;
     }
 
-    private void copyLangFiles() { for(String lang : LANG_LIST) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP, false); }
+    private void copyLangFiles() { for(String lang : LANGS) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP, false); }
+
+    private void copyEmoteFiles() { for(String l : EMOTES) if(!new File("plugins/" + NAME + "/" + PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP).exists()) saveResource(PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP, false); }
 
     public void reload(CommandSender Sender) {
 
@@ -337,7 +339,5 @@ public class GSitMain extends JavaPlugin {
 
         return true;
     }
-
-    private void copyEmoteFiles() { for(String l : EMOTES) if(!new File("plugins/" + NAME + "/" + PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP).exists()) saveResource(PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP, false); }
 
 }
