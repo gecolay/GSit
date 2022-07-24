@@ -86,7 +86,7 @@ public class GBellyFlopCommand implements CommandExecutor {
 
         if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
 
-            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().POSE_FLAG)) {
+            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().getFlag("pose"))) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
                 return true;

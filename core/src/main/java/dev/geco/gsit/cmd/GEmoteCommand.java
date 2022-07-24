@@ -65,7 +65,7 @@ public class GEmoteCommand implements CommandExecutor {
 
         if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
 
-            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().EMOTE_FLAG)) {
+            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("emote"))) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-emote-region-error");
                 return true;

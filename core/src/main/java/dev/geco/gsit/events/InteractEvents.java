@@ -56,7 +56,7 @@ public class InteractEvents implements Listener {
 
         if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreatePlayerSeat(clickedBlock.getLocation(), player)) return;
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(clickedBlock.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) return;
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(clickedBlock.getLocation(), GPM.getWorldGuardLink().getFlag("sit"))) return;
 
         if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(clickedBlock.getLocation(), player)) return;
 

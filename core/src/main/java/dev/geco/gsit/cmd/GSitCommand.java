@@ -79,7 +79,7 @@ public class GSitCommand implements CommandExecutor {
 
             if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
 
-                if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().SIT_FLAG)) {
+                if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(block.getLocation(), GPM.getWorldGuardLink().getFlag("sit"))) {
 
                     GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
                     return true;

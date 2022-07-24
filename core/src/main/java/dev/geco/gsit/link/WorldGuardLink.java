@@ -1,5 +1,7 @@
 package dev.geco.gsit.link;
 
+import java.util.*;
+
 import org.bukkit.*;
 
 import com.sk89q.worldguard.*;
@@ -15,71 +17,31 @@ public class WorldGuardLink {
 
     public WorldGuardLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public StateFlag SIT_FLAG;
-    public StateFlag PLAYERSIT_FLAG;
-    public StateFlag POSE_FLAG;
-    public StateFlag CRAWL_FLAG;
-    public StateFlag EMOTE_FLAG;
+    private final HashMap<String, StateFlag> FLAGS = new HashMap<>(); {
+        FLAGS.put("sit", new StateFlag("sit", true));
+        FLAGS.put("playersit", new StateFlag("playersit", true));
+        FLAGS.put("pose", new StateFlag("pose", true));
+        FLAGS.put("crawl", new StateFlag("crawl", true));
+        FLAGS.put("emote", new StateFlag("emote", true));
+    }
+
+    public StateFlag getFlag(String FlagName) { return FLAGS.getOrDefault(FlagName, null); }
 
     public void registerFlags() {
 
         FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
 
-        try {
+        for(Map.Entry<String, StateFlag> flag : FLAGS.entrySet()) {
 
-            StateFlag stateFlag = new StateFlag("sit", true);
-            flagRegistry.register(stateFlag);
-            SIT_FLAG = stateFlag;
-        } catch (FlagConflictException | IllegalStateException e) {
+            try {
 
-            Flag<?> flag = flagRegistry.get("sit");
-            if(flag instanceof StateFlag) SIT_FLAG = (StateFlag) flag;
+                flagRegistry.register(flag.getValue());
+            } catch (FlagConflictException | IllegalStateException e) {
+
+                Flag<?> registeredFlag = flagRegistry.get(flag.getKey());
+                if(registeredFlag instanceof StateFlag) FLAGS.put(flag.getKey(), (StateFlag) registeredFlag);
+            }
         }
-
-        try {
-
-            StateFlag stateFlag = new StateFlag("playersit", true);
-            flagRegistry.register(stateFlag);
-            PLAYERSIT_FLAG = stateFlag;
-        } catch (FlagConflictException | IllegalStateException e) {
-
-            Flag<?> flag = flagRegistry.get("playersit");
-            if(flag instanceof StateFlag) PLAYERSIT_FLAG = (StateFlag) flag;
-        }
-
-        try {
-
-            StateFlag stateFlag = new StateFlag("pose", true);
-            flagRegistry.register(stateFlag);
-            POSE_FLAG = stateFlag;
-        } catch (FlagConflictException | IllegalStateException e) {
-
-            Flag<?> flag = flagRegistry.get("pose");
-            if(flag instanceof StateFlag) POSE_FLAG = (StateFlag) flag;
-        }
-
-        try {
-
-            StateFlag stateFlag = new StateFlag("crawl", true);
-            flagRegistry.register(stateFlag);
-            CRAWL_FLAG = stateFlag;
-        } catch (FlagConflictException | IllegalStateException e) {
-
-            Flag<?> flag = flagRegistry.get("crawl");
-            if(flag instanceof StateFlag) CRAWL_FLAG = (StateFlag) flag;
-        }
-
-        try {
-
-            StateFlag stateFlag = new StateFlag("emote", true);
-            flagRegistry.register(stateFlag);
-            EMOTE_FLAG = stateFlag;
-        } catch (FlagConflictException | IllegalStateException e) {
-
-            Flag<?> flag = flagRegistry.get("emote");
-            if(flag instanceof StateFlag) EMOTE_FLAG = (StateFlag) flag;
-        }
-
     }
 
     public boolean checkFlag(Location Location, StateFlag Flag) {

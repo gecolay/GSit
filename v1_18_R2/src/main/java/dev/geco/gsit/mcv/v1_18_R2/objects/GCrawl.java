@@ -112,11 +112,11 @@ public class GCrawl implements IGCrawl {
         }.runTaskLaterAsynchronously(GPM, 1);
     }
 
-    private void tick(Location L) {
+    private void tick(Location Location) {
 
         if(!checkCrawlValid()) return;
 
-        Location location = L.clone();
+        Location location = Location.clone();
 
         Block locationBlock = location.getBlock();
 
@@ -146,13 +146,13 @@ public class GCrawl implements IGCrawl {
                 @Override
                 public void run() {
 
-                    Location playerLocation = L.clone();
+                    Location playerLocation = Location.clone();
 
-                    int h = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
+                    int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
-                    playerLocation.setY(playerLocation.getY() + (h >= 40 ? 1.5 : 0.5));
+                    playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
 
-                    boxEntity.setRawPeekAmount(h >= 40 ? 100 - h : 0);
+                    boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
                     if(boxPresent) {
 
@@ -235,7 +235,7 @@ public class GCrawl implements IGCrawl {
         return true;
     }
 
-    private boolean isValidArea(Block B, Block L, Block A) { return B.equals(L) || B.equals(A); }
+    private boolean isValidArea(Block BlockUp, Block AboveBlock, Block LocationBlock) { return BlockUp.equals(AboveBlock) || BlockUp.equals(LocationBlock); }
 
     public Player getPlayer() { return player; }
 

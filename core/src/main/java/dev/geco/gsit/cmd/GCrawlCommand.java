@@ -62,7 +62,7 @@ public class GCrawlCommand implements CommandExecutor {
             }
         }
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().CRAWL_FLAG)) {
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-region-error");
             return true;

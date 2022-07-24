@@ -70,7 +70,7 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(target.getLocation(), player)) return;
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(target.getLocation(), GPM.getWorldGuardLink().PLAYERSIT_FLAG)) return;
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(target.getLocation(), GPM.getWorldGuardLink().getFlag("playersit"))) return;
 
         if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(target.getLocation(), player)) return;
 
