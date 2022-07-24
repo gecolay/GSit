@@ -29,11 +29,7 @@ public class CrawlManager implements ICrawlManager {
 
     public boolean isCrawling(Player Player) { return getCrawl(Player) != null; }
 
-    public IGCrawl getCrawl(Player Player) {
-
-        for(IGCrawl crawl : getCrawls()) if(Player.equals(crawl.getPlayer())) return crawl;
-        return null;
-    }
+    public IGCrawl getCrawl(Player Player) { return getCrawls().stream().filter(crawl -> Player.equals(crawl.getPlayer())).findFirst().orElse(null); }
 
     public void clearCrawls() { for(IGCrawl crawl : getCrawls()) stopCrawl(crawl.getPlayer(), GetUpReason.PLUGIN); }
 

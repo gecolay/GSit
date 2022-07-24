@@ -32,12 +32,7 @@ public class SitManager implements ISitManager {
 
     public boolean isSitting(LivingEntity Entity) { return getSeat(Entity) != null; }
 
-    public GSeat getSeat(LivingEntity Entity) {
-
-        for(GSeat seat : getSeats()) if(Entity.equals(seat.getEntity())) return seat;
-
-        return null;
-    }
+    public GSeat getSeat(LivingEntity Entity) { return getSeats().stream().filter(seat -> Entity.equals(seat.getEntity())).findFirst().orElse(null); }
 
     public void clearSeats() { for(GSeat seat : getSeats()) removeSeat(seat.getEntity(), GetUpReason.PLUGIN); }
 

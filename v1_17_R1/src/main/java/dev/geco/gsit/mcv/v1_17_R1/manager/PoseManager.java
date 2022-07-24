@@ -34,11 +34,7 @@ public class PoseManager implements IPoseManager {
 
     public boolean isPosing(Player Player) { return getPose(Player) != null; }
 
-    public IGPoseSeat getPose(Player Player) {
-
-        for(IGPoseSeat pose : getPoses()) if(Player.equals(pose.getPlayer())) return pose;
-        return null;
-    }
+    public IGPoseSeat getPose(Player Player) { return getPoses().stream().filter(pose -> Player.equals(pose.getPlayer())).findFirst().orElse(null); }
 
     public void clearPoses() { for(IGPoseSeat pose : getPoses()) removePose(pose.getPlayer(), GetUpReason.PLUGIN); }
 
