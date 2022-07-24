@@ -68,6 +68,8 @@ public class CManager {
 
     public boolean C_GET_UP_SNEAK;
 
+    public boolean C_DOUBLE_SNEAK;
+
 
     public boolean TRUSTED_REGION_ONLY;
 
@@ -133,6 +135,7 @@ public class CManager {
         P_LAY_NIGHT_SKIP = GPM.getConfig().getBoolean("Options.Pose.lay-night-skip", false);
 
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
+        C_DOUBLE_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.double-sneak", false);
 
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");

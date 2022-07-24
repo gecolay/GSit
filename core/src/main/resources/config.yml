@@ -13,7 +13,7 @@ Options:
   # Defines whether a player gets up when he suffers damage
   get-up-damage: false
 
-  # Defines whether a player can get up by sneaking
+  # Defines whether a player can get up by sneaking or if he always has to use the command
   get-up-sneak: true
 
   # Defines whether a player is returned to the place where he started sitting or posing
@@ -110,8 +110,11 @@ Options:
 
   Crawl:
 
-    # Defines whether a player can get up by sneaking
+    # Defines whether a player can get up by sneaking or if he always has to use the command
     get-up-sneak: true
+
+    # Defines whether a player can double-sneak in a short amount of time to start crawling
+    double-sneak: false
 
 
 

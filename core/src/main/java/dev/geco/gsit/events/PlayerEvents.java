@@ -1,5 +1,7 @@
 package dev.geco.gsit.events;
 
+import java.util.*;
+
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
@@ -13,6 +15,12 @@ import dev.geco.gsit.objects.*;
 public class PlayerEvents implements Listener {
 
     private final GSitMain GPM;
+
+    private final double MAX_DOUBLE_SNEAK_PITCH = 85d;
+
+    private final long MAX_DOUBLE_SNEAK_TIME = 400;
+
+    private final HashMap<Player, Long> crawlPlayers = new HashMap<>();
 
     public PlayerEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
@@ -39,6 +47,8 @@ public class PlayerEvents implements Listener {
         if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
 
         if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
+
+        crawlPlayers.remove(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -108,6 +118,43 @@ public class PlayerEvents implements Listener {
 
                 Event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void PTogSE(PlayerToggleSneakEvent Event) {
+
+        Player player = Event.getPlayer();
+
+        if(!GPM.getCManager().C_DOUBLE_SNEAK) return;
+
+        if(!Event.isSneaking() || player.getLocation().getPitch() < MAX_DOUBLE_SNEAK_PITCH || GPM.getCrawlManager() == null) return;
+
+        if(!player.isValid() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping() || GPM.getCrawlManager().isCrawling(player)) return;
+
+        if(!crawlPlayers.containsKey(player)) {
+
+            crawlPlayers.put(player, System.currentTimeMillis());
+
+            return;
+        }
+
+        long last = crawlPlayers.get(player);
+
+        crawlPlayers.put(player, System.currentTimeMillis());
+
+        if(last >= System.currentTimeMillis() - MAX_DOUBLE_SNEAK_TIME) {
+
+            if(!GPM.getPManager().hasPermission(player, "Crawl")) return;
+
+            if(!GPM.getPManager().hasPermission(player, "ByPass.Region", "ByPass.*")) {
+
+                if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(player, "ByPass.World", "ByPass.*")) return;
+            }
+
+            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) return;
+
+            if(GPM.getCrawlManager().startCrawl(player) == null) crawlPlayers.remove(player);
         }
     }
 
