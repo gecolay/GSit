@@ -24,7 +24,7 @@ public class GCrawlTabComplete implements TabCompleter {
 
             if(Args.length == 1) {
 
-                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle")) ta.add("toggle");
+                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle") && GPM.getCManager().C_DOUBLE_SNEAK) ta.add("toggle");
 
                 if(!Args[Args.length - 1].isEmpty()) {
 

@@ -59,10 +59,10 @@ public class ToggleManager {
 
         if(Toggle) {
 
-            toggleList.remove(UUID);
+            crawlToggleList.remove(UUID);
         } else {
 
-            toggleList.add(UUID);
+            crawlToggleList.add(UUID);
         }
     }
 
@@ -71,6 +71,8 @@ public class ToggleManager {
         toggleList.clear();
 
         playerToggleList.clear();
+
+        crawlToggleList.clear();
 
         toggleFile = new File("plugins/" + GPM.NAME, PluginValues.DATA_PATH + "/" + PluginValues.TOGGLE_FILE + PluginValues.DATA_FILETYP);
 

@@ -24,9 +24,9 @@ public class GSitTabComplete implements TabCompleter {
 
             if(Args.length == 1) {
 
-                if(GPM.getPManager().hasPermission(Sender, "SitToggle")) ta.add("toggle");
+                if(GPM.getPManager().hasPermission(Sender, "SitToggle") && GPM.getCManager().S_SITMATERIALS.size() > 0) ta.add("toggle");
 
-                if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle")) ta.add("playertoggle");
+                if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle") && GPM.getCManager().PS_ALLOW_SIT) ta.add("playertoggle");
 
                 if(!Args[Args.length - 1].isEmpty()) {
 

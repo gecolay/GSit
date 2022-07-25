@@ -74,7 +74,7 @@ public class GCrawlCommand implements CommandExecutor {
             return true;
         }
 
-        if(Args[0].equalsIgnoreCase("toggle")) {
+        if(Args[0].equalsIgnoreCase("toggle") && GPM.getCManager().C_DOUBLE_SNEAK) {
 
             if(GPM.getPManager().hasPermission(Sender, "CrawlToggle")) {
 
