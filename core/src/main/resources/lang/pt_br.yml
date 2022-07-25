@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a Você desativou a função de sentar-se."
   command-gsit-playertoggle-on: "[P]&a Você ativou a função de sentar-se em outros jogadores."
   command-gsit-playertoggle-off: "[P]&a Você desativou a função de sentar-se em outros jogadores."
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c Você não pode sentar-se agora!"
   action-sit-world-error: "[P]&c Você não pode sentar-se nesse mundo!"

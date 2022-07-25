@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a Ви більше не можете сісти, натиснувши."
   command-gsit-playertoggle-on: "[P]&a Тепер ви можете сісти на гравця, натиснувши."
   command-gsit-playertoggle-off: "[P]&a Ви більше не можете сісти на гравця, натиснувши."
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c Ви не можете сидіти прямо зараз!"
   action-sit-world-error: "[P]&c Ви не можете сидіти у цьому світі!"

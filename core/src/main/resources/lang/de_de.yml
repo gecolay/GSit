@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a Du hast Klick-Interaktionen für sitzen deaktiviert."
   command-gsit-playertoggle-on: "[P]&a Du hast Klick-Interaktionen für Spieler-sitzen aktiviert."
   command-gsit-playertoggle-off: "[P]&a Du hast Klick-Interaktionen für Spieler-sitzen deaktiviert."
+  command-gcrawl-toggle-on: "[P]&a Du hast Doppel-Schleichen für kriechen aktiviert."
+  command-gcrawl-toggle-off: "[P]&a Du hast Doppel-Schleichen für kriechen deaktiviert."
 
   action-sit-now-error: "[P]&c Du kannst gerade nicht sitzen!"
   action-sit-world-error: "[P]&c Du kannst in dieser Welt nicht sitzen!"

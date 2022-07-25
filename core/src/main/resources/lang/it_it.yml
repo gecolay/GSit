@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a Hai disabilitato le interazioni-click per sederti."
   command-gsit-playertoggle-on: "[P]&a Hai abilitato le interazioni-click per i giocatori."
   command-gsit-playertoggle-off: "[P]&a Hai disabilitato le interazioni-click per i giocatori."
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c Non puoi sederti ora!"
   action-sit-world-error: "[P]&c Non puoi sederti in questo mondo!"

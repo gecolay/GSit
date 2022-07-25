@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a Istuminen klikkaamalla on nyt pois käytöstä."
   command-gsit-playertoggle-on: "[P]&a Pelaajan päällä istuminen klikkaamalla on nyt käytössä."
   command-gsit-playertoggle-off: "[P]&a Pelaajan päällä istuminen klikkaamalla on nyt pois käytöstä."
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c Et voi istua juuri nyt!"
   action-sit-world-error: "[P]&c Tässä maailmassa ei voi istua!"

@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a クリックインタラクションによるシットを無効にしました。"
   command-gsit-playertoggle-on: "[P]&a クリックインタラクションによるプレイヤーシットを有効にしました。"
   command-gsit-playertoggle-off: "[P]&a クリックインタラクションによるプレイヤーシットを無効にしました。"
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c 今座ることはできません！"
   action-sit-world-error: "[P]&c このワールドで座ることはできません！"

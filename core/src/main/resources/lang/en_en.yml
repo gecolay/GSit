@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a You have disabled click-interactions for sit."
   command-gsit-playertoggle-on: "[P]&a You have enabled click-interactions for playersit."
   command-gsit-playertoggle-off: "[P]&a You have disabled click-interactions for playersit."
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c You can't sit right now!"
   action-sit-world-error: "[P]&c You can't sit in this world!"

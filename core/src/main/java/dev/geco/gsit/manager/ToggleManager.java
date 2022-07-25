@@ -23,12 +23,15 @@ public class ToggleManager {
 
     private final List<UUID> playerToggleList = new ArrayList<>();
 
-    private BukkitRunnable task;
+    private final List<UUID> crawlToggleList = new ArrayList<>();
 
+    private BukkitRunnable task;
 
     public boolean canSit(UUID UUID) { return GPM.getCManager().S_DEFAULT_SIT_MODE != toggleList.contains(UUID); }
 
     public boolean canPlayerSit(UUID UUID) { return GPM.getCManager().PS_DEFAULT_SIT_MODE != playerToggleList.contains(UUID); }
+
+    public boolean canCrawl(UUID UUID) { return !crawlToggleList.contains(UUID); }
 
     public void setCanSit(UUID UUID, boolean Toggle) {
 
@@ -52,6 +55,16 @@ public class ToggleManager {
         }
     }
 
+    public void setCanCrawl(UUID UUID, boolean Toggle) {
+
+        if(Toggle) {
+
+            toggleList.remove(UUID);
+        } else {
+
+            toggleList.add(UUID);
+        }
+    }
 
     public void loadToggleData() {
 
@@ -63,9 +76,11 @@ public class ToggleManager {
 
         toggleData = YamlConfiguration.loadConfiguration(toggleFile);
 
-        for(String z : toggleData.getStringList("T")) toggleList.add(UUID.fromString(z));
+        for(String uuid : toggleData.getStringList("T")) toggleList.add(UUID.fromString(uuid));
 
-        for(String z : toggleData.getStringList("P")) playerToggleList.add(UUID.fromString(z));
+        for(String uuid : toggleData.getStringList("P")) playerToggleList.add(UUID.fromString(uuid));
+
+        for(String uuid : toggleData.getStringList("C")) crawlToggleList.add(UUID.fromString(uuid));
 
         startAutoSave();
     }
@@ -81,6 +96,7 @@ public class ToggleManager {
 
         toggleData.set("T", null);
         toggleData.set("P", null);
+        toggleData.set("C", null);
 
         List<String> toggles = new ArrayList<>();
 
@@ -93,6 +109,12 @@ public class ToggleManager {
         for(UUID uuid : playerToggleList) playerToggles.add(uuid.toString());
 
         toggleData.set("P", playerToggles);
+
+        List<String> crawlToggles = new ArrayList<>();
+
+        for(UUID uuid : crawlToggleList) crawlToggles.add(uuid.toString());
+
+        toggleData.set("C", crawlToggles);
 
         saveFile(toggleFile, toggleData);
     }
@@ -110,13 +132,13 @@ public class ToggleManager {
             }
         };
 
-        long t = 20 * 180;
+        long time = 20 * 180;
 
-        task.runTaskTimerAsynchronously(GPM, t, t);
+        task.runTaskTimerAsynchronously(GPM, time, time);
     }
 
     private void stopAutoSave() { if(task != null) task.cancel(); }
 
-    private void saveFile(File f, FileConfiguration fc) { try { fc.save(f); } catch (Exception ignored) { } }
+    private void saveFile(File File, FileConfiguration FileConfiguration) { try { FileConfiguration.save(File); } catch (Exception ignored) { } }
 
 }

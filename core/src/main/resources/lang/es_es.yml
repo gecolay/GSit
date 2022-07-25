@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a Has deshabilitado el uso de 'click' para sentarse (sit)."
   command-gsit-playertoggle-on: "[P]&a Has habilitado el uso de 'click' para que el jugador se siente (playersit)."
   command-gsit-playertoggle-off: "[P]&a Has deshabilitado el uso de 'click' para que el jugador se siente (playersit)."
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c ¡No puedes sentarte ahora mismo!"
   action-sit-world-error: "[P]&c ¡No puedes sentarte en éste mundo!"

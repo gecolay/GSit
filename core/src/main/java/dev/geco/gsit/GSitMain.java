@@ -240,7 +240,7 @@ public class GSitMain extends JavaPlugin {
         getCommand("gspin").setExecutor(new GSpinCommand(getInstance()));
         getCommand("gspin").setTabCompleter(new EmptyTabComplete());
         getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
-        getCommand("gcrawl").setTabCompleter(new EmptyTabComplete());
+        getCommand("gcrawl").setTabCompleter(new GCrawlTabComplete(getInstance()));
         getCommand("gemote").setExecutor(new GEmoteCommand(getInstance()));
         getCommand("gemote").setTabCompleter(new GEmoteTabComplete(getInstance()));
         getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));

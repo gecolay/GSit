@@ -65,6 +65,7 @@ permissions:
       GSit.SitToggle: true
       GSit.PlayerSit: true
       GSit.PlayerSitToggle: true
+      GSit.CrawlToggle: true
       GSit.Lay: true
       GSit.BellyFlop: true
       GSit.Spin: true
@@ -94,6 +95,10 @@ permissions:
   GSit.PlayerSitToggle:
     default: true
     description: Toggle PlayerSit-Ability | Permission
+
+  GSit.CrawlToggle:
+    default: true
+    description: Toggle Crawl-Ability | Permission
 
   GSit.Lay:
     default: true

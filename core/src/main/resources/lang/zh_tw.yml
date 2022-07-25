@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a 你不能使用右键坐下了"
   command-gsit-playertoggle-on: "[P]&a 你可以使用右键坐在其他玩家身上了"
   command-gsit-playertoggle-off: "[P]&a 你不能使用右键坐在其他玩家身上了"
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c 你現在不能坐下!"
   action-sit-world-error: "[P]&c 你不能在這個世界坐下!"

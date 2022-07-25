@@ -41,34 +41,57 @@ public class GCrawlCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getCrawlManager().isCrawling(player)) {
+        if(Args.length == 0) {
 
-            GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP);
-            return true;
-        }
+            if(GPM.getCrawlManager().isCrawling(player)) {
 
-        if(!player.isValid() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping()) {
-
-            GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-now-error");
-            return true;
-        }
-
-        if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
-
-            if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
-
-                GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-world-error");
+                GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP);
                 return true;
             }
-        }
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) {
+            if(!player.isValid() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping()) {
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-region-error");
+                GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-now-error");
+                return true;
+            }
+
+            if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
+
+                if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+
+                    GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-world-error");
+                    return true;
+                }
+            }
+
+            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-region-error");
+                return true;
+            }
+
+            if(GPM.getCrawlManager().startCrawl(player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-region-error");
             return true;
         }
 
-        if(GPM.getCrawlManager().startCrawl(player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-region-error");
+        if(Args[0].equalsIgnoreCase("toggle")) {
+
+            if(GPM.getPManager().hasPermission(Sender, "CrawlToggle")) {
+
+                if(GPM.getToggleManager().canCrawl(player.getUniqueId())) {
+
+                    GPM.getToggleManager().setCanCrawl(player.getUniqueId(), false);
+
+                    GPM.getMManager().sendMessage(Sender, "Messages.command-gcrawl-toggle-off");
+                } else {
+
+                    GPM.getToggleManager().setCanCrawl(player.getUniqueId(), true);
+
+                    GPM.getMManager().sendMessage(Sender, "Messages.command-gcrawl-toggle-on");
+                }
+            } else Bukkit.dispatchCommand(Sender, Label);
+        } else Bukkit.dispatchCommand(Sender, Label);
+
         return true;
     }
 

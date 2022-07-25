@@ -26,6 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a Wyłączono interakcję na siadanie."
   command-gsit-playertoggle-on: "[P]&a Włączono interakcję z siadaniem na innych graczy."
   command-gsit-playertoggle-off: "[P]&a Wyłączono interakcję z siadaniem na innych graczy."
+  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
+  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
 
   action-sit-now-error: "[P]&c Nie możesz teraz usiąść!"
   action-sit-world-error: "[P]&c Nie można siadać w tym świecie!"
