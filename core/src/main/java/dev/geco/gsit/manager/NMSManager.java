@@ -48,7 +48,7 @@ public class NMSManager {
     }
 
     public static String getPackageVersion() {
-        return getClassVersion() + (isVersion(17, 1) ? "_2" : "");
+        return getClassVersion() + (isVersion(17, 1) || isVersion(19, 1) ? "_2" : "");
     }
 
     public static String getVersion() { return Bukkit.getBukkitVersion().substring(0, Bukkit.getBukkitVersion().indexOf('-')); }
