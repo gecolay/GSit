@@ -64,7 +64,7 @@ public class NMSManager {
 
         String[] version = getVersion().split("\\.");
 
-        return version.length > 1 && (version.length > 2 ? Long.parseLong(version[1]) == Version && Long.parseLong(version[2]) == SubVersion : Long.parseLong(version[1]) == Version);
+        return version.length > 1 && (version.length > 2 ? Long.parseLong(version[1]) == Version && Long.parseLong(version[2]) == SubVersion : Long.parseLong(version[1]) == Version && SubVersion == 0);
     }
 
     public static Field getField(Class<?> Class, String Field) {
