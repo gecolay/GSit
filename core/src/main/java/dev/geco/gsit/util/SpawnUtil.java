@@ -13,7 +13,7 @@ public class SpawnUtil implements ISpawnUtil {
 
         if(!needCheck()) return true;
 
-        Entity seatEntity = createSeatEntity(Location, null);
+        Entity seatEntity = createSeatEntity(Location, null, false);
 
         boolean valid = seatEntity.isValid();
 
@@ -35,9 +35,9 @@ public class SpawnUtil implements ISpawnUtil {
         return valid;
     }
 
-    public Entity createSeatEntity(Location Location, Entity Rider) {
+    public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
-        return Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
+        Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
             try { armorStand.setInvisible(true); } catch (Error e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored) { } }
             try { armorStand.setGravity(false); } catch (Error ignored) { }
@@ -48,6 +48,8 @@ public class SpawnUtil implements ISpawnUtil {
 
             if(Rider != null && Rider.isValid()) armorStand.addPassenger(Rider);
         });
+
+        return seatEntity;
     }
 
     public Entity createPlayerSeatEntity(Entity Holder, Entity Rider) {

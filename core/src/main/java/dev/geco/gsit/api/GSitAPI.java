@@ -79,7 +79,7 @@ public class GSitAPI {
      * @return List of Seat-Objects
      */
     public static List<GSeat> getSeats(Block Block) {
-        return getInstance().getSitUtil().getSeats(Block);
+        return getInstance().getSitManager().getSeats(Block);
     }
 
     /**
@@ -90,7 +90,7 @@ public class GSitAPI {
      * @return List of Seat-Objects
      */
     public static List<GSeat> getSeats(List<Block> Blocks) {
-        return getInstance().getSitUtil().getSeats(Blocks);
+        return getInstance().getSitManager().getSeats(Blocks);
     }
 
     /**
@@ -284,7 +284,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(Block Block) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Block) : new ArrayList<>();
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses(Block) : new ArrayList<>();
     }
 
     /**
@@ -295,7 +295,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(List<Block> Blocks) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseUtil().getPoses(Blocks) : new ArrayList<>();
+        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses(Blocks) : new ArrayList<>();
     }
 
     /**

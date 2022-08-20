@@ -32,7 +32,7 @@ public class GCrawlCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getCrawlManager() == null) {
+        if(!GPM.getCrawlManager().isAvailable()) {
 
             String v = Bukkit.getServer().getClass().getPackage().getName();
             v = v.substring(v.lastIndexOf('.') + 1);

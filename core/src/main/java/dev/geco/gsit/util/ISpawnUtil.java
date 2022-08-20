@@ -11,7 +11,7 @@ public interface ISpawnUtil {
 
     boolean checkPlayerLocation(Entity Holder);
 
-    Entity createSeatEntity(Location Location, Entity Rider);
+    Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate);
 
     Entity createPlayerSeatEntity(Entity Holder, Entity Rider);
 

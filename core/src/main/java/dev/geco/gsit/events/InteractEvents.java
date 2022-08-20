@@ -64,18 +64,19 @@ public class InteractEvents implements Listener {
 
         if(Tag.STAIRS.isTagged(clickedBlock.getType())) {
 
-            if(((Stairs) clickedBlock.getBlockData()).getHalf() != Half.BOTTOM) return;
+            if(((Stairs) clickedBlock.getBlockData()).getHalf() == Half.BOTTOM) {
 
-            if(GPM.getSitUtil().createSeatForStair(clickedBlock, player) != null) {
+                if(GPM.getSitUtil().createSeatForStair(clickedBlock, player) != null) {
 
-                Event.setCancelled(true);
+                    Event.setCancelled(true);
 
-                return;
-            }
+                    return;
+                }
+            } else if(GPM.getCManager().S_BOTTOM_PART_ONLY) return;
 
         } else if(Tag.SLABS.isTagged(clickedBlock.getType())) {
 
-            if(((Slab) clickedBlock.getBlockData()).getType() != Type.BOTTOM) return;
+            if(((Slab) clickedBlock.getBlockData()).getType() != Type.BOTTOM && GPM.getCManager().S_BOTTOM_PART_ONLY) return;
         }
 
         if(GPM.getSitManager().createSeat(clickedBlock, player, true, 0d, 0d, 0d, player.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK) != null) Event.setCancelled(true);

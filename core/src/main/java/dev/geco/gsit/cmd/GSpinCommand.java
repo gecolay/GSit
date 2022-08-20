@@ -34,7 +34,7 @@ public class GSpinCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getPoseManager() == null) {
+        if(!GPM.getPoseManager().isAvailable()) {
 
             String v = Bukkit.getServer().getClass().getPackage().getName();
             v = v.substring(v.lastIndexOf('.') + 1);

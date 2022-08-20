@@ -27,6 +27,8 @@ public class CManager {
 
     public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
 
+    public boolean S_BOTTOM_PART_ONLY;
+
     public boolean S_EMPTY_HAND_ONLY;
 
     public double S_MAX_DISTANCE;
@@ -113,6 +115,7 @@ public class CManager {
                 } else S_SITMATERIALS.put(Material.valueOf(m[0].toUpperCase()), m.length > 1 ? Double.parseDouble(m[1]) : 0d);
             } catch (Exception | Error ignored) { }
         }
+        S_BOTTOM_PART_ONLY = GPM.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
         S_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.sit-message", true);

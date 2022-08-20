@@ -44,6 +44,9 @@ Options:
       - "big_dripleaf"
       - "snow"
 
+    # Defines whether you can sit on stairs and slabs by clicking that are not in the bottom part of a block
+    bottom-part-only: true
+
     # Defines whether a player needs an empty main hand to sit down by clicking
     empty-hand-only: true
 

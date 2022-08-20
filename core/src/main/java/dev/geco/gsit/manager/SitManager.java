@@ -1,6 +1,7 @@
 package dev.geco.gsit.manager;
 
 import java.util.*;
+import java.util.stream.*;
 
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -11,8 +12,9 @@ import org.bukkit.scheduler.*;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
 import dev.geco.gsit.objects.*;
+import dev.geco.gsit.util.*;
 
-public class SitManager implements ISitManager {
+public class SitManager {
 
     private final GSitMain GPM;
 
@@ -26,8 +28,6 @@ public class SitManager implements ISitManager {
 
     private final List<GSeat> seats = new ArrayList<>();
 
-    private final HashMap<GSeat, BukkitRunnable> rotate = new HashMap<>();
-
     public List<GSeat> getSeats() { return new ArrayList<>(seats); }
 
     public boolean isSitting(LivingEntity Entity) { return getSeat(Entity) != null; }
@@ -36,13 +36,19 @@ public class SitManager implements ISitManager {
 
     public void clearSeats() { for(GSeat seat : getSeats()) removeSeat(seat.getEntity(), GetUpReason.PLUGIN); }
 
+    public boolean isSeatBlock(Block Block) { return getSeats().stream().anyMatch(seat -> Block.equals(seat.getBlock())); }
+
+    public List<GSeat> getSeats(Block Block) { return getSeats().stream().filter(seat -> Block.equals(seat.getBlock())).collect(Collectors.toList()); }
+
+    public List<GSeat> getSeats(List<Block> Blocks) { return getSeats().stream().filter(seat -> Blocks.contains(seat.getBlock())).collect(Collectors.toList()); }
+
     public boolean kickSeat(Block Block, LivingEntity Entity) {
 
-        if(GPM.getSitUtil().isSeatBlock(Block)) {
+        if(isSeatBlock(Block)) {
 
             if(!GPM.getPManager().hasPermission(Entity, "Kick.Sit")) return false;
 
-            for(GSeat seat : GPM.getSitUtil().getSeats(Block)) if(!removeSeat(seat.getEntity(), GetUpReason.KICKED)) return false;
+            for(GSeat seat : getSeats(Block)) if(!removeSeat(seat.getEntity(), GetUpReason.KICKED)) return false;
         }
 
         return true;
@@ -78,7 +84,7 @@ public class SitManager implements ISitManager {
 
         location.setYaw(SeatRotation);
 
-        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(location, Entity);
+        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(location, Entity, Rotate);
 
         if(GPM.getCManager().S_SIT_MESSAGE && Entity instanceof Player) GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
 
@@ -87,10 +93,6 @@ public class SitManager implements ISitManager {
         seatEntity.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seat));
 
         seats.add(seat);
-
-        GPM.getSitUtil().setSeatBlock(Block, seat);
-
-        if(Rotate) startRotateSeat(seat);
 
         feature_used++;
 
@@ -110,53 +112,11 @@ public class SitManager implements ISitManager {
             @Override
             public void run() {
 
-                GPM.getSitUtil().removeSeatBlock(seat.getBlock(), seat);
-
                 seat.setBlock(seat.getBlock().getRelative(BlockFace));
 
-                seat.setLocation(seat.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
-
-                GPM.getSitUtil().setSeatBlock(seat.getBlock(), seat);
-
-                GPM.getPlayerUtil().posEntity(seat.getSeatEntity(), seat.getLocation());
+                GPM.getPlayerUtil().posEntity(seat.getSeatEntity(), seat.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
             }
         }.runTaskLater(GPM, 0);
-    }
-
-    private void startRotateSeat(GSeat Seat) {
-
-        if(rotate.containsKey(Seat)) stopRotateSeat(Seat);
-
-        BukkitRunnable task = new BukkitRunnable() {
-
-            @Override
-            public void run() {
-
-                if(!seats.contains(Seat) || Seat.getSeatEntity().getPassengers().isEmpty()) {
-
-                    cancel();
-                    return;
-                }
-
-                Location location = Seat.getSeatEntity().getPassengers().get(0).getLocation();
-                Seat.getSeatEntity().setRotation(location.getYaw(), location.getPitch());
-            }
-        };
-
-        task.runTaskTimer(GPM, 0, 2);
-
-        rotate.put(Seat, task);
-    }
-
-    protected void stopRotateSeat(GSeat Seat) {
-
-        if(!rotate.containsKey(Seat)) return;
-
-        BukkitRunnable task = rotate.get(Seat);
-
-        if(task != null) task.cancel();
-
-        rotate.remove(Seat);
     }
 
     public boolean removeSeat(LivingEntity Entity, GetUpReason Reason) { return removeSeat(Entity, Reason, true); }
@@ -173,13 +133,9 @@ public class SitManager implements ISitManager {
 
         if(preEvent.isCancelled()) return false;
 
-        GPM.getSitUtil().removeSeatBlock(seat.getBlock(), seat);
-
         seats.remove(seat);
 
-        stopRotateSeat(seat);
-
-        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? seat.getReturn() : seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? ISitManager.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d));
+        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? seat.getReturn() : seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? SitUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d));
 
         if(!GPM.getCManager().GET_UP_RETURN) {
 

@@ -128,7 +128,7 @@ public class PlayerEvents implements Listener {
 
         if(!GPM.getCManager().C_DOUBLE_SNEAK) return;
 
-        if(!Event.isSneaking() || player.getLocation().getPitch() < MAX_DOUBLE_SNEAK_PITCH || GPM.getCrawlManager() == null) return;
+        if(!Event.isSneaking() || player.getLocation().getPitch() < MAX_DOUBLE_SNEAK_PITCH || !GPM.getCrawlManager().isAvailable()) return;
 
         if(!player.isValid() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping() || GPM.getCrawlManager().isCrawling(player)) return;
 

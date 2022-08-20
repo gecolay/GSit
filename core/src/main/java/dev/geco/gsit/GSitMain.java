@@ -24,17 +24,17 @@ public class GSitMain extends JavaPlugin {
     private String prefix;
     public String getPrefix() { return prefix; }
 
-    private ISitManager sitManager;
-    public ISitManager getSitManager() { return sitManager; }
+    private SitManager sitManager;
+    public SitManager getSitManager() { return sitManager; }
 
-    private IPoseManager poseManager;
-    public IPoseManager getPoseManager() { return poseManager; }
+    private PoseManager poseManager;
+    public PoseManager getPoseManager() { return poseManager; }
 
     private IPlayerSitManager playerSitManager;
     public IPlayerSitManager getPlayerSitManager() { return playerSitManager; }
 
-    private ICrawlManager crawlManager;
-    public ICrawlManager getCrawlManager() { return crawlManager; }
+    private CrawlManager crawlManager;
+    public CrawlManager getCrawlManager() { return crawlManager; }
 
     private IEmoteManager emoteManager;
     public IEmoteManager getEmoteManager() { return emoteManager; }
@@ -59,9 +59,6 @@ public class GSitMain extends JavaPlugin {
 
     private SitUtil sitUtil;
     public SitUtil getSitUtil() { return sitUtil; }
-
-    private PoseUtil poseUtil;
-    public PoseUtil getPoseUtil() { return poseUtil; }
 
     private ISpawnUtil spawnUtil;
     public ISpawnUtil getSpawnUtil() { return spawnUtil; }
@@ -119,7 +116,7 @@ public class GSitMain extends JavaPlugin {
         }));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> {
-            if(getPoseManager() == null) return 0;
+            if(!getPoseManager().isAvailable()) return 0;
             int count = getPoseManager().getFeatureUsedCount();
             getPoseManager().resetFeatureUsedCount();
             return count;
@@ -132,7 +129,7 @@ public class GSitMain extends JavaPlugin {
         }));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> {
-            if(getCrawlManager() == null) return 0;
+            if(!getCrawlManager().isAvailable()) return 0;
             int count = getCrawlManager().getFeatureUsedCount();
             getCrawlManager().resetFeatureUsedCount();
             return count;
@@ -156,6 +153,8 @@ public class GSitMain extends JavaPlugin {
         pManager = new PManager(getInstance());
         mManager = new MManager(getInstance());
         sitManager = new SitManager(getInstance());
+        poseManager = new PoseManager(getInstance());
+        crawlManager = new CrawlManager(getInstance());
         playerSitManager = new PlayerSitManager(getInstance());
         emoteManager = new EmoteManager(getInstance());
         toggleManager = new ToggleManager(getInstance());
@@ -163,7 +162,6 @@ public class GSitMain extends JavaPlugin {
         emoteUtil = new EmoteUtil();
         passengerUtil = new PassengerUtil(getInstance());
         sitUtil = new SitUtil(getInstance());
-        poseUtil = new PoseUtil(getInstance());
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
 
@@ -177,8 +175,6 @@ public class GSitMain extends JavaPlugin {
         loadSettings();
         if(!versionCheck()) return;
 
-        poseManager = NMSManager.isNewerOrVersion(17, 0) ? (IPoseManager) NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) : null;
-        crawlManager = NMSManager.isNewerOrVersion(17, 0) ? (ICrawlManager) NMSManager.getPackageObject("gsit", "manager.CrawlManager", getInstance()) : null;
         spawnUtil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("gsit", "util.SpawnUtil", null) : new SpawnUtil();
         teleportUtil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("gsit", "util.TeleportUtil", null) : new TeleportUtil();
 
@@ -298,7 +294,7 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
 
-        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && NMSManager.getPackageObject("gsit", "manager.PoseManager", getInstance()) == null)) {
+        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (!NMSManager.hasPackageClass("gsit", "objects.SeatEntity"))) {
 
             String version = Bukkit.getServer().getClass().getPackage().getName();
 

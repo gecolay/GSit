@@ -3,7 +3,6 @@ package dev.geco.gsit.events;
 import java.util.*;
 
 import org.bukkit.block.*;
-import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
@@ -24,9 +23,9 @@ public class BlockEvents implements Listener {
 
         for(Block block : Event.getBlocks()) {
 
-            if(GPM.getSitUtil().isSeatBlock(block)) {
+            if(GPM.getSitManager().isSeatBlock(block)) {
 
-                for(GSeat seat : GPM.getSitUtil().getSeats(block)) {
+                for(GSeat seat : GPM.getSitManager().getSeats(block)) {
 
                     if(moveList.contains(seat)) continue;
 
@@ -36,7 +35,7 @@ public class BlockEvents implements Listener {
                 }
             }
 
-            if(GPM.getCManager().GET_UP_BREAK && GPM.getPoseUtil().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(block)) GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK);
+            if(GPM.getCManager().GET_UP_BREAK && GPM.getPoseManager().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(block)) GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK);
         }
     }
 
@@ -47,9 +46,9 @@ public class BlockEvents implements Listener {
 
         for(Block block : Event.getBlocks()) {
 
-            if(GPM.getSitUtil().isSeatBlock(block)) {
+            if(GPM.getSitManager().isSeatBlock(block)) {
 
-                for(GSeat seat : GPM.getSitUtil().getSeats(block)) {
+                for(GSeat seat : GPM.getSitManager().getSeats(block)) {
 
                     if(moveList.contains(seat)) continue;
 
@@ -59,7 +58,7 @@ public class BlockEvents implements Listener {
                 }
             }
 
-            if(GPM.getCManager().GET_UP_BREAK && GPM.getPoseUtil().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(block)) GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK);
+            if(GPM.getCManager().GET_UP_BREAK && GPM.getPoseManager().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(block)) GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK);
         }
     }
 
@@ -70,9 +69,9 @@ public class BlockEvents implements Listener {
 
         for(Block block : new ArrayList<>(Event.blockList())) {
 
-            if(GPM.getSitUtil().isSeatBlock(block)) for(GSeat seat : GPM.getSitUtil().getSeats(block)) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.blockList().remove(block);
+            if(GPM.getSitManager().isSeatBlock(block)) for(GSeat seat : GPM.getSitManager().getSeats(block)) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.blockList().remove(block);
 
-            if(GPM.getPoseUtil().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(block)) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.blockList().remove(block);
+            if(GPM.getPoseManager().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(block)) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.blockList().remove(block);
         }
     }
 
@@ -83,9 +82,9 @@ public class BlockEvents implements Listener {
 
         for(Block block : new ArrayList<>(Event.blockList())) {
 
-            if(GPM.getSitUtil().isSeatBlock(block)) for(GSeat seat : GPM.getSitUtil().getSeats(block)) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.blockList().remove(block);
+            if(GPM.getSitManager().isSeatBlock(block)) for(GSeat seat : GPM.getSitManager().getSeats(block)) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.blockList().remove(block);
 
-            if(GPM.getPoseUtil().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(block)) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.blockList().remove(block);
+            if(GPM.getPoseManager().isPoseBlock(block)) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(block)) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.blockList().remove(block);
         }
     }
 
@@ -94,9 +93,9 @@ public class BlockEvents implements Listener {
 
         if(!GPM.getCManager().GET_UP_BREAK) return;
 
-        if(GPM.getSitUtil().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitUtil().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getSitManager().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitManager().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
 
-        if(GPM.getPoseUtil().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getPoseManager().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -104,9 +103,9 @@ public class BlockEvents implements Listener {
 
         if(!GPM.getCManager().GET_UP_BREAK) return;
 
-        if(GPM.getSitUtil().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitUtil().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getSitManager().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitManager().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
 
-        if(GPM.getPoseUtil().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getPoseManager().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -114,9 +113,9 @@ public class BlockEvents implements Listener {
 
         if(!GPM.getCManager().GET_UP_BREAK) return;
 
-        if(GPM.getSitUtil().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitUtil().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getSitManager().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitManager().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
 
-        if(GPM.getPoseUtil().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getPoseManager().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -124,9 +123,9 @@ public class BlockEvents implements Listener {
 
         if(!GPM.getCManager().GET_UP_BREAK) return;
 
-        if(GPM.getSitUtil().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitUtil().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getSitManager().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitManager().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
 
-        if(GPM.getPoseUtil().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getPoseManager().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -134,9 +133,9 @@ public class BlockEvents implements Listener {
 
         if(!GPM.getCManager().GET_UP_BREAK) return;
 
-        if(GPM.getSitUtil().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitUtil().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getSitManager().isSeatBlock(Event.getBlock())) for(GSeat seat : GPM.getSitManager().getSeats(Event.getBlock())) if(!GPM.getSitManager().removeSeat(seat.getEntity(), GetUpReason.BREAK)) Event.setCancelled(true);
 
-        if(GPM.getPoseUtil().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseUtil().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
+        if(GPM.getPoseManager().isPoseBlock(Event.getBlock()) && !Event.isCancelled()) for(IGPoseSeat poseSeat : GPM.getPoseManager().getPoses(Event.getBlock())) if(!GPM.getPoseManager().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) Event.setCancelled(true);
     }
 
 }

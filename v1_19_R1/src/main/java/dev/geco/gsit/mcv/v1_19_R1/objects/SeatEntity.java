@@ -3,9 +3,13 @@ package dev.geco.gsit.mcv.v1_19_R1.objects;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.*;
 
+import net.minecraft.world.damagesource.*;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.decoration.*;
 
 public class SeatEntity extends ArmorStand {
+
+    private boolean rotate = false;
 
     public SeatEntity(Location Location) {
 
@@ -22,11 +26,28 @@ public class SeatEntity extends ArmorStand {
         setRot(Location.getYaw(), Location.getPitch());
     }
 
+    public void startRotate() { rotate = true; }
+
+    public void tick() {
+
+        super.tick();
+
+        if(isAlive() && valid && rotate) {
+
+            Entity rider = getFirstPassenger();
+
+            if(rider == null) return;
+
+            setYRot(rider.getYRot());
+            yRotO = getYRot();
+        }
+    }
+
+    public boolean damageEntity0(DamageSource DamageSource, float Damage) { return false; }
+
     public boolean canChangeDimensions() { return false; }
 
     public boolean isAffectedByFluids() { return false; }
-
-    public boolean isSensitiveToWater() { return false; }
 
     public boolean rideableUnderWater() { return true; }
 

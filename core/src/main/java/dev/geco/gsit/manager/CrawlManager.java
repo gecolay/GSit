@@ -1,21 +1,26 @@
-package dev.geco.gsit.mcv.v1_18_R1.manager;
+package dev.geco.gsit.manager;
 
 import java.util.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
-import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
-import dev.geco.gsit.mcv.v1_18_R1.objects.*;
 
-public class CrawlManager implements ICrawlManager {
+public class CrawlManager {
 
     private final GSitMain GPM;
 
-    public CrawlManager(GSitMain GPluginMain) { GPM = GPluginMain; }
+    private final boolean available;
+
+    public CrawlManager(GSitMain GPluginMain) {
+        GPM = GPluginMain;
+        available = NMSManager.isNewerOrVersion(17, 0);
+    }
+
+    public boolean isAvailable() { return available; }
 
     private int feature_used = 0;
 
@@ -41,7 +46,7 @@ public class CrawlManager implements ICrawlManager {
 
         if(preEvent.isCancelled()) return null;
 
-        IGCrawl crawl = new GCrawl(Player);
+        IGCrawl crawl = getCrawlInstance(Player);
 
         crawl.start();
 
@@ -52,6 +57,16 @@ public class CrawlManager implements ICrawlManager {
         Bukkit.getPluginManager().callEvent(new PlayerCrawlEvent(crawl));
 
         return crawl;
+    }
+
+    private IGCrawl getCrawlInstance(Player Player) {
+        try {
+            Class<?> petClass = Class.forName("dev.geco.gsit.mcv." + NMSManager.getPackageVersion() + ".objects.GCrawl");
+            return (IGCrawl) petClass.getConstructor(Player.class).newInstance(Player);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean stopCrawl(Player Player, GetUpReason Reason) {
