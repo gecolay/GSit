@@ -5,7 +5,6 @@ import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
-import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.java.*;
 
@@ -18,9 +17,6 @@ import dev.geco.gsit.util.*;
 import dev.geco.gsit.values.*;
 
 public class GSitMain extends JavaPlugin {
-
-    private FileConfiguration messages;
-    public FileConfiguration getMessages() { return messages; }
 
     private CManager cManager;
     public CManager getCManager() { return cManager; }
@@ -91,25 +87,7 @@ public class GSitMain extends JavaPlugin {
 
     public final String RESOURCE = "62325";
 
-    private final List<String> LANGS = new ArrayList<>(); {
-        LANGS.add("de_de");
-        LANGS.add("en_en");
-        LANGS.add("es_es");
-        LANGS.add("fi_fi");
-        LANGS.add("fr_fr");
-        LANGS.add("it_it");
-        LANGS.add("ja_jp");
-        LANGS.add("pl_pl");
-        LANGS.add("pt_br");
-        LANGS.add("ru_ru");
-        LANGS.add("uk_ua");
-        LANGS.add("zh_cn");
-        LANGS.add("zh_tw");
-    }
-
-    private final List<String> EMOTES = new ArrayList<>(); {
-
-    }
+    private final List<String> EMOTE_FILES = new ArrayList<>(); { }
 
     private static GSitMain GPM;
 
@@ -117,13 +95,11 @@ public class GSitMain extends JavaPlugin {
 
     private void loadSettings() {
 
-        copyLangFiles();
-
         copyEmoteFiles();
 
-        messages = YamlConfiguration.loadConfiguration(new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH, getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
+        getMManager().loadMessages();
 
-        prefix = getMessages().getString("Plugin.plugin-prefix", "[" + NAME + "]");
+        prefix = getMManager().getMessages().getString("Plugin.plugin-prefix", "[" + NAME + "]");
 
         getEmoteManager().reloadEmotes();
 
@@ -283,9 +259,7 @@ public class GSitMain extends JavaPlugin {
         } else plotSquaredLink = null;
     }
 
-    private void copyLangFiles() { for(String lang : LANGS) if(!new File("plugins/" + NAME + "/" + PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP).exists()) saveResource(PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP, false); }
-
-    private void copyEmoteFiles() { for(String l : EMOTES) if(!new File("plugins/" + NAME + "/" + PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP).exists()) saveResource(PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP, false); }
+    private void copyEmoteFiles() { for(String l : EMOTE_FILES) if(!new File("plugins/" + NAME + "/" + PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP).exists()) saveResource(PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP, false); }
 
     public void reload(CommandSender Sender) {
 

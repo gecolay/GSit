@@ -1,5 +1,6 @@
 package dev.geco.gsit.manager;
 
+import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
@@ -10,9 +11,11 @@ import net.kyori.adventure.text.*;
 import net.kyori.adventure.text.minimessage.*;
 
 import org.bukkit.command.*;
+import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.values.*;
 
 public class MManager {
 
@@ -44,7 +47,41 @@ public class MManager {
         TAGS.put("&r", "<reset>");
     }
 
-    public MManager(GSitMain GPluginMain) { GPM = GPluginMain; }
+    private final List<String> LANG_FILES = new ArrayList<>(); {
+
+        LANG_FILES.add("de_de");
+        LANG_FILES.add("en_en");
+        LANG_FILES.add("es_es");
+        LANG_FILES.add("fi_fi");
+        LANG_FILES.add("fr_fr");
+        LANG_FILES.add("it_it");
+        LANG_FILES.add("ja_jp");
+        LANG_FILES.add("pl_pl");
+        LANG_FILES.add("pt_br");
+        LANG_FILES.add("ru_ru");
+        LANG_FILES.add("uk_ua");
+        LANG_FILES.add("zh_cn");
+        LANG_FILES.add("zh_tw");
+    }
+
+    private FileConfiguration messages;
+
+    public MManager(GSitMain GPluginMain) {
+        GPM = GPluginMain;
+        loadMessages();
+    }
+
+    public FileConfiguration getMessages() { return messages; }
+
+    public void loadMessages() {
+        for(String lang : LANG_FILES) {
+            File langFile = new File("plugins/" + GPM.NAME + "/" + PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP);
+            if(!langFile.exists()) {
+                GPM.saveResource(PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP, false);
+            }
+        }
+        messages = YamlConfiguration.loadConfiguration(new File("plugins/" + GPM.NAME + "/" + PluginValues.LANG_PATH, GPM.getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
+    }
 
     public String toFormattedMessage(String Text) {
 
@@ -90,7 +127,7 @@ public class MManager {
 
     public Object getComponent(String Message, Object... ReplaceList) { return toFormattedComponent(getRawMessage(Message, ReplaceList)); }
 
-    private String getRawMessage(String Message, Object... ReplaceList) { return replace(Message == null || Message.isEmpty() ? "" : GPM.getMessages().getString(Message, Message), ReplaceList); }
+    public String getRawMessage(String Message, Object... ReplaceList) { return replace(Message == null || Message.isEmpty() ? "" : messages.getString(Message, Message), ReplaceList); }
 
     private String replace(String Message, Object... ReplaceList) {
 
