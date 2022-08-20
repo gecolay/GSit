@@ -6,6 +6,7 @@ import org.bukkit.craftbukkit.v1_19_R1.*;
 import net.minecraft.world.damagesource.*;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.decoration.*;
+import net.minecraft.world.phys.*;
 
 public class SeatEntity extends ArmorStand {
 
@@ -42,6 +43,8 @@ public class SeatEntity extends ArmorStand {
             yRotO = getYRot();
         }
     }
+
+    public void move(MoverType MoverType, Vec3 Vec3) { }
 
     public boolean damageEntity0(DamageSource DamageSource, float Damage) { return false; }
 

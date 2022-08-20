@@ -64,7 +64,7 @@ public class GSitMain extends JavaPlugin {
     public ISpawnUtil getSpawnUtil() { return spawnUtil; }
 
     private ITeleportUtil teleportUtil;
-    public ITeleportUtil getPlayerUtil() { return teleportUtil; }
+    public ITeleportUtil getTeleportUtil() { return teleportUtil; }
 
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }

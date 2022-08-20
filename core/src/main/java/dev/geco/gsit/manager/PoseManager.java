@@ -21,7 +21,7 @@ public class PoseManager {
 
     public PoseManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
-        available = NMSManager.isNewerOrVersion(17, 0);
+        available = NMSManager.hasPackageClass("gsit", "objects.GPoseSeat");
     }
 
     public boolean isAvailable() { return available; }
@@ -148,8 +148,8 @@ public class PoseManager {
 
         if(poseSeat.getPlayer().isValid() && Safe) {
 
-            GPM.getPlayerUtil().posEntity(poseSeat.getPlayer(), returnLocation);
-            GPM.getPlayerUtil().teleportEntity(poseSeat.getPlayer(), returnLocation, true);
+            GPM.getTeleportUtil().posEntity(poseSeat.getPlayer(), returnLocation);
+            GPM.getTeleportUtil().teleportEntity(poseSeat.getPlayer(), returnLocation, true);
         }
 
         if(poseSeat.getSeat().getSeatEntity().isValid()) poseSeat.getSeat().getSeatEntity().remove();

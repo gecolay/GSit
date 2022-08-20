@@ -6,8 +6,8 @@ import java.util.stream.*;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
 import org.bukkit.metadata.*;
-import org.bukkit.scheduler.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -105,18 +105,22 @@ public class SitManager {
 
         if(!isSitting(Entity)) return;
 
+        if(Entity instanceof Player) {
+
+            Player player = (Player) Entity;
+
+            PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent(player, player.getLocation(), player.getLocation().clone().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
+
+            if(playerMoveEvent.isCancelled()) return;
+        }
+
         GSeat seat = getSeat(Entity);
 
-        new BukkitRunnable() {
+        seat.setBlock(seat.getBlock().getRelative(BlockFace));
 
-            @Override
-            public void run() {
+        seat.setLocation(seat.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
 
-                seat.setBlock(seat.getBlock().getRelative(BlockFace));
-
-                GPM.getPlayerUtil().posEntity(seat.getSeatEntity(), seat.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
-            }
-        }.runTaskLater(GPM, 0);
+        GPM.getTeleportUtil().posEntity(seat.getSeatEntity(), seat.getLocation());
     }
 
     public boolean removeSeat(LivingEntity Entity, GetUpReason Reason) { return removeSeat(Entity, Reason, true); }
@@ -145,13 +149,13 @@ public class SitManager {
 
         if(seat.getEntity().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) {
 
-            GPM.getPlayerUtil().posEntity(seat.getEntity(), returnLocation);
-            GPM.getPlayerUtil().teleportEntity(seat.getEntity(), returnLocation, true);
+            GPM.getTeleportUtil().posEntity(seat.getEntity(), returnLocation);
+            GPM.getTeleportUtil().teleportEntity(seat.getEntity(), returnLocation, true);
         }
 
         if(seat.getSeatEntity().isValid()) {
 
-            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getPlayerUtil().posEntity(seat.getSeatEntity(), returnLocation);
+            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getTeleportUtil().posEntity(seat.getSeatEntity(), returnLocation);
 
             seat.getSeatEntity().remove();
         }
