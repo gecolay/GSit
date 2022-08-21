@@ -111,6 +111,8 @@ public class SitManager {
 
             PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent(player, player.getLocation(), player.getLocation().clone().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
 
+            Bukkit.getPluginManager().callEvent(playerMoveEvent);
+
             if(playerMoveEvent.isCancelled()) return;
         }
 
