@@ -31,8 +31,6 @@ public class SeatEntity extends ArmorStand {
 
     public void tick() {
 
-        super.tick();
-
         if(isAlive() && valid && rotate) {
 
             Entity rider = getFirstPassenger();

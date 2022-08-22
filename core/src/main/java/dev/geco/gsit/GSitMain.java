@@ -294,7 +294,7 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
 
-        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (!NMSManager.hasPackageClass("gsit", "objects.SeatEntity"))) {
+        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("gsit", "objects.SeatEntity"))) {
 
             String version = Bukkit.getServer().getClass().getPackage().getName();
 

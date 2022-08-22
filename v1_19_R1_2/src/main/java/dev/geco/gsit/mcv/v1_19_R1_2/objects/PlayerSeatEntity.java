@@ -23,8 +23,6 @@ public class PlayerSeatEntity extends AreaEffectCloud {
 
     public boolean canChangeDimensions() { return false; }
 
-    public boolean isPushable() { return false; }
-
     public boolean rideableUnderWater() { return true; }
 
 }

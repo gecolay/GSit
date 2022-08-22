@@ -1,9 +1,10 @@
 package dev.geco.gsit.mcv.v1_18_R2.objects;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R2.*;
 
 import net.minecraft.core.*;
+import net.minecraft.world.damagesource.*;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.*;
 
@@ -23,11 +24,13 @@ public class BoxEntity extends Shulker {
         setAttachFace(Direction.UP);
     }
 
+    public void tick() { }
+
+    public boolean damageEntity0(DamageSource DamageSource, float Damage) { return false; }
+
     public boolean canChangeDimensions() { return false; }
 
     public boolean isAffectedByFluids() { return false; }
-
-    public boolean isSensitiveToWater() { return false; }
 
     public boolean rideableUnderWater() { return true; }
 
