@@ -21,6 +21,8 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         setWaitTime(0);
     }
 
+    public void tick() { }
+
     public boolean canChangeDimensions() { return false; }
 
     public boolean rideableUnderWater() { return true; }
