@@ -1,7 +1,7 @@
 package dev.geco.gsit.manager;
 
-import org.bukkit.command.*;
 import org.bukkit.entity.*;
+import org.bukkit.permissions.*;
 
 import dev.geco.gsit.GSitMain;
 
@@ -11,18 +11,17 @@ public class PManager {
 
     public PManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean hasPermission(CommandSender Sender, String... Permissions) {
+    public boolean hasPermission(Permissible Permissible, String... Permissions) {
 
-        if(!(Sender instanceof Player)) return true;
+        if(!(Permissible instanceof Player)) return true;
 
-        for(String i : Permissions) {
+        for(String permission : Permissions) {
 
-            if(Sender.isPermissionSet(GPM.NAME + "." + i)) return Sender.hasPermission(GPM.NAME + "." + i);
-
-            if(Sender.hasPermission(GPM.NAME + "." + i)) return true;
+            if(Permissible.isPermissionSet(GPM.NAME + "." + permission)) return Permissible.hasPermission(GPM.NAME + "." + permission);
+            if(Permissible.hasPermission(GPM.NAME + "." + permission)) return true;
         }
 
-        return Sender.hasPermission(GPM.NAME + ".*");
+        return Permissible.hasPermission(GPM.NAME + ".*");
     }
 
 }
