@@ -58,19 +58,19 @@ public class NMSManager {
         return version.length > 1 && (version.length > 2 ? Long.parseLong(version[1]) == Version && Long.parseLong(version[2]) == SubVersion : Long.parseLong(version[1]) == Version && SubVersion == 0);
     }
 
-    public static Object getPackageObject(String Name, String ClassName, Object O) {
+    public static Object getPackageObject(String ClassName, Object O) {
 
         try {
 
-            Class<?> sm = Class.forName("dev.geco." + Name + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
+            Class<?> sm = Class.forName("dev.geco.gsit.mcv." + NMSManager.getPackageVersion() + "." + ClassName);
 
             return O == null ? sm.getConstructor().newInstance() : sm.getConstructor(O.getClass()).newInstance(O);
         } catch (Exception e) { return null; }
     }
 
-    public static boolean hasPackageClass(String Name, String ClassName) {
+    public static boolean hasPackageClass(String ClassName) {
         try {
-            Class.forName("dev.geco." + Name + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
+            Class.forName("dev.geco.gsit.mcv." + NMSManager.getPackageVersion() + "." + ClassName);
             return true;
         } catch (Exception e) { return false; }
     }

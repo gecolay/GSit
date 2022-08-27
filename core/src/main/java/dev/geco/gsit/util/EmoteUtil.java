@@ -11,7 +11,6 @@ import org.bukkit.configuration.file.*;
 import org.bukkit.inventory.*;
 
 import dev.geco.gsit.objects.*;
-import dev.geco.gsit.values.*;
 
 public class EmoteUtil {
 
@@ -93,7 +92,7 @@ public class EmoteUtil {
             } catch (Exception | Error e) { e.printStackTrace(); }
         }
 
-        return new GEmote(File.getName().replace(PluginValues.GEX_FILETYP, "").toLowerCase(), parts, configuration.getLong("loop", 0), configuration.getBoolean("head", true));
+        return new GEmote(File.getName().replace(".gex", "").toLowerCase(), parts, configuration.getLong("loop", 0), configuration.getBoolean("head", true));
     }
 
 }

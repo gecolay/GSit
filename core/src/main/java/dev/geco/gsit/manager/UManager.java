@@ -4,87 +4,102 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import org.bukkit.plugin.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+
+import dev.geco.gsit.*;
 
 public class UManager {
 
-    private final Plugin plugin;
-
-    private final String resource;
+    private final GSitMain GPM;
 
     private String spigotVersion = null;
 
     private boolean latestVersion = true;
 
-    public UManager(Plugin Plugin, String Resource) {
+    public UManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-        plugin = Plugin;
-        resource = Resource;
+    public void checkForUpdates() {
+
+        if(GPM.getCManager().CHECK_FOR_UPDATES) {
+
+            checkVersion();
+
+            if(!latestVersion) {
+
+                String message = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
+
+                for(Player player : Bukkit.getOnlinePlayers()) if(GPM.getPManager().hasPermission(player, "Update")) player.sendMessage(message);
+
+                Bukkit.getConsoleSender().sendMessage(message);
+            }
+        }
     }
 
-    private String requestSpigotVersion() {
+    public void loginCheckForUpdates(Player Player) {
 
-        String vs = null;
+        if(GPM.getCManager().CHECK_FOR_UPDATES && !latestVersion) {
 
-        try(Closer c = Closer.create()) {
+            String message = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
 
-            HttpURLConnection con = (HttpURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resource).openConnection();
+            if(GPM.getPManager().hasPermission(Player, "Update")) Player.sendMessage(message);
+        }
+    }
 
-            con.setDoOutput(true);
-            con.setRequestMethod("GET");
-            con.setConnectTimeout(1000);
+    private String getSpigotVersion() {
 
-            vs = c.register(new BufferedReader(c.register(new InputStreamReader(con.getInputStream())))).readLine();
+        String version = null;
+
+        try(Closer closer = Closer.create()) {
+
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + GPM.RESOURCE).openConnection();
+
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(1000);
+
+            version = closer.register(new BufferedReader(closer.register(new InputStreamReader(urlConnection.getInputStream())))).readLine();
         } catch (Exception ignored) { }
 
-        return vs;
+        return version;
     }
 
-    public String getPluginVersion() { return plugin.getDescription().getVersion(); }
-
-    public String getLatestVersion() { return spigotVersion; }
-
-    public boolean checkVersion() {
+    private void checkVersion() {
 
         try {
 
-            spigotVersion = requestSpigotVersion();
+            spigotVersion = getSpigotVersion();
 
-            String cv = getPluginVersion();
+            String pluginVersion = GPM.getDescription().getVersion();
 
-            if(spigotVersion == null || cv == null) return true;
+            if(spigotVersion == null) return;
 
-            List<Integer> pl = new ArrayList<>(), vl = new ArrayList<>();
+            List<Integer> versionString = new ArrayList<>(), vl = new ArrayList<>();
 
-            for(String i : shortVersion(cv).split("\\.")) pl.add(Integer.parseInt(i));
+            for(String i : shortVersion(pluginVersion).split("\\.")) versionString.add(Integer.parseInt(i));
 
             for(String i : shortVersion(spigotVersion).split("\\.")) vl.add(Integer.parseInt(i));
 
-            if(pl.size() > vl.size()) {
+            if(versionString.size() > vl.size()) {
 
                 latestVersion = true;
 
-                return true;
+                return;
             }
 
-            for(int i = 0; i < pl.size(); i++) {
+            for(int i = 0; i < versionString.size(); i++) {
 
                 latestVersion = true;
 
-                if(pl.get(i) > vl.get(i)) return true;
-                else if(pl.get(i) < vl.get(i)) {
+                if(versionString.get(i) > vl.get(i)) return;
+                else if(versionString.get(i) < vl.get(i)) {
 
                     latestVersion = false;
-
-                    return false;
+                    return;
                 }
             }
         } catch (Exception | Error e) { latestVersion = true; }
-
-        return latestVersion;
     }
-
-    public boolean isLatestVersion() { return latestVersion; }
 
     private String shortVersion(String V) { return V.replace(" ", "").replace("[", "").replace("]", ""); }
 

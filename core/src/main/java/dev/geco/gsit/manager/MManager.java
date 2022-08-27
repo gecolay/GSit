@@ -1,8 +1,13 @@
 package dev.geco.gsit.manager;
 
 import java.io.*;
+import java.nio.charset.*;
 import java.util.*;
 import java.util.regex.*;
+
+import org.bukkit.command.*;
+import org.bukkit.configuration.file.*;
+import org.bukkit.entity.*;
 
 import net.md_5.bungee.api.*;
 
@@ -10,12 +15,7 @@ import net.kyori.adventure.audience.*;
 import net.kyori.adventure.text.*;
 import net.kyori.adventure.text.minimessage.*;
 
-import org.bukkit.command.*;
-import org.bukkit.configuration.file.*;
-import org.bukkit.entity.*;
-
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.values.*;
 
 public class MManager {
 
@@ -66,6 +66,8 @@ public class MManager {
 
     private FileConfiguration messages;
 
+    private String prefix;
+
     public MManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
         loadMessages();
@@ -73,14 +75,43 @@ public class MManager {
 
     public FileConfiguration getMessages() { return messages; }
 
+    public String getPrefix() { return prefix; }
+
     public void loadMessages() {
-        for(String lang : LANG_FILES) {
-            File langFile = new File("plugins/" + GPM.NAME + "/" + PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP);
-            if(!langFile.exists()) {
-                GPM.saveResource(PluginValues.LANG_PATH + "/" + lang + PluginValues.YML_FILETYP, false);
+        if(NMSManager.isNewerOrVersion(18, 2)) {
+            for(String langFileName : LANG_FILES) {
+                File langFile = new File(GPM.getDataFolder(), "lang/" + langFileName + ".yml");
+                try {
+                    FileConfiguration lang = YamlConfiguration.loadConfiguration(langFile);
+                    InputStream langSteam = GPM.getResource("lang/" + langFileName + ".yml");
+                    if(langSteam != null) {
+                        FileConfiguration langSteamConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(langSteam, StandardCharsets.UTF_8));
+                        lang.setDefaults(langSteamConfig);
+                        YamlConfigurationOptions options = (YamlConfigurationOptions) lang.options();
+                        options.parseComments(true).copyDefaults(true).width(500);
+                        lang.loadFromString(lang.saveToString());
+                        for(String comments : lang.getKeys(true)) {
+                            lang.setComments(comments, langSteamConfig.getComments(comments));
+                        }
+                    }
+                    lang.save(langFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if(!langFile.exists()) {
+                        GPM.saveResource("lang/" + langFileName + ".yml", false);
+                    }
+                }
+            }
+        } else {
+            for(String lang : LANG_FILES) {
+                File langFile = new File(GPM.getDataFolder(), "lang/" + lang + ".yml");
+                if(!langFile.exists()) {
+                    GPM.saveResource("lang/" + lang + ".yml", false);
+                }
             }
         }
-        messages = YamlConfiguration.loadConfiguration(new File("plugins/" + GPM.NAME + "/" + PluginValues.LANG_PATH, GPM.getConfig().getString("Lang.lang", "en_en") + PluginValues.YML_FILETYP));
+        messages = YamlConfiguration.loadConfiguration(new File(GPM.getDataFolder(), "lang/" + GPM.getCManager().L_LANG + ".yml"));
+        prefix = getMessages().getString("Plugin.plugin-prefix", "&7[&6" + GPM.NAME + "&7]");
     }
 
     public String toFormattedMessage(String Text) {
@@ -127,7 +158,7 @@ public class MManager {
 
     public Object getComponent(String Message, Object... ReplaceList) { return toFormattedComponent(getRawMessage(Message, ReplaceList)); }
 
-    public String getRawMessage(String Message, Object... ReplaceList) { return replace(Message == null || Message.isEmpty() ? "" : messages.getString(Message, Message), ReplaceList); }
+    public String getRawMessage(String Message, Object... ReplaceList) { return replace(Message == null || Message.isEmpty() ? "" : getMessages().getString(Message, Message), ReplaceList); }
 
     private String replace(String Message, Object... ReplaceList) {
 
@@ -135,7 +166,7 @@ public class MManager {
 
         if(ReplaceList != null && ReplaceList.length > 1) for(int count = 0; count < ReplaceList.length; count += 2) if(ReplaceList[count] != null && ReplaceList[count + 1] != null) message = message.replace(ReplaceList[count].toString(), ReplaceList[count + 1].toString());
 
-        return message.replace("[P]", GPM.getPrefix());
+        return message.replace("[P]", getPrefix());
     }
 
 }

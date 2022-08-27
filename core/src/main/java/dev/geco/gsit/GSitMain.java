@@ -3,9 +3,8 @@ package dev.geco.gsit;
 import java.io.*;
 import java.util.*;
 
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.command.*;
-import org.bukkit.entity.*;
 import org.bukkit.plugin.java.*;
 
 import dev.geco.gsit.cmd.*;
@@ -14,15 +13,11 @@ import dev.geco.gsit.events.*;
 import dev.geco.gsit.link.*;
 import dev.geco.gsit.manager.*;
 import dev.geco.gsit.util.*;
-import dev.geco.gsit.values.*;
 
 public class GSitMain extends JavaPlugin {
 
     private CManager cManager;
     public CManager getCManager() { return cManager; }
-
-    private String prefix;
-    public String getPrefix() { return prefix; }
 
     private SitManager sitManager;
     public SitManager getSitManager() { return sitManager; }
@@ -94,10 +89,6 @@ public class GSitMain extends JavaPlugin {
 
         copyEmoteFiles();
 
-        getMManager().loadMessages();
-
-        prefix = getMManager().getMessages().getString("Plugin.plugin-prefix", "[" + NAME + "]");
-
         getEmoteManager().reloadEmotes();
 
         getToggleManager().loadToggleData();
@@ -107,7 +98,7 @@ public class GSitMain extends JavaPlugin {
 
         BStatsLink bstats = new BStatsLink(getInstance(), 4914);
 
-        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getConfig().getString("Lang.lang", "en_en").toLowerCase()));
+        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getCManager().L_LANG));
 
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> {
             int count = getSitManager().getFeatureUsedCount();
@@ -146,10 +137,8 @@ public class GSitMain extends JavaPlugin {
 
         GPM = this;
 
-        saveDefaultConfig();
-
         cManager = new CManager(getInstance());
-        uManager = new UManager(getInstance(), RESOURCE);
+        uManager = new UManager(getInstance());
         pManager = new PManager(getInstance());
         mManager = new MManager(getInstance());
         sitManager = new SitManager(getInstance());
@@ -175,8 +164,8 @@ public class GSitMain extends JavaPlugin {
         loadSettings();
         if(!versionCheck()) return;
 
-        spawnUtil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("gsit", "util.SpawnUtil", null) : new SpawnUtil();
-        teleportUtil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("gsit", "util.TeleportUtil", null) : new TeleportUtil();
+        spawnUtil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("util.SpawnUtil", null) : new SpawnUtil();
+        teleportUtil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("util.TeleportUtil", null) : new TeleportUtil();
 
         setupCommands();
         setupEvents();
@@ -185,7 +174,7 @@ public class GSitMain extends JavaPlugin {
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
 
         loadPluginDepends(Bukkit.getConsoleSender());
-        checkForUpdates();
+        GPM.getUManager().checkForUpdates();
     }
 
     public void onDisable() {
@@ -255,13 +244,13 @@ public class GSitMain extends JavaPlugin {
         } else plotSquaredLink = null;
     }
 
-    private void copyEmoteFiles() { for(String l : EMOTE_FILES) if(!new File("plugins/" + NAME + "/" + PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP).exists()) saveResource(PluginValues.EMOTES_PATH + "/" + l + PluginValues.GEX_FILETYP, false); }
+    private void copyEmoteFiles() { for(String emote : EMOTE_FILES) if(!new File(getDataFolder(), "emotes/" + emote + ".gex").exists()) saveResource("emotes/" + emote + ".gex", false); }
 
     public void reload(CommandSender Sender) {
 
-        reloadConfig();
-
         getCManager().reload();
+        getMManager().loadMessages();
+
         getSitManager().clearSeats();
         if(getPoseManager() != null) getPoseManager().clearPoses();
         if(getCrawlManager() != null) getCrawlManager().clearCrawls();
@@ -272,35 +261,18 @@ public class GSitMain extends JavaPlugin {
 
         loadSettings();
         loadPluginDepends(Sender);
-        checkForUpdates();
-    }
-
-    private void checkForUpdates() {
-
-        if(getCManager().CHECK_FOR_UPDATES) {
-
-            getUManager().checkVersion();
-
-            if(!getUManager().isLatestVersion()) {
-
-                String message = getMManager().getMessage("Plugin.plugin-update", "%Name%", NAME, "%NewVersion%", getUManager().getLatestVersion(), "%Version%", getUManager().getPluginVersion(), "%Path%", getDescription().getWebsite());
-
-                for(Player player : Bukkit.getOnlinePlayers()) if(getPManager().hasPermission(player, "Update")) player.sendMessage(message);
-
-                Bukkit.getConsoleSender().sendMessage(message);
-            }
-        }
+        GPM.getUManager().checkForUpdates();
     }
 
     private boolean versionCheck() {
 
-        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("gsit", "objects.SeatEntity"))) {
+        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("objects.SeatEntity"))) {
 
             String version = Bukkit.getServer().getClass().getPackage().getName();
 
             getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", SERVER < 1 ? "Bukkit" : version.substring(version.lastIndexOf('.') + 1));
 
-            checkForUpdates();
+            GPM.getUManager().checkForUpdates();
 
             Bukkit.getPluginManager().disablePlugin(getInstance());
 

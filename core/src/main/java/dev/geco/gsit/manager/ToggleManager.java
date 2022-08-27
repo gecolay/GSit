@@ -7,7 +7,6 @@ import org.bukkit.scheduler.*;
 import org.bukkit.configuration.file.*;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.values.*;
 
 public class ToggleManager {
 
@@ -74,7 +73,7 @@ public class ToggleManager {
 
         crawlToggleList.clear();
 
-        toggleFile = new File("plugins/" + GPM.NAME, PluginValues.DATA_PATH + "/" + PluginValues.TOGGLE_FILE + PluginValues.DATA_FILETYP);
+        toggleFile = new File(GPM.getDataFolder(), "data/t.data");
 
         toggleData = YamlConfiguration.loadConfiguration(toggleFile);
 

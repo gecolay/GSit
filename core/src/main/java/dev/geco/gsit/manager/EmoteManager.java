@@ -9,7 +9,6 @@ import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
-import dev.geco.gsit.values.*;
 
 public class EmoteManager implements IEmoteManager {
 
@@ -37,7 +36,7 @@ public class EmoteManager implements IEmoteManager {
 
         try {
 
-            File directory = new File("plugins/" + GPM.NAME + "/" + PluginValues.EMOTES_PATH);
+            File directory = new File(GPM.getDataFolder(), "emotes/");
 
             if(!directory.exists()) return getAvailableEmotes();
 
@@ -45,7 +44,7 @@ public class EmoteManager implements IEmoteManager {
 
                 String fileName = emoteFile.getName().toLowerCase();
 
-                if(fileName.endsWith(PluginValues.GEX_FILETYP)) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
+                if(fileName.endsWith(".gex")) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
             }
         } catch (Exception ignored) { }
 

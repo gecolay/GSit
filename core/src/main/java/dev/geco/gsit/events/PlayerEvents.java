@@ -25,17 +25,7 @@ public class PlayerEvents implements Listener {
     public PlayerEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @EventHandler
-    public void PJoiE(PlayerJoinEvent Event) {
-
-        Player player = Event.getPlayer();
-
-        if(GPM.getCManager().CHECK_FOR_UPDATES && !GPM.getUManager().isLatestVersion()) {
-
-            String message = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", GPM.getUManager().getLatestVersion(), "%Version%", GPM.getUManager().getPluginVersion(), "%Path%", GPM.getDescription().getWebsite());
-
-            if(GPM.getPManager().hasPermission(player, "Update")) player.sendMessage(message);
-        }
-    }
+    public void PJoiE(PlayerJoinEvent Event) { GPM.getUManager().loginCheckForUpdates(Event.getPlayer()); }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PQuiE(PlayerQuitEvent Event) {
