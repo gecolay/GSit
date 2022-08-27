@@ -55,8 +55,8 @@ commands:
 
     usage: /<command>
     aliases: [gsitrl]
-    description: GSit-Config-Reload
-    permission: GSit.GSitReload
+    description: Plugin-Reload
+    permission: GSit.Reload
 
 
 
@@ -64,7 +64,7 @@ permissions:
 
   GSit.*:
     default: op
-    description: OP-Permission for all Commands and Functions for GSit
+    description: OP-Permission for all commands and features of GSit
     children:
       GSit.Sit: true
       GSit.SitClick: true
@@ -80,7 +80,7 @@ permissions:
       GSit.Kick.*: true
       GSit.ByPass.*: true
       GSit.Update: true
-      GSit.GSitReload: true
+      GSit.Reload: true
 
   GSit.Sit:
     default: true
@@ -158,8 +158,8 @@ permissions:
 
   GSit.Update:
     default: op
-    description: Get-Update-Notification | Permission
+    description: Update-Notification | Permission
 
-  GSit.GSitReload:
+  GSit.Reload:
     default: op
-    description: Config-Reload-Command | Permission
+    description: Plugin-Reload-Command | Permission

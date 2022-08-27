@@ -22,7 +22,7 @@ public class GSitReloadCommand implements CommandExecutor {
             return true;
         }
 
-        if(!GPM.getPManager().hasPermission(Sender, GPM.NAME + "Reload")) {
+        if(!GPM.getPManager().hasPermission(Sender, "Reload")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
             return true;

@@ -21,7 +21,7 @@ public class UManager {
 
     public void checkForUpdates() {
 
-        if(GPM.getCManager().CHECK_FOR_UPDATES) {
+        if(GPM.getCManager().CHECK_FOR_UPDATE) {
 
             checkVersion();
 
@@ -38,7 +38,7 @@ public class UManager {
 
     public void loginCheckForUpdates(Player Player) {
 
-        if(GPM.getCManager().CHECK_FOR_UPDATES && !latestVersion) {
+        if(GPM.getCManager().CHECK_FOR_UPDATE && !latestVersion) {
 
             String message = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
 
