@@ -21,6 +21,8 @@ public class MManager {
 
     private final GSitMain GPM;
 
+    private final boolean modern;
+
     private final HashMap<String, String> TAGS = new HashMap<>(); {
 
         TAGS.put("&0", "<reset><black>");
@@ -70,6 +72,7 @@ public class MManager {
 
     public MManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
+        modern = NMSManager.isNewerOrVersion(18, 2);
         loadMessages();
     }
 
@@ -78,7 +81,7 @@ public class MManager {
     public String getPrefix() { return prefix; }
 
     public void loadMessages() {
-        if(NMSManager.isNewerOrVersion(18, 2)) {
+        if(modern) {
             for(String langFileName : LANG_FILES) {
                 File langFile = new File(GPM.getDataFolder(), "lang/" + langFileName + ".yml");
                 try {
@@ -129,7 +132,7 @@ public class MManager {
 
         String text = Text;
 
-        for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue());
+        for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue()).replace(tag.getKey().toUpperCase(), tag.getValue());
 
         Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(text);
 
@@ -140,7 +143,7 @@ public class MManager {
 
     public void sendMessage(CommandSender Sender, String Message, Object... ReplaceList) {
 
-        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(18, 2)) {
+        if(GPM.SERVER > 1 && modern) {
 
             ((Audience) Sender).sendMessage((Component) getComponent(Message, ReplaceList));
         } else Sender.sendMessage(getMessage(Message, ReplaceList));
@@ -148,7 +151,7 @@ public class MManager {
 
     public void sendActionBarMessage(Player Player, String Message, Object... ReplaceList) {
 
-        if(GPM.SERVER > 1 && NMSManager.isNewerOrVersion(18, 2)) {
+        if(GPM.SERVER > 1 && modern) {
 
             ((Audience) Player).sendActionBar((Component) getComponent(Message, ReplaceList));
         } else Player.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getMessage(Message, ReplaceList)));
