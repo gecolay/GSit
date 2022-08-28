@@ -5,6 +5,7 @@ import org.bukkit.craftbukkit.v1_18_R1.*;
 
 import net.minecraft.world.damagesource.*;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.decoration.*;
 import net.minecraft.world.phys.*;
 
@@ -25,6 +26,7 @@ public class SeatEntity extends ArmorStand {
         setSmall(true);
         setNoBasePlate(true);
         setRot(Location.getYaw(), Location.getPitch());
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(1f);
     }
 
     public void startRotate() { rotate = true; }

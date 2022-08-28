@@ -173,7 +173,7 @@ public class GSitMain extends JavaPlugin {
 
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
 
-        loadPluginDepends(Bukkit.getConsoleSender());
+        loadPluginDependencies(Bukkit.getConsoleSender());
         GPM.getUManager().checkForUpdates();
     }
 
@@ -216,30 +216,32 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
     }
 
-    private void loadPluginDepends(CommandSender s) {
+    private void preloadPluginDependencies() { }
+
+    private void loadPluginDependencies(CommandSender Sender) {
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             if(worldGuardLink == null) {
                 worldGuardLink = new WorldGuardLink(getInstance());
                 getWorldGuardLink().registerFlags();
             }
-            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "WorldGuard");
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "WorldGuard");
         } else worldGuardLink = null;
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             placeholderAPILink = new PlaceholderAPILink(getInstance());
-            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
             getPlaceholderAPILink().register();
         } else placeholderAPILink = null;
 
         if(Bukkit.getPluginManager().getPlugin("GriefPrevention") != null && Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
             griefPreventionLink = new GriefPreventionLink(getInstance());
-            getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "GriefPrevention");
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "GriefPrevention");
         } else griefPreventionLink = null;
 
         if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
             plotSquaredLink = new PlotSquaredLink(getInstance());
-            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(s, "Plugin.plugin-link", "%Link%", "PlotSquared");
+            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlotSquared");
             else plotSquaredLink = null;
         } else plotSquaredLink = null;
     }
@@ -260,7 +262,7 @@ public class GSitMain extends JavaPlugin {
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
 
         loadSettings();
-        loadPluginDepends(Sender);
+        loadPluginDependencies(Sender);
         GPM.getUManager().checkForUpdates();
     }
 
