@@ -7,6 +7,7 @@ import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.*;
 
+import dev.geco.gsit.api.event.*;
 import dev.geco.gsit.cmd.*;
 import dev.geco.gsit.cmd.tab.*;
 import dev.geco.gsit.events.*;
@@ -249,6 +250,8 @@ public class GSitMain extends JavaPlugin {
     private void copyEmoteFiles() { for(String emote : EMOTE_FILES) if(!new File(getDataFolder(), "emotes/" + emote + ".gex").exists()) saveResource("emotes/" + emote + ".gex", false); }
 
     public void reload(CommandSender Sender) {
+
+        Bukkit.getPluginManager().callEvent(new GSitReloadEvent(getInstance()));
 
         getCManager().reload();
         getMManager().loadMessages();

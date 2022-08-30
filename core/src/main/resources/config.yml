@@ -107,7 +107,7 @@ Options:
     lay-snoring-night-only: true
 
     # Defines whether a lying player counts for skipping the night (At least one player must be sleeping in a bed to skip the night!)
-    lay-night-skip: false
+    lay-night-skip: true
 
 
 
