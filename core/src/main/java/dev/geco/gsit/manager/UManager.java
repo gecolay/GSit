@@ -7,7 +7,7 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
-import dev.geco.gsit.*;
+import dev.geco.gsit.GSitMain;
 
 public class UManager {
 
@@ -27,11 +27,9 @@ public class UManager {
 
             if(!latestVersion) {
 
-                String message = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
+                for(Player player : Bukkit.getOnlinePlayers()) if(GPM.getPManager().hasPermission(player, "Update")) GPM.getMManager().sendMessage(player, "Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
 
-                for(Player player : Bukkit.getOnlinePlayers()) if(GPM.getPManager().hasPermission(player, "Update")) player.sendMessage(message);
-
-                Bukkit.getConsoleSender().sendMessage(message);
+                GPM.getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
             }
         }
     }
@@ -40,9 +38,7 @@ public class UManager {
 
         if(GPM.getCManager().CHECK_FOR_UPDATE && !latestVersion) {
 
-            String message = GPM.getMManager().getMessage("Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
-
-            if(GPM.getPManager().hasPermission(Player, "Update")) Player.sendMessage(message);
+            if(GPM.getPManager().hasPermission(Player, "Update")) GPM.getMManager().sendMessage(Player, "Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
         }
     }
 
