@@ -121,7 +121,7 @@ public class MManager {
 
     public String toFormattedMessage(String Text) {
         String colorText = org.bukkit.ChatColor.translateAlternateColorCodes('&', Text);
-        Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(colorText);
+        Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(colorText);
         while(matcher.find()) colorText = colorText.replaceFirst(matcher.group(), ChatColor.of(matcher.group()).toString());
         return colorText.replace("<lang:key.sneak>", "Sneak");
     }
@@ -129,7 +129,7 @@ public class MManager {
     public Object toFormattedComponent(String Text) {
         String text = Text;
         for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue()).replace(tag.getKey().toUpperCase(), tag.getValue());
-        Matcher matcher = Pattern.compile("(#[\\da-fA-F]{6})").matcher(text);
+        Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(text);
         while(matcher.find()) if(text.indexOf(matcher.group()) == 0 || text.charAt(text.indexOf(matcher.group()) - 1) != ':') text = text.replaceFirst(matcher.group(), "<reset><color:" + matcher.group() + ">");
         try { return MiniMessage.miniMessage().deserialize(text); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
     }
