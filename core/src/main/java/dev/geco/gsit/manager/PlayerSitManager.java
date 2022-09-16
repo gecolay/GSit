@@ -8,7 +8,7 @@ import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
 import dev.geco.gsit.objects.*;
 
-public class PlayerSitManager implements IPlayerSitManager {
+public class PlayerSitManager {
 
     private final GSitMain GPM;
 

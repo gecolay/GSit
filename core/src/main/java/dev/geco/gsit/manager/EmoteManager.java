@@ -10,7 +10,7 @@ import org.bukkit.entity.*;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 
-public class EmoteManager implements IEmoteManager {
+public class EmoteManager {
 
     private final GSitMain GPM;
 

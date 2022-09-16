@@ -26,14 +26,14 @@ public class GSitMain extends JavaPlugin {
     private PoseManager poseManager;
     public PoseManager getPoseManager() { return poseManager; }
 
-    private IPlayerSitManager playerSitManager;
-    public IPlayerSitManager getPlayerSitManager() { return playerSitManager; }
+    private PlayerSitManager playerSitManager;
+    public PlayerSitManager getPlayerSitManager() { return playerSitManager; }
 
     private CrawlManager crawlManager;
     public CrawlManager getCrawlManager() { return crawlManager; }
 
-    private IEmoteManager emoteManager;
-    public IEmoteManager getEmoteManager() { return emoteManager; }
+    private EmoteManager emoteManager;
+    public EmoteManager getEmoteManager() { return emoteManager; }
 
     private ToggleManager toggleManager;
     public ToggleManager getToggleManager() { return toggleManager; }
