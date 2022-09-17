@@ -62,7 +62,7 @@ public class PlayerSitEvents implements Listener {
 
         if(!player.isValid() || !target.isValid() || player.isSneaking() || player.isInsideVehicle() || player.getGameMode() == GameMode.SPECTATOR) return;
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) return;
+        if(GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().PS_MAX_DISTANCE;
 

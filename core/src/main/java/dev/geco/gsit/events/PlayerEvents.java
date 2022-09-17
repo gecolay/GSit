@@ -34,9 +34,9 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getSitManager().isSitting(player)) GPM.getSitManager().removeSeat(player, GetUpReason.QUIT, true);
 
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
+        if(GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
+        if(GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
 
         crawlPlayers.remove(player);
     }
@@ -48,9 +48,9 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getSitManager().isSitting(player) && !GPM.getSitManager().removeSeat(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
 
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player) && !GPM.getPoseManager().removePose(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
+        if(GPM.getPoseManager().isPosing(player) && !GPM.getPoseManager().removePose(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player) && !GPM.getCrawlManager().stopCrawl(player, GetUpReason.TELEPORT)) Event.setCancelled(true);
+        if(GPM.getCrawlManager().isCrawling(player) && !GPM.getCrawlManager().stopCrawl(player, GetUpReason.TELEPORT)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -62,17 +62,9 @@ public class PlayerEvents implements Listener {
 
         Player player = (Player) entity;
 
-        if(GPM.getSitManager().isSitting(player)) {
+        if(GPM.getSitManager().isSitting(player) && (!GPM.getCManager().GET_UP_SNEAK || (!GPM.getSitManager().removeSeat(player, GetUpReason.GET_UP, true)))) Event.setCancelled(true);
 
-            if(!GPM.getCManager().GET_UP_SNEAK) Event.setCancelled(true);
-            else if(!GPM.getSitManager().removeSeat(player, GetUpReason.GET_UP, true)) Event.setCancelled(true);
-        }
-
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)) {
-
-            if(!GPM.getCManager().GET_UP_SNEAK) Event.setCancelled(true);
-            else if(!GPM.getPoseManager().removePose(player, GetUpReason.GET_UP, true)) Event.setCancelled(true);
-        }
+        if(GPM.getPoseManager().isPosing(player) && (!GPM.getCManager().GET_UP_SNEAK || !GPM.getPoseManager().removePose(player, GetUpReason.GET_UP, true))) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -86,9 +78,9 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getSitManager().isSitting(player)) GPM.getSitManager().removeSeat(player, GetUpReason.DAMAGE, true);
 
-        if(GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.DAMAGE, true);
+        if(GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.DAMAGE, true);
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.DAMAGE);
+        if(GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.DAMAGE);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -98,7 +90,7 @@ public class PlayerEvents implements Listener {
 
         String message = Event.getMessage();
 
-        if(message.length() > 1 && (GPM.getSitManager().isSitting(player) || (GPM.getPoseManager() != null && GPM.getPoseManager().isPosing(player)))) {
+        if(message.length() > 1 && (GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player))) {
 
             message = message.substring(1).split(" ")[0].toLowerCase();
 

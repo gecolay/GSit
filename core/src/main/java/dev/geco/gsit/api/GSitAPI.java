@@ -138,28 +138,7 @@ public class GSitAPI {
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
     public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, true);
-    }
-
-    /**
-     * Creates a new Seat on a Block for an Entity.
-     * The Seat can be static or rotating.
-     * The seat can be moved to with an Offset
-     * @author Gecolay
-     * @since 1.0.4
-     * @param Block Block which should be connected to the Seat-Object
-     * @param Entity Entity for this Seat
-     * @param Rotate Should this Seat rotate with direction the entity is facing
-     * @param XOffset The X-Coordinate-Offset for the Seat
-     * @param YOffset The Y-Coordinate-Offset for the Seat
-     * @param ZOffset The Z-Coordinate-Offset for the Seat
-     * @param SeatRotationYaw The default Rotation of the Seat
-     * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Entity (<code>false</code>)
-     * @param GetUpSneak Should the Entity be able to get up by sneaking
-     * @return Seat-Object or <code>null</code> if the creation was canceled
-     */
-    public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock, boolean GetUpSneak) {
-        return getInstance().getSitManager().createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, GetUpSneak);
+        return createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
     }
 
     /**
@@ -252,7 +231,7 @@ public class GSitAPI {
      * @return <code>true</code> if the Player is posing
      */
     public static boolean isPosing(Player Player) {
-        return getInstance().getPoseManager() != null && getInstance().getPoseManager().isPosing(Player);
+        return getInstance().getPoseManager().isPosing(Player);
     }
 
     /**
@@ -262,7 +241,7 @@ public class GSitAPI {
      * @return List of all PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses() {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses() : new ArrayList<>();
+        return getInstance().getPoseManager().getPoses();
     }
 
     /**
@@ -273,7 +252,7 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if there was no PoseSeat
      */
     public static IGPoseSeat getPose(Player Player) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPose(Player) : null;
+        return getInstance().getPoseManager().getPose(Player);
     }
 
     /**
@@ -284,7 +263,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(Block Block) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses(Block) : new ArrayList<>();
+        return getInstance().getPoseManager().getPoses(Block);
     }
 
     /**
@@ -295,7 +274,7 @@ public class GSitAPI {
      * @return List of PoseSeat-Objects
      */
     public static List<IGPoseSeat> getPoses(List<Block> Blocks) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().getPoses(Blocks) : new ArrayList<>();
+        return getInstance().getPoseManager().getPoses(Blocks);
     }
 
     /**
@@ -308,7 +287,7 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().createPose(Block, Player, Pose) : null;
+        return getInstance().getPoseManager().createPose(Block, Player, Pose);
     }
 
     /**
@@ -344,28 +323,7 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, true);
-    }
-
-    /**
-     * Creates a new PoseSeat on a Block for a Player.
-     * The PoseSeat can be static or rotating.
-     * The PoseSeat can be moved to with an Offset
-     * @author Gecolay
-     * @since 1.0.4
-     * @param Block Block which should be connected to the PoseSeat-Object
-     * @param Player Player for this PoseSeat
-     * @param Pose Player-Pose {@link Pose}
-     * @param XOffset The X-Coordinate-Offset for the PoseSeat
-     * @param YOffset The Y-Coordinate-Offset for the PoseSeat
-     * @param ZOffset The Z-Coordinate-Offset for the PoseSeat
-     * @param SeatRotationYaw The default Rotation of the PoseSeat
-     * @param SitAtBlock Should the PoseSeat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
-     * @param GetUpSneak Should the Player be able to get up by sneaking
-     * @return PoseSeat-Object or <code>null</code> if the creation was canceled
-     */
-    public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock, boolean GetUpSneak) {
-        return getInstance().getPoseManager() != null ? getInstance().getPoseManager().createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock, GetUpSneak) : null;
+        return createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
     }
 
     /**
@@ -377,7 +335,7 @@ public class GSitAPI {
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
     public static boolean removePose(Player Player, GetUpReason Reason) {
-        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(Player, Reason);
+        return getInstance().getPoseManager().removePose(Player, Reason);
     }
 
     /**
@@ -391,7 +349,7 @@ public class GSitAPI {
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
     public static boolean removePose(Player Player, GetUpReason Reason, boolean Safe) {
-        return getInstance().getPoseManager() != null && getInstance().getPoseManager().removePose(Player, Reason, Safe);
+        return getInstance().getPoseManager().removePose(Player, Reason, Safe);
     }
 
     /**
@@ -402,7 +360,7 @@ public class GSitAPI {
      * @return <code>true</code> if the Player is crawling
      */
     public static boolean isCrawling(Player Player) {
-        return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().isCrawling(Player);
+        return getInstance().getCrawlManager().isCrawling(Player);
     }
 
     /**

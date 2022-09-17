@@ -46,7 +46,7 @@ public class InteractEvents implements Listener {
 
         if(!GPM.getToggleManager().canSit(player.getUniqueId())) return;
 
-        if(GPM.getCrawlManager() != null && GPM.getCrawlManager().isCrawling(player)) return;
+        if(GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().S_MAX_DISTANCE;
 
@@ -79,7 +79,7 @@ public class InteractEvents implements Listener {
             if(((Slab) clickedBlock.getBlockData()).getType() != Type.BOTTOM && GPM.getCManager().S_BOTTOM_PART_ONLY) return;
         }
 
-        if(GPM.getSitManager().createSeat(clickedBlock, player, true, 0d, 0d, 0d, player.getLocation().getYaw(), true, GPM.getCManager().GET_UP_SNEAK) != null) Event.setCancelled(true);
+        if(GPM.getSitManager().createSeat(clickedBlock, player, true, 0d, 0d, 0d, player.getLocation().getYaw(), true) != null) Event.setCancelled(true);
     }
 
 }
