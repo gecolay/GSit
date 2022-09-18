@@ -72,7 +72,7 @@ public class PlayerEvents implements Listener {
 
         Entity entity = Event.getEntity();
 
-        if(!GPM.getCManager().GET_UP_DAMAGE || !(entity instanceof Player) || Event.getFinalDamage() <= 0d) return;
+        if(!GPM.getCManager().GET_UP_DAMAGE || !(entity instanceof Player) || Event.isCancelled()) return;
 
         Player player = (Player) entity;
 
