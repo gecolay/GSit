@@ -126,12 +126,23 @@ public class MManager {
         return colorText.replace("<lang:key.sneak>", "Sneak");
     }
 
-    public Object toFormattedComponent(String Text) {
-        String text = Text;
+    public Object toFormattedComponent(String unformattedText) {
+        return toFormattedComponent(unformattedText, 0, 0);
+    }
+
+    public Object toFormattedComponent(String unformattedText, int startOffset, int endOffset) {
+        String text = unformattedText;
         for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue()).replace(tag.getKey().toUpperCase(), tag.getValue());
         Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(text);
-        while(matcher.find()) if(text.indexOf(matcher.group()) == 0 || text.charAt(text.indexOf(matcher.group()) - 1) != ':') text = text.replaceFirst(matcher.group(), "<reset><color:" + matcher.group() + ">");
-        try { return MiniMessage.miniMessage().deserialize(text); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
+        StringBuilder resultText = new StringBuilder();
+        int pos = 1;
+        while(matcher.find()) {
+            String group = matcher.group();
+            resultText.append(text.substring(pos, matcher.end()).replace(group, "<reset><color:" + group.substring(startOffset, (group.length() - 1) - endOffset) + ">"));
+            pos = matcher.end();
+        }
+        if (pos < text.length()) resultText.append(text, pos, text.length());
+        try { return MiniMessage.miniMessage().deserialize(resultText.toString()); } catch (Exception e) { return Component.text(toFormattedMessage(unformattedText)); }
     }
 
     public void sendMessage(CommandSender Target, String Message, Object... ReplaceList) {
