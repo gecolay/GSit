@@ -94,26 +94,20 @@ public class MManager {
                         YamlConfigurationOptions options = (YamlConfigurationOptions) lang.options();
                         options.parseComments(true).copyDefaults(true).width(500);
                         lang.loadFromString(lang.saveToString());
-                        for(String comments : lang.getKeys(true)) {
-                            lang.setComments(comments, langSteamConfig.getComments(comments));
-                        }
+                        for(String comments : lang.getKeys(true)) lang.setComments(comments, langSteamConfig.getComments(comments));
                     }
                     lang.save(langFile);
                     messages.put(langFileName, lang);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(!langFile.exists()) {
-                        GPM.saveResource("lang/" + langFileName + ".yml", false);
-                    }
+                    if(!langFile.exists()) GPM.saveResource("lang/" + langFileName + ".yml", false);
                     messages.put(langFileName, YamlConfiguration.loadConfiguration(langFile));
                 }
             }
         } else {
             for(String langFileName : LANG_FILES) {
                 File langFile = new File(GPM.getDataFolder(), "lang/" + langFileName + ".yml");
-                if(!langFile.exists()) {
-                    GPM.saveResource("lang/" + langFileName + ".yml", false);
-                }
+                if(!langFile.exists()) GPM.saveResource("lang/" + langFileName + ".yml", false);
                 messages.put(langFileName, YamlConfiguration.loadConfiguration(langFile));
             }
         }
@@ -129,21 +123,18 @@ public class MManager {
     public Object toFormattedComponent(String Text) {
         String text = Text;
         for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue()).replace(tag.getKey().toUpperCase(), tag.getValue());
-        Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(text);
-        while(matcher.find()) if(text.indexOf(matcher.group()) == 0 || text.charAt(text.indexOf(matcher.group()) - 1) != ':') text = text.replaceFirst(matcher.group(), "<reset><color:" + matcher.group() + ">");
+        text = text.replaceAll("(?<!<color:)#[a-fA-F0-9]{6}(?<!>)", "<reset><color:$0>");
         try { return MiniMessage.miniMessage().deserialize(text); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
     }
 
     public void sendMessage(CommandSender Target, String Message, Object... ReplaceList) {
-        if(GPM.SERVER > 1 && modern) {
-            ((Audience) Target).sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
-        } else Target.sendMessage(getLanguageMessage(Message, getLanguage(Target), ReplaceList));
+        if(GPM.SERVER > 1 && modern) ((Audience) Target).sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+        else Target.sendMessage(getLanguageMessage(Message, getLanguage(Target), ReplaceList));
     }
 
     public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList) {
-        if(GPM.SERVER > 1 && modern) {
-            ((Audience) Target).sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
-        } else Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getLanguageMessage(Message, getLanguage(Target), ReplaceList)));
+        if(GPM.SERVER > 1 && modern) ((Audience) Target).sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+        else Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getLanguageMessage(Message, getLanguage(Target), ReplaceList)));
     }
 
     public String getMessage(String Message, Object... ReplaceList) { return getLanguageMessage(Message, GPM.getCManager().L_LANG, ReplaceList); }
