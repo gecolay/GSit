@@ -47,19 +47,21 @@ public class SpawnUtil implements ISpawnUtil {
         return playerSeatEntity.getBukkitEntity();
     }
 
-    private void spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
+    private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
 
         try {
 
-            ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
+            return ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
         } catch (Throwable paper) {
 
             try {
 
                 LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
-                levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
+                return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
             } catch (Throwable e) { e.printStackTrace(); }
         }
+
+        return false;
     }
 
 }

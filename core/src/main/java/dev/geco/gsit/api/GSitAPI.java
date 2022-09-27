@@ -138,7 +138,7 @@ public class GSitAPI {
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
     public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
+        return getInstance().getSitManager().createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
     }
 
     /**
@@ -323,7 +323,7 @@ public class GSitAPI {
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
     public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
-        return createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
+        return getInstance().getPoseManager().createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
     }
 
     /**
