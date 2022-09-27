@@ -10,6 +10,7 @@ Plugin:
   plugin-link: "[P]&a З'єднання з&6 %Link%&a успішне!"
   plugin-update: "[P]&a Доступна нова версія:&6 %NewVersion%&a!\n[P]&a В даний час ви використовуєте версію:&6 %Version%&a!\n[P]&a Завантажте останню версію на сайті:\n[P]&6 %Path%"
   plugin-version: "[P]&c Цей Плагін не може бути використаний з цією версією сервера! (&b%Version%&c)"
+  plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a Плагін був успішно відключений."
   plugin-prefix: "&7[&6GSit&7]"
 
@@ -17,7 +18,6 @@ Plugin:
 
 Messages:
 
-  command-reload: "[P]&a Налаштування були успішно перезавантажені."
   command-permission-error: "[P]&c Ви не маєте дозволу на використання цієї команди!"
   command-sender-error: "[P]&c Цей відправник не може виконати цю команду!"
   command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"

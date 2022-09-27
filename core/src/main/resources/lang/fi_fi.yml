@@ -10,6 +10,7 @@ Plugin:
   plugin-link: "[P]&a Yhdistettiin onnistuneesti&6 %Link%&a laajennukseen!"
   plugin-update: "[P]&a Uusi versio saatavilla:&6 %NewVersion%&a!\n[P]&a Käytössä oleva versio:&6 %Version%&a!\n[P]&a Lataa uusin versio täältä:\n[P]&6 %Path%"
   plugin-version: "[P]&c Tätä laajennusta ei voi käyttää nykyisellä palvelimen versiolla! (&b%Version%&c)"
+  plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a Laajennus sammui onnistuneesti."
   plugin-prefix: "&7[&6GSit&7]"
 
@@ -17,7 +18,6 @@ Plugin:
 
 Messages:
 
-  command-reload: "[P]&a Asetukset ladattiin onnistuneesti uudelleen."
   command-permission-error: "[P]&c Sinulla ei ole oikeutta tähän komentoon!"
   command-sender-error: "[P]&c Vain pelaajat voivat käyttää tätä komentoa!"
   command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"

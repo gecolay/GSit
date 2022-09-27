@@ -10,6 +10,7 @@ Plugin:
   plugin-link: "[P]&6 %Link%&a と正常に連携されました！"
   plugin-update: "[P]&a 新しいバージョンが使用可能になりました:&6 %NewVersion%&a！\n[P]&a 現在使われているバージョン:&6 %Version%&a！\n[P]&a ここから最新版をダウンロード:\n[P]&6 %Path%"
   plugin-version: "[P]&c このプラグインは、このサーバーバージョンでは使えません！ (&b%Version%&c)"
+  plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a プラグインは正常に無効になりました。"
   plugin-prefix: "&7[&6GSit&7]"
 
@@ -17,7 +18,6 @@ Plugin:
 
 Messages:
 
-  command-reload: "[P]&a 設定は正常に再読み込みされました。"
   command-permission-error: "[P]&c このコマンドを実行する権限を持っていません！"
   command-sender-error: "[P]&c その人はそのコマンドを実行することができません！"
   command-version-error: "[P]&c 古いサーバーバージョンです！ (&b%Version%&c)\n[P]&c この機能を使うためにサーバーを更新してください！"

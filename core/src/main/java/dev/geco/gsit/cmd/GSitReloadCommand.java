@@ -30,7 +30,7 @@ public class GSitReloadCommand implements CommandExecutor {
 
         GPM.reload(Sender);
 
-        GPM.getMManager().sendMessage(Sender, "Messages.command-reload");
+        GPM.getMManager().sendMessage(Sender, "Plugin.plugin-reload");
         return true;
     }
 
