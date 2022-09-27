@@ -14,49 +14,42 @@ commands:
     usage: /<command>
     aliases: [sit]
     description: Sit-Command
-    permission: GSit.Sit
 
   glay:
 
     usage: /<command>
     aliases: [lay]
     description: Lay-Command
-    permission: GSit.Lay
 
   gbellyflop:
 
     usage: /<command>
     aliases: [bellyflop]
     description: BellyFlop-Command
-    permission: GSit.BellyFlop
 
   gspin:
 
     usage: /<command>
     aliases: [spin]
     description: Spin-Command
-    permission: GSit.Spin
 
   gcrawl:
 
     usage: /<command>
     aliases: [crawl]
     description: Crawl-Command
-    permission: GSit.Crawl
 
   gemote:
 
     usage: /<command>
     aliases: [emote]
     description: Emote-Command
-    permission: GSit.Emote
 
   gsitreload:
 
     usage: /<command>
     aliases: [gsitrl]
     description: Plugin-Reload
-    permission: GSit.Reload
 
 
 

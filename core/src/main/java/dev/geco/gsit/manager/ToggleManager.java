@@ -34,35 +34,20 @@ public class ToggleManager {
 
     public void setCanSit(UUID UUID, boolean Toggle) {
 
-        if((Toggle && GPM.getCManager().S_DEFAULT_SIT_MODE) || (!Toggle && !GPM.getCManager().S_DEFAULT_SIT_MODE)) {
-
-            toggleList.remove(UUID);
-        } else {
-
-            toggleList.add(UUID);
-        }
+        if((Toggle && GPM.getCManager().S_DEFAULT_SIT_MODE) || (!Toggle && !GPM.getCManager().S_DEFAULT_SIT_MODE)) toggleList.remove(UUID);
+        else toggleList.add(UUID);
     }
 
     public void setCanPlayerSit(UUID UUID, boolean PlayerToggle) {
 
-        if((PlayerToggle && GPM.getCManager().PS_DEFAULT_SIT_MODE) || (!PlayerToggle && !GPM.getCManager().PS_DEFAULT_SIT_MODE)) {
-
-            playerToggleList.remove(UUID);
-        } else {
-
-            playerToggleList.add(UUID);
-        }
+        if((PlayerToggle && GPM.getCManager().PS_DEFAULT_SIT_MODE) || (!PlayerToggle && !GPM.getCManager().PS_DEFAULT_SIT_MODE)) playerToggleList.remove(UUID);
+        else playerToggleList.add(UUID);
     }
 
     public void setCanCrawl(UUID UUID, boolean Toggle) {
 
-        if(Toggle) {
-
-            crawlToggleList.remove(UUID);
-        } else {
-
-            crawlToggleList.add(UUID);
-        }
+        if(Toggle) crawlToggleList.remove(UUID);
+        else crawlToggleList.add(UUID);
     }
 
     public void loadToggleData() {
@@ -74,6 +59,12 @@ public class ToggleManager {
         crawlToggleList.clear();
 
         toggleFile = new File(GPM.getDataFolder(), "data/t.data");
+
+        File newToggleFile = new File(GPM.getDataFolder(), "data/toggle.gdata");
+
+        if(toggleFile.exists() && !newToggleFile.exists()) toggleFile.delete();
+
+        toggleFile = newToggleFile;
 
         toggleData = YamlConfiguration.loadConfiguration(toggleFile);
 
