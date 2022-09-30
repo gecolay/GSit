@@ -74,8 +74,6 @@ public class GSitMain extends JavaPlugin {
     private PlotSquaredLink plotSquaredLink;
     public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
 
-    public final int SERVER = Bukkit.getVersion().contains("Paper") ? 2 : Bukkit.getVersion().contains("Spigot") ? 1 : Bukkit.getVersion().contains("Bukkit") ? 0 : 3;
-
     public final String NAME = "GSit";
 
     public final String RESOURCE = "62325";
@@ -271,11 +269,15 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
 
-        if(SERVER < 1 || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("objects.SeatEntity"))) {
+        boolean bukkitBased = false;
+
+        try { Class.forName("org.spigotmc.event.entity.EntityDismountEvent"); } catch (ClassNotFoundException e) { bukkitBased = true; }
+
+        if(bukkitBased || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("objects.SeatEntity"))) {
 
             String version = Bukkit.getServer().getClass().getPackage().getName();
 
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", SERVER < 1 ? "Bukkit" : version.substring(version.lastIndexOf('.') + 1));
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", bukkitBased ? "bukkit-based" : version.substring(version.lastIndexOf('.') + 1));
 
             GPM.getUManager().checkForUpdates();
 

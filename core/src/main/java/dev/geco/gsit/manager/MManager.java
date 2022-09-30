@@ -21,7 +21,8 @@ public class MManager {
 
     private final GSitMain GPM;
 
-    private final boolean modern;
+    private boolean allowBungeeMessages = true;
+    private boolean allowComponentMessages = NMSManager.isNewerOrVersion(18, 2);
 
     private final HashMap<String, String> TAGS = new HashMap<>(); {
 
@@ -67,12 +68,12 @@ public class MManager {
     }
 
     private final HashMap<String, FileConfiguration> messages = new HashMap<>();
-
     private final HashMap<UUID, String> languages = new HashMap<>();
 
     public MManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
-        modern = NMSManager.isNewerOrVersion(18, 2);
+        try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch (ClassNotFoundException e) { allowBungeeMessages = false; }
+        try { Class.forName("net.kyori.adventure.text.Component"); } catch (ClassNotFoundException e) { allowComponentMessages = false; }
         loadMessages();
     }
 
@@ -82,7 +83,7 @@ public class MManager {
 
     public void loadMessages() {
         messages.clear();
-        if(modern) {
+        if(NMSManager.isNewerOrVersion(18, 2)) {
             for(String langFileName : LANG_FILES) {
                 File langFile = new File(GPM.getDataFolder(), "lang/" + langFileName + ".yml");
                 try {
@@ -115,26 +116,29 @@ public class MManager {
 
     public String toFormattedMessage(String Text) {
         String colorText = org.bukkit.ChatColor.translateAlternateColorCodes('&', Text);
-        Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(colorText);
-        while(matcher.find()) colorText = colorText.replaceFirst(matcher.group(), ChatColor.of(matcher.group()).toString());
+        try {
+            Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(colorText);
+            while(matcher.find()) colorText = colorText.replaceFirst(matcher.group(), ChatColor.of(matcher.group()).toString());
+        } catch (Throwable ignored) { }
         return colorText.replace("<lang:key.sneak>", "Sneak");
     }
 
     public Object toFormattedComponent(String Text) {
         String text = Text;
+        if(!allowComponentMessages) return text;
         for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue()).replace(tag.getKey().toUpperCase(), tag.getValue());
         text = text.replaceAll("(?<!<color:)#[a-fA-F0-9]{6}(?<!>)", "<reset><color:$0>");
         try { return MiniMessage.miniMessage().deserialize(text); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
     }
 
     public void sendMessage(CommandSender Target, String Message, Object... ReplaceList) {
-        if(GPM.SERVER > 1 && modern) ((Audience) Target).sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
-        else Target.sendMessage(getLanguageMessage(Message, getLanguage(Target), ReplaceList));
+        if(allowComponentMessages) ((Audience) Target).sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+        else if(allowBungeeMessages) Target.sendMessage(getLanguageMessage(Message, getLanguage(Target), ReplaceList));
     }
 
     public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList) {
-        if(GPM.SERVER > 1 && modern) ((Audience) Target).sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
-        else Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getLanguageMessage(Message, getLanguage(Target), ReplaceList)));
+        if(allowComponentMessages) ((Audience) Target).sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+        else if(allowBungeeMessages) Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getLanguageMessage(Message, getLanguage(Target), ReplaceList)));
     }
 
     public String getMessage(String Message, Object... ReplaceList) { return getLanguageMessage(Message, GPM.getCManager().L_LANG, ReplaceList); }
