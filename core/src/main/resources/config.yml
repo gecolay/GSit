@@ -10,19 +10,19 @@ Options:
   # Defines whether the plugin should notify when a new version is available
   check-for-update: true
 
-  # Defines whether a player gets up when he suffers damage
+  # Defines whether a player should get up after taking damage
   get-up-damage: false
 
-  # Defines whether a player can get up by sneaking or if he always has to use the command
+  # Defines whether a player can get up from sitting or posing by sneaking
   get-up-sneak: true
 
-  # Defines whether a player is returned to the place where he started sitting or posing
+  # Defines whether a player is returned to the original location
   get-up-return: false
 
-  # Defines whether a player gets up if the connected block breaks
+  # Defines whether a player gets up when the block below breaks
   get-up-break: true
 
-  # Defines whether a player can sit or pose in an unsafe place
+  # Defines whether a player can sit or pose in an unsafe location
   allow-unsafe: false
 
   # Defines whether more than one player can sit or pose on the same block
@@ -33,8 +33,8 @@ Options:
 
   Sit:
 
-    # Defines the blocks a player can sit on by clicking (Materials and Tags)
-    # Separate a material or tag from its y-offset with a ; character "stone;0.5" to get a y-offset of 0.5 for the material
+    # Defines the blocks a player can sit on by clicking (materials and tags)
+    # Separate a material or tag from its y-offset with a ";" character
     SitMaterials:
     - "#stairs"
     - "#slabs"
@@ -44,7 +44,7 @@ Options:
     - "big_dripleaf"
     - "snow"
 
-    # Defines whether you can sit on stairs and slabs by clicking that are not in the bottom part of a block
+    # Defines whether you can sit on stairs and slabs that are not in the bottom part of a block
     bottom-part-only: true
 
     # Defines whether a player needs an empty main hand to sit down by clicking
@@ -53,7 +53,7 @@ Options:
     # Defines the maximum range in which a player can sit down by clicking (0 means unlimited)
     max-distance: 0.00
 
-    # Defines whether a player should receive a custom message when he starts to sit
+    # Defines whether a player should receive a custom message when sitting
     sit-message: true
 
     # Defines whether a player can sit by default without using the sit toggle command
@@ -64,10 +64,10 @@ Options:
   PlayerSit:
 
     # Defines whether a player can right-click to sit on another player
-    allow-sit: false
+    allow-sit: true
 
     # Defines whether a player can right-click to sit on an NPC
-    allow-sit-npc: false
+    allow-sit-npc: true
 
     # Defines the maximum number of players that can be stacked (0 means unlimited)
     max-stack: 0
@@ -79,9 +79,9 @@ Options:
     empty-hand-only: true
 
     # Defines the maximum range in which a player can sit on another player (0 means unlimited)
-    max-distance: 0.00
+    max-distance: 0.0
 
-    # Defines whether a player should receive a custom message when he starts to sit on another player
+    # Defines whether a player should receive a custom message when sitting on top of another player
     sit-message: true
 
     # Defines whether a player can sit on another player by default without using the sit playertoggle command
@@ -91,13 +91,13 @@ Options:
 
   Pose:
 
-    # Defines whether a player should receive a custom message when he starts to pose
+    # Defines whether a player should receive a custom message when posing
     pose-message: true
 
-    # Defines whether a player can interact with the environment while posing
+    # Defines whether a player can interact with the environment or other players while posing
     interact: false
 
-    # Defines whether to reset the time since a player's last rest, which affects his phantom spawn timer
+    # Defines whether to reset the time since a player's last rest (affects phantom spawn timer)
     lay-rest: true
 
     # Defines whether a player makes snoring sounds when lying down
@@ -106,14 +106,14 @@ Options:
     # Defines whether snoring sounds are only heard at night
     lay-snoring-night-only: true
 
-    # Defines whether a lying player counts for skipping the night (At least one player must be sleeping in a bed to skip the night!)
+    # Defines whether a lying player counts for skipping the night (at least one player must be sleeping in a bed to skip the night!)
     lay-night-skip: true
 
 
 
   Crawl:
 
-    # Defines whether a player can get up by sneaking or if he always has to use the command
+    # Defines whether a player can get up from crawling by sneaking
     get-up-sneak: true
 
     # Defines whether a player can double-sneak in a short amount of time to start crawling
