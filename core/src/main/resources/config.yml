@@ -10,13 +10,13 @@ Options:
   # Defines whether the plugin should notify when a new version is available
   check-for-update: true
 
-  # Defines whether a player gets up when he suffers damage
+  # Defines whether a player should get up when they suffer damage
   get-up-damage: false
 
-  # Defines whether a player can get up by sneaking or if he always has to use the command
+  # Defines whether a player can get up by sneaking or if they always have to use the command
   get-up-sneak: true
 
-  # Defines whether a player is returned to the place where he started sitting or posing
+  # Defines whether a player is returned to the place where they started sitting or posing
   get-up-return: false
 
   # Defines whether a player gets up if the connected block breaks
@@ -53,7 +53,7 @@ Options:
     # Defines the maximum range in which a player can sit down by clicking (0 means unlimited)
     max-distance: 0.00
 
-    # Defines whether a player should receive a custom message when he starts to sit
+    # Defines whether a player should receive a custom message when they start to sit
     sit-message: true
 
     # Defines whether a player can sit by default without using the sit toggle command
@@ -81,7 +81,7 @@ Options:
     # Defines the maximum range in which a player can sit on another player (0 means unlimited)
     max-distance: 0.00
 
-    # Defines whether a player should receive a custom message when he starts to sit on another player
+    # Defines whether a player should receive a custom message when they start to sit on another player
     sit-message: true
 
     # Defines whether a player can sit on another player by default without using the sit playertoggle command
@@ -91,13 +91,13 @@ Options:
 
   Pose:
 
-    # Defines whether a player should receive a custom message when he starts to pose
+    # Defines whether a player should receive a custom message when they start to pose
     pose-message: true
 
     # Defines whether a player can interact with the environment while posing
     interact: false
 
-    # Defines whether to reset the time since a player's last rest, which affects his phantom spawn timer
+    # Defines whether to reset the time since a player's last rest, which affects their phantom spawn timer
     lay-rest: true
 
     # Defines whether a player makes snoring sounds when lying down
@@ -113,7 +113,7 @@ Options:
 
   Crawl:
 
-    # Defines whether a player can get up by sneaking or if he always has to use the command
+    # Defines whether a player can get up by sneaking or if they always have to use the command
     get-up-sneak: true
 
     # Defines whether a player can double-sneak in a short amount of time to start crawling
