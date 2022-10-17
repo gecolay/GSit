@@ -1,5 +1,5 @@
 #
-# Language-File created by:		MarceloGames000
+# Language-File created by:	MarceloGames000 & Sty13
 #
 
 
@@ -7,10 +7,10 @@
 Plugin:
 
   plugin-enabled: "[P]&a O plugin foi ativado com sucesso."
-  plugin-link: "[P]&a Link with&6 %Link%&a successful!"
+  plugin-link: "[P]&a Conexão com &6 %Link%&a feita com sucesso!"
   plugin-update: "[P]&a Uma nova versão foi encontrada:&6 %NewVersion%&a!\n[P]&a No momento a versão que está sendo executada é a:&6 %Version%&a!\n[P]&a A nova versão se encontra para download em:\n[P]&6 %Path%"
   plugin-version: "[P]&c O plugin não pode ser utilizado nessa versão atual do servidor! (&b%Version%&c)"
-  plugin-reload: "[P]&a The plugin was successfully reloaded."
+  plugin-reload: "[P]&a O plugin foi recarregado com sucesso."
   plugin-disabled: "[P]&a O plugin foi desativado com sucesso."
   plugin-prefix: "&7[&6GSit&7]"
 
@@ -20,14 +20,14 @@ Messages:
 
   command-permission-error: "[P]&c Sem permissão para executar esse comando."
   command-sender-error: "[P]&c O console não pode executar esse comando."
-  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
+  command-version-error: "[P]&c Versão do servidor desatualizada! (&b%Version%&c)\n[P]&c Atualize o servidor para usar este recurso!"
 
   command-gsit-toggle-on: "[P]&a Você ativou a função de sentar-se."
   command-gsit-toggle-off: "[P]&a Você desativou a função de sentar-se."
   command-gsit-playertoggle-on: "[P]&a Você ativou a função de sentar-se em outros jogadores."
   command-gsit-playertoggle-off: "[P]&a Você desativou a função de sentar-se em outros jogadores."
-  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
-  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
+  command-gcrawl-toggle-on: "[P]&a Você ativou o duplo-shift para engatinhar."
+  command-gcrawl-toggle-off: "[P]&a Você desativou o duplo-shift para engatinhar."
 
   action-sit-now-error: "[P]&c Você não pode sentar-se agora!"
   action-sit-world-error: "[P]&c Você não pode sentar-se nesse mundo!"
@@ -52,11 +52,11 @@ Messages:
   action-crawl-region-error: "[P]&c Você não pode rastejar-se nessa região!"
   action-crawl-info: "&aUse seu&6 <lang:key.sneak>&a para poder se levantar."
 
-  action-emote-stop-error: "[P]&c You can't stop emoting!"
-  action-emote-stop: "[P]&a You stopped emoting."
-  action-emote-exist-error: "[P]&c The Emote&6 %Emote%&c does not exist!"
-  action-emote-now-error: "[P]&c You can't emote right now!"
-  action-emote-world-error: "[P]&c You can't emote in this world!"
-  action-emote-region-error: "[P]&c You can't emote in this region!"
+  action-emote-stop-error: "[P]&c Você não pode parar de usar o emote agora!"
+  action-emote-stop: "[P]&a Você parou de usar o emote!"
+  action-emote-exist-error: "[P]&c O Emote&6 %Emote%&c não existe!"
+  action-emote-now-error: "[P]&c Você não pode usar o emote agora!"
+  action-emote-world-error: "[P]&c Você não pode usar o emote neste mundo!"
+  action-emote-region-error: "[P]&c Você não pode usar o emote nesta região!!"
 
   action-blocked-error: "[P]&c No momento você não está autorizado a executar esse comando!"
