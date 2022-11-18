@@ -78,7 +78,9 @@ public class GSitMain extends JavaPlugin {
 
     public final String RESOURCE = "62325";
 
-    private final List<String> EMOTE_FILES = new ArrayList<>(); { }
+    private final List<String> EMOTE_FILES = new ArrayList<>(); {
+        EMOTE_FILES.add("happy");
+    }
 
     private static GSitMain GPM;
 
