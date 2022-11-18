@@ -33,6 +33,12 @@ public class GEmoteCommand implements CommandExecutor {
 
         if(Args.length == 0) {
 
+            if(!GPM.getEmoteManager().isEmoting(player)) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.action-emote-none-error");
+                return true;
+            }
+
             if(!GPM.getEmoteManager().stopEmote(player)) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-emote-stop-error");
@@ -47,7 +53,7 @@ public class GEmoteCommand implements CommandExecutor {
 
         if(emote == null) {
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-exist-emote-error", "%Emote%", Args[0]);
+            GPM.getMManager().sendMessage(Sender, "Messages.action-emote-exist-error", "%Emote%", Args[0]);
             return true;
         }
 

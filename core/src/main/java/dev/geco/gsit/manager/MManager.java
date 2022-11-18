@@ -73,7 +73,11 @@ public class MManager {
     public MManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
         try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch (ClassNotFoundException e) { allowBungeeMessages = false; }
-        try { Class.forName("net.kyori.adventure.text.Component"); } catch (ClassNotFoundException e) { allowComponentMessages = false; }
+        try {
+            Class.forName("net.kyori.adventure.text.minimessage.MiniMessage");
+            Class.forName("net.kyori.adventure.text.Component");
+            Class.forName("net.kyori.adventure.audience.Audience");
+        } catch (ClassNotFoundException e) { allowComponentMessages = false; }
         loadMessages();
     }
 
