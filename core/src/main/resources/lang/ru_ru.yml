@@ -1,5 +1,5 @@
 #
-# Language-File created by:		TioLopew
+# Language-File created by TioLopew, updated by bottleofench
 #
 
 
@@ -10,7 +10,7 @@ Plugin:
   plugin-link: "[P]&a Соединение с &6 %Link%&a Успешно!"
   plugin-update: "[P]&a Доступна новая версия:&6 %NewVersion%&a!\n[P]&a Ваша версия:&6 %Version%&a!\n[P]&aСкачайте последнюю версию:\n[P]&6 %Path%"
   plugin-version: "[P]&c Плагин не может быть использован с этой версией сервера! (&b%Version%&c)"
-  plugin-reload: "[P]&a The plugin was successfully reloaded."
+  plugin-reload: "[P]&a Плагин был успешно перезагружен."
   plugin-disabled: "[P]&a Плагин был успешно отключен."
   plugin-prefix: "&7[&6GSit&7]"
 
@@ -20,14 +20,14 @@ Messages:
 
   command-permission-error: "[P]&c У вас нет права для использования этой команды!"
   command-sender-error: "[P]&c Этот отправитель не может выполнить эту команду!"
-  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
+  command-version-error: "[P]&c Устаревшая версия сервера! (&b%Version%&c)\n[P]&c Обновите версию для использования!"
 
   command-gsit-toggle-on: "[P]&a Теперь вы можете сесть, нажав."
   command-gsit-toggle-off: "[P]&a Вы больше не можете сесть, нажав."
   command-gsit-playertoggle-on: "[P]&a Теперь вы можете сесть на игрока, нажав."
   command-gsit-playertoggle-off: "[P]&a Вы больше не можете сесть на игрока, нажав."
-  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
-  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
+  command-gcrawl-toggle-on: "[P]&a Вы включили возможность ползания через двойное приседание."
+  command-gcrawl-toggle-off: "[P]&a Вы выключили возможность ползания через двойное приседание."
 
   action-sit-now-error: "[P]&c Вы не можете сидеть сейчас!"
   action-sit-world-error: "[P]&c Вы не можете сидеть в этом мире!"
@@ -52,12 +52,12 @@ Messages:
   action-crawl-region-error: "[P]&c Вы не можете ползать в этом регионе!"
   action-crawl-info: "&aИспользуйте &6 <lang:key.sneak>&a, чтобы встать."
 
-  action-emote-none-error: "[P]&c You're not using an emote right now!"
-  action-emote-stop-error: "[P]&c You can't stop emoting!"
-  action-emote-stop: "[P]&a You stopped emoting."
-  action-emote-exist-error: "[P]&c The Emote&6 %Emote%&c does not exist!"
-  action-emote-now-error: "[P]&c You can't emote right now!"
-  action-emote-world-error: "[P]&c You can't emote in this world!"
-  action-emote-region-error: "[P]&c You can't emote in this region!"
+  action-emote-none-error: "[P]&c Вы не используете эмоцию сейчас!"
+  action-emote-stop-error: "[P]&c Вы не можете перестать использовать эмоцию!"
+  action-emote-stop: "[P]&a Вы перестали использовать эмоцию."
+  action-emote-exist-error: "[P]&c Эмоции &6 %Emote%&c не существует!"
+  action-emote-now-error: "[P]&c Вы не можете использовать эмоцию сейчас!"
+  action-emote-world-error: "[P]&c Ты не можешь использовать эмоции в этом мире!"
+  action-emote-region-error: "[P]&c Ты не можешь использовать эмоции в этом регионе!"
 
   action-blocked-error: "[P]&c Вам не разрешено выполнять эту команду прямо сейчас!"
