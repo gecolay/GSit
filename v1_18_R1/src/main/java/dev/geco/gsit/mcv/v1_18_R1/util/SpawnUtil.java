@@ -1,10 +1,12 @@
 package dev.geco.gsit.mcv.v1_18_R1.util;
 
 import org.bukkit.*;
-import org.bukkit.entity.*;
 import org.bukkit.craftbukkit.v1_18_R1.*;
 import org.bukkit.craftbukkit.v1_18_R1.entity.*;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.*;
 
+import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.util.*;
 import dev.geco.gsit.mcv.v1_18_R1.objects.*;
 
@@ -29,20 +31,28 @@ public class SpawnUtil implements ISpawnUtil {
         return seatEntity.getBukkitEntity();
     }
 
-    public Entity createPlayerSeatEntity(Entity Holder, Entity Rider) {
+    public void createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
-        PlayerSeatEntity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
+        if(Rider == null || !Rider.isValid()) return;
 
-        if(Rider != null && Rider.isValid()) {
+        Entity lastEntity = Holder;
 
-            playerSeatEntity.startRiding(((CraftEntity) Holder).getHandle(), true);
+        int maxEntities = GSitMain.getInstance().PLAYER_SIT_SEAT_ENTITIES;
 
-            ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
+        for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
+
+            PlayerSeatEntity playerSeatEntity = new PlayerSeatEntity(lastEntity.getLocation());
+
+            playerSeatEntity.getBukkitEntity().setMetadata(GSitMain.getInstance().NAME + "A", new FixedMetadataValue(GSitMain.getInstance(), lastEntity));
+
+            playerSeatEntity.startRiding(((CraftEntity) lastEntity).getHandle(), true);
+
+            if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
+
+            ((CraftWorld) lastEntity.getWorld()).getHandle().entityManager.addNewEntity(playerSeatEntity);
+
+            lastEntity = playerSeatEntity.getBukkitEntity();
         }
-
-        ((CraftWorld) Holder.getWorld()).getHandle().entityManager.addNewEntity(playerSeatEntity);
-
-        return playerSeatEntity.getBukkitEntity();
     }
 
 }

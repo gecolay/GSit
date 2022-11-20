@@ -2,7 +2,9 @@ package dev.geco.gsit.util;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.metadata.*;
 
+import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.manager.*;
 
 public class SpawnUtil implements ISpawnUtil {
@@ -26,7 +28,15 @@ public class SpawnUtil implements ISpawnUtil {
 
         if(!needCheck()) return true;
 
-        Entity playerSeatEntity = createPlayerSeatEntity(Holder, null);
+        Entity playerSeatEntity = Holder.getWorld().spawn(Holder.getLocation(), AreaEffectCloud.class, areaEffectCloud -> {
+
+            try { areaEffectCloud.setRadius(0); } catch (Exception ignored) { }
+            try { areaEffectCloud.setGravity(false); } catch (Exception ignored) { }
+            try { areaEffectCloud.setInvulnerable(true); } catch (Exception ignored) { }
+            try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Exception ignored) { }
+            try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
+            try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
+        });
 
         boolean valid = playerSeatEntity.isValid();
 
@@ -52,22 +62,34 @@ public class SpawnUtil implements ISpawnUtil {
         return seatEntity;
     }
 
-    public Entity createPlayerSeatEntity(Entity Holder, Entity Rider) {
+    public void createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
-        return Holder.getWorld().spawn(Holder.getLocation(), AreaEffectCloud.class, areaEffectCloud -> {
+        if(Rider == null || !Rider.isValid()) return;
 
-            try { areaEffectCloud.setRadius(0); } catch (Exception ignored) { }
-            try { areaEffectCloud.setGravity(false); } catch (Exception ignored) { }
-            try { areaEffectCloud.setInvulnerable(true); } catch (Exception ignored) { }
-            try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Exception ignored) { }
-            try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
-            try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
+        Entity lastEntity = Holder;
 
-            if(Rider != null && Rider.isValid()) {
-                Holder.addPassenger(areaEffectCloud);
-                areaEffectCloud.addPassenger(Rider);
-            }
-        });
+        int maxEntities = GSitMain.getInstance().PLAYER_SIT_SEAT_ENTITIES;
+
+        for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
+
+            Entity finalLastEntity = lastEntity;
+            int finalEntityCount = entityCount;
+
+            lastEntity = finalLastEntity.getWorld().spawn(finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloud -> {
+
+                try { areaEffectCloud.setRadius(0); } catch (Exception ignored) { }
+                try { areaEffectCloud.setGravity(false); } catch (Exception ignored) { }
+                try { areaEffectCloud.setInvulnerable(true); } catch (Exception ignored) { }
+                try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Exception ignored) { }
+                try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
+                try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
+
+                areaEffectCloud.setMetadata(GSitMain.getInstance().NAME + "A", new FixedMetadataValue(GSitMain.getInstance(), finalLastEntity));
+
+                finalLastEntity.addPassenger(areaEffectCloud);
+                if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(Rider);
+            });
+        }
     }
 
 }

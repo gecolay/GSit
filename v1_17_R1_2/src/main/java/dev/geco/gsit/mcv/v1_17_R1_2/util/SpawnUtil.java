@@ -1,9 +1,9 @@
 package dev.geco.gsit.mcv.v1_17_R1_2.util;
 
 import org.bukkit.*;
-import org.bukkit.entity.*;
 import org.bukkit.craftbukkit.v1_17_R1.*;
 import org.bukkit.craftbukkit.v1_17_R1.entity.*;
+import org.bukkit.entity.*;
 
 import dev.geco.gsit.util.*;
 import dev.geco.gsit.mcv.v1_17_R1_2.objects.*;
@@ -31,6 +31,6 @@ public class SpawnUtil implements ISpawnUtil {
         return seatEntity.getBukkitEntity();
     }
 
-    public Entity createPlayerSeatEntity(Entity Holder, Entity Rider) { return spawnUtil.createPlayerSeatEntity(Holder, Rider); }
+    public void createPlayerSeatEntity(Entity Holder, Entity Rider) { spawnUtil.createPlayerSeatEntity(Holder, Rider); }
 
 }

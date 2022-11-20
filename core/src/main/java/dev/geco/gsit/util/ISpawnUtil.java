@@ -13,6 +13,6 @@ public interface ISpawnUtil {
 
     Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate);
 
-    Entity createPlayerSeatEntity(Entity Holder, Entity Rider);
+    void createPlayerSeatEntity(Entity Holder, Entity Rider);
 
 }

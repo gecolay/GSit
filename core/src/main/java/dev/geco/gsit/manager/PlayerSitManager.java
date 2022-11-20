@@ -2,7 +2,6 @@ package dev.geco.gsit.manager;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
-import org.bukkit.metadata.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -30,11 +29,9 @@ public class PlayerSitManager {
 
         if(!GPM.getSpawnUtil().checkPlayerLocation(Target)) return false;
 
-        Entity playerSeatEntity = GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
+        GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
 
         if(GPM.getCManager().PS_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-playersit-info");
-
-        playerSeatEntity.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, Player));
 
         feature_used++;
 
@@ -54,6 +51,10 @@ public class PlayerSitManager {
             if(preEvent.isCancelled()) return false;
         }
 
+        removePassengers(Entity);
+
+        removeVehicles(Entity);
+
         if(Entity.hasMetadata(GPM.NAME + "A")) {
 
             Entity.eject();
@@ -61,15 +62,27 @@ public class PlayerSitManager {
             Entity.remove();
         }
 
+        if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
+
+        return true;
+    }
+
+    private void removePassengers(Entity Entity) {
+
         for(Entity passenger : Entity.getPassengers()) {
 
             if(passenger.hasMetadata(GPM.NAME + "A")) {
+
+                removePassengers(passenger);
 
                 passenger.eject();
 
                 passenger.remove();
             }
         }
+    }
+
+    private void removeVehicles(Entity Entity) {
 
         if(Entity.isInsideVehicle()) {
 
@@ -77,15 +90,13 @@ public class PlayerSitManager {
 
             if(vehicle.hasMetadata(GPM.NAME + "A")) {
 
+                removeVehicles(vehicle);
+
                 vehicle.eject();
 
                 vehicle.remove();
             }
         }
-
-        if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
-
-        return true;
     }
 
 }

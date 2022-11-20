@@ -78,6 +78,8 @@ public class GSitMain extends JavaPlugin {
 
     public final String RESOURCE = "62325";
 
+    public final int PLAYER_SIT_SEAT_ENTITIES = 2;
+
     private final List<String> EMOTE_FILES = new ArrayList<>(); {
         EMOTE_FILES.add("happy");
     }
