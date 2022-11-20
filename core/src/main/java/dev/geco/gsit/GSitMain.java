@@ -183,6 +183,7 @@ public class GSitMain extends JavaPlugin {
     public void onDisable() {
 
         getSitManager().clearSeats();
+        getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
         getCrawlManager().clearCrawls();
         getEmoteManager().clearEmotes();
@@ -259,6 +260,7 @@ public class GSitMain extends JavaPlugin {
         getMManager().loadMessages();
 
         getSitManager().clearSeats();
+        getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
         getCrawlManager().clearCrawls();
         getEmoteManager().reloadEmotes();

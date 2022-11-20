@@ -19,6 +19,22 @@ public class PlayerSitManager {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
+    public void clearSeats() {
+
+        for(World world : Bukkit.getWorlds()) {
+
+            for(Entity entity : world.getEntities()) {
+
+                if(entity.hasMetadata(GPM.NAME + "A")) {
+
+                    entity.eject();
+
+                    entity.remove();
+                }
+            }
+        }
+    }
+
     public boolean sitOnPlayer(Player Player, Player Target) {
 
         PrePlayerPlayerSitEvent preEvent = new PrePlayerPlayerSitEvent(Player, Target);
