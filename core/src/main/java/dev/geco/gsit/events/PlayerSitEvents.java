@@ -9,6 +9,7 @@ import org.bukkit.event.player.*;
 import org.spigotmc.event.entity.*;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.api.event.*;
 import dev.geco.gsit.objects.*;
 
 public class PlayerSitEvents implements Listener {
@@ -36,9 +37,22 @@ public class PlayerSitEvents implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void EDisE(EntityDismountEvent Event) {
 
-        if(!GPM.getPlayerSitManager().stopPlayerSit(Event.getEntity(), GetUpReason.GET_UP)) Event.setCancelled(true);
+        if(Event.getEntity() instanceof Player) {
+
+            PrePlayerGetUpPlayerSitEvent preEvent = new PrePlayerGetUpPlayerSitEvent((Player) Event.getEntity(), GetUpReason.GET_UP);
+
+            Bukkit.getPluginManager().callEvent(preEvent);
+
+            if(preEvent.isCancelled()) {
+
+                Event.setCancelled(true);
+                return;
+            }
+        }
 
         GPM.getPlayerSitManager().stopPlayerSit(Event.getDismounted(), GetUpReason.GET_UP);
+
+        if(Event.getEntity() instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Event.getEntity(), GetUpReason.GET_UP));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

@@ -19,21 +19,7 @@ public class PlayerSitManager {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
-    public void clearSeats() {
-
-        for(World world : Bukkit.getWorlds()) {
-
-            for(Entity entity : world.getEntities()) {
-
-                if(entity.hasMetadata(GPM.NAME + "A")) {
-
-                    entity.eject();
-
-                    entity.remove();
-                }
-            }
-        }
-    }
+    public void clearSeats() { for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.hasMetadata(GPM.NAME + "A")) entity.remove(); }
 
     public boolean sitOnPlayer(Player Player, Player Target) {
 
@@ -71,12 +57,7 @@ public class PlayerSitManager {
 
         removeVehicles(Entity);
 
-        if(Entity.hasMetadata(GPM.NAME + "A")) {
-
-            Entity.eject();
-
-            Entity.remove();
-        }
+        if(Entity.hasMetadata(GPM.NAME + "A")) Entity.remove();
 
         if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
 
@@ -90,8 +71,6 @@ public class PlayerSitManager {
             if(passenger.hasMetadata(GPM.NAME + "A")) {
 
                 removePassengers(passenger);
-
-                passenger.eject();
 
                 passenger.remove();
             }
@@ -107,8 +86,6 @@ public class PlayerSitManager {
             if(vehicle.hasMetadata(GPM.NAME + "A")) {
 
                 removeVehicles(vehicle);
-
-                vehicle.eject();
 
                 vehicle.remove();
             }
