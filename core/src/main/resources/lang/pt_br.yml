@@ -52,7 +52,7 @@ Messages:
   action-crawl-region-error: "[P]&c Você não pode rastejar-se nessa região!"
   action-crawl-info: "&aUse seu&6 <lang:key.sneak>&a para poder se levantar."
 
-  action-emote-none-error: "[P]&c You're not using an emote right now!"
+  action-emote-none-error: "[P]&c Você não está utilizando um emote!"
   action-emote-stop-error: "[P]&c Você não pode parar de usar o emote agora!"
   action-emote-stop: "[P]&a Você parou de usar o emote!"
   action-emote-exist-error: "[P]&c O Emote&6 %Emote%&c não existe!"
