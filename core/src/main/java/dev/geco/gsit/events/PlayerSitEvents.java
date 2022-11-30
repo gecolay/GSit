@@ -1,10 +1,13 @@
 package dev.geco.gsit.events;
 
+import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
+import org.bukkit.scheduler.*;
 
 import org.spigotmc.event.entity.*;
 
@@ -18,12 +21,14 @@ public class PlayerSitEvents implements Listener {
 
     public PlayerSitEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
+    private final List<Player> WAIT = new ArrayList<>();
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void PTogSE(PlayerToggleSneakEvent Event) {
 
         Player player = Event.getPlayer();
 
-        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle()) return;
+        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle() || WAIT.contains(player)) return;
 
         if(!GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED)) Event.setCancelled(true);
     }
@@ -37,11 +42,11 @@ public class PlayerSitEvents implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void EDisE(EntityDismountEvent Event) {
 
-        if(Event.getEntity().isInsideVehicle()) return;
-
         if(Event.getEntity() instanceof Player) {
 
-            PrePlayerGetUpPlayerSitEvent preEvent = new PrePlayerGetUpPlayerSitEvent((Player) Event.getEntity(), GetUpReason.GET_UP);
+            Player player = (Player) Event.getEntity();
+
+            PrePlayerGetUpPlayerSitEvent preEvent = new PrePlayerGetUpPlayerSitEvent(player, GetUpReason.GET_UP);
 
             Bukkit.getPluginManager().callEvent(preEvent);
 
@@ -50,6 +55,17 @@ public class PlayerSitEvents implements Listener {
                 Event.setCancelled(true);
                 return;
             }
+
+            WAIT.add(player);
+
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+
+                    WAIT.remove(player);
+                }
+            }.runTaskLaterAsynchronously(GSitMain.getInstance(), 2);
         }
 
         GPM.getPlayerSitManager().stopPlayerSit(Event.getDismounted(), GetUpReason.GET_UP);
@@ -76,7 +92,7 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 
-        if(!player.isValid() || !target.isValid() || player.isSneaking() || player.isInsideVehicle() || player.getGameMode() == GameMode.SPECTATOR) return;
+        if(!player.isValid() || !target.isValid() || player.isSneaking() || player.getGameMode() == GameMode.SPECTATOR) return;
 
         if(GPM.getCrawlManager().isCrawling(player)) return;
 
