@@ -37,6 +37,8 @@ public class PlayerSitEvents implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void EDisE(EntityDismountEvent Event) {
 
+        if(Event.getEntity().isInsideVehicle()) return;
+
         if(Event.getEntity() instanceof Player) {
 
             PrePlayerGetUpPlayerSitEvent preEvent = new PrePlayerGetUpPlayerSitEvent((Player) Event.getEntity(), GetUpReason.GET_UP);
