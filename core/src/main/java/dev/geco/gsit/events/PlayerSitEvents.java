@@ -31,7 +31,7 @@ public class PlayerSitEvents implements Listener {
 
         if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle() || WAIT_EJECT.contains(player)) return;
 
-        if(!GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED)) Event.setCancelled(true);
+        GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -142,9 +142,7 @@ public class PlayerSitEvents implements Listener {
 
         if(!isNPC && !GPM.getCManager().PS_ALLOW_SIT) return;
 
-        boolean cancel = GPM.getPlayerSitManager().sitOnPlayer(player, highestPlayer);
-
-        if(cancel) Event.setCancelled(true);
+        GPM.getPlayerSitManager().sitOnPlayer(player, highestPlayer);
     }
 
 }
