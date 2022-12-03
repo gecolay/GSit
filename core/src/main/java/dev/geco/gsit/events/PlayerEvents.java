@@ -38,6 +38,8 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
 
+        if(GPM.getEmoteManager().isEmoting(player)) GPM.getEmoteManager().stopEmote(player);
+
         crawlPlayers.remove(player);
     }
 

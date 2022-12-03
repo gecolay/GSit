@@ -51,6 +51,8 @@ public class CManager {
 
     public boolean PS_SNEAK_EJECTS;
 
+    public boolean PS_BOTTOM_RETURN;
+
     public boolean PS_EMPTY_HAND_ONLY;
 
     public double PS_MAX_DISTANCE;
@@ -156,6 +158,7 @@ public class CManager {
         PS_ALLOW_SIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit-npc", false);
         PS_MAX_STACK = GPM.getConfig().getLong("Options.PlayerSit.max-stack", 0);
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
+        PS_BOTTOM_RETURN = GPM.getConfig().getBoolean("Options.PlayerSit.bottom-return", false);
         PS_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.PlayerSit.empty-hand-only", true);
         PS_MAX_DISTANCE = GPM.getConfig().getDouble("Options.PlayerSit.max-distance", 0d);
         PS_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.sit-message", true);

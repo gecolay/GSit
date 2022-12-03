@@ -75,6 +75,9 @@ Options:
     # Defines whether a player should kick out all passengers when sneaking
     sneak-ejects: true
 
+    # Defines whether a player should be placed at the bottom of the player sit stack when dismounting
+    bottom-return: false
+
     # Defines whether a player needs an empty main hand to sit on another player
     empty-hand-only: true
 

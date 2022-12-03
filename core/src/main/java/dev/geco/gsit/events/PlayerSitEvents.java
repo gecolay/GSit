@@ -13,6 +13,7 @@ import org.spigotmc.event.entity.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
+import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 
 public class PlayerSitEvents implements Listener {
@@ -21,14 +22,14 @@ public class PlayerSitEvents implements Listener {
 
     public PlayerSitEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    private final List<Player> WAIT = new ArrayList<>();
+    private final List<Player> WAIT_EJECT = new ArrayList<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void PTogSE(PlayerToggleSneakEvent Event) {
 
         Player player = Event.getPlayer();
 
-        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle() || WAIT.contains(player)) return;
+        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle() || WAIT_EJECT.contains(player)) return;
 
         if(!GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED)) Event.setCancelled(true);
     }
@@ -56,17 +57,32 @@ public class PlayerSitEvents implements Listener {
                 return;
             }
 
-            WAIT.add(player);
+            WAIT_EJECT.add(player);
 
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
 
-                    WAIT.remove(player);
+                    WAIT_EJECT.remove(player);
                 }
             }.runTaskLaterAsynchronously(GSitMain.getInstance(), 2);
         }
+
+        Entity bottom = GPM.getPassengerUtil().getBottomEntity(Event.getDismounted());
+
+        if(GPM.getCManager().PS_BOTTOM_RETURN && Event.getEntity() instanceof Player) {
+
+            Player player = (Player) Event.getEntity();
+
+            if(player.isValid() && NMSManager.isNewerOrVersion(17, 0)) {
+
+                GPM.getTeleportUtil().posEntity(player, bottom.getLocation());
+                GPM.getTeleportUtil().teleportEntity(player, bottom.getLocation(), true);
+            }
+        }
+
+        if(Event.getDismounted().hasMetadata(GPM.NAME + "A") && !NMSManager.isNewerOrVersion(17, 0)) GPM.getTeleportUtil().posEntity(Event.getDismounted(), bottom.getLocation());
 
         GPM.getPlayerSitManager().stopPlayerSit(Event.getDismounted(), GetUpReason.GET_UP);
 
@@ -98,7 +114,7 @@ public class PlayerSitEvents implements Listener {
 
         double distance = GPM.getCManager().PS_MAX_DISTANCE;
 
-        if(distance > 0d && target.getLocation().add(0, target.getHeight() / 2, 0).distance(player.getLocation().add(0, player.getHeight() / 2, 0)) > distance) return;
+        if(distance > 0d && target.getLocation().clone().add(0, target.getHeight() / 2, 0).distance(player.getLocation().clone().add(0, player.getHeight() / 2, 0)) > distance) return;
 
         if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(target.getLocation(), player)) return;
 
