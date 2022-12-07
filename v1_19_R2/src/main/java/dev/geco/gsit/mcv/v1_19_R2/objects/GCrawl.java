@@ -156,7 +156,7 @@ public class GCrawl implements IGCrawl {
 
                     if(boxPresent) {
 
-                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().packDirty()));
+                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
 
                         boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
 
@@ -169,7 +169,7 @@ public class GCrawl implements IGCrawl {
 
                         boxPresent = true;
 
-                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().packDirty()));
+                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
                     }
                 }
             }.runTask(GPM);
