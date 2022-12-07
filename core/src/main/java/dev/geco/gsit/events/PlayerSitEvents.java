@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.*;
 
@@ -108,7 +109,7 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 
-        if(!player.isValid() || !target.isValid() || player.isSneaking() || player.getGameMode() == GameMode.SPECTATOR) return;
+        if(!player.isValid() || !target.isValid() || player.isSneaking() || player.getOpenInventory().getType() != InventoryType.CRAFTING || player.getGameMode() == GameMode.SPECTATOR) return;
 
         if(GPM.getCrawlManager().isCrawling(player)) return;
 

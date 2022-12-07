@@ -33,6 +33,7 @@
         <module>v1_19_R1</module>
         <module>v1_19_R1_2</module>
         <module>dist</module>
+        <module>v1_19_R2</module>
     </modules>
 
     <properties>
