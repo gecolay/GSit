@@ -51,7 +51,6 @@ public class GPoseSeat implements IGPoseSeat {
 
     protected ClientboundBlockUpdatePacket setBedPacket;
     protected ClientboundPlayerInfoUpdatePacket addNpcInfoPacket;
-    protected ClientboundPlayerInfoRemovePacket removeNpcInfoPacket;
     protected ClientboundRemoveEntitiesPacket removeNpcPacket;
     protected ClientboundAddPlayerPacket createNpcPacket;
     protected ClientboundSetEntityDataPacket metaNpcPacket;
@@ -87,7 +86,6 @@ public class GPoseSeat implements IGPoseSeat {
 
         if(pose == org.bukkit.entity.Pose.SLEEPING) setBedPacket = new ClientboundBlockUpdatePacket(bedPos, Blocks.WHITE_BED.defaultBlockState().setValue(BedBlock.FACING, direction.getOpposite()).setValue(BedBlock.PART, BedPart.HEAD));
         addNpcInfoPacket = new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, playerNpc);
-        removeNpcInfoPacket = new ClientboundPlayerInfoRemovePacket(Arrays.asList(playerNpc.getUUID()));
         removeNpcPacket = new ClientboundRemoveEntitiesPacket(playerNpc.getId());
         createNpcPacket = new ClientboundAddPlayerPacket(playerNpc);
         metaNpcPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), playerNpc.getEntityData().isDirty() ? playerNpc.getEntityData().packDirty() : playerNpc.getEntityData().getNonDefaultValues());
@@ -159,15 +157,6 @@ public class GPoseSeat implements IGPoseSeat {
         spawnPlayer.connection.send(metaNpcPacket);
         if(pose == Pose.SLEEPING) spawnPlayer.connection.send(teleportNpcPacket);
         if(pose == Pose.SPIN_ATTACK) spawnPlayer.connection.send(rotateNpcPacket);
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-
-                spawnPlayer.connection.send(removeNpcInfoPacket);
-            }
-        }.runTaskLater(GPM, 15);
     }
 
     public void remove() {
@@ -195,8 +184,6 @@ public class GPoseSeat implements IGPoseSeat {
     private void removeToPlayer(Player Player) {
 
         ServerPlayer removePlayer = ((CraftPlayer) Player).getHandle();
-
-        removePlayer.connection.send(removeNpcInfoPacket);
         removePlayer.connection.send(removeNpcPacket);
 
         Player.sendBlockChange(blockLocation, bedData);
@@ -269,7 +256,7 @@ public class GPoseSeat implements IGPoseSeat {
             }
         };
 
-        task.runTaskTimerAsynchronously(GPM, 5, 1);
+        task.runTaskTimerAsynchronously(GPM, 0, 1);
     }
 
     private void stopUpdate() { if(task != null && !task.isCancelled()) task.cancel(); }
