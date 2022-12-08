@@ -52,6 +52,7 @@ public class MManager {
 
     private final List<String> LANG_FILES = new ArrayList<>(); {
 
+        LANG_FILES.add("cs_cz");
         LANG_FILES.add("de_de");
         LANG_FILES.add("en_en");
         LANG_FILES.add("es_es");
