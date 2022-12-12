@@ -19,7 +19,7 @@ git clone https://github.com/Gecolay/GSit.git
 
 ### Spigot BuildTools
 
-Install all the [BuildTools](https://www.spigotmc.org/wiki/buildtools/) versions:
+Install all the [BuildTools](https://www.spigotmc.org/wiki/buildtools/) versions (with the "--remapped" parameter):
 
 - [1.17](https://www.spigotmc.org/wiki/buildtools/#1-17)
 - [1.17.1](https://www.spigotmc.org/wiki/buildtools/#1-17-1)
