@@ -8,7 +8,7 @@ import org.bukkit.entity.*;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 
-public class SitUtil {
+public class EnvironmentUtil {
 
     private final GSitMain GPM;
 
@@ -16,7 +16,16 @@ public class SitUtil {
 
     public static final double STAIR_Y_OFFSET = 0.5d;
 
-    public SitUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public EnvironmentUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
+
+    public boolean isInAllowedWorld(Entity Entity) {
+
+        boolean allowed = !GPM.getCManager().WORLDBLACKLIST.contains(Entity.getWorld().getName());
+
+        if(GPM.getCManager().WORLDWHITELIST.size() > 0 && !GPM.getCManager().WORLDWHITELIST.contains(Entity.getWorld().getName())) allowed = false;
+
+        return allowed || GPM.getPManager().hasPermission(Entity, "ByPass.World", "ByPass.*");
+    }
 
     public GSeat createSeatForStair(Block Block, LivingEntity Entity) {
 

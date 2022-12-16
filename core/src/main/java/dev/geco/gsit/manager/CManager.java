@@ -84,6 +84,8 @@ public class CManager {
 
     public List<String> WORLDBLACKLIST = new ArrayList<>();
 
+    public List<String> WORLDWHITELIST = new ArrayList<>();
+
     public final List<Material> MATERIALBLACKLIST = new ArrayList<>();
 
     public List<String> COMMANDBLACKLIST = new ArrayList<>();
@@ -176,6 +178,7 @@ public class CManager {
 
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
+        WORLDWHITELIST = GPM.getConfig().getStringList("Options.WorldWhitelist");
         MATERIALBLACKLIST.clear();
         for(String s : GPM.getConfig().getStringList("Options.MaterialBlacklist")) {
 

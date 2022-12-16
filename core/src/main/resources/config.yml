@@ -131,6 +131,9 @@ Options:
   WorldBlacklist:
   - "blocked_world"
 
+  # Defines the worlds in which a player can sit, pose, crawl or emote (all other worlds will be blocked when the list is not empty)
+  WorldWhitelist: []
+
   # Defines the list of materials on which a player may not sit or pose
   MaterialBlacklist:
   - "lava"

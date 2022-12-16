@@ -2,6 +2,8 @@ package dev.geco.gsit.api;
 
 import java.util.*;
 
+import org.jetbrains.annotations.*;
+
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
 
@@ -25,7 +27,7 @@ public class GSitAPI {
      * @param Player Player
      * @return <code>true</code> if the Player can sit
      */
-    public static boolean canSit(Player Player) {
+    public static boolean canSit(@NotNull Player Player) {
         return getInstance().getToggleManager().canSit(Player.getUniqueId());
     }
 
@@ -35,7 +37,7 @@ public class GSitAPI {
      * @since 1.0.0
      * @param Player Player
      */
-    public static void setCanSit(Player Player, boolean CanSit) {
+    public static void setCanSit(@NotNull Player Player, boolean CanSit) {
         getInstance().getToggleManager().setCanSit(Player.getUniqueId(), CanSit);
     }
 
@@ -46,7 +48,7 @@ public class GSitAPI {
      * @param Entity Entity for this Seat
      * @return <code>true</code> if the Entity is sitting
      */
-    public static boolean isSitting(LivingEntity Entity) {
+    public static boolean isSitting(@NotNull LivingEntity Entity) {
         return getInstance().getSitManager().isSitting(Entity);
     }
 
@@ -67,7 +69,7 @@ public class GSitAPI {
      * @param Entity Entity for this Seat
      * @return Seat-Object or <code>null</code> if there was no Seat
      */
-    public static GSeat getSeat(LivingEntity Entity) {
+    public static GSeat getSeat(@NotNull LivingEntity Entity) {
         return getInstance().getSitManager().getSeat(Entity);
     }
 
@@ -78,7 +80,7 @@ public class GSitAPI {
      * @param Block Block for this Seats
      * @return List of Seat-Objects
      */
-    public static List<GSeat> getSeats(Block Block) {
+    public static List<GSeat> getSeats(@NotNull Block Block) {
         return getInstance().getSitManager().getSeats(Block);
     }
 
@@ -89,7 +91,7 @@ public class GSitAPI {
      * @param Blocks Blocks for this Seats
      * @return List of Seat-Objects
      */
-    public static List<GSeat> getSeats(List<Block> Blocks) {
+    public static List<GSeat> getSeats(@NotNull List<Block> Blocks) {
         return getInstance().getSitManager().getSeats(Blocks);
     }
 
@@ -101,7 +103,7 @@ public class GSitAPI {
      * @param Entity Entity for this Seat
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
-    public static GSeat createSeat(Block Block, LivingEntity Entity) {
+    public static GSeat createSeat(@NotNull Block Block, @NotNull LivingEntity Entity) {
         return getInstance().getSitManager().createSeat(Block, Entity);
     }
 
@@ -117,7 +119,7 @@ public class GSitAPI {
      * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Entity (<code>false</code>)
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
-    public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, float SeatRotationYaw, boolean SitAtBlock) {
+    public static GSeat createSeat(@NotNull Block Block, @NotNull LivingEntity Entity, boolean Rotate, float SeatRotationYaw, boolean SitAtBlock) {
         return createSeat(Block, Entity, Rotate, 0d, 0d, 0d, SeatRotationYaw, SitAtBlock);
     }
 
@@ -137,7 +139,7 @@ public class GSitAPI {
      * @param SitAtBlock Should the Seat be aligned with the Block (<code>true</code>) or the Entity (<code>false</code>)
      * @return Seat-Object or <code>null</code> if the creation was canceled
      */
-    public static GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
+    public static GSeat createSeat(@NotNull Block Block, @NotNull LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
         return getInstance().getSitManager().createSeat(Block, Entity, Rotate, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
     }
 
@@ -148,7 +150,7 @@ public class GSitAPI {
      * @param Entity Entity for this Seat
      * @param Direction The Direction in which the Seat should get moved
      */
-    public static void moveSeat(LivingEntity Entity, BlockFace Direction) {
+    public static void moveSeat(@NotNull LivingEntity Entity, @NotNull BlockFace Direction) {
         getInstance().getSitManager().moveSeat(Entity, Direction);
     }
 
@@ -160,7 +162,7 @@ public class GSitAPI {
      * @param Reason The Reason why the Seat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removeSeat(LivingEntity Entity, GetUpReason Reason) {
+    public static boolean removeSeat(@NotNull LivingEntity Entity, @NotNull GetUpReason Reason) {
         return getInstance().getSitManager().removeSeat(Entity, Reason);
     }
 
@@ -174,7 +176,7 @@ public class GSitAPI {
      * @param Safe Should the Entity get teleported to a safe Position
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removeSeat(LivingEntity Entity, GetUpReason Reason, boolean Safe) {
+    public static boolean removeSeat(@NotNull LivingEntity Entity, @NotNull GetUpReason Reason, boolean Safe) {
         return getInstance().getSitManager().removeSeat(Entity, Reason, Safe);
     }
 
@@ -185,7 +187,7 @@ public class GSitAPI {
      * @param Player Player
      * @return <code>true</code> if the Player can sit on a Player
      */
-    public static boolean canPlayerSit(Player Player) {
+    public static boolean canPlayerSit(@NotNull Player Player) {
         return getInstance().getToggleManager().canPlayerSit(Player.getUniqueId());
     }
 
@@ -195,7 +197,7 @@ public class GSitAPI {
      * @since 1.0.0
      * @param Player Player
      */
-    public static void setCanPlayerSit(Player Player, boolean CanPlayerSit) {
+    public static void setCanPlayerSit(@NotNull Player Player, boolean CanPlayerSit) {
         getInstance().getToggleManager().setCanPlayerSit(Player.getUniqueId(), CanPlayerSit);
     }
 
@@ -207,7 +209,7 @@ public class GSitAPI {
      * @param Target Target
      * @return <code>true</code> or <code>false</code> if the action was canceled
      */
-    public static boolean sitOnPlayer(Player Player, Player Target) {
+    public static boolean sitOnPlayer(@NotNull Player Player, @NotNull Player Target) {
         return getInstance().getPlayerSitManager().sitOnPlayer(Player, Target);
     }
 
@@ -219,7 +221,7 @@ public class GSitAPI {
      * @param Reason The Reason why the PlayerSit is stopped
      * @return <code>true</code> or <code>false</code> if the stop was canceled
      */
-    public static boolean stopPlayerSit(Entity Entity, GetUpReason Reason) {
+    public static boolean stopPlayerSit(@NotNull Entity Entity, @NotNull GetUpReason Reason) {
         return getInstance().getPlayerSitManager().stopPlayerSit(Entity, Reason);
     }
 
@@ -230,7 +232,7 @@ public class GSitAPI {
      * @param Player Player for this PoseSeat
      * @return <code>true</code> if the Player is posing
      */
-    public static boolean isPosing(Player Player) {
+    public static boolean isPosing(@NotNull Player Player) {
         return getInstance().getPoseManager().isPosing(Player);
     }
 
@@ -251,7 +253,7 @@ public class GSitAPI {
      * @param Player Player for this PoseSeat
      * @return PoseSeat-Object or <code>null</code> if there was no PoseSeat
      */
-    public static IGPoseSeat getPose(Player Player) {
+    public static IGPoseSeat getPose(@NotNull Player Player) {
         return getInstance().getPoseManager().getPose(Player);
     }
 
@@ -262,7 +264,7 @@ public class GSitAPI {
      * @param Block Block for this PoseSeats
      * @return List of PoseSeat-Objects
      */
-    public static List<IGPoseSeat> getPoses(Block Block) {
+    public static List<IGPoseSeat> getPoses(@NotNull Block Block) {
         return getInstance().getPoseManager().getPoses(Block);
     }
 
@@ -273,7 +275,7 @@ public class GSitAPI {
      * @param Blocks Blocks for this PoseSeats
      * @return List of PoseSeat-Objects
      */
-    public static List<IGPoseSeat> getPoses(List<Block> Blocks) {
+    public static List<IGPoseSeat> getPoses(@NotNull List<Block> Blocks) {
         return getInstance().getPoseManager().getPoses(Blocks);
     }
 
@@ -286,7 +288,7 @@ public class GSitAPI {
      * @param Pose Player-Pose {@link Pose}
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
-    public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose) {
+    public static IGPoseSeat createPose(@NotNull Block Block, @NotNull Player Player, @NotNull Pose Pose) {
         return getInstance().getPoseManager().createPose(Block, Player, Pose);
     }
 
@@ -302,7 +304,7 @@ public class GSitAPI {
      * @param SitAtBlock Should the PoseSeat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
-    public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, float SeatRotationYaw, boolean SitAtBlock) {
+    public static IGPoseSeat createPose(@NotNull Block Block, @NotNull Player Player, @NotNull Pose Pose, float SeatRotationYaw, boolean SitAtBlock) {
         return createPose(Block, Player, Pose, 0d, 0d, 0d, SeatRotationYaw, SitAtBlock);
     }
 
@@ -322,7 +324,7 @@ public class GSitAPI {
      * @param SitAtBlock Should the PoseSeat be aligned with the Block (<code>true</code>) or the Player (<code>false</code>)
      * @return PoseSeat-Object or <code>null</code> if the creation was canceled
      */
-    public static IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
+    public static IGPoseSeat createPose(@NotNull Block Block, @NotNull Player Player, @NotNull Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotationYaw, boolean SitAtBlock) {
         return getInstance().getPoseManager().createPose(Block, Player, Pose, XOffset, YOffset, ZOffset, SeatRotationYaw, SitAtBlock);
     }
 
@@ -334,7 +336,7 @@ public class GSitAPI {
      * @param Reason The Reason why the PoseSeat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removePose(Player Player, GetUpReason Reason) {
+    public static boolean removePose(@NotNull Player Player, @NotNull GetUpReason Reason) {
         return getInstance().getPoseManager().removePose(Player, Reason);
     }
 
@@ -348,7 +350,7 @@ public class GSitAPI {
      * @param Safe Should the Player get teleported to a safe Position
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean removePose(Player Player, GetUpReason Reason, boolean Safe) {
+    public static boolean removePose(@NotNull Player Player, @NotNull GetUpReason Reason, boolean Safe) {
         return getInstance().getPoseManager().removePose(Player, Reason, Safe);
     }
 
@@ -359,7 +361,7 @@ public class GSitAPI {
      * @param Player Player for this Crawl-Object
      * @return <code>true</code> if the Player is crawling
      */
-    public static boolean isCrawling(Player Player) {
+    public static boolean isCrawling(@NotNull Player Player) {
         return getInstance().getCrawlManager().isCrawling(Player);
     }
 
@@ -380,7 +382,7 @@ public class GSitAPI {
      * @param Player Player for this Crawl-Object
      * @return Crawl-Object or <code>null</code> if there was no Crawl-Object
      */
-    public static IGCrawl getCrawl(Player Player) {
+    public static IGCrawl getCrawl(@NotNull Player Player) {
         return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().getCrawl(Player) : null;
     }
 
@@ -391,7 +393,7 @@ public class GSitAPI {
      * @param Player Player for this Crawl-Object
      * @return Crawl-Object or <code>null</code> if the creation was canceled
      */
-    public static IGCrawl startCrawl(Player Player) {
+    public static IGCrawl startCrawl(@NotNull Player Player) {
         return getInstance().getCrawlManager() != null ? getInstance().getCrawlManager().startCrawl(Player) : null;
     }
 
@@ -403,7 +405,7 @@ public class GSitAPI {
      * @param Reason The Reason why the Crawl-Object gets removed
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean stopCrawl(Player Player, GetUpReason Reason) {
+    public static boolean stopCrawl(@NotNull Player Player, @NotNull GetUpReason Reason) {
         return getInstance().getCrawlManager() != null && getInstance().getCrawlManager().stopCrawl(Player, Reason);
     }
 
@@ -414,7 +416,7 @@ public class GSitAPI {
      * @param Entity Entity for this Emote-Object
      * @return <code>true</code> if the Entity is emoting
      */
-    public static boolean isEmoting(LivingEntity Entity) {
+    public static boolean isEmoting(@NotNull LivingEntity Entity) {
         return getInstance().getEmoteManager().isEmoting(Entity);
     }
 
@@ -445,7 +447,7 @@ public class GSitAPI {
      * @param Entity Entity for this Emote-Object
      * @return Emote-Object or <code>null</code> if there was no Emote-Object
      */
-    public static GEmote getEmote(LivingEntity Entity) {
+    public static GEmote getEmote(@NotNull LivingEntity Entity) {
         return getInstance().getEmoteManager().getEmote(Entity);
     }
 
@@ -457,7 +459,7 @@ public class GSitAPI {
      * @param Emote Emote
      * @return <code>true</code> or <code>false</code> if the creation was canceled
      */
-    public static boolean startEmote(LivingEntity Entity, GEmote Emote) {
+    public static boolean startEmote(@NotNull LivingEntity Entity, @NotNull GEmote Emote) {
         return getInstance().getEmoteManager().startEmote(Entity, Emote);
     }
 
@@ -468,7 +470,7 @@ public class GSitAPI {
      * @param Entity Entity for this Emote-Object
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean stopEmote(LivingEntity Entity) {
+    public static boolean stopEmote(@NotNull LivingEntity Entity) {
         return getInstance().getEmoteManager().stopEmote(Entity);
     }
 

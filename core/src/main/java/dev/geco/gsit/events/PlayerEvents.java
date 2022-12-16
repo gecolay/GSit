@@ -131,10 +131,7 @@ public class PlayerEvents implements Listener {
 
             if(!GPM.getPManager().hasPermission(player, "Crawl")) return;
 
-            if(!GPM.getPManager().hasPermission(player, "ByPass.Region", "ByPass.*")) {
-
-                if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(player, "ByPass.World", "ByPass.*")) return;
-            }
+            if(!GPM.getPManager().hasPermission(player, "ByPass.Region", "ByPass.*") && !GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
             if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) return;
 

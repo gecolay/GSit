@@ -40,7 +40,7 @@ public class InteractEvents implements Listener {
 
         if(GPM.getCManager().MATERIALBLACKLIST.contains(clickedBlock.getType())) return;
 
-        if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(player, "ByPass.World", "ByPass.*")) return;
+        if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
         if(!player.isValid() || !player.isOnGround() || player.isSneaking() || player.isInsideVehicle()) return;
 
@@ -66,7 +66,7 @@ public class InteractEvents implements Listener {
 
             if(((Stairs) clickedBlock.getBlockData()).getHalf() == Half.BOTTOM) {
 
-                if(GPM.getSitUtil().createSeatForStair(clickedBlock, player) != null) {
+                if(GPM.getEnvironmentUtil().createSeatForStair(clickedBlock, player) != null) {
 
                     Event.setCancelled(true);
 

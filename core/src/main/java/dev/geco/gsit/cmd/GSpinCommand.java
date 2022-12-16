@@ -55,7 +55,7 @@ public class GSpinCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+        if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.action-pose-world-error");
             return true;

@@ -48,7 +48,7 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+            if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-sit-world-error");
                 return true;
@@ -104,7 +104,7 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(Tag.STAIRS.isTagged(block.getType()) ? GPM.getSitUtil().createSeatForStair(block, player) == null : GPM.getSitManager().createSeat(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+            if(Tag.STAIRS.isTagged(block.getType()) ? GPM.getEnvironmentUtil().createSeatForStair(block, player) == null : GPM.getSitManager().createSeat(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
             return true;
         }
 

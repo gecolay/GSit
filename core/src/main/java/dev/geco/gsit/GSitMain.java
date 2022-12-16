@@ -53,8 +53,8 @@ public class GSitMain extends JavaPlugin {
     private PassengerUtil passengerUtil;
     public PassengerUtil getPassengerUtil() { return passengerUtil; }
 
-    private SitUtil sitUtil;
-    public SitUtil getSitUtil() { return sitUtil; }
+    private EnvironmentUtil environmentUtil;
+    public EnvironmentUtil getEnvironmentUtil() { return environmentUtil; }
 
     private ISpawnUtil spawnUtil;
     public ISpawnUtil getSpawnUtil() { return spawnUtil; }
@@ -153,7 +153,7 @@ public class GSitMain extends JavaPlugin {
 
         emoteUtil = new EmoteUtil();
         passengerUtil = new PassengerUtil(getInstance());
-        sitUtil = new SitUtil(getInstance());
+        environmentUtil = new EnvironmentUtil(getInstance());
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
 

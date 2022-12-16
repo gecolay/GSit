@@ -141,7 +141,7 @@ public class SitManager {
 
         seats.remove(seat);
 
-        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? seat.getReturn() : seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? SitUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d));
+        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? seat.getReturn() : seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d));
 
         if(!GPM.getCManager().GET_UP_RETURN) {
 

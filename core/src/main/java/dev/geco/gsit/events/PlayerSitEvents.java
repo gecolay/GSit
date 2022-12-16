@@ -105,7 +105,7 @@ public class PlayerSitEvents implements Listener {
 
         if(!GPM.getPManager().hasPermission(player, "PlayerSit")) return;
 
-        if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(player, "ByPass.World", "ByPass.*")) return;
+        if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 

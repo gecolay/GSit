@@ -57,7 +57,7 @@ public class GCrawlCommand implements CommandExecutor {
 
             if(!GPM.getPManager().hasPermission(Sender, "ByPass.Region", "ByPass.*")) {
 
-                if(GPM.getCManager().WORLDBLACKLIST.contains(player.getWorld().getName()) && !GPM.getPManager().hasPermission(Sender, "ByPass.World", "ByPass.*")) {
+                if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) {
 
                     GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-world-error");
                     return true;
