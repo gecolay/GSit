@@ -91,6 +91,9 @@ public class CManager {
     public List<String> COMMANDBLACKLIST = new ArrayList<>();
 
 
+    public List<String> FEATUREFLAGS = new ArrayList<>();
+
+
     private final GSitMain GPM;
 
     public CManager(GSitMain GPluginMain) {
@@ -138,16 +141,16 @@ public class CManager {
         CENTER_BLOCK = GPM.getConfig().getBoolean("Options.center-block", true);
 
         S_SITMATERIALS.clear();
-        for(String s : GPM.getConfig().getStringList("Options.Sit.SitMaterials")) {
+        for(String material : GPM.getConfig().getStringList("Options.Sit.SitMaterials")) {
 
             try {
 
-                String[] m = s.split(";");
+                String[] materialAndOffset = material.split(";");
 
-                if(m[0].startsWith("#")) {
+                if(materialAndOffset[0].startsWith("#")) {
 
-                    for(Material a : Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(m[0].substring(1).toLowerCase()), Material.class).getValues()) S_SITMATERIALS.put(a, m.length > 1 ? Double.parseDouble(m[1]) : 0d);
-                } else S_SITMATERIALS.put(Material.valueOf(m[0].toUpperCase()), m.length > 1 ? Double.parseDouble(m[1]) : 0d);
+                    for(Material a : Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(materialAndOffset[0].substring(1).toLowerCase()), Material.class).getValues()) S_SITMATERIALS.put(a, materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
+                } else S_SITMATERIALS.put(Material.valueOf(materialAndOffset[0].toUpperCase()), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
             } catch (Exception | Error ignored) { }
         }
         S_BOTTOM_PART_ONLY = GPM.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
@@ -180,15 +183,17 @@ public class CManager {
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
         WORLDWHITELIST = GPM.getConfig().getStringList("Options.WorldWhitelist");
         MATERIALBLACKLIST.clear();
-        for(String s : GPM.getConfig().getStringList("Options.MaterialBlacklist")) {
+        for(String material : GPM.getConfig().getStringList("Options.MaterialBlacklist")) {
 
             try {
 
-                if(s.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(s.substring(1).toLowerCase()), Material.class).getValues());
-                else MATERIALBLACKLIST.add(Material.valueOf(s.toUpperCase()));
+                if(material.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(material.substring(1).toLowerCase()), Material.class).getValues());
+                else MATERIALBLACKLIST.add(Material.valueOf(material.toUpperCase()));
             } catch (Exception | Error ignored) { }
         }
         COMMANDBLACKLIST = GPM.getConfig().getStringList("Options.CommandBlacklist");
+
+        FEATUREFLAGS = GPM.getConfig().getStringList("FeatureFlags");
     }
 
 }

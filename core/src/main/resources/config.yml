@@ -142,3 +142,6 @@ Options:
   CommandBlacklist:
   - "skin"
   - "nick"
+
+# Defines the list of active feature flags (most likely unofficial features for individual use)
+FeatureFlags: []

@@ -11,6 +11,7 @@ import dev.geco.gsit.api.event.*;
 import dev.geco.gsit.cmd.*;
 import dev.geco.gsit.cmd.tab.*;
 import dev.geco.gsit.events.*;
+import dev.geco.gsit.events.features.*;
 import dev.geco.gsit.link.*;
 import dev.geco.gsit.manager.*;
 import dev.geco.gsit.util.*;
@@ -218,6 +219,8 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerSitEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
+
+        getServer().getPluginManager().registerEvents(new SpinConfusionEvent(getInstance()), getInstance());
     }
 
     private void preloadPluginDependencies() { }
