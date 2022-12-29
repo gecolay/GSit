@@ -14,13 +14,13 @@ public class SpinConfusionEvent implements Listener {
     public SpinConfusionEvent(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void BPisEE(PlayerGetUpPoseEvent Event) {
+    public void PGetUPE(PlayerGetUpPoseEvent Event) {
 
         if(Event.getPoseSeat().getPose() != Pose.SPIN_ATTACK) return;
 
         if(!GPM.getCManager().FEATUREFLAGS.contains("SPIN_CONFUSION")) return;
 
-        Event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 6, 2));
+        Event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 120, 2));
     }
 
 }
