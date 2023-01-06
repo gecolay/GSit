@@ -35,6 +35,9 @@ public class PlayerSitEvents implements Listener {
         GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED);
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void PGamMCE(PlayerGameModeChangeEvent Event) { if(Event.getNewGameMode() == GameMode.SPECTATOR) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.ACTION); }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void PDeaE(PlayerDeathEvent Event) { if(Event.getEntity().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(Event.getEntity(), GetUpReason.DEATH); }
 
