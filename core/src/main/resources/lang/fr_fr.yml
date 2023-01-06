@@ -8,9 +8,9 @@ Plugin:
 
   plugin-enabled: "[P]&a Le plugin a été activé avec succès."
   plugin-link: "[P]&a Lien avec&6 %Link%&a réussi !"
-  plugin-update: "[P]&a Nouvelle version disponible :&6 %NewVersion%&a !\n[P]&a Vous êtes en train d'exécuter la version :&6 %Version%&a !\n[P]&a Téléchargez la dernière version sur :\n[P]&6 %Path%"
-  plugin-version: "[P]&c Ce plugin ne peut pas être utilisé avec cette version du serveur ! (&b%Version%&c)"
-  plugin-reload: "[P]&a The plugin was successfully reloaded."
+  plugin-update: "[P]&a Nouvelle version disponible :&6 %NewVersion%&a !\n[P]&a Vous êtes actuellement sur la version :&6 %Version%&a !\n[P]&a Téléchargez la dernière version sur :\n[P]&6 %Path%"
+  plugin-version: "[P]&c Ce plugin ne peut pas être utilisé avec cette version de serveur ! (&b%Version%&c)"
+  plugin-reload: "[P]&a Le plugin a été rechargé avec succès."
   plugin-disabled: "[P]&a Le plugin a été désactivé avec succès."
   plugin-prefix: "&7[&6GSit&7]"
 
@@ -20,14 +20,14 @@ Messages:
 
   command-permission-error: "[P]&c Vous n'avez pas la permission d'utiliser cette commande !"
   command-sender-error: "[P]&c Cet expéditeur ne peut pas exécuter cette commande !"
-  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
+  command-version-error: "[P]&c Version de serveur obsolète ! (&b%Version%&c)\n[P]&c Mettez à jour le serveur pour utiliser cette fonctionnalité !"
 
   command-gsit-toggle-on: "[P]&a Vous avez activé les interactions par clic pour s’asseoir."
   command-gsit-toggle-off: "[P]&a Vous avez désactivé les interactions par clic pour s’asseoir."
   command-gsit-playertoggle-on: "[P]&a Vous pouvez maintenant vous asseoir en cliquant."
   command-gsit-playertoggle-off: "[P]&a Vous ne pouvez plus vous asseoir en cliquant."
-  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
-  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
+  command-gcrawl-toggle-on: "[P]&a Vous avez activé le double-sneak pour ramper."
+  command-gcrawl-toggle-off: "[P]&a Vous avez désactivé le double-sneak pour ramper."
 
   action-sit-now-error: "[P]&c Vous ne pouvez pas vous asseoir maintenant !"
   action-sit-world-error: "[P]&c Vous ne pouvez pas vous asseoir dans ce monde !"
@@ -52,12 +52,12 @@ Messages:
   action-crawl-region-error: "[P]&c Vous ne pouvez pas ramper dans cette zone !"
   action-crawl-info: "&aUtiliser votre touche&6 <lang:key.sneak>&a pour vous lever."
 
-  action-emote-none-error: "[P]&c You're not using an emote right now!"
-  action-emote-stop-error: "[P]&c You can't stop emoting!"
-  action-emote-stop: "[P]&a You stopped emoting."
-  action-emote-exist-error: "[P]&c The Emote&6 %Emote%&c does not exist!"
-  action-emote-now-error: "[P]&c You can't emote right now!"
-  action-emote-world-error: "[P]&c You can't emote in this world!"
-  action-emote-region-error: "[P]&c You can't emote in this region!"
+  action-emote-none-error: "[P]&c Vous n'utilisez pas d'emote actuellement !"
+  action-emote-stop-error: "[P]&c Vous ne pouvez pas arrêter d'emote !"
+  action-emote-stop: "[P]&a Vous avez arrêté d'emote."
+  action-emote-exist-error: "[P]&c L'emote&6 %Emote%&c n'existe pas !"
+  action-emote-now-error: "[P]&c Vous ne pouvez pas emote tout de suite !"
+  action-emote-world-error: "[P]&c Vous ne pouvez pas emote dans ce monde !"
+  action-emote-region-error: "[P]&c Vous ne pouvez pas emote dans cette région !"
 
   action-blocked-error: "[P]&c Vous n'êtes pas autorisé à utiliser cette commande pour le moment !"
