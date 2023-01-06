@@ -73,12 +73,12 @@ public class MManager {
 
     public MManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
-        try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch (ClassNotFoundException e) { allowBungeeMessages = false; }
+        try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch (Throwable e) { allowBungeeMessages = false; }
         try {
             Class.forName("net.kyori.adventure.text.minimessage.MiniMessage");
             Class.forName("net.kyori.adventure.text.Component");
             Class.forName("net.kyori.adventure.audience.Audience");
-        } catch (ClassNotFoundException e) { allowComponentMessages = false; }
+        } catch (Throwable e) { allowComponentMessages = false; }
         loadMessages();
     }
 
@@ -104,7 +104,7 @@ public class MManager {
                     }
                     lang.save(langFile);
                     messages.put(langFileName, lang);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
                     if(!langFile.exists()) GPM.saveResource("lang/" + langFileName + ".yml", false);
                     messages.put(langFileName, YamlConfiguration.loadConfiguration(langFile));
@@ -133,17 +133,27 @@ public class MManager {
         if(!allowComponentMessages) return text;
         for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue()).replace(tag.getKey().toUpperCase(), tag.getValue());
         text = text.replaceAll("(?<!<color:)#[a-fA-F0-9]{6}(?<!>)", "<reset><color:$0>");
-        try { return MiniMessage.miniMessage().deserialize(text); } catch (Exception e) { return Component.text(toFormattedMessage(Text)); }
+        try { return MiniMessage.miniMessage().deserialize(text); } catch (Throwable e) { return Component.text(toFormattedMessage(Text)); }
     }
 
     public void sendMessage(CommandSender Target, String Message, Object... ReplaceList) {
-        if(allowComponentMessages) ((Audience) Target).sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
-        else if(allowBungeeMessages) Target.sendMessage(getLanguageMessage(Message, getLanguage(Target), ReplaceList));
+        try {
+            if(allowComponentMessages) {
+                ((Audience) Target).sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+                return;
+            }
+        } catch (Throwable ignored) { }
+        Target.sendMessage(getLanguageMessage(Message, getLanguage(Target), ReplaceList));
     }
 
     public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList) {
-        if(allowComponentMessages) ((Audience) Target).sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
-        else if(allowBungeeMessages) Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getLanguageMessage(Message, getLanguage(Target), ReplaceList)));
+        try {
+            if(allowComponentMessages) {
+                ((Audience) Target).sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+                return;
+            }
+        } catch (Throwable ignored) { }
+        if(allowBungeeMessages) Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getLanguageMessage(Message, getLanguage(Target), ReplaceList)));
     }
 
     public String getMessage(String Message, Object... ReplaceList) { return getLanguageMessage(Message, GPM.getCManager().L_LANG, ReplaceList); }
