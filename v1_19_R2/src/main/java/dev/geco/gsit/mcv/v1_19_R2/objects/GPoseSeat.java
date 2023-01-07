@@ -159,7 +159,15 @@ public class GPoseSeat implements IGPoseSeat {
         spawnPlayer.connection.send(metaNpcPacket);
         if(pose == Pose.SLEEPING) spawnPlayer.connection.send(teleportNpcPacket);
         if(pose == Pose.SPIN_ATTACK) spawnPlayer.connection.send(rotateNpcPacket);
-        spawnPlayer.connection.send(removeNpcInfoPacket);
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+
+                spawnPlayer.connection.send(removeNpcInfoPacket);
+            }
+        }.runTaskLater(GPM, 15);
     }
 
     public void remove() {
