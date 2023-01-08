@@ -121,6 +121,12 @@ Options:
 
     # Defines whether a player can double-sneak in a short amount of time to start crawling
     double-sneak: false
+    
+    
+  GEmote:
+    
+    #Defines maximum range emotes can be seen from. Default 250
+    max-distance: 250
 
 
 
