@@ -22,7 +22,7 @@ public class GEmote {
 
     protected HashMap<Entity, BukkitRunnable> tasks = new HashMap<>();
 
-    protected long range = 250;
+    protected long range = (long) GSitMain.getInstance().getCManager().GEMOTE_MAX_DISTANCE;
 
     public GEmote(String Id, List<GEmotePart> Parts, long Loop, boolean Head) {
 
