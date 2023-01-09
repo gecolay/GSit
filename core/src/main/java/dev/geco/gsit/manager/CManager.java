@@ -79,7 +79,8 @@ public class CManager {
 
     public boolean C_DOUBLE_SNEAK;
 
-    public double GEMOTE_MAX_DISTANCE;
+
+    public double E_MAX_DISTANCE;
 
 
     public boolean TRUSTED_REGION_ONLY;
@@ -181,6 +182,8 @@ public class CManager {
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
         C_DOUBLE_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.double-sneak", false);
 
+        E_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Emote.max-distance");
+
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
         WORLDWHITELIST = GPM.getConfig().getStringList("Options.WorldWhitelist");
@@ -196,8 +199,6 @@ public class CManager {
         COMMANDBLACKLIST = GPM.getConfig().getStringList("Options.CommandBlacklist");
 
         FEATUREFLAGS = GPM.getConfig().getStringList("FeatureFlags");
-		
-		GEMOTE_MAX_DISTANCE = GPM.getConfig().getDouble("Options.GEmote.max-distance");
     }
 
 }

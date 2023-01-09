@@ -51,7 +51,7 @@ Options:
     empty-hand-only: true
 
     # Defines the maximum range in which a player can sit down by clicking (0 means unlimited)
-    max-distance: 0.00
+    max-distance: 0.0
 
     # Defines whether a player should receive a custom message when sitting
     sit-message: true
@@ -121,12 +121,13 @@ Options:
 
     # Defines whether a player can double-sneak in a short amount of time to start crawling
     double-sneak: false
-    
-    
-  GEmote:
-    
-    #Defines maximum range emotes can be seen from. Default 250
-    max-distance: 250
+
+
+
+  Emote:
+
+    # Defines the maximum range at which emotes can be seen
+    max-distance: 250.0
 
 
 

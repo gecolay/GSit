@@ -18,7 +18,7 @@
         <worldguard.version>7.0.7</worldguard.version>
         <placeholderapi.version>2.11.2</placeholderapi.version>
         <griefprevention.version>16.18</griefprevention.version>
-        <plotsquared.version>6.10.5</plotsquared.version>
+        <plotsquared.version>6.10.6</plotsquared.version>
     </properties>
 
     <repositories>
