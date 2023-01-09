@@ -79,6 +79,8 @@ public class CManager {
 
     public boolean C_DOUBLE_SNEAK;
 
+    public double GEMOTE_MAX_DISTANCE;
+
 
     public boolean TRUSTED_REGION_ONLY;
 
@@ -194,6 +196,8 @@ public class CManager {
         COMMANDBLACKLIST = GPM.getConfig().getStringList("Options.CommandBlacklist");
 
         FEATUREFLAGS = GPM.getConfig().getStringList("FeatureFlags");
+		
+		GEMOTE_MAX_DISTANCE = GPM.getConfig().getDouble("Options.GEmote.max-distance");
     }
 
 }
