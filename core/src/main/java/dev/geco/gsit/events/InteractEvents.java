@@ -42,7 +42,7 @@ public class InteractEvents implements Listener {
 
         if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
-        if(!player.isValid() || !player.isOnGround() || player.isSneaking() || player.isInsideVehicle()) return;
+        if(!player.isValid() || player.isSneaking() || player.isInsideVehicle()) return;
 
         if(!GPM.getToggleManager().canSit(player.getUniqueId())) return;
 

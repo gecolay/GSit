@@ -127,7 +127,7 @@ Options:
   Emote:
 
     # Defines the maximum range at which emotes can be seen
-    max-distance: 250.0
+    max-distance: 192.0
 
 
 
