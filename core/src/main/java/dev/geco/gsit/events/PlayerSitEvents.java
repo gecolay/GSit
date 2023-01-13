@@ -112,7 +112,9 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 
-        if(!player.isValid() || !target.isValid() || player.isSneaking() || player.getOpenInventory().getType() != InventoryType.CRAFTING || player.getGameMode() == GameMode.SPECTATOR) return;
+        if(!player.isValid() || !target.isValid() || player.isSneaking() || player.getGameMode() == GameMode.SPECTATOR) return;
+
+        if((player.getGameMode() == GameMode.CREATIVE && player.getOpenInventory().getType() != InventoryType.CREATIVE) || (player.getGameMode() != GameMode.CREATIVE && player.getOpenInventory().getType() != InventoryType.CRAFTING)) return;
 
         if(GPM.getCrawlManager().isCrawling(player)) return;
 
@@ -142,9 +144,7 @@ public class PlayerSitEvents implements Listener {
 
         boolean isNPC = GPM.getPassengerUtil().isNPC(highestPlayer);
 
-        if(isNPC && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
-
-        if(!isNPC && !GPM.getCManager().PS_ALLOW_SIT) return;
+        if((isNPC && !GPM.getCManager().PS_ALLOW_SIT_NPC) || (!isNPC && !GPM.getCManager().PS_ALLOW_SIT)) return;
 
         GPM.getPlayerSitManager().sitOnPlayer(player, highestPlayer);
     }
