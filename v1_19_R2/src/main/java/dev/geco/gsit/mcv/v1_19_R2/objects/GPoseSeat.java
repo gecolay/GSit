@@ -58,6 +58,8 @@ public class GPoseSeat implements IGPoseSeat {
     protected ClientboundTeleportEntityPacket teleportNpcPacket;
     protected ClientboundMoveEntityPacket.PosRot rotateNpcPacket;
 
+    private List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentSlotCache;
+
     private BukkitRunnable task;
 
     private final Listener listener;
@@ -86,8 +88,9 @@ public class GPoseSeat implements IGPoseSeat {
         setNpcMeta();
 
         if(pose == org.bukkit.entity.Pose.SLEEPING) setBedPacket = new ClientboundBlockUpdatePacket(bedPos, Blocks.WHITE_BED.defaultBlockState().setValue(BedBlock.FACING, direction.getOpposite()).setValue(BedBlock.PART, BedPart.HEAD));
-        addNpcInfoPacket = new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, playerNpc);
-        removeNpcInfoPacket = new ClientboundPlayerInfoRemovePacket(Arrays.asList(playerNpc.getUUID()));
+        EnumSet<ClientboundPlayerInfoUpdatePacket.Action> infoPacketActions = EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, ClientboundPlayerInfoUpdatePacket.Action.INITIALIZE_CHAT, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_GAME_MODE, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_DISPLAY_NAME);
+        addNpcInfoPacket = new ClientboundPlayerInfoUpdatePacket(infoPacketActions, Collections.singletonList(playerNpc));
+        removeNpcInfoPacket = new ClientboundPlayerInfoRemovePacket(Collections.singletonList(playerNpc.getUUID()));
         removeNpcPacket = new ClientboundRemoveEntitiesPacket(playerNpc.getId());
         createNpcPacket = new ClientboundAddPlayerPacket(playerNpc);
         metaNpcPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), playerNpc.getEntityData().isDirty() ? playerNpc.getEntityData().packDirty() : playerNpc.getEntityData().getNonDefaultValues());
@@ -344,7 +347,11 @@ public class GPoseSeat implements IGPoseSeat {
             if(itemStack != null) equipmentList.add(Pair.of(equipmentSlot, itemStack));
         }
 
-        ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(playerNpc.getId(), equipmentList);
+        if(equipmentSlotCache != null && equipmentSlotCache.equals(equipmentList)) return;
+
+        equipmentSlotCache = equipmentList;
+
+        ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(playerNpc.getId(), equipmentSlotCache);
 
         for(Player nearPlayer : nearPlayers) ((CraftPlayer) nearPlayer).getHandle().connection.send(setEquipmentPacket);
     }
