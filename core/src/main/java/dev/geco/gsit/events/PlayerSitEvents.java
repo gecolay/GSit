@@ -35,6 +35,9 @@ public class PlayerSitEvents implements Listener {
         GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void PTelE(PlayerTeleportEvent Event) { if(Event.getCause() != PlayerTeleportEvent.TeleportCause.DISMOUNT) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.TELEPORT); }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void PGamMCE(PlayerGameModeChangeEvent Event) { if(Event.getNewGameMode() == GameMode.SPECTATOR) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.ACTION); }
 
