@@ -36,7 +36,7 @@ public class PlotSquaredLink {
 
             if(plot == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
-            return !GPM.getCManager().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId());
+            return !plot.isDenied(Player.getUniqueId()) && (!GPM.getCManager().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId()));
 
         } catch (Exception | Error e) { e.printStackTrace(); }
 
