@@ -63,6 +63,7 @@ public class MManager {
         LANG_FILES.add("pl_pl");
         LANG_FILES.add("pt_br");
         LANG_FILES.add("ru_ru");
+        LANG_FILES.add("sk_sk");
         LANG_FILES.add("uk_ua");
         LANG_FILES.add("zh_cn");
         LANG_FILES.add("zh_tw");

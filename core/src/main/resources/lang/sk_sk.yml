@@ -1,0 +1,63 @@
+#
+# Language-File created by:		RobiNN
+#
+
+
+
+Plugin:
+
+  plugin-enabled: "[P]&a Plugin bol úspešne povolený."
+  plugin-link: "[P]&a Prepojenie s&6 %Link%&a úspešné!"
+  plugin-update: "[P]&a K dispozícii je nová verzia:&6 %NewVersion%&a!\n[P]&a Momentálne používaš verziu:&6 %Version%&a!\n[P]&a Stiahni si najnovšiu verziu na:\n[P]&6 %Path%"
+  plugin-version: "[P]&c Plugin nie je možné použiť s touto verziou servera! (&b%Version%&c)"
+  plugin-reload: "[P]&a Plugin bol úspešne znovu načítaný."
+  plugin-disabled: "[P]&a Plugin bol úspešne vypnutý."
+  plugin-prefix: "&7[&6GSit&7]"
+
+
+
+Messages:
+
+  command-permission-error: "[P]&c Nemáš povolenie pre použitie tohto príkazu!"
+  command-sender-error: "[P]&c Nemôžeš spustiť tento príkaz!"
+  command-version-error: "[P]&c Zastaraná verzia servera! (&b%Version%&c)\n[P]&c Aktualizuj tento server, ak chceš používať túto funkciu!"
+
+  command-gsit-toggle-on: "[P]&a Povolil/a si klikacie interakcie pre sedenie."
+  command-gsit-toggle-off: "[P]&a Zakázal/a si klikacie interakcie pre sedenie."
+  command-gsit-playertoggle-on: "[P]&a Povolil/a si klikacie interakcie pre sedenie na hráča."
+  command-gsit-playertoggle-off: "[P]&a Zakázal/a si klikacie interakcie pre sedenie na hráča."
+  command-gcrawl-toggle-on: "[P]&a Povolil/a si dvojité skrčenie pre plazenie."
+  command-gcrawl-toggle-off: "[P]&a Zakázal/a si dvojité skrčenie pre plazenie."
+
+  action-sit-now-error: "[P]&c Teraz nemôžeš sedieť!"
+  action-sit-world-error: "[P]&c Nemôžeš sedieť v tomto svete!"
+  action-sit-location-error: "[P]&c Tu nemôžeš sedieť!"
+  action-sit-safe-error: "[P]&c Nie je bezpečné tu sedieť!"
+  action-sit-region-error: "[P]&c Nemôžeš sedieť v tomto regióne!"
+  action-sit-kick-error: "[P]&c Už tu niekto sedí!"
+  action-sit-info: "&aPouži&6 <lang:key.sneak>&a klávesu pre vstatie"
+
+  action-playersit-info: "&aPouži&6 <lang:key.sneak>&a klávesu pre zoskočenie"
+
+  action-pose-now-error: "[P]&c Teraz nemôžeš pózovať!"
+  action-pose-world-error: "[P]&c Nemôžeš pózovať v tomto svete!"
+  action-pose-location-error: "[P]&c Tu nemôžeš pózovať!"
+  action-pose-safe-error: "[P]&c Nie je bezpečné tu pózovať!"
+  action-pose-region-error: "[P]&c Nemôžeš pózovať v tomto regióne!"
+  action-pose-kick-error: "[P]&c Už tu niekto pózuje!"
+  action-pose-info: "&aPouži&6 <lang:key.sneak>&a klávesu pre zastavenie pózovania"
+
+  action-crawl-now-error: "[P]&c Teraz sa nemôžeš plaziť!"
+  action-crawl-world-error: "[P]&c Nemôžeš sa plaziť v tomto svete!"
+  action-crawl-region-error: "[P]&c Nemôžeš sa plaziť v tomto regióne!"
+  action-crawl-info: "&aPouži&6 <lang:key.sneak>&a klávesu pre vstatie"
+
+  action-emote-none-error: "[P]&c Momentálne nepoužívaš emote!"
+  action-emote-stop-error: "[P]&c Nemôžeš zastaviť emote!"
+  action-emote-stop: "[P]&a Zastavil/a si emote."
+  action-emote-exist-error: "[P]&c Emote&6 %Emote%&c neexistuje!"
+  action-emote-now-error: "[P]&c Teraz nemôžeš použiť emote!"
+  action-emote-world-error: "[P]&c Nemôžeš použiť emote v tomto svete!"
+  action-emote-region-error: "[P]&c Nemôžeš použiť emote v tomto regióne!"
+
+  action-blocked-error: "[P]&c Teraz nemáš povolené spustiť tento príkaz!"
