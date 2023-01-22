@@ -36,7 +36,7 @@ public class PlayerSitEvents implements Listener {
     }
 
     //@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    //public void PTelE(PlayerTeleportEvent Event) { if(Event.getCause() != PlayerTeleportEvent.TeleportCause.DISMOUNT) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.TELEPORT); }
+    //public void PTelE(PlayerTeleportEvent Event) { if(!Event.getCause().name().equals("DISMOUNT")) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.TELEPORT); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void PGamMCE(PlayerGameModeChangeEvent Event) { if(Event.getNewGameMode() == GameMode.SPECTATOR) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.ACTION); }
@@ -116,6 +116,8 @@ public class PlayerSitEvents implements Listener {
         if(GPM.getCManager().PS_EMPTY_HAND_ONLY && player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
 
         if(!player.isValid() || !target.isValid() || player.isSneaking() || player.getGameMode() == GameMode.SPECTATOR) return;
+
+        if(GPM.getCManager().FEATUREFLAGS.contains("DISABLE_PLAYERSIT_ELYTRA") && player.isGliding()) return;
 
         if((player.getGameMode() == GameMode.CREATIVE && player.getOpenInventory().getType() != InventoryType.CREATIVE) || (player.getGameMode() != GameMode.CREATIVE && player.getOpenInventory().getType() != InventoryType.CRAFTING)) return;
 
