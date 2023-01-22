@@ -12,6 +12,7 @@ public class BoxEntity extends Shulker {
     public BoxEntity(Location Location) {
 
         super(EntityType.SHULKER, ((CraftWorld) Location.getWorld()).getHandle());
+        setPos(Location.getX(), Location.getY(), Location.getZ());
 
         persist = false;
 
