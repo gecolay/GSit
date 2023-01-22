@@ -24,6 +24,7 @@ import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.*;
 import net.minecraft.server.*;
 import net.minecraft.server.level.*;
+import net.minecraft.world.effect.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.*;
 
@@ -192,8 +193,6 @@ public class GPoseSeat implements IGPoseSeat {
 
         setEquipmentVisibility(true);
 
-        seatPlayer.setInvisible(false);
-
         serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), playerNpc.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
         serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), playerNpc.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
 
@@ -319,6 +318,8 @@ public class GPoseSeat implements IGPoseSeat {
     }
 
     private void updateSkin() {
+
+        playerNpc.setInvisible(serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY));
 
         SynchedEntityData entityData = playerNpc.getEntityData();
 
