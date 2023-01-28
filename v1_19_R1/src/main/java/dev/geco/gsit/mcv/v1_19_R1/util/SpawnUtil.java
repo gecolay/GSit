@@ -12,6 +12,8 @@ import dev.geco.gsit.mcv.v1_19_R1.objects.*;
 
 public class SpawnUtil implements ISpawnUtil {
 
+    private final GSitMain GPM = GSitMain.getInstance();
+
     public boolean needCheck() { return false; }
 
     public boolean checkLocation(Location Location) { return true; }
@@ -20,11 +22,25 @@ public class SpawnUtil implements ISpawnUtil {
 
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
+        if(Rider == null || !Rider.isValid()) return null;
+
+        boolean riding = true;
+
+        net.minecraft.world.entity.Entity rider = ((CraftEntity) Rider).getHandle();
+
         SeatEntity seatEntity = new SeatEntity(Location);
 
-        if(Rider != null && Rider.isValid()) ((CraftEntity) Rider).getHandle().startRiding(seatEntity, true);
+        if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
         ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(seatEntity);
+
+        if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
+
+        if(!riding || !seatEntity.passengers.contains(rider)) {
+
+            seatEntity.discard();
+            return null;
+        }
 
         if(Rotate) seatEntity.startRotate();
 
@@ -37,13 +53,13 @@ public class SpawnUtil implements ISpawnUtil {
 
         Entity lastEntity = Holder;
 
-        int maxEntities = GSitMain.getInstance().PLAYER_SIT_SEAT_ENTITIES;
+        int maxEntities = GPM.PLAYER_SIT_SEAT_ENTITIES;
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
             PlayerSeatEntity playerSeatEntity = new PlayerSeatEntity(lastEntity.getLocation());
 
-            playerSeatEntity.getBukkitEntity().setMetadata(GSitMain.getInstance().NAME + "A", new FixedMetadataValue(GSitMain.getInstance(), lastEntity));
+            playerSeatEntity.getBukkitEntity().setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, lastEntity));
 
             playerSeatEntity.startRiding(((CraftEntity) lastEntity).getHandle(), true);
 

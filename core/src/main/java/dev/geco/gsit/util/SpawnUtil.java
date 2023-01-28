@@ -9,6 +9,8 @@ import dev.geco.gsit.manager.*;
 
 public class SpawnUtil implements ISpawnUtil {
 
+    private final GSitMain GPM = GSitMain.getInstance();
+
     public boolean needCheck() { return true; }
 
     public boolean checkLocation(Location Location) {
@@ -47,6 +49,10 @@ public class SpawnUtil implements ISpawnUtil {
 
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
+        if(Rider == null || !Rider.isValid()) return null;
+
+        final boolean[] riding = { true };
+
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
             try { armorStand.setInvisible(true); } catch (Error e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored) { } }
@@ -56,8 +62,16 @@ public class SpawnUtil implements ISpawnUtil {
             try { armorStand.setSmall(true); } catch (Error ignored) { }
             try { armorStand.setBasePlate(false); } catch (Error ignored) { }
 
-            if(Rider != null && Rider.isValid()) armorStand.addPassenger(Rider);
+            if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding[0] = armorStand.addPassenger(Rider);
         });
+
+        if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding[0] = seatEntity.addPassenger(Rider);
+
+        if(!riding[0] || !seatEntity.getPassengers().contains(Rider)) {
+
+            seatEntity.remove();
+            return null;
+        }
 
         return seatEntity;
     }
@@ -68,7 +82,7 @@ public class SpawnUtil implements ISpawnUtil {
 
         Entity lastEntity = Holder;
 
-        int maxEntities = GSitMain.getInstance().PLAYER_SIT_SEAT_ENTITIES;
+        int maxEntities = GPM.PLAYER_SIT_SEAT_ENTITIES;
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
@@ -84,7 +98,7 @@ public class SpawnUtil implements ISpawnUtil {
                 try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
                 try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
 
-                areaEffectCloud.setMetadata(GSitMain.getInstance().NAME + "A", new FixedMetadataValue(GSitMain.getInstance(), finalLastEntity));
+                areaEffectCloud.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, finalLastEntity));
 
                 finalLastEntity.addPassenger(areaEffectCloud);
                 if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(Rider);

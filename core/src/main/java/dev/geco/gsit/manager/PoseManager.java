@@ -6,7 +6,7 @@ import java.util.stream.*;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
-import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -64,19 +64,13 @@ public class PoseManager {
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
-        PrePlayerPoseEvent preEvent = new PrePlayerPoseEvent(Player, Block);
+        Location playerLocation = Player.getLocation().clone();
 
-        Bukkit.getPluginManager().callEvent(preEvent);
-
-        if(preEvent.isCancelled()) return null;
+        Location returnLocation = playerLocation.clone();
 
         double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
         offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
-
-        Location playerLocation = Player.getLocation().clone();
-
-        Location returnLocation = playerLocation.clone();
 
         if(SitAtBlock) {
 
@@ -88,19 +82,35 @@ public class PoseManager {
 
         if(!GPM.getSpawnUtil().checkLocation(playerLocation)) return null;
 
+        PrePlayerPoseEvent preEvent = new PrePlayerPoseEvent(Player, Block);
+
+        Bukkit.getPluginManager().callEvent(preEvent);
+
+        if(preEvent.isCancelled()) return null;
+
         playerLocation.setYaw(SeatRotation);
 
         Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(playerLocation, Player, true);
 
-        if(GPM.getCManager().P_POSE_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
+        if(seatEntity == null) return null;
 
-        GSeat seat = new GSeat(Block, playerLocation, Player, seatEntity, returnLocation);
+        if(GPM.getCManager().P_POSE_MESSAGE) {
 
-        IGPoseSeat poseSeat = getPoseSeatInstance(seat, Pose);
+            GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
+
+            if(GPM.getCManager().ENHANCED_COMPATIBILITY) new BukkitRunnable() {
+
+                @Override
+                public void run() {
+
+                    GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
+                }
+            }.runTaskLater(GPM, 2);
+        }
+
+        IGPoseSeat poseSeat = getPoseSeatInstance(new GSeat(Block, playerLocation, Player, seatEntity, returnLocation), Pose);
 
         poseSeat.spawn();
-
-        seatEntity.setMetadata(GPM.NAME + "P", new FixedMetadataValue(GPM, poseSeat));
 
         poses.add(poseSeat);
 

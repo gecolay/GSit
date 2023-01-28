@@ -15,6 +15,8 @@ public class CManager {
 
     public boolean CHECK_FOR_UPDATE;
 
+    public boolean ENHANCED_COMPATIBILITY;
+
     public boolean GET_UP_DAMAGE;
 
     public boolean GET_UP_SNEAK;
@@ -135,6 +137,7 @@ public class CManager {
         L_LANG = GPM.getConfig().getString("Lang.lang", "en_en").toLowerCase();
 
         CHECK_FOR_UPDATE = GPM.getConfig().getBoolean("Options.check-for-update", true);
+        ENHANCED_COMPATIBILITY = GPM.getConfig().getBoolean("Options.enhanced-compatibility", false);
         GET_UP_DAMAGE = GPM.getConfig().getBoolean("Options.get-up-damage", false);
         GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.get-up-sneak", true);
         GET_UP_RETURN = GPM.getConfig().getBoolean("Options.get-up-return", false);

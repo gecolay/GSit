@@ -7,7 +7,7 @@ import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
-import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -58,39 +58,51 @@ public class SitManager {
 
     public GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
+        Location playerLocation = Entity.getLocation().clone();
+
+        Location returnLocation = playerLocation.clone();
+
+        double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
+
+        offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+
+        if(SitAtBlock) {
+
+            playerLocation = Block.getLocation().clone().add(0.5d + XOffset, YOffset + offset - 0.2d, 0.5d + ZOffset);
+        } else {
+
+            playerLocation = playerLocation.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
+        }
+
+        if(!GPM.getSpawnUtil().checkLocation(playerLocation)) return null;
+
         PreEntitySitEvent preEvent = new PreEntitySitEvent(Entity, Block);
 
         Bukkit.getPluginManager().callEvent(preEvent);
 
         if(preEvent.isCancelled()) return null;
 
-        double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
+        playerLocation.setYaw(SeatRotation);
 
-        offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(playerLocation, Entity, Rotate);
 
-        Location location = Entity.getLocation().clone();
+        if(seatEntity == null) return null;
 
-        Location returnLocation = location.clone();
+        if(GPM.getCManager().S_SIT_MESSAGE && Entity instanceof Player) {
 
-        if(SitAtBlock) {
+            GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
 
-            location = Block.getLocation().clone().add(0.5d + XOffset, YOffset + offset - 0.2d, 0.5d + ZOffset);
-        } else {
+            if(GPM.getCManager().ENHANCED_COMPATIBILITY) new BukkitRunnable() {
 
-            location = location.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
+                @Override
+                public void run() {
+
+                    GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
+                }
+            }.runTaskLater(GPM, 2);
         }
 
-        if(!GPM.getSpawnUtil().checkLocation(location)) return null;
-
-        location.setYaw(SeatRotation);
-
-        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(location, Entity, Rotate);
-
-        if(GPM.getCManager().S_SIT_MESSAGE && Entity instanceof Player) GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
-
-        GSeat seat = new GSeat(Block, location, Entity, seatEntity, returnLocation);
-
-        seatEntity.setMetadata(GPM.NAME, new FixedMetadataValue(GPM, seat));
+        GSeat seat = new GSeat(Block, playerLocation, Entity, seatEntity, returnLocation);
 
         seats.add(seat);
 

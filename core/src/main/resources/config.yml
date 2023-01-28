@@ -10,6 +10,10 @@ Options:
   # Defines whether the plugin should notify when a new version is available
   check-for-update: true
 
+  # Defines whether the plugin uses an extended compatibility mode for all features
+  # Enable this option only if, for example, anti-cheat plugins report false feedback
+  enhanced-compatibility: false
+
   # Defines whether a player should get up after taking damage
   get-up-damage: false
 
