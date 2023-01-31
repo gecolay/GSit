@@ -29,7 +29,7 @@ public class PlayerSitManager {
 
         if(preEvent.isCancelled()) return false;
 
-        if(!GPM.getSpawnUtil().checkPlayerLocation(Target)) return false;
+        if(!GPM.getSpawnUtil().isPlayerSitLocationValid(Target)) return false;
 
         GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
 

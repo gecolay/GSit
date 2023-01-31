@@ -11,13 +11,13 @@ public class SpawnUtil implements ISpawnUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
 
-    public boolean needCheck() { return true; }
+    public boolean isLocationValid(Location Location) {
 
-    public boolean checkLocation(Location Location) {
+        Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-        if(!needCheck()) return true;
-
-        Entity seatEntity = createSeatEntity(Location, null, false);
+            try { armorStand.setInvisible(true); } catch (Error e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored) { } }
+            try { armorStand.setMarker(true); } catch (Error ignored) { }
+        });
 
         boolean valid = seatEntity.isValid();
 
@@ -26,16 +26,11 @@ public class SpawnUtil implements ISpawnUtil {
         return valid;
     }
 
-    public boolean checkPlayerLocation(Entity Holder) {
-
-        if(!needCheck()) return true;
+    public boolean isPlayerSitLocationValid(Entity Holder) {
 
         Entity playerSeatEntity = Holder.getWorld().spawn(Holder.getLocation(), AreaEffectCloud.class, areaEffectCloud -> {
 
             try { areaEffectCloud.setRadius(0); } catch (Exception ignored) { }
-            try { areaEffectCloud.setGravity(false); } catch (Exception ignored) { }
-            try { areaEffectCloud.setInvulnerable(true); } catch (Exception ignored) { }
-            try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Exception ignored) { }
             try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
             try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
         });
@@ -49,8 +44,6 @@ public class SpawnUtil implements ISpawnUtil {
 
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
-        if(Rider == null || !Rider.isValid()) return null;
-
         final boolean[] riding = { true };
 
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
@@ -62,12 +55,12 @@ public class SpawnUtil implements ISpawnUtil {
             try { armorStand.setSmall(true); } catch (Error ignored) { }
             try { armorStand.setBasePlate(false); } catch (Error ignored) { }
 
-            if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding[0] = armorStand.addPassenger(Rider);
+            if(!GPM.getCManager().ENHANCED_COMPATIBILITY && Rider != null && Rider.isValid()) riding[0] = armorStand.addPassenger(Rider);
         });
 
-        if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding[0] = seatEntity.addPassenger(Rider);
+        if(GPM.getCManager().ENHANCED_COMPATIBILITY && Rider != null && Rider.isValid()) riding[0] = seatEntity.addPassenger(Rider);
 
-        if(!riding[0] || !seatEntity.getPassengers().contains(Rider)) {
+        if(Rider != null && Rider.isValid() && (!riding[0] || !seatEntity.getPassengers().contains(Rider))) {
 
             seatEntity.remove();
             return null;

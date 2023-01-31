@@ -6,20 +6,13 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.*;
 import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.util.*;
 import dev.geco.gsit.mcv.v1_17_R1.objects.*;
 
-public class SpawnUtil implements ISpawnUtil {
+public class SpawnUtil extends dev.geco.gsit.util.SpawnUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
 
-    private final dev.geco.gsit.util.SpawnUtil spawnUtil = new dev.geco.gsit.util.SpawnUtil();
-
-    public boolean needCheck() { return false; }
-
-    public boolean checkLocation(Location Location) { return true; }
-
-    public boolean checkPlayerLocation(Entity Holder) { return spawnUtil.checkPlayerLocation(Holder); }
+    public boolean isLocationValid(Location Location) { return true; }
 
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
@@ -47,7 +40,5 @@ public class SpawnUtil implements ISpawnUtil {
 
         return seatEntity.getBukkitEntity();
     }
-
-    public void createPlayerSeatEntity(Entity Holder, Entity Rider) { spawnUtil.createPlayerSeatEntity(Holder, Rider); }
 
 }

@@ -74,7 +74,7 @@ public class SitManager {
             playerLocation = playerLocation.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
         }
 
-        if(!GPM.getSpawnUtil().checkLocation(playerLocation)) return null;
+        if(!GPM.getSpawnUtil().isLocationValid(playerLocation)) return null;
 
         PreEntitySitEvent preEvent = new PreEntitySitEvent(Entity, Block);
 

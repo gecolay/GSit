@@ -5,11 +5,9 @@ import org.bukkit.entity.*;
 
 public interface ISpawnUtil {
 
-    boolean needCheck();
+    boolean isLocationValid(Location Location);
 
-    boolean checkLocation(Location Location);
-
-    boolean checkPlayerLocation(Entity Holder);
+    boolean isPlayerSitLocationValid(Entity Holder);
 
     Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate);
 

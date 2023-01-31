@@ -14,13 +14,13 @@ public class PlotSquaredLink {
 
     public PlotSquaredLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean canCreateSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getSpawnUtil().checkLocation(Location)); }
+    public boolean canCreateSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getSpawnUtil().isLocationValid(Location)); }
 
-    public boolean canCreatePlayerSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getSpawnUtil().checkPlayerLocation(Player)); }
+    public boolean canCreatePlayerSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getSpawnUtil().isPlayerSitLocationValid(Player)); }
 
-    private boolean canCreate(Location Location, Player Player, boolean CheckLocation) {
+    private boolean canCreate(Location Location, Player Player, boolean IsLocationValid) {
 
-        if(!CheckLocation) return false;
+        if(!IsLocationValid) return false;
 
         try {
 

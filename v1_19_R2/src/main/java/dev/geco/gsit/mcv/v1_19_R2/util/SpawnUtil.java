@@ -14,11 +14,9 @@ public class SpawnUtil implements ISpawnUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
 
-    public boolean needCheck() { return false; }
+    public boolean isLocationValid(Location Location) { return true; }
 
-    public boolean checkLocation(Location Location) { return true; }
-
-    public boolean checkPlayerLocation(Entity Holder) { return true; }
+    public boolean isPlayerSitLocationValid(Entity Holder) { return true; }
 
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
