@@ -10,7 +10,7 @@ Plugin:
   plugin-link: "[P]&a 成功链接到&6 %Link%&a !"
   plugin-update: "[P]&a 新版本可用:&6 %NewVersion%&a!\n[P]&a 当前使用版本:&6 %Version%&a!\n[P]&a 下载最新版本:\n[P]&6 %Path%"
   plugin-version: "[P]&c 插件与当前服务器版本不兼容! (&b%Version%&c)"
-  plugin-reload: "[P]&a The plugin was successfully reloaded."
+  plugin-reload: "[P]&a 插件已成功重载."
   plugin-disabled: "[P]&a 插件已成功禁用"
   plugin-prefix: "&7[&6GSit&7]"
 
@@ -26,8 +26,8 @@ Messages:
   command-gsit-toggle-off: "[P]&a 你不能通过右键坐下了"
   command-gsit-playertoggle-on: "[P]&a 你可以通过右键坐在其他玩家身上了"
   command-gsit-playertoggle-off: "[P]&a 你不能通过右键坐在其他玩家身上了"
-  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
-  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
+  command-gcrawl-toggle-on: "[P]&a 你可以通过双击潜行键进行爬行了."
+  command-gcrawl-toggle-off: "[P]&a 你不能通过双击潜行键进行爬行了."
 
   action-sit-now-error: "[P]&c 你现在不能坐下!"
   action-sit-world-error: "[P]&c 你不能在这个世界坐下!"
@@ -52,7 +52,7 @@ Messages:
   action-crawl-region-error: "[P]&c 你不能在这个区域爬行!"
   action-crawl-info: "&a使用&6 <lang:key.sneak>&a 键起来"
 
-  action-emote-none-error: "[P]&c You're not using an emote right now!"
+  action-emote-none-error: "[P]&c 你现在没有做表情!"
   action-emote-stop-error: "[P]&c 你不能停止做表情!"
   action-emote-stop: "[P]&a 你停止了做表情."
   action-emote-exist-error: "[P]&c 表情&6 %Emote%&c 不存在!"
