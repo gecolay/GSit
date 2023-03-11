@@ -21,6 +21,9 @@ public class GSitMain extends JavaPlugin {
     private CManager cManager;
     public CManager getCManager() { return cManager; }
 
+    private DManager dManager;
+    public DManager getDManager() { return dManager; }
+
     private SitManager sitManager;
     public SitManager getSitManager() { return sitManager; }
 
@@ -91,11 +94,13 @@ public class GSitMain extends JavaPlugin {
 
     private void loadSettings() {
 
+        dManager.connect();
+
         copyEmoteFiles();
 
         getEmoteManager().reloadEmotes();
 
-        getToggleManager().loadToggleData();
+        getToggleManager().createTable();
     }
 
     private void linkBStats() {
@@ -141,6 +146,7 @@ public class GSitMain extends JavaPlugin {
 
         GPM = this;
 
+        dManager = new DManager(getInstance());
         cManager = new CManager(getInstance());
         uManager = new UManager(getInstance());
         pManager = new PManager(getInstance());
@@ -183,12 +189,12 @@ public class GSitMain extends JavaPlugin {
 
     public void onDisable() {
 
+        dManager.close();
         getSitManager().clearSeats();
         getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
         getCrawlManager().clearCrawls();
         getEmoteManager().clearEmotes();
-        getToggleManager().saveToggleData();
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
 
@@ -262,12 +268,12 @@ public class GSitMain extends JavaPlugin {
         getCManager().reload();
         getMManager().loadMessages();
 
+        dManager.close();
         getSitManager().clearSeats();
         getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
         getCrawlManager().clearCrawls();
         getEmoteManager().reloadEmotes();
-        getToggleManager().saveToggleData();
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
 

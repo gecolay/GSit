@@ -27,6 +27,7 @@ Install all the [BuildTools](https://www.spigotmc.org/wiki/buildtools/) versions
 - [1.18.2](https://www.spigotmc.org/wiki/buildtools/#1-18-2)
 - [1.19](https://www.spigotmc.org/wiki/buildtools/#1-19)
 - [1.19.2](https://www.spigotmc.org/wiki/buildtools/#1-19-2)
+- [1.19.3](https://www.spigotmc.org/wiki/buildtools/#1-19-3)
 
 ### Build
 

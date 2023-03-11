@@ -108,7 +108,7 @@ Options:
     lay-rest: true
 
     # Defines whether a player makes snoring sounds when lying down
-    lay-snoring-sounds: true
+    lay-snoring-sounds: false
 
     # Defines whether snoring sounds are only heard at night
     lay-snoring-night-only: true
