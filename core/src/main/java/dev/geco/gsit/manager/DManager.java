@@ -17,8 +17,8 @@ public class DManager {
 
     public DManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
-        File dataFile = new File(GPM.getDataFolder(), "data.yml");
-        if(!dataFile.exists()) GPM.saveResource("data.yml", false);
+        File dataFile = new File(GPM.getDataFolder(), "data/data.yml");
+        if(!dataFile.exists()) GPM.saveResource("data/data.yml", false);
         dataConfig = YamlConfiguration.loadConfiguration(dataFile);
     }
 
@@ -51,7 +51,7 @@ public class DManager {
                 case "mysql":
                     return DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database, User, Password);
                 case "sqlite":
-                    return DriverManager.getConnection("jdbc:sqlite:" + new File(GPM.getDataFolder(), "data.db").getPath());
+                    return DriverManager.getConnection("jdbc:sqlite:" + new File(GPM.getDataFolder(), "data/data.db").getPath());
             }
         } catch (Exception e) { e.printStackTrace(); }
         return null;
