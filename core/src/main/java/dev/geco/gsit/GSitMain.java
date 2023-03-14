@@ -60,11 +60,8 @@ public class GSitMain extends JavaPlugin {
     private EnvironmentUtil environmentUtil;
     public EnvironmentUtil getEnvironmentUtil() { return environmentUtil; }
 
-    private ISpawnUtil spawnUtil;
-    public ISpawnUtil getSpawnUtil() { return spawnUtil; }
-
-    private ITeleportUtil teleportUtil;
-    public ITeleportUtil getTeleportUtil() { return teleportUtil; }
+    private IEntityUtil entityUtil;
+    public IEntityUtil getEntityUtil() { return entityUtil; }
 
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
@@ -174,8 +171,7 @@ public class GSitMain extends JavaPlugin {
         loadSettings();
         if(!versionCheck()) return;
 
-        spawnUtil = NMSManager.isNewerOrVersion(17, 0) ? (ISpawnUtil) NMSManager.getPackageObject("util.SpawnUtil", null) : new SpawnUtil();
-        teleportUtil = NMSManager.isNewerOrVersion(17, 0) ? (ITeleportUtil) NMSManager.getPackageObject("util.TeleportUtil", null) : new TeleportUtil();
+        entityUtil = NMSManager.isNewerOrVersion(17, 0) ? (IEntityUtil) NMSManager.getPackageObject("util.EntityUtil", null) : new EntityUtil();
 
         setupCommands();
         setupEvents();

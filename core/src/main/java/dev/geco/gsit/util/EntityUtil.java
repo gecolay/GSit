@@ -7,9 +7,19 @@ import org.bukkit.metadata.*;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.manager.*;
 
-public class SpawnUtil implements ISpawnUtil {
+public class EntityUtil implements IEntityUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
+
+    public void posEntity(Entity Entity, Location Location) {
+
+        try {
+
+            Object entity = NMSManager.getHandle(Entity);
+
+            NMSManager.getMethod("setPosition", entity.getClass(), double.class, double.class, double.class).invoke(entity, Location.getX(), Location.getY(), Location.getZ());
+        } catch (Exception ignored) { }
+    }
 
     public boolean isLocationValid(Location Location) {
 

@@ -61,7 +61,7 @@ public class CrawlManager {
 
     private IGCrawl getCrawlInstance(Player Player) {
         try {
-            Class<?> petClass = Class.forName("dev.geco.gsit.mcv." + NMSManager.getPackageVersion() + ".objects.G" + (NMSManager.isNewerOrVersion(19, 3) && GPM.getCManager().FEATUREFLAGS.contains("BOX_CRAWL") ? "BoxCrawl" : "Crawl"));
+            Class<?> petClass = Class.forName("dev.geco.gsit.mcv." + NMSManager.getPackageVersion() + ".objects.G" + (NMSManager.isNewerOrVersion(19, 4) && GPM.getCManager().FEATUREFLAGS.contains("BOX_CRAWL") ? "BoxCrawl" : "Crawl"));
             return (IGCrawl) petClass.getConstructor(Player.class).newInstance(Player);
         } catch (Exception e) {
             e.printStackTrace();

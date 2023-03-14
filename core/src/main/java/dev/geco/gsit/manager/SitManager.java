@@ -74,7 +74,7 @@ public class SitManager {
             playerLocation = playerLocation.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
         }
 
-        if(!GPM.getSpawnUtil().isLocationValid(playerLocation)) return null;
+        if(!GPM.getEntityUtil().isLocationValid(playerLocation)) return null;
 
         PreEntitySitEvent preEvent = new PreEntitySitEvent(Entity, Block);
 
@@ -84,7 +84,7 @@ public class SitManager {
 
         playerLocation.setYaw(SeatRotation);
 
-        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(playerLocation, Entity, Rotate);
+        Entity seatEntity = GPM.getEntityUtil().createSeatEntity(playerLocation, Entity, Rotate);
 
         if(seatEntity == null) return null;
 
@@ -134,7 +134,7 @@ public class SitManager {
 
         seat.setLocation(seat.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
 
-        GPM.getTeleportUtil().posEntity(seat.getSeatEntity(), seat.getLocation());
+        GPM.getEntityUtil().posEntity(seat.getSeatEntity(), seat.getLocation());
     }
 
     public boolean removeSeat(LivingEntity Entity, GetUpReason Reason) { return removeSeat(Entity, Reason, true); }
@@ -161,18 +161,11 @@ public class SitManager {
             returnLocation.setPitch(seat.getEntity().getLocation().getPitch());
         }
 
-        if(seat.getEntity().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) {
+        if(seat.getEntity().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
 
-            GPM.getTeleportUtil().posEntity(seat.getEntity(), returnLocation);
-            GPM.getTeleportUtil().teleportEntity(seat.getEntity(), returnLocation, true);
-        }
+        if(seat.getSeatEntity().isValid() && !NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
 
-        if(seat.getSeatEntity().isValid()) {
-
-            if(!NMSManager.isNewerOrVersion(17, 0)) GPM.getTeleportUtil().posEntity(seat.getSeatEntity(), returnLocation);
-
-            seat.getSeatEntity().remove();
-        }
+        seat.getSeatEntity().remove();
 
         Bukkit.getPluginManager().callEvent(new EntityGetUpSitEvent(seat, Reason));
 

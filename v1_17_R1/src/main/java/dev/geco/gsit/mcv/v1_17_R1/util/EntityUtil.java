@@ -5,12 +5,22 @@ import org.bukkit.craftbukkit.v1_17_R1.*;
 import org.bukkit.craftbukkit.v1_17_R1.entity.*;
 import org.bukkit.entity.*;
 
+import net.minecraft.network.protocol.game.*;
+
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.mcv.v1_17_R1.objects.*;
 
-public class SpawnUtil extends dev.geco.gsit.util.SpawnUtil {
+public class EntityUtil extends dev.geco.gsit.util.EntityUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
+
+    public void posEntity(org.bukkit.entity.Entity Entity, Location Location) {
+
+        if(Entity instanceof Player) {
+
+            ((CraftPlayer) Entity).getHandle().connection.send(new ClientboundPlayerPositionPacket(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch(), ClientboundPlayerPositionPacket.RelativeArgument.unpack(0), 0, true));
+        } else ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch());
+    }
 
     public boolean isLocationValid(Location Location) { return true; }
 

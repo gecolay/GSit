@@ -1,18 +1,28 @@
-package dev.geco.gsit.mcv.v1_19_R2.util;
+package dev.geco.gsit.mcv.v1_19_R1_2.util;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_19_R2.*;
-import org.bukkit.craftbukkit.v1_19_R2.entity.*;
+import org.bukkit.craftbukkit.v1_19_R1.*;
+import org.bukkit.craftbukkit.v1_19_R1.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.*;
 
+import net.minecraft.network.protocol.game.*;
+
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.util.*;
-import dev.geco.gsit.mcv.v1_19_R2.objects.*;
+import dev.geco.gsit.mcv.v1_19_R1_2.objects.*;
 
-public class SpawnUtil implements ISpawnUtil {
+public class EntityUtil implements IEntityUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
+
+    public void posEntity(org.bukkit.entity.Entity Entity, Location Location) {
+
+        if(Entity instanceof Player) {
+
+            ((CraftPlayer) Entity).getHandle().connection.send(new ClientboundPlayerPositionPacket(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch(), ClientboundPlayerPositionPacket.RelativeArgument.unpack(0), 0, true));
+        } else ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch());
+    }
 
     public boolean isLocationValid(Location Location) { return true; }
 
@@ -55,7 +65,7 @@ public class SpawnUtil implements ISpawnUtil {
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
-            PlayerSeatEntity playerSeatEntity = new PlayerSeatEntity(lastEntity.getLocation());
+            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(lastEntity.getLocation());
 
             playerSeatEntity.getBukkitEntity().setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, lastEntity));
 
@@ -69,21 +79,19 @@ public class SpawnUtil implements ISpawnUtil {
         }
     }
 
-    private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
+    private void spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
 
         try {
 
-            return ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
+            ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
         } catch (Throwable paper) {
 
             try {
 
                 net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
-                return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
+                levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
             } catch (Throwable e) { e.printStackTrace(); }
         }
-
-        return false;
     }
 
 }

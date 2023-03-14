@@ -29,9 +29,9 @@ public class PlayerSitManager {
 
         if(preEvent.isCancelled()) return false;
 
-        if(!GPM.getSpawnUtil().isPlayerSitLocationValid(Target)) return false;
+        if(!GPM.getEntityUtil().isPlayerSitLocationValid(Target)) return false;
 
-        GPM.getSpawnUtil().createPlayerSeatEntity(Target, Player);
+        GPM.getEntityUtil().createPlayerSeatEntity(Target, Player);
 
         if(GPM.getCManager().PS_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-playersit-info");
 

@@ -3,7 +3,9 @@ package dev.geco.gsit.util;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
-public interface ISpawnUtil {
+public interface IEntityUtil {
+
+    void posEntity(Entity Entity, Location Location);
 
     boolean isLocationValid(Location Location);
 

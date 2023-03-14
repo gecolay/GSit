@@ -80,7 +80,7 @@ public class PoseManager {
             playerLocation = playerLocation.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
         }
 
-        if(!GPM.getSpawnUtil().isLocationValid(playerLocation)) return null;
+        if(!GPM.getEntityUtil().isLocationValid(playerLocation)) return null;
 
         PrePlayerPoseEvent preEvent = new PrePlayerPoseEvent(Player, Block);
 
@@ -90,7 +90,7 @@ public class PoseManager {
 
         playerLocation.setYaw(SeatRotation);
 
-        Entity seatEntity = GPM.getSpawnUtil().createSeatEntity(playerLocation, Player, true);
+        Entity seatEntity = GPM.getEntityUtil().createSeatEntity(playerLocation, Player, true);
 
         if(seatEntity == null) return null;
 
@@ -156,13 +156,9 @@ public class PoseManager {
             returnLocation.setPitch(poseSeat.getPlayer().getLocation().getPitch());
         }
 
-        if(poseSeat.getPlayer().isValid() && Safe) {
+        if(poseSeat.getPlayer().isValid() && Safe) GPM.getEntityUtil().posEntity(poseSeat.getPlayer(), returnLocation);
 
-            GPM.getTeleportUtil().posEntity(poseSeat.getPlayer(), returnLocation);
-            GPM.getTeleportUtil().teleportEntity(poseSeat.getPlayer(), returnLocation, true);
-        }
-
-        if(poseSeat.getSeat().getSeatEntity().isValid()) poseSeat.getSeat().getSeatEntity().remove();
+        poseSeat.getSeat().getSeatEntity().remove();
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseSeat, Reason));
 

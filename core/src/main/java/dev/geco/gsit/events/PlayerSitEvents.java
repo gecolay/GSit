@@ -35,9 +35,6 @@ public class PlayerSitEvents implements Listener {
         GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED);
     }
 
-    //@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    //public void PTelE(PlayerTeleportEvent Event) { if(!Event.getCause().name().equals("DISMOUNT")) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.TELEPORT); }
-
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void PGamMCE(PlayerGameModeChangeEvent Event) { if(Event.getNewGameMode() == GameMode.SPECTATOR) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.ACTION); }
 
@@ -78,18 +75,9 @@ public class PlayerSitEvents implements Listener {
 
         Entity bottom = GPM.getPassengerUtil().getBottomEntity(Event.getDismounted());
 
-        if(GPM.getCManager().PS_BOTTOM_RETURN && Event.getEntity() instanceof Player) {
+        if(GPM.getCManager().PS_BOTTOM_RETURN && Event.getEntity().isValid() && Event.getEntity() instanceof Player && NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Event.getEntity(), bottom.getLocation());
 
-            Player player = (Player) Event.getEntity();
-
-            if(player.isValid() && NMSManager.isNewerOrVersion(17, 0)) {
-
-                GPM.getTeleportUtil().posEntity(player, bottom.getLocation());
-                GPM.getTeleportUtil().teleportEntity(player, bottom.getLocation(), true);
-            }
-        }
-
-        if(Event.getDismounted().hasMetadata(GPM.NAME + "A") && !NMSManager.isNewerOrVersion(17, 0)) GPM.getTeleportUtil().posEntity(Event.getDismounted(), bottom.getLocation());
+        if(Event.getDismounted().hasMetadata(GPM.NAME + "A") && !NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Event.getDismounted(), bottom.getLocation());
 
         GPM.getPlayerSitManager().stopPlayerSit(Event.getDismounted(), GetUpReason.GET_UP);
 

@@ -1,4 +1,4 @@
-package dev.geco.gsit.mcv.v1_19_R2.objects;
+package dev.geco.gsit.mcv.v1_19_R3.objects;
 
 import org.bukkit.*;
 import org.bukkit.event.*;
@@ -6,7 +6,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.*;
-import org.bukkit.craftbukkit.v1_19_R2.entity.*;
+import org.bukkit.craftbukkit.v1_19_R3.entity.*;
 
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.*;
@@ -23,7 +23,7 @@ public class GBoxCrawl implements IGCrawl {
     private final ServerPlayer serverPlayer;
 
     protected final BoxEntity boxEntity;
-    protected final SeatEntity seatEntity;
+    protected final net.minecraft.world.entity.Entity baseEntity;
 
     private boolean boxPresent = false;
 
@@ -37,7 +37,7 @@ public class GBoxCrawl implements IGCrawl {
         serverPlayer = ((CraftPlayer) player).getHandle();
 
         boxEntity = new BoxEntity(player.getLocation());
-        seatEntity = new SeatEntity(player.getLocation());
+        baseEntity = new RotateSeatEntity(player.getLocation());
 
         listener = new Listener() {
 
@@ -73,22 +73,22 @@ public class GBoxCrawl implements IGCrawl {
 
         if(boxPresent) {
 
-            seatEntity.teleportToWithTicket(location.getX(), location.getY(), location.getZ());
+            baseEntity.teleportToWithTicket(location.getX(), location.getY(), location.getZ());
 
-            serverPlayer.connection.send(new ClientboundTeleportEntityPacket(seatEntity));
+            serverPlayer.connection.send(new ClientboundTeleportEntityPacket(baseEntity));
         } else {
 
             boxEntity.setPos(location.getX(), location.getY() + 0.5, location.getZ());
-            seatEntity.setPos(location.getX(), location.getY(), location.getZ());
+            baseEntity.setPos(location.getX(), location.getY(), location.getZ());
 
-            serverPlayer.connection.send(new ClientboundAddEntityPacket(seatEntity));
+            serverPlayer.connection.send(new ClientboundAddEntityPacket(baseEntity));
             serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
-            serverPlayer.connection.send(new ClientboundSetEntityDataPacket(seatEntity.getId(), seatEntity.getEntityData().isDirty() ? seatEntity.getEntityData().packDirty() : seatEntity.getEntityData().getNonDefaultValues()));
+            serverPlayer.connection.send(new ClientboundSetEntityDataPacket(baseEntity.getId(), baseEntity.getEntityData().isDirty() ? baseEntity.getEntityData().packDirty() : baseEntity.getEntityData().getNonDefaultValues()));
             serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().isDirty() ? boxEntity.getEntityData().packDirty() : boxEntity.getEntityData().getNonDefaultValues()));
 
-            boxEntity.startRiding(seatEntity, true);
+            boxEntity.startRiding(baseEntity, true);
 
-            serverPlayer.connection.send(new ClientboundSetPassengersPacket(seatEntity));
+            serverPlayer.connection.send(new ClientboundSetPassengersPacket(baseEntity));
 
             boxPresent = true;
         }
@@ -102,7 +102,7 @@ public class GBoxCrawl implements IGCrawl {
         player.setSwimming(false);
 
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(seatEntity.getId()));
+        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(baseEntity.getId()));
     }
 
     private boolean checkCrawlValid() {
