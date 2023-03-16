@@ -28,12 +28,13 @@ Install all the [BuildTools](https://www.spigotmc.org/wiki/buildtools/) versions
 - [1.19](https://www.spigotmc.org/wiki/buildtools/#1-19)
 - [1.19.2](https://www.spigotmc.org/wiki/buildtools/#1-19-2)
 - [1.19.3](https://www.spigotmc.org/wiki/buildtools/#1-19-3)
+- [1.19.4](https://www.spigotmc.org/wiki/buildtools/#1-19-4)
 
 ### Build
 
 Run the maven build command by your ide or in a terminal.
 
-The final GSit.jar file will be in the [`target`](./target) folder.
+The final `GSit-x.x-x.jar` file will be in the [`target`](./target) folder.
 
 ## Pull requests
 

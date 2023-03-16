@@ -7,7 +7,7 @@
     <artifactId>dist</artifactId>
 
     <parent>
-        <groupId>dev.geco</groupId>
+        <groupId>dev.geco.gsit</groupId>
         <artifactId>GSit</artifactId>
         <version>1.3.7</version>
     </parent>
@@ -15,6 +15,13 @@
     <build>
         <directory>../target</directory>
         <finalName>${project.parent.name}-${project.parent.version}</finalName>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <directory>../src/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -40,47 +47,47 @@
 
     <dependencies>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_17_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_17_R1_2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_18_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_18_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_19_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_19_R1_2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_19_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.geco</groupId>
+            <groupId>dev.geco.gsit</groupId>
             <artifactId>v1_19_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
