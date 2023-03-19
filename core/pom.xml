@@ -16,7 +16,7 @@
         <spigot.version>1.19.4-R0.1-SNAPSHOT</spigot.version>
         <paper.version>1.19.4-R0.1-SNAPSHOT</paper.version>
         <worldguard.version>7.0.7</worldguard.version>
-        <placeholderapi.version>2.11.2</placeholderapi.version>
+        <placeholderapi.version>2.11.3</placeholderapi.version>
         <griefprevention.version>16.18</griefprevention.version>
         <plotsquared.version>6.11.1</plotsquared.version>
     </properties>

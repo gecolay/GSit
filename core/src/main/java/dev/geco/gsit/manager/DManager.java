@@ -28,6 +28,7 @@ public class DManager {
         try {
             String type = getType();
             if(type.equals("sqlite")) {
+                Class.forName("org.sqlite.JDBC");
                 connection = getConnection("sqlite", "", "", "", "", "");
                 return true;
             }
