@@ -11,6 +11,8 @@ import net.minecraft.world.phys.*;
 
 public class SeatEntity extends ArmorStand {
 
+    private boolean rotate = false;
+
     public SeatEntity(Location Location) {
 
         super(((CraftWorld) Location.getWorld()).getHandle(), Location.getX(), Location.getY(), Location.getZ());
@@ -29,7 +31,20 @@ public class SeatEntity extends ArmorStand {
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(1f);
     }
 
-    public void tick() { }
+    public void startRotate() { rotate = true; }
+
+    public void tick() {
+
+        if(isAlive() && valid && rotate) {
+
+            Entity rider = getFirstPassenger();
+
+            if(rider == null) return;
+
+            setYRot(rider.getYRot());
+            yRotO = getYRot();
+        }
+    }
 
     public void move(MoverType MoverType, Vec3 Vec3) { }
 

@@ -20,6 +20,7 @@ public class EntityUtil implements IEntityUtil {
 
         if(Entity instanceof Player) {
 
+            ((CraftEntity) Entity).getHandle().setPos(Location.getX(), Location.getY(), Location.getZ());
             ((CraftPlayer) Entity).getHandle().connection.send(new ClientboundPlayerPositionPacket(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch(), net.minecraft.world.entity.RelativeMovement.unpack(0), 0));
         } else ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch());
     }
@@ -36,7 +37,7 @@ public class EntityUtil implements IEntityUtil {
 
         net.minecraft.world.entity.Entity rider = ((CraftEntity) Rider).getHandle();
 
-        net.minecraft.world.entity.Entity seatEntity = Rotate ? new RotateSeatEntity(Location) : new SeatEntity(Location);
+        net.minecraft.world.entity.Entity seatEntity = Rotate && !GPM.getViaBackwardsLink() ? new RotateSeatEntity(Location) : new SeatEntity(Location);
 
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
@@ -49,6 +50,8 @@ public class EntityUtil implements IEntityUtil {
             seatEntity.discard();
             return null;
         }
+
+        if(Rotate && seatEntity instanceof SeatEntity) ((SeatEntity) seatEntity).startRotate();
 
         return seatEntity.getBukkitEntity();
     }

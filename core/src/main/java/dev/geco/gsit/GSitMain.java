@@ -63,17 +63,20 @@ public class GSitMain extends JavaPlugin {
     private IEntityUtil entityUtil;
     public IEntityUtil getEntityUtil() { return entityUtil; }
 
-    private WorldGuardLink worldGuardLink;
-    public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
+    private GriefPreventionLink griefPreventionLink;
+    public GriefPreventionLink getGriefPreventionLink() { return griefPreventionLink; }
 
     private PlaceholderAPILink placeholderAPILink;
     public PlaceholderAPILink getPlaceholderAPILink() { return placeholderAPILink; }
 
-    private GriefPreventionLink griefPreventionLink;
-    public GriefPreventionLink getGriefPreventionLink() { return griefPreventionLink; }
-
     private PlotSquaredLink plotSquaredLink;
     public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
+
+    private boolean viaBackwardsLink;
+    public boolean getViaBackwardsLink() { return viaBackwardsLink; }
+
+    private WorldGuardLink worldGuardLink;
+    public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
 
     public final String NAME = "GSit";
 
@@ -159,11 +162,7 @@ public class GSitMain extends JavaPlugin {
         passengerUtil = new PassengerUtil(getInstance());
         environmentUtil = new EnvironmentUtil(getInstance());
 
-        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-
-            worldGuardLink = new WorldGuardLink(getInstance());
-            worldGuardLink.registerFlags();
-        }
+        preloadPluginDependencies();
     }
 
     public void onEnable() {
@@ -225,9 +224,38 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SpinConfusionEvent(getInstance()), getInstance());
     }
 
-    private void preloadPluginDependencies() { }
+    private void preloadPluginDependencies() {
+
+        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
+
+            worldGuardLink = new WorldGuardLink(getInstance());
+            worldGuardLink.registerFlags();
+        }
+    }
 
     private void loadPluginDependencies(CommandSender Sender) {
+
+        if(Bukkit.getPluginManager().getPlugin("GriefPrevention") != null && Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
+            griefPreventionLink = new GriefPreventionLink(getInstance());
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "GriefPrevention");
+        } else griefPreventionLink = null;
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            placeholderAPILink = new PlaceholderAPILink(getInstance());
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
+            getPlaceholderAPILink().register();
+        } else placeholderAPILink = null;
+
+        if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
+            plotSquaredLink = new PlotSquaredLink(getInstance());
+            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlotSquared");
+            else plotSquaredLink = null;
+        } else plotSquaredLink = null;
+
+        if(Bukkit.getPluginManager().getPlugin("ViaBackwards") != null && Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")) {
+            viaBackwardsLink = true;
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "ViaBackwards");
+        } else viaBackwardsLink = false;
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             if(worldGuardLink == null) {
@@ -236,23 +264,6 @@ public class GSitMain extends JavaPlugin {
             }
             getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "WorldGuard");
         } else worldGuardLink = null;
-
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            placeholderAPILink = new PlaceholderAPILink(getInstance());
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
-            getPlaceholderAPILink().register();
-        } else placeholderAPILink = null;
-
-        if(Bukkit.getPluginManager().getPlugin("GriefPrevention") != null && Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
-            griefPreventionLink = new GriefPreventionLink(getInstance());
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "GriefPrevention");
-        } else griefPreventionLink = null;
-
-        if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
-            plotSquaredLink = new PlotSquaredLink(getInstance());
-            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlotSquared");
-            else plotSquaredLink = null;
-        } else plotSquaredLink = null;
     }
 
     private void copyEmoteFiles() { for(String emote : EMOTE_FILES) if(!new File(getDataFolder(), "emotes/" + emote + ".gex").exists()) saveResource("emotes/" + emote + ".gex", false); }
