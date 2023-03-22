@@ -1,16 +1,15 @@
 before_install:
   - git config --global --unset core.autocrlf
-  - curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
   - sdk install java 16.0.2-open
   - JAVA_16=/home/jitpack/.sdkman/candidates/java/16.0.2-open/bin/java
   - sdk install java 17.0.5-tem
   - JAVA_17=/home/jitpack/.sdkman/candidates/java/17.0.5-tem/bin/java
-  - $JAVA_16 -jar BuildTools.jar --rev 1.17 --remapped > /dev/null
-  - $JAVA_16 -jar BuildTools.jar --rev 1.17.1 --remapped > /dev/null
-  - $JAVA_17 -jar BuildTools.jar --rev 1.18.1 --remapped > /dev/null
-  - $JAVA_17 -jar BuildTools.jar --rev 1.18.2 --remapped > /dev/null
-  - $JAVA_17 -jar BuildTools.jar --rev 1.19 --remapped > /dev/null
-  - $JAVA_17 -jar BuildTools.jar --rev 1.19.2 --remapped > /dev/null
-  - $JAVA_17 -jar BuildTools.jar --rev 1.19.3 --remapped > /dev/null
-  - $JAVA_17 -jar BuildTools.jar --rev 1.19.4 --remapped > /dev/null
+  - (mkdir BuildTools_1.17 && cd BuildTools_1.17 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_16 -jar BuildTools.jar --rev 1.17 --remapped > /dev/null) &
+    (mkdir BuildTools_1.17.1 && cd BuildTools_1.17.1 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_16 -jar BuildTools.jar --rev 1.17.1 --remapped > /dev/null) &
+    (mkdir BuildTools_1.18.1 && cd BuildTools_1.18.1 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.18.1 --remapped > /dev/null) &
+    (mkdir BuildTools_1.18.2 && cd BuildTools_1.18.2 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.18.2 --remapped > /dev/null) &
+    (mkdir BuildTools_1.19 && cd BuildTools_1.19 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.19 --remapped > /dev/null) &
+    (mkdir BuildTools_1.19.2 && cd BuildTools_1.19.2 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.19.2 --remapped > /dev/null) &
+    (mkdir BuildTools_1.19.3 && cd BuildTools_1.19.3 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.19.3 --remapped > /dev/null) &
+    (mkdir BuildTools_1.19.4 && cd BuildTools_1.19.4 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.19.4 --remapped > /dev/null)
   - sdk use java 17.0.5-tem
