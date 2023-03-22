@@ -133,11 +133,11 @@ public class PlayerSitEvents implements Listener {
 
         Player highestPlayer = (Player) highestEntity;
 
-        if(!GPM.getToggleManager().canPlayerSit(player.getUniqueId()) || !GPM.getToggleManager().canPlayerSit(highestPlayer.getUniqueId())) return;
-
         boolean isNPC = GPM.getPassengerUtil().isNPC(highestPlayer);
 
         if((isNPC && !GPM.getCManager().PS_ALLOW_SIT_NPC) || (!isNPC && !GPM.getCManager().PS_ALLOW_SIT)) return;
+
+        if(!GPM.getToggleManager().canPlayerSit(player.getUniqueId()) || !GPM.getToggleManager().canPlayerSit(highestPlayer.getUniqueId())) return;
 
         GPM.getPlayerSitManager().sitOnPlayer(player, highestPlayer);
     }

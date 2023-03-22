@@ -44,8 +44,6 @@ public class InteractEvents implements Listener {
 
         if(!player.isValid() || player.isSneaking() || GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player)) return;
 
-        if(!GPM.getToggleManager().canSit(player.getUniqueId())) return;
-
         if(GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().S_MAX_DISTANCE;
@@ -61,6 +59,8 @@ public class InteractEvents implements Listener {
         if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(clickedBlock.getLocation(), player)) return;
 
         if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getSitManager().kickSeat(clickedBlock, player)) return;
+
+        if(!GPM.getToggleManager().canSit(player.getUniqueId())) return;
 
         if(Tag.STAIRS.isTagged(clickedBlock.getType())) {
 

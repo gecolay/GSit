@@ -116,6 +116,8 @@ public class PlayerEvents implements Listener {
 
         if(!player.isValid() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping() || GPM.getCrawlManager().isCrawling(player)) return;
 
+        if(!GPM.getToggleManager().canCrawl(player.getUniqueId())) return;
+
         if(!crawlPlayers.containsKey(player)) {
 
             crawlPlayers.put(player, System.currentTimeMillis());
