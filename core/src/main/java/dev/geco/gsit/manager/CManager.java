@@ -120,8 +120,7 @@ public class CManager {
                     }
                 }
                 config.save(configFile);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Throwable e) {
                 GPM.saveDefaultConfig();
             }
         } else GPM.saveDefaultConfig();
