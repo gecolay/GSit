@@ -3,11 +3,11 @@ package dev.geco.gsit.manager;
 import java.io.*;
 import java.util.*;
 
-import dev.geco.gsit.api.event.*;
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.api.event.*;
 import dev.geco.gsit.objects.*;
 
 public class EmoteManager {
@@ -22,33 +22,30 @@ public class EmoteManager {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
+    private final List<String> EMOTE_FILES = new ArrayList<>(); {
+        EMOTE_FILES.add("happy");
+    }
+
     private final List<GEmote> available_emotes = new ArrayList<>();
 
     public List<GEmote> getAvailableEmotes() { return new ArrayList<>(available_emotes); }
 
     public GEmote getEmoteByName(String Name) { return available_emotes.stream().filter(e -> e.getId().equalsIgnoreCase(Name)).findFirst().orElse(null); }
 
-    public List<GEmote> reloadEmotes() {
+    public void reloadEmotes() {
 
         clearEmotes();
 
-        available_emotes.clear();
+        for(String emote : EMOTE_FILES) if(!new File(GPM.getDataFolder(), "emotes/" + emote + ".gex").exists()) GPM.saveResource("emotes/" + emote + ".gex", false);
 
         try {
 
             File directory = new File(GPM.getDataFolder(), "emotes/");
 
-            if(!directory.exists()) return getAvailableEmotes();
+            if(!directory.exists()) return;
 
-            for(File emoteFile : directory.listFiles()) {
-
-                String fileName = emoteFile.getName().toLowerCase();
-
-                if(fileName.endsWith(".gex")) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
-            }
+            for(File emoteFile : directory.listFiles()) if(emoteFile.getName().toLowerCase().endsWith(".gex")) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
         } catch (Exception ignored) { }
-
-        return getAvailableEmotes();
     }
 
     private final HashMap<LivingEntity, GEmote> emotes = new HashMap<>();
@@ -63,7 +60,10 @@ public class EmoteManager {
         return null;
     }
 
-    public void clearEmotes() { for(LivingEntity entity : getEmotes().keySet()) stopEmote(entity); }
+    public void clearEmotes() {
+        for(LivingEntity entity : getEmotes().keySet()) stopEmote(entity);
+        available_emotes.clear();
+    }
 
     public boolean startEmote(LivingEntity Entity, GEmote Emote) {
 

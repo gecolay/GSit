@@ -1,8 +1,5 @@
 package dev.geco.gsit;
 
-import java.io.*;
-import java.util.*;
-
 import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.*;
@@ -84,10 +81,6 @@ public class GSitMain extends JavaPlugin {
 
     public final int PLAYER_SIT_SEAT_ENTITIES = 2;
 
-    private final List<String> EMOTE_FILES = new ArrayList<>(); {
-        EMOTE_FILES.add("happy");
-    }
-
     private static GSitMain GPM;
 
     public static GSitMain getInstance() { return GPM; }
@@ -95,8 +88,6 @@ public class GSitMain extends JavaPlugin {
     private void loadSettings() {
 
         dManager.connect();
-
-        copyEmoteFiles();
 
         getEmoteManager().reloadEmotes();
 
@@ -266,8 +257,6 @@ public class GSitMain extends JavaPlugin {
         } else worldGuardLink = null;
     }
 
-    private void copyEmoteFiles() { for(String emote : EMOTE_FILES) if(!new File(getDataFolder(), "emotes/" + emote + ".gex").exists()) saveResource("emotes/" + emote + ".gex", false); }
-
     public void reload(CommandSender Sender) {
 
         Bukkit.getPluginManager().callEvent(new GSitReloadEvent(getInstance()));
@@ -280,7 +269,7 @@ public class GSitMain extends JavaPlugin {
         getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
         getCrawlManager().clearCrawls();
-        getEmoteManager().reloadEmotes();
+        getEmoteManager().clearEmotes();
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
 
