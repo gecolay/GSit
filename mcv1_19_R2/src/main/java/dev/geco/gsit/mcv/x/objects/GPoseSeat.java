@@ -98,19 +98,19 @@ public class GPoseSeat implements IGPoseSeat {
 
         listener = new Listener() {
 
-            @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void PIntE(PlayerInteractEvent Event) { if(Event.getPlayer() == seatPlayer && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void PIntE(PlayerInteractEntityEvent Event) { if(Event.getPlayer() == seatPlayer) Event.setCancelled(true); }
 
-            @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void EDamBEE(EntityDamageByEntityEvent Event) { if(Event.getDamager() == seatPlayer && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void EDamE(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playAnimation(1); }
 
-            @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void PLauE(ProjectileLaunchEvent Event) { if(Event.getEntity().getShooter() == seatPlayer && !GPM.getCManager().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
