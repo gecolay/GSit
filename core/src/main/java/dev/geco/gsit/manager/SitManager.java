@@ -7,7 +7,6 @@ import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
-import org.bukkit.scheduler.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -92,14 +91,12 @@ public class SitManager {
 
             GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
 
-            if(GPM.getCManager().ENHANCED_COMPATIBILITY) new BukkitRunnable() {
+            if(GPM.getCManager().ENHANCED_COMPATIBILITY) {
 
-                @Override
-                public void run() {
-
+                GPM.getTManager().runDelayed(() -> {
                     GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
-                }
-            }.runTaskLater(GPM, 2);
+                }, Entity, 2);
+            }
         }
 
         GSeat seat = new GSeat(Block, playerLocation, Entity, seatEntity, returnLocation);

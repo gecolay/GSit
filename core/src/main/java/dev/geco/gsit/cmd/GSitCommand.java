@@ -112,7 +112,7 @@ public class GSitCommand implements CommandExecutor {
 
             case "toggle":
 
-                if(GPM.getPManager().hasPermission(Sender, "SitToggle") && GPM.getCManager().S_SITMATERIALS.size() > 0) {
+                if(GPM.getPManager().hasPermission(Sender, "SitToggle") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) {
 
                     if(GPM.getToggleManager().canSit(player.getUniqueId())) {
 

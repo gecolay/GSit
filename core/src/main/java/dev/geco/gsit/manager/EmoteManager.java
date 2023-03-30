@@ -73,7 +73,7 @@ public class EmoteManager {
 
         if(preEvent.isCancelled()) return false;
 
-        if(!available_emotes.contains(Emote) || Emote.getParts().size() == 0) return false;
+        if(!available_emotes.contains(Emote) || Emote.getParts().isEmpty()) return false;
 
         if(!stopEmote(Entity)) return false;
 

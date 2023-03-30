@@ -84,15 +84,12 @@ public class EntityUtil implements IEntityUtil {
 
         try {
 
-            ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
-        } catch (Throwable paper) {
-
-            try {
+            if(GPM.isPaperBased()) {
 
                 net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
                 levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
-            } catch (Throwable e) { e.printStackTrace(); }
-        }
+            } else ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
+        } catch (Throwable e) { e.printStackTrace(); }
     }
 
 }

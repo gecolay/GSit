@@ -22,7 +22,7 @@ public class EnvironmentUtil {
 
         boolean allowed = !GPM.getCManager().WORLDBLACKLIST.contains(Entity.getWorld().getName());
 
-        if(GPM.getCManager().WORLDWHITELIST.size() > 0 && !GPM.getCManager().WORLDWHITELIST.contains(Entity.getWorld().getName())) allowed = false;
+        if(!GPM.getCManager().WORLDWHITELIST.isEmpty() && !GPM.getCManager().WORLDWHITELIST.contains(Entity.getWorld().getName())) allowed = false;
 
         return allowed || GPM.getPManager().hasPermission(Entity, "ByPass.World", "ByPass.*");
     }

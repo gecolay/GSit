@@ -18,24 +18,19 @@ public class GCrawlTabComplete implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
 
-        List<String> ta = new ArrayList<>(), ts = new ArrayList<>();
+        List<String> complete = new ArrayList<>(), completeStarted = new ArrayList<>();
 
         if(Sender instanceof Player) {
 
             if(Args.length == 1) {
 
-                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle") && GPM.getCManager().C_DOUBLE_SNEAK) ta.add("toggle");
+                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle") && GPM.getCManager().C_DOUBLE_SNEAK) complete.add("toggle");
 
-                if(!Args[Args.length - 1].isEmpty()) {
-
-                    for(String r : ta) if(r.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) ts.add(r);
-
-                    ta.clear();
-                }
+                if(!Args[Args.length - 1].isEmpty()) for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
             }
         }
 
-        return ta.size() == 0 ? ts : ta;
+        return !completeStarted.isEmpty() ? completeStarted : complete;
     }
 
 }

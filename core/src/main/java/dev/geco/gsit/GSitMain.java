@@ -45,6 +45,9 @@ public class GSitMain extends JavaPlugin {
     private PManager pManager;
     public PManager getPManager() { return pManager; }
 
+    private TManager tManager;
+    public TManager getTManager() { return tManager; }
+
     private MManager mManager;
     public MManager getMManager() { return mManager; }
 
@@ -69,11 +72,17 @@ public class GSitMain extends JavaPlugin {
     private PlotSquaredLink plotSquaredLink;
     public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
 
-    private boolean viaBackwardsLink;
-    public boolean getViaBackwardsLink() { return viaBackwardsLink; }
-
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
+
+    private boolean spigotBased = false;
+    public boolean isSpigotBased() { return spigotBased; }
+
+    private boolean paperBased = false;
+    public boolean isPaperBased() { return paperBased; }
+
+    private boolean foliaBased = false;
+    public boolean isFoliaBased() { return foliaBased; }
 
     public final String NAME = "GSit";
 
@@ -137,10 +146,11 @@ public class GSitMain extends JavaPlugin {
 
         GPM = this;
 
-        dManager = new DManager(getInstance());
         cManager = new CManager(getInstance());
+        dManager = new DManager(getInstance());
         uManager = new UManager(getInstance());
         pManager = new PManager(getInstance());
+        tManager = new TManager(getInstance());
         mManager = new MManager(getInstance());
         sitManager = new SitManager(getInstance());
         poseManager = new PoseManager(getInstance());
@@ -243,11 +253,6 @@ public class GSitMain extends JavaPlugin {
             else plotSquaredLink = null;
         } else plotSquaredLink = null;
 
-        if(Bukkit.getPluginManager().getPlugin("ViaBackwards") != null && Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")) {
-            viaBackwardsLink = true;
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "ViaBackwards");
-        } else viaBackwardsLink = false;
-
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             if(worldGuardLink == null) {
                 worldGuardLink = new WorldGuardLink(getInstance());
@@ -280,15 +285,16 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
 
-        boolean bukkitBased = false;
+        try {
+            Class.forName("org.spigotmc.event.entity.EntityDismountEvent");
+            spigotBased = true;
+        } catch (ClassNotFoundException ignored) { }
 
-        try { Class.forName("org.spigotmc.event.entity.EntityDismountEvent"); } catch (ClassNotFoundException e) { bukkitBased = true; }
-
-        if(bukkitBased || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("objects.SeatEntity"))) {
+        if(!isSpigotBased() || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("objects.SeatEntity"))) {
 
             String version = Bukkit.getServer().getClass().getPackage().getName();
 
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", bukkitBased ? "bukkit-based" : version.substring(version.lastIndexOf('.') + 1));
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", !isSpigotBased() ? "bukkit-based" : version.substring(version.lastIndexOf('.') + 1));
 
             GPM.getUManager().checkForUpdates();
 
@@ -296,6 +302,16 @@ public class GSitMain extends JavaPlugin {
 
             return false;
         }
+
+        try {
+            Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
+            paperBased = true;
+        } catch (ClassNotFoundException ignored) { }
+
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
+            foliaBased = true;
+        } catch (ClassNotFoundException ignored) { }
 
         return true;
     }

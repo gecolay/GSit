@@ -59,7 +59,7 @@ public class PassengerUtil {
         return false;
     }
 
-    public Entity getHighestEntity(Entity Entity) { return Entity == null || Entity.getPassengers().size() == 0 ? Entity : getHighestEntity(Entity.getPassengers().get(0)); }
+    public Entity getHighestEntity(Entity Entity) { return Entity == null || Entity.getPassengers().isEmpty() ? Entity : getHighestEntity(Entity.getPassengers().get(0)); }
 
     public Entity getBottomEntity(Entity Entity) { return Entity == null || !Entity.isInsideVehicle() ? Entity : getBottomEntity(Entity.getVehicle()); }
 

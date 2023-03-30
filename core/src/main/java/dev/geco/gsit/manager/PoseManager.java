@@ -6,7 +6,6 @@ import java.util.stream.*;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
-import org.bukkit.scheduler.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
@@ -98,14 +97,12 @@ public class PoseManager {
 
             GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
 
-            if(GPM.getCManager().ENHANCED_COMPATIBILITY) new BukkitRunnable() {
+            if(GPM.getCManager().ENHANCED_COMPATIBILITY) {
 
-                @Override
-                public void run() {
-
+                GPM.getTManager().runDelayed(() -> {
                     GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
-                }
-            }.runTaskLater(GPM, 2);
+                }, Player, 2);
+            }
         }
 
         IGPoseSeat poseSeat = getPoseSeatInstance(new GSeat(Block, playerLocation, Player, seatEntity, returnLocation), Pose);

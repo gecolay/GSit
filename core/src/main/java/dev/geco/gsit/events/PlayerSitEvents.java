@@ -8,7 +8,6 @@ import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
-import org.bukkit.scheduler.*;
 
 import org.spigotmc.event.entity.*;
 
@@ -47,6 +46,8 @@ public class PlayerSitEvents implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void EDisE(EntityDismountEvent Event) {
 
+        if(!Event.getDismounted().hasMetadata(GPM.NAME + "A") && !(Event.getDismounted() instanceof Player)) return;
+
         if(Event.getEntity() instanceof Player) {
 
             Player player = (Player) Event.getEntity();
@@ -63,14 +64,9 @@ public class PlayerSitEvents implements Listener {
 
             WAIT_EJECT.add(player);
 
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-
-                    WAIT_EJECT.remove(player);
-                }
-            }.runTaskLaterAsynchronously(GSitMain.getInstance(), 2);
+            GPM.getTManager().runDelayed(() -> {
+                WAIT_EJECT.remove(player);
+            }, 2);
         }
 
         Entity bottom = GPM.getPassengerUtil().getBottomEntity(Event.getDismounted());

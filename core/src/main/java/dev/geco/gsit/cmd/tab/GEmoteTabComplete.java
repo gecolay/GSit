@@ -19,24 +19,19 @@ public class GEmoteTabComplete implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
 
-        List<String> ta = new ArrayList<>(), ts = new ArrayList<>();
+        List<String> complete = new ArrayList<>(), completeStarted = new ArrayList<>();
 
         if(Sender instanceof Player) {
 
             if(Args.length == 1) {
 
-                if(GPM.getPManager().hasPermission(Sender, "Emote")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) ta.add(emote.getId());
+                if(GPM.getPManager().hasPermission(Sender, "Emote")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) complete.add(emote.getId());
 
-                if(!Args[Args.length - 1].isEmpty()) {
-
-                    for(String r : ta) if(r.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) ts.add(r);
-
-                    ta.clear();
-                }
+                if(!Args[Args.length - 1].isEmpty()) for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
             }
         }
 
-        return ta.size() == 0 ? ts : ta;
+        return !completeStarted.isEmpty() ? completeStarted : complete;
     }
 
 }

@@ -12,7 +12,6 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
-import org.bukkit.scheduler.*;
 import org.bukkit.craftbukkit.v1_19_R1.*;
 import org.bukkit.craftbukkit.v1_19_R1.entity.*;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.*;
@@ -63,7 +62,7 @@ public class GPoseSeat implements IGPoseSeat {
     private List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentSlotCache;
     protected int renderRange = Bukkit.getServer().getSimulationDistance() * 16;
 
-    private BukkitRunnable task;
+    private UUID task;
 
     private final Listener listener;
 
@@ -169,14 +168,9 @@ public class GPoseSeat implements IGPoseSeat {
         if(pose == Pose.SLEEPING) sendPacket(spawnPlayer, teleportNpcPacket);
         if(pose == Pose.SPIN_ATTACK) sendPacket(spawnPlayer, rotateNpcPacket);
 
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-
-                sendPacket(spawnPlayer, removeNpcInfoPacket);
-            }
-        }.runTaskLater(GPM, 15);
+        GPM.getTManager().runDelayed(() -> {
+            sendPacket(spawnPlayer, removeNpcInfoPacket);
+        }, seatPlayer, 15);
     }
 
     public void remove() {
@@ -217,68 +211,62 @@ public class GPoseSeat implements IGPoseSeat {
 
     private void startUpdate() {
 
-        task = new BukkitRunnable() {
+        final long[] sleepTick = {0};
 
-            long sleepTick = 0;
+        task = GPM.getTManager().runAtFixedRate(() -> {
 
-            @Override
-            public void run() {
+            List<Player> playerList = getNearPlayers();
 
-                List<Player> playerList = getNearPlayers();
+            for(Player nearPlayer : playerList) {
 
-                for(Player nearPlayer : playerList) {
+                if(nearPlayers.contains(nearPlayer)) continue;
 
-                    if(nearPlayers.contains(nearPlayer)) continue;
+                nearPlayers.add(nearPlayer);
 
-                    nearPlayers.add(nearPlayer);
+                spawnToPlayer(nearPlayer);
+            }
 
-                    spawnToPlayer(nearPlayer);
-                }
+            for(Player nearPlayer : new ArrayList<>(nearPlayers)) {
 
-                for(Player nearPlayer : new ArrayList<>(nearPlayers)) {
+                if(playerList.contains(nearPlayer)) continue;
 
-                    if(playerList.contains(nearPlayer)) continue;
+                nearPlayers.remove(nearPlayer);
 
-                    nearPlayers.remove(nearPlayer);
+                removeToPlayer(nearPlayer);
+            }
 
-                    removeToPlayer(nearPlayer);
-                }
+            if(pose != Pose.SPIN_ATTACK) updateDirection();
 
-                if(pose != Pose.SPIN_ATTACK) updateDirection();
+            serverPlayer.setInvisible(true);
 
-                serverPlayer.setInvisible(true);
+            updateEquipment();
 
-                updateEquipment();
+            setEquipmentVisibility(false);
 
-                setEquipmentVisibility(false);
+            updateSkin();
 
-                updateSkin();
+            if(pose == Pose.SLEEPING) {
 
-                if(pose == Pose.SLEEPING) {
+                for(Player nearPlayer : nearPlayers) sendPacket(nearPlayer, setBedPacket);
 
-                    for(Player nearPlayer : nearPlayers) sendPacket(nearPlayer, setBedPacket);
+                if(GPM.getCManager().P_LAY_SNORING_SOUNDS) {
 
-                    if(GPM.getCManager().P_LAY_SNORING_SOUNDS) {
+                    sleepTick[0]++;
 
-                        sleepTick++;
+                    if(sleepTick[0] >= 90) {
 
-                        if(sleepTick >= 90) {
+                        long tick = seatPlayer.getPlayerTime();
 
-                            long tick = seatPlayer.getPlayerTime();
+                        if(!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) for(Player nearPlayer : nearPlayers) nearPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
 
-                            if(!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) for(Player nearPlayer : nearPlayers) nearPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
-
-                            sleepTick = 0;
-                        }
+                        sleepTick[0] = 0;
                     }
                 }
             }
-        };
-
-        task.runTaskTimerAsynchronously(GPM, 5, 1);
+        }, false, 5, 1);
     }
 
-    private void stopUpdate() { if(task != null && !task.isCancelled()) task.cancel(); }
+    private void stopUpdate() { GPM.getTManager().cancel(task); }
 
     private float fixYaw(float Yaw) { return (Yaw < 0.0f ? 360.0f + Yaw : Yaw) % 360.0f; }
 

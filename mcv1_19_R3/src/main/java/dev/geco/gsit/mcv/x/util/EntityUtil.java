@@ -37,7 +37,7 @@ public class EntityUtil implements IEntityUtil {
 
         net.minecraft.world.entity.Entity rider = ((CraftEntity) Rider).getHandle();
 
-        net.minecraft.world.entity.Entity seatEntity = Rotate && !GPM.getViaBackwardsLink() ? new RotateSeatEntity(Location) : new SeatEntity(Location);
+        SeatEntity seatEntity = new SeatEntity(Location);
 
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
@@ -51,7 +51,7 @@ public class EntityUtil implements IEntityUtil {
             return null;
         }
 
-        if(Rotate && seatEntity instanceof SeatEntity) ((SeatEntity) seatEntity).startRotate();
+        if(Rotate) seatEntity.startRotate();
 
         return seatEntity.getBukkitEntity();
     }
@@ -84,15 +84,12 @@ public class EntityUtil implements IEntityUtil {
 
         try {
 
-            ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
-        } catch (Throwable paper) {
-
-            try {
+            if(GPM.isPaperBased()) {
 
                 net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
                 levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
-            } catch (Throwable e) { e.printStackTrace(); }
-        }
+            } else ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
+        } catch (Throwable e) { e.printStackTrace(); }
     }
 
 }

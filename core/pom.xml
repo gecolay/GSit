@@ -15,6 +15,7 @@
     <properties>
         <spigot.version>1.19.4-R0.1-SNAPSHOT</spigot.version>
         <paper.version>1.19.4-R0.1-SNAPSHOT</paper.version>
+        <folia.version>1.19.4-R0.1-SNAPSHOT</folia.version>
         <worldguard.version>7.0.7</worldguard.version>
         <placeholderapi.version>2.11.3</placeholderapi.version>
         <griefprevention.version>16.18</griefprevention.version>
@@ -50,15 +51,21 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
+            <groupId>dev.folia</groupId>
+            <artifactId>folia-api</artifactId>
+            <version>${folia.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>${paper.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

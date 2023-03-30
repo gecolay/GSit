@@ -8,7 +8,6 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
-import org.bukkit.scheduler.*;
 import org.bukkit.craftbukkit.v1_19_R2.entity.*;
 
 import net.minecraft.network.protocol.game.*;
@@ -59,14 +58,9 @@ public class GCrawl implements IGCrawl {
 
                     Event.setCancelled(true);
 
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-
-                            buildBlock();
-                        }
-                    }.runTaskAsynchronously(GPM);
+                    GPM.getTManager().run(() -> {
+                        buildBlock();
+                    }, false, player);
                 }
             }
         };
@@ -98,18 +92,14 @@ public class GCrawl implements IGCrawl {
 
         Bukkit.getPluginManager().registerEvents(listener, GPM);
 
-        new BukkitRunnable() {
+        GPM.getTManager().runDelayed(() -> {
 
-            @Override
-            public void run() {
+            Bukkit.getPluginManager().registerEvents(moveListener, GPM);
 
-                Bukkit.getPluginManager().registerEvents(moveListener, GPM);
+            if(GPM.getCManager().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(stopListener, GPM);
 
-                if(GPM.getCManager().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(stopListener, GPM);
-
-                tick(player.getLocation());
-            }
-        }.runTaskLaterAsynchronously(GPM, 1);
+            tick(player.getLocation());
+        }, false, player, 1);
     }
 
     private void tick(Location Location) {
@@ -126,7 +116,7 @@ public class GCrawl implements IGCrawl {
 
         Block aboveBlock = location.getBlock();
 
-        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(location.toVector()) && aboveBlock.getCollisionShape().getBoundingBoxes().size() > 0;
+        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(location.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
         boolean canPlaceBlock = isValidArea(locationBlock.getRelative(BlockFace.UP), aboveBlock, blockLocation != null ? blockLocation.getBlock() : null);
         boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
 
@@ -141,38 +131,34 @@ public class GCrawl implements IGCrawl {
 
         if(!canSetBarrier && !aboveBlockSolid) {
 
-            new BukkitRunnable() {
+            GPM.getTManager().run(() -> {
 
-                @Override
-                public void run() {
+                Location playerLocation = Location.clone();
 
-                    Location playerLocation = Location.clone();
+                int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
-                    int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
+                playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
 
-                    playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
+                boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-                    boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
+                if(boxPresent) {
 
-                    if(boxPresent) {
+                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
 
-                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
+                    boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
 
-                        boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                    serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
+                } else {
 
-                        serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
-                    } else {
+                    boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
 
-                        boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                    serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
 
-                        serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
+                    boxPresent = true;
 
-                        boxPresent = true;
-
-                        serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-                    }
+                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
                 }
-            }.runTask(GPM);
+            });
         } else destoryEntity();
     }
 
@@ -220,14 +206,9 @@ public class GCrawl implements IGCrawl {
 
         if(serverPlayer.isInWater() || player.isFlying()) {
 
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-
-                    GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
-                }
-            }.runTask(GPM);
+            GPM.getTManager().run(() -> {
+                GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
+            });
 
             return false;
         }
