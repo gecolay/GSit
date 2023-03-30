@@ -27,11 +27,16 @@ public class GEmoteTabComplete implements TabCompleter {
 
                 if(GPM.getPManager().hasPermission(Sender, "Emote")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) complete.add(emote.getId());
 
-                if(!Args[Args.length - 1].isEmpty()) for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
+                if(!Args[Args.length - 1].isEmpty()) {
+
+                    for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
+
+                    complete.clear();
+                }
             }
         }
 
-        return !completeStarted.isEmpty() ? completeStarted : complete;
+        return complete.isEmpty() ? completeStarted : complete;
     }
 
 }

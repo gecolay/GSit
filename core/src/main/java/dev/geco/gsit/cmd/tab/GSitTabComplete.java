@@ -28,11 +28,16 @@ public class GSitTabComplete implements TabCompleter {
 
                 if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle") && GPM.getCManager().PS_ALLOW_SIT) complete.add("playertoggle");
 
-                if(!Args[Args.length - 1].isEmpty()) for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
+                if(!Args[Args.length - 1].isEmpty()) {
+
+                    for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
+
+                    complete.clear();
+                }
             }
         }
 
-        return !completeStarted.isEmpty() ? completeStarted : complete;
+        return complete.isEmpty() ? completeStarted : complete;
     }
 
 }
