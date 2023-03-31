@@ -11,7 +11,6 @@ import org.bukkit.entity.*;
 
 import net.md_5.bungee.api.*;
 
-import net.kyori.adventure.audience.*;
 import net.kyori.adventure.text.*;
 import net.kyori.adventure.text.minimessage.*;
 
@@ -140,7 +139,7 @@ public class MManager {
     public void sendMessage(CommandSender Target, String Message, Object... ReplaceList) {
         try {
             if(allowComponentMessages) {
-                ((Audience) Target).sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+                Target.sendMessage((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
                 return;
             }
         } catch (Throwable ignored) { }
@@ -150,7 +149,7 @@ public class MManager {
     public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList) {
         try {
             if(allowComponentMessages) {
-                ((Audience) Target).sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
+                Target.sendActionBar((Component) getLanguageComponent(Message, getLanguage(Target), ReplaceList));
                 return;
             }
         } catch (Throwable ignored) { }
@@ -176,9 +175,8 @@ public class MManager {
     public String getRawLanguageMessage(String Message, String LanguageCode, Object... ReplaceList) { return replace(Message == null || Message.isEmpty() ? "" : getMessages(LanguageCode).getString(Message, Message), LanguageCode, ReplaceList); }
 
     private String replace(String Message, String LanguageCode, Object... ReplaceList) {
-        String message = Message;
-        if(ReplaceList.length > 0 && ReplaceList.length % 2 == 0) for(int count = 0; count < ReplaceList.length; count += 2) if(ReplaceList[count] != null && ReplaceList[count + 1] != null) message = message.replace(ReplaceList[count].toString(), ReplaceList[count + 1].toString());
-        return message.replace("[P]", getMessages(LanguageCode).getString("Plugin.plugin-prefix", "&7[&6" + GPM.NAME + "&7]"));
+        if(ReplaceList.length > 0 && ReplaceList.length % 2 == 0) for(int count = 0; count < ReplaceList.length; count += 2) if(ReplaceList[count] != null && ReplaceList[count + 1] != null) Message = Message.replace(ReplaceList[count].toString(), ReplaceList[count + 1].toString());
+        return Message.replace("[P]", getMessages(LanguageCode).getString("Plugin.plugin-prefix", "&7[&6" + GPM.NAME + "&7]"));
     }
 
     public String getLanguage(CommandSender Target) {
