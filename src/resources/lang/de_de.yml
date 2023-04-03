@@ -18,8 +18,8 @@ Plugin:
 
 Messages:
 
-  command-permission-error: "[P]&c Sie haben keine Berechtigung, diesen Befehl zu verwenden!"
-  command-sender-error: "[P]&c Dieser Sender kann diesen Befehl nicht ausführen!"
+  command-permission-error: "[P]&c Du hast keine Berechtigung, diesen Befehl zu verwenden!"
+  command-sender-error: "[P]&c Du kann diesen Befehl nicht ausführen!"
   command-version-error: "[P]&c Veraltete Serverversion! (&b%Version%&c)\n[P]&c Aktualisiere den Server, um diese Funktion zu verwenden!"
 
   command-gsit-toggle-on: "[P]&a Du hast Klick-Interaktionen für sitzen aktiviert."
