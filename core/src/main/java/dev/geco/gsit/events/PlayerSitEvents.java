@@ -43,6 +43,9 @@ public class PlayerSitEvents implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void PQuiE(PlayerQuitEvent Event) { if(Event.getPlayer().isInsideVehicle()) GPM.getPlayerSitManager().stopPlayerSit(Event.getPlayer(), GetUpReason.QUIT); }
 
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void EDamE(EntityDamageEvent Event) { if(Event.getCause() == EntityDamageEvent.DamageCause.FALL && Event.getEntity() instanceof LivingEntity && Event.getEntity().isInsideVehicle() && Event.getEntity().getVehicle().hasMetadata(GPM.NAME + "A")) Event.setCancelled(true); }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void EDisE(EntityDismountEvent Event) {
 
