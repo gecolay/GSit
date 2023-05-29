@@ -131,9 +131,9 @@ public class GCrawl implements IGCrawl {
 
         if(!canSetBarrier && !aboveBlockSolid) {
 
-            GPM.getTManager().run(() -> {
+            Location playerLocation = Location.clone();
 
-                Location playerLocation = Location.clone();
+            GPM.getTManager().run(() -> {
 
                 int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
@@ -158,7 +158,7 @@ public class GCrawl implements IGCrawl {
 
                     serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
                 }
-            });
+            }, true, playerLocation);
         } else destoryEntity();
     }
 
@@ -208,7 +208,7 @@ public class GCrawl implements IGCrawl {
 
             GPM.getTManager().run(() -> {
                 GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
-            });
+            }, true, blockLocation != null ? blockLocation : player.getLocation());
 
             return false;
         }
