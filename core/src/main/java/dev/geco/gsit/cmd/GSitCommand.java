@@ -128,7 +128,6 @@ public class GSitCommand implements CommandExecutor {
 
                     break;
                 }
-
             case "playertoggle":
 
                 if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle") && GPM.getCManager().PS_ALLOW_SIT) {
@@ -147,7 +146,6 @@ public class GSitCommand implements CommandExecutor {
 
                     break;
                 }
-
             default:
 
                 Bukkit.dispatchCommand(Sender, Label);
