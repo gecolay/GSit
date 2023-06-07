@@ -7,7 +7,7 @@
     <groupId>dev.geco.gsit</groupId>
     <artifactId>GSit</artifactId>
     <name>GSit</name>
-    <version>1.4.4</version>
+    <version>1.4.5</version>
     <description>Relax with other players on nice seats!</description>
     <url>https://www.spigotmc.org/resources/62325</url>
     <inceptionYear>2018</inceptionYear>
@@ -34,6 +34,7 @@
         <module>mcv1_19_R1_2</module>
         <module>mcv1_19_R2</module>
         <module>mcv1_19_R3</module>
+        <module>mcv1_20_R1</module>
         <module>v1_17_R1</module>
         <module>v1_17_R1_2</module>
         <module>v1_18_R1</module>
@@ -42,6 +43,7 @@
         <module>v1_19_R1_2</module>
         <module>v1_19_R2</module>
         <module>v1_19_R3</module>
+        <module>v1_20_R1</module>
         <module>dist</module>
     </modules>
 
