@@ -54,7 +54,7 @@ public class GCrawl implements IGCrawl {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void PIntE(PlayerInteractEvent Event) {
 
-                if(Event.getPlayer() == player && blockPresent && Event.getClickedBlock().equals(blockLocation.getBlock()) && Event.getHand() == EquipmentSlot.HAND) {
+                if(!Event.isAsynchronous() && Event.getPlayer() == player && blockPresent && Event.getClickedBlock().equals(blockLocation.getBlock()) && Event.getHand() == EquipmentSlot.HAND) {
 
                     Event.setCancelled(true);
 
@@ -70,7 +70,7 @@ public class GCrawl implements IGCrawl {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void PMovE(PlayerMoveEvent Event) {
 
-                if(Event.getPlayer() == player) {
+                if(!Event.isAsynchronous() && Event.getPlayer() == player) {
 
                     Location locationFrom = Event.getFrom(), locationTo = Event.getTo();
 
@@ -82,7 +82,7 @@ public class GCrawl implements IGCrawl {
         stopListener = new Listener() {
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PTogSE(PlayerToggleSneakEvent Event) { if(Event.getPlayer() == player && Event.isSneaking()) GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP); }
+            public void PTogSE(PlayerToggleSneakEvent Event) { if(!Event.isAsynchronous() && Event.getPlayer() == player && Event.isSneaking()) GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP); }
         };
     }
 
@@ -170,16 +170,16 @@ public class GCrawl implements IGCrawl {
 
         player.setSwimming(false);
 
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+        player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
 
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
     }
 
     private void buildBlock() {
 
-        player.sendBlockChange(blockLocation, blockData);
-
         blockPresent = true;
+
+        player.sendBlockChange(blockLocation, blockData);
     }
 
     private void destoryBlock() {

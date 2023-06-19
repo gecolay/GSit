@@ -13,9 +13,8 @@
     </parent>
 
     <properties>
-        <spigot.version>1.20.1-R0.1-SNAPSHOT</spigot.version>
         <paper.version>1.20.1-R0.1-SNAPSHOT</paper.version>
-        <folia.version>1.19.4-R0.1-SNAPSHOT</folia.version>
+        <spigot.version>1.20.1-R0.1-SNAPSHOT</spigot.version>
         <worldguard.version>7.0.7</worldguard.version>
         <placeholderapi.version>2.11.3</placeholderapi.version>
         <griefprevention.version>16.18.1</griefprevention.version>
@@ -24,12 +23,12 @@
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
             <id>sk89q-repo</id>
@@ -50,12 +49,6 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>dev.folia</groupId>
-            <artifactId>folia-api</artifactId>
-            <version>${folia.version}</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>

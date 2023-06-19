@@ -170,16 +170,16 @@ public class GCrawl implements IGCrawl {
 
         player.setSwimming(false);
 
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+        player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
 
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
     }
 
     private void buildBlock() {
 
-        player.sendBlockChange(blockLocation, blockData);
-
         blockPresent = true;
+
+        player.sendBlockChange(blockLocation, blockData);
     }
 
     private void destoryBlock() {
