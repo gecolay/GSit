@@ -44,7 +44,15 @@ public class EmoteManager {
 
             if(!directory.exists()) return;
 
-            for(File emoteFile : directory.listFiles()) if(emoteFile.getName().toLowerCase().endsWith(".gex")) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
+            for(File emoteFile : directory.listFiles()) {
+
+                if(emoteFile.getName().toLowerCase().endsWith(".gex")) {
+
+                    GEmote emote = GPM.getEmoteUtil().createEmoteFromRawData(emoteFile);
+
+                    if(emote != null) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
+                }
+            }
         } catch (Exception ignored) { }
     }
 

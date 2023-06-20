@@ -16,83 +16,88 @@ public class EmoteUtil {
 
     public GEmote createEmoteFromRawData(File File) {
 
-        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(File);
+        try {
 
-        List<String> pattern = configuration.getStringList("pattern");
+            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(File);
 
-        List<GEmotePart> parts = new ArrayList<>();
+            List<String> pattern = configuration.getStringList("pattern");
 
-        for(String part : pattern) {
+            List<GEmotePart> parts = new ArrayList<>();
 
-            Supplier<Stream<String>> sPart = () -> Arrays.stream(part.toLowerCase().split(" "));
+            for(String part : pattern) {
 
-            try {
+                Supplier<Stream<String>> sPart = () -> Arrays.stream(part.toLowerCase().split(" "));
 
-                Particle particle;
+                try {
 
-                try { particle = Particle.valueOf(sPart.get().filter(s -> s.startsWith("particle:")).findFirst().orElse(":.").split(":")[1].toUpperCase()); } catch (Exception ignored) { continue; }
+                    Particle particle;
 
-                String sDelay = sPart.get().filter(s -> s.startsWith("delay:")).findFirst().orElse(":0").split(":")[1];
+                    try { particle = Particle.valueOf(sPart.get().filter(s -> s.startsWith("particle:")).findFirst().orElse(":.").split(":")[1].toUpperCase()); } catch (Exception ignored) { continue; }
 
-                long delay = Long.parseLong(sDelay);
+                    String sDelay = sPart.get().filter(s -> s.startsWith("delay:")).findFirst().orElse(":0").split(":")[1];
 
-                String sRepeat = sPart.get().filter(s -> s.startsWith("repeat:")).findFirst().orElse(":1").split(":")[1];
+                    long delay = Long.parseLong(sDelay);
 
-                long repeat = Long.parseLong(sRepeat);
+                    String sRepeat = sPart.get().filter(s -> s.startsWith("repeat:")).findFirst().orElse(":1").split(":")[1];
 
-                String sLoop = sPart.get().filter(s -> s.startsWith("loop:")).findFirst().orElse(":1").split(":")[1];
+                    long repeat = Long.parseLong(sRepeat);
 
-                boolean loop = Byte.parseByte(sLoop) == 1;
+                    String sLoop = sPart.get().filter(s -> s.startsWith("loop:")).findFirst().orElse(":1").split(":")[1];
 
-                String sAmount = sPart.get().filter(s -> s.startsWith("amount:")).findFirst().orElse(":1").split(":")[1];
+                    boolean loop = Byte.parseByte(sLoop) == 1;
 
-                int amount = Integer.parseInt(sAmount);
+                    String sAmount = sPart.get().filter(s -> s.startsWith("amount:")).findFirst().orElse(":1").split(":")[1];
 
-                String sXOffset = sPart.get().filter(s -> s.startsWith("xoffset:")).findFirst().orElse(":0.0").split(":")[1];
+                    int amount = Integer.parseInt(sAmount);
 
-                double xoffset = Double.parseDouble(sXOffset);
+                    String sXOffset = sPart.get().filter(s -> s.startsWith("xoffset:")).findFirst().orElse(":0.0").split(":")[1];
 
-                String sYOffset = sPart.get().filter(s -> s.startsWith("yoffset:")).findFirst().orElse(":0.0").split(":")[1];
+                    double xoffset = Double.parseDouble(sXOffset);
 
-                double yoffset = Double.parseDouble(sYOffset);
+                    String sYOffset = sPart.get().filter(s -> s.startsWith("yoffset:")).findFirst().orElse(":0.0").split(":")[1];
 
-                String sZOffset = sPart.get().filter(s -> s.startsWith("zoffset:")).findFirst().orElse(":0.0").split(":")[1];
+                    double yoffset = Double.parseDouble(sYOffset);
 
-                double zoffset = Double.parseDouble(sZOffset);
+                    String sZOffset = sPart.get().filter(s -> s.startsWith("zoffset:")).findFirst().orElse(":0.0").split(":")[1];
 
-                String sExtra = sPart.get().filter(s -> s.startsWith("extra:")).findFirst().orElse(":1.0").split(":")[1];
+                    double zoffset = Double.parseDouble(sZOffset);
 
-                double extra = Double.parseDouble(sExtra);
+                    String sExtra = sPart.get().filter(s -> s.startsWith("extra:")).findFirst().orElse(":1.0").split(":")[1];
 
-                String[] sData = sPart.get().filter(s -> s.startsWith("data:")).findFirst().orElse(":.").split(":");
+                    double extra = Double.parseDouble(sExtra);
 
-                Object data = null;
+                    String[] sData = sPart.get().filter(s -> s.startsWith("data:")).findFirst().orElse(":.").split(":");
 
-                if(Particle.DustOptions.class.equals(particle.getDataType())) {
+                    Object data = null;
 
-                    data = new Particle.DustOptions(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), sData.length > 4 ? Float.parseFloat(sData[4]) : 1.0f);
-                } else if(BlockData.class.equals(particle.getDataType())) {
+                    if(Particle.DustOptions.class.equals(particle.getDataType())) {
 
-                    data = Material.getMaterial(sData[1].toUpperCase()).createBlockData();
-                } else if(ItemStack.class.equals(particle.getDataType())) {
+                        data = new Particle.DustOptions(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), sData.length > 4 ? Float.parseFloat(sData[4]) : 1.0f);
+                    } else if(BlockData.class.equals(particle.getDataType())) {
 
-                    data = new ItemStack(Material.getMaterial(sData[1].toUpperCase()));
-                } else if(Particle.DustTransition.class.equals(particle.getDataType())) {
+                        data = Material.getMaterial(sData[1].toUpperCase()).createBlockData();
+                    } else if(ItemStack.class.equals(particle.getDataType())) {
 
-                    data = new Particle.DustTransition(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), Color.fromRGB(Integer.parseInt(sData[4]), Integer.parseInt(sData[5]), Integer.parseInt(sData[6])), sData.length > 7 ? Float.parseFloat(sData[7]) : 1.0f);
-                } else if(Float.class.equals(particle.getDataType())) {
+                        data = new ItemStack(Material.getMaterial(sData[1].toUpperCase()));
+                    } else if(Particle.DustTransition.class.equals(particle.getDataType())) {
 
-                    data = Float.parseFloat(sData[1]);
-                } else if(Integer.class.equals(particle.getDataType())) {
+                        data = new Particle.DustTransition(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), Color.fromRGB(Integer.parseInt(sData[4]), Integer.parseInt(sData[5]), Integer.parseInt(sData[6])), sData.length > 7 ? Float.parseFloat(sData[7]) : 1.0f);
+                    } else if(Float.class.equals(particle.getDataType())) {
 
-                    data = Integer.parseInt(sData[1]);
-                } else if(Vibration.class.equals(particle.getDataType())) { }
+                        data = Float.parseFloat(sData[1]);
+                    } else if(Integer.class.equals(particle.getDataType())) {
 
-                for(int i = 0; i < repeat; i++) parts.add(new GEmotePart(particle, delay, repeat, loop, amount, xoffset, yoffset, zoffset, extra, data));
-            } catch (Exception | Error e) { e.printStackTrace(); }
-        }
+                        data = Integer.parseInt(sData[1]);
+                    } else if(Vibration.class.equals(particle.getDataType())) { }
 
-        return new GEmote(File.getName().replace(".gex", "").toLowerCase(), parts, configuration.getLong("loop", 0), configuration.getBoolean("head", true));
+                    for(int i = 0; i < repeat; i++) parts.add(new GEmotePart(particle, delay, repeat, loop, amount, xoffset, yoffset, zoffset, extra, data));
+                } catch (Exception | Error e) { e.printStackTrace(); }
+            }
+
+            return new GEmote(File.getName().replace(".gex", "").toLowerCase(), parts, configuration.getLong("loop", 0), configuration.getBoolean("head", true));
+        } catch (Exception | Error e) { e.printStackTrace(); }
+
+        return null;
     }
 
 }
