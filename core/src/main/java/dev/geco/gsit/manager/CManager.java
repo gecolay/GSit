@@ -150,10 +150,17 @@ public class CManager {
 
                 String[] materialAndOffset = material.split(";");
 
-                if(materialAndOffset[0].startsWith("#")) {
+                if(materialAndOffset[0].equalsIgnoreCase("*")) {
+                    S_SITMATERIALS.put(Material.AIR, 0d);
+                    continue;
+                }
 
-                    for(Material a : Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(materialAndOffset[0].substring(1).toLowerCase()), Material.class).getValues()) S_SITMATERIALS.put(a, materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
-                } else S_SITMATERIALS.put(Material.valueOf(materialAndOffset[0].toUpperCase()), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
+                if(materialAndOffset[0].startsWith("#")) {
+                    for(Material tagMaterial : Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(materialAndOffset[0].substring(1).toLowerCase()), Material.class).getValues()) S_SITMATERIALS.put(tagMaterial, materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
+                    continue;
+                }
+
+                S_SITMATERIALS.put(Material.valueOf(materialAndOffset[0].toUpperCase()), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
             } catch (Exception | Error ignored) { }
         }
         S_BOTTOM_PART_ONLY = GPM.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
