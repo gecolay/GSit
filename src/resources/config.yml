@@ -33,7 +33,7 @@ Options:
 
   Sit:
 
-    # Defines the blocks a player can sit on by clicking (materials and tags)
+    # Defines the blocks a player can sit on by clicking (materials and tags) (* means every block)
     # Separate a material or tag from its y-offset with a ";" character
     SitMaterials:
     - "#stairs"
