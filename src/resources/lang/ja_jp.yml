@@ -9,6 +9,7 @@ Plugin:
   plugin-enabled: "[P]&a プラグインは正常に有効になりました。"
   plugin-link: "[P]&6 %Link%&a と正常に連携されました！"
   plugin-update: "[P]&a 新しいバージョンが使用可能になりました:&6 %NewVersion%&a！\n[P]&a 現在使われているバージョン:&6 %Version%&a！\n[P]&a ここから最新版をダウンロード:\n[P]&6 %Path%"
+  plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c このプラグインは、このサーバーバージョンでは使えません！ (&b%Version%&c)"
   plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a プラグインは正常に無効になりました。"

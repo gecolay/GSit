@@ -9,6 +9,7 @@ Plugin:
   plugin-enabled: "[P]&a Laajennus käynnistyi onnistuneesti."
   plugin-link: "[P]&a Yhdistettiin onnistuneesti&6 %Link%&a laajennukseen!"
   plugin-update: "[P]&a Uusi versio saatavilla:&6 %NewVersion%&a!\n[P]&a Käytössä oleva versio:&6 %Version%&a!\n[P]&a Lataa uusin versio täältä:\n[P]&6 %Path%"
+  plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c Tätä laajennusta ei voi käyttää nykyisellä palvelimen versiolla! (&b%Version%&c)"
   plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a Laajennus sammui onnistuneesti."

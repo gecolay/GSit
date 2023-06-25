@@ -94,9 +94,9 @@ public class GSitMain extends JavaPlugin {
 
     public static GSitMain getInstance() { return GPM; }
 
-    private void loadSettings() {
+    private void loadSettings(CommandSender Sender) {
 
-        dManager.connect();
+        if(!connectDatabase(Sender)) return;
 
         getEmoteManager().reloadEmotes();
 
@@ -168,7 +168,7 @@ public class GSitMain extends JavaPlugin {
 
     public void onEnable() {
 
-        loadSettings();
+        loadSettings(Bukkit.getConsoleSender());
         if(!versionCheck()) return;
 
         entityUtil = NMSManager.isNewerOrVersion(17, 0) ? (IEntityUtil) NMSManager.getPackageObject("util.EntityUtil", null) : new EntityUtil();
@@ -278,9 +278,22 @@ public class GSitMain extends JavaPlugin {
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
 
-        loadSettings();
+        loadSettings(Sender);
         loadPluginDependencies(Sender);
         GPM.getUManager().checkForUpdates();
+    }
+
+    private boolean connectDatabase(CommandSender Sender) {
+
+        boolean connect = dManager.connect();
+
+        if(connect) return true;
+
+        getMManager().sendMessage(Sender, "Plugin.plugin-data");
+
+        Bukkit.getPluginManager().disablePlugin(getInstance());
+
+        return false;
     }
 
     private boolean versionCheck() {

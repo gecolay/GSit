@@ -9,6 +9,7 @@ Plugin:
   plugin-enabled: "[P]&a Le plugin a été activé avec succès."
   plugin-link: "[P]&a Lien avec&6 %Link%&a réussi !"
   plugin-update: "[P]&a Nouvelle version disponible :&6 %NewVersion%&a !\n[P]&a Vous êtes actuellement sur la version :&6 %Version%&a !\n[P]&a Téléchargez la dernière version sur :\n[P]&6 %Path%"
+  plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c Ce plugin ne peut pas être utilisé avec cette version de serveur ! (&b%Version%&c)"
   plugin-reload: "[P]&a Le plugin a été rechargé avec succès."
   plugin-disabled: "[P]&a Le plugin a été désactivé avec succès."

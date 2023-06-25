@@ -9,6 +9,7 @@ Plugin:
   plugin-enabled: "[P]&a 插件已成功启用"
   plugin-link: "[P]&a 成功链接到&6 %Link%&a !"
   plugin-update: "[P]&a 新版本可用:&6 %NewVersion%&a!\n[P]&a 当前使用版本:&6 %Version%&a!\n[P]&a 下载最新版本:\n[P]&6 %Path%"
+  plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c 插件与当前服务器版本不兼容! (&b%Version%&c)"
   plugin-reload: "[P]&a 插件已成功重载."
   plugin-disabled: "[P]&a 插件已成功禁用"
