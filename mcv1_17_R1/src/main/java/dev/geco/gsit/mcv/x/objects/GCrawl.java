@@ -28,8 +28,6 @@ public class GCrawl implements IGCrawl {
 
     private Location blockLocation;
 
-    private boolean blockPresent;
-
     private boolean boxPresent;
 
     protected final BlockData blockData = Material.BARRIER.createBlockData();
@@ -54,12 +52,13 @@ public class GCrawl implements IGCrawl {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void PIntE(PlayerInteractEvent Event) {
 
-                if(Event.getPlayer() == player && blockPresent && Event.getClickedBlock().equals(blockLocation.getBlock()) && Event.getHand() == EquipmentSlot.HAND) {
+                if(!Event.isAsynchronous() && Event.getPlayer() == player && blockLocation != null && Event.getClickedBlock().equals(blockLocation.getBlock()) && Event.getHand() == EquipmentSlot.HAND) {
 
                     Event.setCancelled(true);
 
                     GPM.getTManager().run(() -> {
-                        buildBlock();
+
+                        buildBlock(blockLocation);
                     }, false, player);
                 }
             }
@@ -70,7 +69,7 @@ public class GCrawl implements IGCrawl {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void PMovE(PlayerMoveEvent Event) {
 
-                if(Event.getPlayer() == player) {
+                if(!Event.isAsynchronous() && Event.getPlayer() == player) {
 
                     Location locationFrom = Event.getFrom(), locationTo = Event.getTo();
 
@@ -82,7 +81,7 @@ public class GCrawl implements IGCrawl {
         stopListener = new Listener() {
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PTogSE(PlayerToggleSneakEvent Event) { if(Event.getPlayer() == player && Event.isSneaking()) GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP); }
+            public void PTogSE(PlayerToggleSneakEvent Event) { if(!Event.isAsynchronous() && Event.getPlayer() == player && Event.isSneaking()) GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP); }
         };
     }
 
@@ -124,9 +123,7 @@ public class GCrawl implements IGCrawl {
 
             destoryBlock();
 
-            blockLocation = location;
-
-            if(canSetBarrier && !aboveBlockSolid) buildBlock();
+            if(canSetBarrier && !aboveBlockSolid) buildBlock(location);
         }
 
         if(!canSetBarrier && !aboveBlockSolid) {
@@ -144,18 +141,13 @@ public class GCrawl implements IGCrawl {
                 if(boxPresent) {
 
                     serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
-
                     boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-
                     serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
                 } else {
 
                     boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-
                     serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
-
                     boxPresent = true;
-
                     serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
                 }
             }, true, playerLocation);
@@ -170,36 +162,32 @@ public class GCrawl implements IGCrawl {
 
         player.setSwimming(false);
 
-        player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
 
         serverPlayer.connection.send(new ClientboundRemoveEntityPacket(boxEntity.getId()));
     }
 
-    private void buildBlock() {
+    private void buildBlock(Location Location) {
 
-        blockPresent = true;
+        blockLocation = Location;
 
         player.sendBlockChange(blockLocation, blockData);
     }
 
     private void destoryBlock() {
 
-        if(blockPresent) {
+        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
 
-            player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-
-            blockPresent = false;
-        }
+        blockLocation = null;
     }
 
     private void destoryEntity() {
 
-        if(boxPresent) {
+        if(!boxPresent) return;
 
-            serverPlayer.connection.send(new ClientboundRemoveEntityPacket(boxEntity.getId()));
+        serverPlayer.connection.send(new ClientboundRemoveEntityPacket(boxEntity.getId()));
 
-            boxPresent = false;
-        }
+        boxPresent = false;
     }
 
     private boolean checkCrawlValid() {
@@ -207,6 +195,7 @@ public class GCrawl implements IGCrawl {
         if(serverPlayer.isInWater() || player.isFlying()) {
 
             GPM.getTManager().run(() -> {
+
                 GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
             }, true, blockLocation != null ? blockLocation : player.getLocation());
 
