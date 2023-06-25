@@ -76,7 +76,7 @@ public class GLayCommand implements CommandExecutor {
         try {
 
             for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) overSize = true;
-        } catch (Exception | Error ignored) { }
+        } catch (Throwable ignored) { }
 
         if(!GPM.getCManager().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && !overSize && (!block.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
 

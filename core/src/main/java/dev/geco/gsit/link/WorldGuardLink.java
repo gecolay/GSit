@@ -51,7 +51,7 @@ public class WorldGuardLink {
         try {
 
             return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(Location)).testState(null, Flag);
-        } catch (Exception | Error e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
 
         return true;
     }

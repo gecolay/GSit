@@ -161,7 +161,7 @@ public class CManager {
                 }
 
                 S_SITMATERIALS.put(Material.valueOf(materialAndOffset[0].toUpperCase()), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
-            } catch (Exception | Error ignored) { }
+            } catch (Throwable ignored) { }
         }
         S_BOTTOM_PART_ONLY = GPM.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
@@ -201,7 +201,7 @@ public class CManager {
 
                 if(material.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(material.substring(1).toLowerCase()), Material.class).getValues());
                 else MATERIALBLACKLIST.add(Material.valueOf(material.toUpperCase()));
-            } catch (Exception | Error ignored) { }
+            } catch (Throwable ignored) { }
         }
         COMMANDBLACKLIST = GPM.getConfig().getStringList("Options.CommandBlacklist");
         ENHANCED_COMPATIBILITY = GPM.getConfig().getBoolean("Options.enhanced-compatibility", false);

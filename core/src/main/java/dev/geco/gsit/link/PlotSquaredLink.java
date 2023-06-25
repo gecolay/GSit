@@ -38,7 +38,7 @@ public class PlotSquaredLink {
 
             return !plot.isDenied(Player.getUniqueId()) && (!GPM.getCManager().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId()));
 
-        } catch (Exception | Error e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
 
         return true;
     }
@@ -50,7 +50,7 @@ public class PlotSquaredLink {
             new PlotAPI();
 
             return true;
-        } catch(Exception | Error ignored) { }
+        } catch(Throwable ignored) { }
 
         return false;
     }

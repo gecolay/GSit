@@ -21,7 +21,7 @@ public class GriefPreventionLink {
 
             return claim == null || (!GPM.getCManager().TRUSTED_REGION_ONLY || claim.canSiege(Player));
 
-        } catch (Exception | Error e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
 
         return true;
     }

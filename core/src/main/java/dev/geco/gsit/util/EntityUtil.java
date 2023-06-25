@@ -25,8 +25,8 @@ public class EntityUtil implements IEntityUtil {
 
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-            try { armorStand.setInvisible(true); } catch (Error e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored) { } }
-            try { armorStand.setMarker(true); } catch (Error ignored) { }
+            try { armorStand.setInvisible(true); } catch (Throwable e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
+            try { armorStand.setMarker(true); } catch (Throwable ignored) { }
         });
 
         boolean valid = seatEntity.isValid();
@@ -58,12 +58,12 @@ public class EntityUtil implements IEntityUtil {
 
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-            try { armorStand.setInvisible(true); } catch (Error e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Exception | Error ignored) { } }
-            try { armorStand.setGravity(false); } catch (Error ignored) { }
-            try { armorStand.setMarker(true); } catch (Error ignored) { }
-            try { armorStand.setInvulnerable(true); } catch (Error ignored) { }
-            try { armorStand.setSmall(true); } catch (Error ignored) { }
-            try { armorStand.setBasePlate(false); } catch (Error ignored) { }
+            try { armorStand.setInvisible(true); } catch (Throwable e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
+            try { armorStand.setGravity(false); } catch (Throwable ignored) { }
+            try { armorStand.setMarker(true); } catch (Throwable ignored) { }
+            try { armorStand.setInvulnerable(true); } catch (Throwable ignored) { }
+            try { armorStand.setSmall(true); } catch (Throwable ignored) { }
+            try { armorStand.setBasePlate(false); } catch (Throwable ignored) { }
 
             if(!GPM.getCManager().ENHANCED_COMPATIBILITY && Rider != null && Rider.isValid()) riding[0] = armorStand.addPassenger(Rider);
         });

@@ -94,7 +94,7 @@ public class UManager {
                     return;
                 }
             }
-        } catch (Exception | Error e) { latestVersion = true; }
+        } catch (Throwable e) { latestVersion = true; }
     }
 
     private String shortVersion(String V) { return V.replace(" ", "").replace("[", "").replace("]", ""); }

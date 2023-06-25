@@ -41,7 +41,9 @@ public class EntityUtil implements IEntityUtil {
 
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
-        spawnEntity(Location.getWorld(), seatEntity);
+        boolean spawn = spawnEntity(Location.getWorld(), seatEntity);
+
+        if(!spawn) return null;
 
         if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
@@ -74,22 +76,31 @@ public class EntityUtil implements IEntityUtil {
 
             if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
-            spawnEntity(lastEntity.getWorld(), playerSeatEntity);
+            boolean spawn = spawnEntity(lastEntity.getWorld(), playerSeatEntity);
 
-            lastEntity = playerSeatEntity.getBukkitEntity();
+            if(spawn) lastEntity = playerSeatEntity.getBukkitEntity();
         }
     }
 
-    private void spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
+    private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
+
+        if(!GPM.isPaperBased()) {
+
+            try {
+
+                ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
+                return true;
+            } catch (Throwable ignored) { }
+        }
 
         try {
 
-            if(GPM.isPaperBased()) {
+            net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
+            levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
+            return true;
+        } catch (Throwable ignored) { }
 
-                net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
-                levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
-            } else ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
-        } catch (Throwable e) { e.printStackTrace(); }
+        return false;
     }
 
 }

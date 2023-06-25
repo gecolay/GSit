@@ -91,11 +91,11 @@ public class EmoteUtil {
                     } else if(Vibration.class.equals(particle.getDataType())) { }
 
                     for(int i = 0; i < repeat; i++) parts.add(new GEmotePart(particle, delay, repeat, loop, amount, xoffset, yoffset, zoffset, extra, data));
-                } catch (Exception | Error e) { e.printStackTrace(); }
+                } catch (Throwable e) { e.printStackTrace(); }
             }
 
             return new GEmote(File.getName().replace(".gex", "").toLowerCase(), parts, configuration.getLong("loop", 0), configuration.getBoolean("head", true));
-        } catch (Exception | Error e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
 
         return null;
     }
