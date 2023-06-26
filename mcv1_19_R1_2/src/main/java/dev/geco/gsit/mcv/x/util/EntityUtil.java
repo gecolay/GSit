@@ -84,7 +84,7 @@ public class EntityUtil implements IEntityUtil {
 
     private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
 
-        if(!GPM.isPaperBased()) {
+        if(!GPM.isBasicPaperBased()) {
 
             try {
 

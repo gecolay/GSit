@@ -78,11 +78,11 @@ public class GSitMain extends JavaPlugin {
     private boolean spigotBased = false;
     public boolean isSpigotBased() { return spigotBased; }
 
+    private boolean basicPaperBased = false;
+    public boolean isBasicPaperBased() { return basicPaperBased; }
+
     private boolean paperBased = false;
     public boolean isPaperBased() { return paperBased; }
-
-    private boolean foliaBased = false;
-    public boolean isFoliaBased() { return foliaBased; }
 
     public final String NAME = "GSit";
 
@@ -318,12 +318,12 @@ public class GSitMain extends JavaPlugin {
 
         try {
             Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
-            paperBased = true;
+            basicPaperBased = true;
         } catch (ClassNotFoundException ignored) { }
 
         try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
-            foliaBased = true;
+            Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
+            paperBased = true;
         } catch (ClassNotFoundException ignored) { }
 
         return true;
