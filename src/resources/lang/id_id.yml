@@ -10,7 +10,7 @@ Plugin:
   plugin-link: "[P]&a Berhasil menautkan &6%Link%&a!"
   plugin-update: "[P]&a Tersedia versi baru:&6 %NewVersion%&a!\n[P]&a Sekarang kamu menjalankan versi:&6 %Version%&a!\n[P]&a Unduh versi terbaru di:\n[P]&6 %Path%"
   plugin-data: "[P]&c Sambungan ke penyimpanan data tidak dapat dibuat. Mohon cek konsol server!"
-  plugin-version: "[P]&c Plugin tidak dapat digunakan dengan versi server ini! (&b%Version%&c)"
+  plugin-version: "[P]&c Plugin tidak bisa digunakan dengan versi server ini! (&b%Version%&c)"
   plugin-reload: "[P]&a Plugin berhasil dimuat ulang."
   plugin-disabled: "[P]&a Plugin berhasil dinonaktifkan."
   plugin-prefix: "&7[&6GSit&7]"
