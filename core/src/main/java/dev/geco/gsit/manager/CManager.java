@@ -165,7 +165,7 @@ public class CManager {
         }
         S_BOTTOM_PART_ONLY = GPM.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
-        S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0.0d);
+        S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
         S_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.sit-message", true);
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);
 
@@ -175,7 +175,7 @@ public class CManager {
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
         PS_BOTTOM_RETURN = GPM.getConfig().getBoolean("Options.PlayerSit.bottom-return", false);
         PS_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.PlayerSit.empty-hand-only", true);
-        PS_MAX_DISTANCE = GPM.getConfig().getDouble("Options.PlayerSit.max-distance", 0.0d);
+        PS_MAX_DISTANCE = GPM.getConfig().getDouble("Options.PlayerSit.max-distance", 0d);
         PS_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.sit-message", true);
         PS_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.PlayerSit.default-sit-mode", true);
 
@@ -189,7 +189,7 @@ public class CManager {
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
         C_DOUBLE_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.double-sneak", false);
 
-        E_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Emote.max-distance", 192.0d);
+        E_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Emote.max-distance", 192d);
 
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");

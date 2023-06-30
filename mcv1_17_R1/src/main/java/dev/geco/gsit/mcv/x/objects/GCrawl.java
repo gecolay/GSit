@@ -109,7 +109,7 @@ public class GCrawl implements IGCrawl {
 
         Block locationBlock = location.getBlock();
 
-        int blockSize = (int) ((location.getY() - location.getBlockY()) * 100.0);
+        int blockSize = (int) ((location.getY() - location.getBlockY()) * 100);
 
         location.setY(location.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
 

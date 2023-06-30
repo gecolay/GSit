@@ -68,7 +68,7 @@ public class NMSManager {
             getHandle.setAccessible(true);
             return getHandle.invoke(Object);
         } catch (Exception e) { e.printStackTrace(); }
-        return Object;
+        return null;
     }
 
 }

@@ -14,7 +14,6 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.craftbukkit.v1_17_R1.*;
 import org.bukkit.craftbukkit.v1_17_R1.entity.*;
-import org.bukkit.craftbukkit.v1_17_R1.inventory.*;
 
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
@@ -93,7 +92,7 @@ public class GPoseSeat implements IGPoseSeat {
         removeNpcPacket = new ClientboundRemoveEntitiesPacket(playerNpc.getId());
         createNpcPacket = new ClientboundAddPlayerPacket(playerNpc);
         if(pose == org.bukkit.entity.Pose.SLEEPING) teleportNpcPacket = new ClientboundTeleportEntityPacket(playerNpc);
-        if(pose == org.bukkit.entity.Pose.SPIN_ATTACK) rotateNpcPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90.0f), true);
+        if(pose == org.bukkit.entity.Pose.SPIN_ATTACK) rotateNpcPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90f), true);
 
         listener = new Listener() {
 
@@ -268,7 +267,7 @@ public class GPoseSeat implements IGPoseSeat {
 
     private void stopUpdate() { GPM.getTManager().cancel(task); }
 
-    private float fixYaw(float Yaw) { return (Yaw < 0.0f ? 360.0f + Yaw : Yaw) % 360.0f; }
+    private float fixYaw(float Yaw) { return (Yaw < 0f ? 360f + Yaw : Yaw) % 360f; }
 
     private void updateDirection() {
 
@@ -345,13 +344,11 @@ public class GPoseSeat implements IGPoseSeat {
 
         List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentList = new ArrayList<>();
 
-        net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(new ItemStack(Material.AIR));
-
         for(net.minecraft.world.entity.EquipmentSlot equipmentSlot : net.minecraft.world.entity.EquipmentSlot.values()) {
 
             net.minecraft.world.item.ItemStack itemStack = Visibility ? serverPlayer.getItemBySlot(equipmentSlot) : null;
 
-            equipmentList.add(Pair.of(equipmentSlot, itemStack != null ? itemStack : nmsCopy));
+            equipmentList.add(Pair.of(equipmentSlot, itemStack != null ? itemStack : net.minecraft.world.item.ItemStack.EMPTY));
         }
 
         ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(serverPlayer.getId(), equipmentList);
@@ -378,7 +375,7 @@ public class GPoseSeat implements IGPoseSeat {
         for(Player nearPlayer : nearPlayers) sendPacket(nearPlayer, animatePacket);
     }
 
-    private byte getFixedRotation(float Yaw) { return (byte) (Yaw * 256.0f / 360.0f); }
+    private byte getFixedRotation(float Yaw) { return (byte) (Yaw * 256f / 360f); }
 
     private Direction getDirection() {
 
