@@ -40,7 +40,7 @@ public class NMSManager {
 
     public static boolean isVersion(long Version, int SubVersion) {
         String[] version = getVersion().split("\\.");
-        return version.length > 1 && (version.length > 2 ? Long.parseLong(version[1]) == Version && Long.parseLong(version[2]) == SubVersion : Long.parseLong(version[1]) == Version && SubVersion == 0);
+        return version.length > 2 ? Long.parseLong(version[1]) == Version && Long.parseLong(version[2]) == SubVersion : Long.parseLong(version[1]) == Version && SubVersion == 0;
     }
 
     public static Object getPackageObject(String ClassName, Object Object) {
