@@ -34,13 +34,13 @@ public class GEmotePart {
         xoffset = XOffset;
         yoffset = YOffset;
         zoffset = ZOffset;
-        extra = Extra < 0 ? 1.0 : Extra;
+        extra = Extra < 0 ? 1 : Extra;
         data = Data != null && Particle.getDataType().equals(Data.getClass()) ? Data : null;
     }
 
     private Vector getCords(LivingEntity Entity) {
 
-        float yaw = Entity.getLocation().getYaw(), yawF = yaw + 180.0f;
+        float yaw = Entity.getLocation().getYaw(), yawF = yaw + 180f;
 
         Vector xVector = new Vector(Math.cos(Math.toRadians(yawF)) * getXOffset(), 0, Math.sin(Math.toRadians(yawF)) * getXOffset());
 

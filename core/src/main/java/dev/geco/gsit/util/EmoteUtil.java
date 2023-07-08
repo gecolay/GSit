@@ -72,7 +72,7 @@ public class EmoteUtil {
 
                     if(Particle.DustOptions.class.equals(particle.getDataType())) {
 
-                        data = new Particle.DustOptions(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), sData.length > 4 ? Float.parseFloat(sData[4]) : 1.0f);
+                        data = new Particle.DustOptions(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), sData.length > 4 ? Float.parseFloat(sData[4]) : 1f);
                     } else if(BlockData.class.equals(particle.getDataType())) {
 
                         data = Material.getMaterial(sData[1].toUpperCase()).createBlockData();
@@ -81,7 +81,7 @@ public class EmoteUtil {
                         data = new ItemStack(Material.getMaterial(sData[1].toUpperCase()));
                     } else if(Particle.DustTransition.class.equals(particle.getDataType())) {
 
-                        data = new Particle.DustTransition(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), Color.fromRGB(Integer.parseInt(sData[4]), Integer.parseInt(sData[5]), Integer.parseInt(sData[6])), sData.length > 7 ? Float.parseFloat(sData[7]) : 1.0f);
+                        data = new Particle.DustTransition(Color.fromRGB(Integer.parseInt(sData[1]), Integer.parseInt(sData[2]), Integer.parseInt(sData[3])), Color.fromRGB(Integer.parseInt(sData[4]), Integer.parseInt(sData[5]), Integer.parseInt(sData[6])), sData.length > 7 ? Float.parseFloat(sData[7]) : 1f);
                     } else if(Float.class.equals(particle.getDataType())) {
 
                         data = Float.parseFloat(sData[1]);

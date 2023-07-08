@@ -11,20 +11,18 @@ public class DManager {
 
     private final GSitMain GPM;
 
-    private final FileConfiguration dataConfig;
+    private FileConfiguration dataConfig;
 
     private Connection connection;
 
-    public DManager(GSitMain GPluginMain) {
-        GPM = GPluginMain;
-        File dataFile = new File(GPM.getDataFolder(), "data/data.yml");
-        if(!dataFile.exists()) GPM.saveResource("data/data.yml", false);
-        dataConfig = YamlConfiguration.loadConfiguration(dataFile);
-    }
+    public DManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public String getType() { return dataConfig.getString("Database.type", "sqlite"); }
 
     public boolean connect() {
+        File dataFile = new File(GPM.getDataFolder(), "data/data.yml");
+        if(!dataFile.exists()) GPM.saveResource("data/data.yml", false);
+        dataConfig = YamlConfiguration.loadConfiguration(dataFile);
         try {
             String type = getType();
             if(type.equals("sqlite")) {
