@@ -120,6 +120,7 @@ Options:
     get-up-sneak: true
 
     # Defines whether a player can double-sneak in a short amount of time to start crawling
+    # In order for it to work, you must be looking straight down
     double-sneak: false
 
 
@@ -128,6 +129,9 @@ Options:
 
     # Defines the maximum range at which emotes can be seen
     max-distance: 192.0
+
+    # Defines whether to create the default "happy" emote in the emotes folder if it is missing
+    create-default-emote: true
 
 
 
