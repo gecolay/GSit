@@ -34,7 +34,7 @@ public class NMSManager {
 
     public static boolean isNewerOrVersion(long Version, int SubVersion) {
         String[] version = getVersion().split("\\.");
-        if(Long.parseLong(version[1]) >= Version) return true;
+        if(Long.parseLong(version[1]) < Version) return false;
         return version.length > 2 ? Long.parseLong(version[2]) >= SubVersion : SubVersion == 0;
     }
 
