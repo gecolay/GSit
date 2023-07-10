@@ -4,8 +4,6 @@ import java.lang.reflect.*;
 
 import org.bukkit.*;
 
-import dev.geco.gsit.GSitMain;
-
 public class NMSManager {
 
     private static Class<?>[] toPrimitiveTypeArray(Class<?>[] Classes) {
@@ -45,14 +43,16 @@ public class NMSManager {
 
     public static Object getPackageObject(String ClassName, Object Object) {
         try {
-            Class<?> mcvClass = Class.forName(GSitMain.class.getPackage().getName() + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
+            String packageName = NMSManager.class.getPackage().getName();
+            Class<?> mcvClass = Class.forName(packageName.substring(0, packageName.lastIndexOf('.')) + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
             return Object == null ? mcvClass.getConstructor().newInstance() : mcvClass.getConstructor(Object.getClass()).newInstance(Object);
         } catch (Exception e) { return null; }
     }
 
     public static boolean hasPackageClass(String ClassName) {
         try {
-            Class.forName(GSitMain.class.getPackage().getName() + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
+            String packageName = NMSManager.class.getPackage().getName();
+            Class.forName(packageName.substring(0, packageName.lastIndexOf('.')) + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
             return true;
         } catch (Exception e) { return false; }
     }
