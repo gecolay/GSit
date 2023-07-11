@@ -82,6 +82,8 @@ public class CManager {
 
     public double E_MAX_DISTANCE;
 
+    public boolean E_CREATE_DEFAULT_EMOTE;
+
 
     public boolean TRUSTED_REGION_ONLY;
 
@@ -190,6 +192,7 @@ public class CManager {
         C_DOUBLE_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.double-sneak", false);
 
         E_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Emote.max-distance", 192d);
+        E_CREATE_DEFAULT_EMOTE = GPM.getConfig().getBoolean("Options.Emote.create-default-emote", true);
 
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
