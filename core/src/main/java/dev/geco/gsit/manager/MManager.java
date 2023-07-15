@@ -23,30 +23,58 @@ public class MManager {
     private boolean allowBungeeMessages = true;
     private boolean allowComponentMessages = NMSManager.isNewerOrVersion(18, 2);
 
+    private final char PRE_FORMAT_COLOR_CHAR = '&';
+
+    private final HashMap<String, String> COLOR_TAGS = new HashMap<>(); {
+
+        COLOR_TAGS.put("0", "<black>");
+        COLOR_TAGS.put("1", "<dark_blue>");
+        COLOR_TAGS.put("2", "<dark_green>");
+        COLOR_TAGS.put("3", "<dark_aqua>");
+        COLOR_TAGS.put("4", "<dark_red>");
+        COLOR_TAGS.put("5", "<dark_purple>");
+        COLOR_TAGS.put("6", "<gold>");
+        COLOR_TAGS.put("7", "<gray>");
+        COLOR_TAGS.put("8", "<dark_gray>");
+        COLOR_TAGS.put("9", "<blue>");
+        COLOR_TAGS.put("a", "<green>");
+        COLOR_TAGS.put("b", "<aqua>");
+        COLOR_TAGS.put("c", "<red>");
+        COLOR_TAGS.put("d", "<light_purple>");
+        COLOR_TAGS.put("e", "<yellow>");
+        COLOR_TAGS.put("f", "<white>");
+    }
+
     private final HashMap<String, String> TAGS = new HashMap<>(); {
 
-        TAGS.put("&0", "<reset><black>");
-        TAGS.put("&1", "<reset><dark_blue>");
-        TAGS.put("&2", "<reset><dark_green>");
-        TAGS.put("&3", "<reset><dark_aqua>");
-        TAGS.put("&4", "<reset><dark_red>");
-        TAGS.put("&5", "<reset><dark_purple>");
-        TAGS.put("&6", "<reset><gold>");
-        TAGS.put("&7", "<reset><gray>");
-        TAGS.put("&8", "<reset><dark_gray>");
-        TAGS.put("&9", "<reset><blue>");
-        TAGS.put("&a", "<reset><green>");
-        TAGS.put("&b", "<reset><aqua>");
-        TAGS.put("&c", "<reset><red>");
-        TAGS.put("&d", "<reset><light_purple>");
-        TAGS.put("&e", "<reset><yellow>");
-        TAGS.put("&f", "<reset><white>");
-        TAGS.put("&k", "<obfuscated>");
-        TAGS.put("&l", "<bold>");
-        TAGS.put("&m", "<strikethrough>");
-        TAGS.put("&n", "<underlined>");
-        TAGS.put("&o", "<italic>");
-        TAGS.put("&r", "<reset>");
+        TAGS.putAll(COLOR_TAGS);
+        TAGS.put("k", "<obfuscated>");
+        TAGS.put("l", "<bold>");
+        TAGS.put("m", "<strikethrough>");
+        TAGS.put("n", "<underlined>");
+        TAGS.put("o", "<italic>");
+        TAGS.put("r", "<reset>");
+    }
+
+    private final List<String> RESET_ON_TAGS = new ArrayList<>(); {
+
+        RESET_ON_TAGS.add("bold");
+        RESET_ON_TAGS.add("b");
+        RESET_ON_TAGS.add("italic");
+        RESET_ON_TAGS.add("em");
+        RESET_ON_TAGS.add("i");
+        RESET_ON_TAGS.add("underlined");
+        RESET_ON_TAGS.add("u");
+        RESET_ON_TAGS.add("strikethrough");
+        RESET_ON_TAGS.add("st");
+        RESET_ON_TAGS.add("obfuscated");
+        RESET_ON_TAGS.add("obf");
+    }
+
+    private final List<String> LEVEL_TAGS = new ArrayList<>(); {
+
+        LEVEL_TAGS.add("hover");
+        LEVEL_TAGS.add("click");
     }
 
     private final List<String> LANG_FILES = new ArrayList<>(); {
@@ -120,7 +148,7 @@ public class MManager {
     }
 
     public String toFormattedMessage(String Text) {
-        String colorText = org.bukkit.ChatColor.translateAlternateColorCodes('&', Text);
+        String colorText = org.bukkit.ChatColor.translateAlternateColorCodes(PRE_FORMAT_COLOR_CHAR, Text);
         try {
             Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(colorText);
             while(matcher.find()) colorText = colorText.replaceFirst(matcher.group(), ChatColor.of(matcher.group()).toString());
@@ -131,9 +159,64 @@ public class MManager {
     public Object toFormattedComponent(String Text) {
         String text = Text;
         if(!allowComponentMessages) return text;
-        for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(tag.getKey(), tag.getValue()).replace(tag.getKey().toUpperCase(), tag.getValue());
-        text = text.replaceAll("(?<!<color:)#[a-fA-F0-9]{6}(?<!>)", "<reset><color:$0>");
+        for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(PRE_FORMAT_COLOR_CHAR + tag.getKey(), tag.getValue()).replace(PRE_FORMAT_COLOR_CHAR + tag.getKey().toUpperCase(), tag.getValue()).replace(org.bukkit.ChatColor.COLOR_CHAR + tag.getKey(), tag.getValue()).replace(org.bukkit.ChatColor.COLOR_CHAR + tag.getKey().toUpperCase(), tag.getValue());
+        text = text.replaceAll("(?<!<color:)#[a-fA-F0-9]{6}(?<!>)", "<color:$0>");
+        text = fixMiniMessageFormat(text);
         try { return MiniMessage.miniMessage().deserialize(text); } catch (Throwable e) { return Component.text(toFormattedMessage(Text)); }
+    }
+
+    private String fixMiniMessageFormat(String Text) {
+        HashMap<Integer, List<String>> reset_map = new HashMap<>();
+        TreeMap<Integer, String> insert_map = new TreeMap<>();
+        int pos = 0;
+        int level = 0;
+        for(char ch : Text.toCharArray()) {
+            if(ch == '<') {
+                int end = Text.indexOf(">", pos);
+                if(end == -1) continue;
+                String tag = Text.substring(pos + 1, end);
+                if(RESET_ON_TAGS.contains(tag)) {
+                    List<String> reset_list = reset_map.getOrDefault(level, new ArrayList<>());
+                    reset_list.add(tag);
+                    reset_map.put(level, reset_list);
+                }
+                else if(RESET_ON_TAGS.contains("/" + tag.substring(1))) {
+                    List<String> reset_list = reset_map.getOrDefault(level, new ArrayList<>());
+                    reset_list.remove(tag);
+                    reset_map.put(level, reset_list);
+                }
+                else {
+                    if(LEVEL_TAGS.stream().anyMatch(tag::startsWith)) {
+                        level++;
+                    } else if(LEVEL_TAGS.contains(tag.substring(1))) {
+                        level--;
+                    }
+                    if(COLOR_TAGS.containsValue("<" + tag.toLowerCase() + ">") || tag.startsWith("color")) {
+                        List<String> reset_list = reset_map.getOrDefault(level, new ArrayList<>());
+                        if(reset_list.size() > 0) {
+                            StringBuilder resetTags = new StringBuilder();
+                            for(String a : reset_list) resetTags.append("</").append(a).append(">");
+                            insert_map.put(pos, resetTags.toString());
+                            reset_list.clear();
+                            reset_map.put(level, reset_list);
+                        }
+                    }
+                }
+            }
+            pos++;
+        }
+        return insertStringValues(Text, insert_map);
+    }
+
+    private String insertStringValues(String Text, TreeMap<Integer, String> InsertMap) {
+        StringBuilder text = new StringBuilder(Text);
+        int offset = 0;
+        for (Map.Entry<Integer, String> entry : InsertMap.entrySet()) {
+            int pos = entry.getKey();
+            if(pos >= 0 && pos + offset < text.length()) text.insert(pos + offset, entry.getValue());
+            offset += entry.getValue().length();
+        }
+        return text.toString();
     }
 
     public void sendMessage(CommandSender Target, String Message, Object... ReplaceList) {
