@@ -85,6 +85,7 @@ public class MManager {
         LANG_FILES.add("es_es");
         LANG_FILES.add("fi_fi");
         LANG_FILES.add("fr_fr");
+        LANG_FILES.add("id_id");
         LANG_FILES.add("it_it");
         LANG_FILES.add("ja_jp");
         LANG_FILES.add("pl_pl");
