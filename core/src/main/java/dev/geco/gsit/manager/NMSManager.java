@@ -30,14 +30,14 @@ public class NMSManager {
 
     public static String getVersion() { return Bukkit.getBukkitVersion().substring(0, Bukkit.getBukkitVersion().indexOf('-')); }
 
-    public static boolean isNewerOrVersion(long Version, int SubVersion) {
+    public static boolean isNewerOrVersion(int Version, int SubVersion) {
         String[] version = getVersion().split("\\.");
-        return Long.parseLong(version[1]) > Version || (Long.parseLong(version[1]) == Version && (version.length > 2 ? Long.parseLong(version[2]) >= SubVersion : SubVersion == 0));
+        return Integer.parseInt(version[1]) > Version || (Integer.parseInt(version[1]) == Version && (version.length > 2 ? Integer.parseInt(version[2]) >= SubVersion : SubVersion == 0));
     }
 
-    public static boolean isVersion(long Version, int SubVersion) {
+    public static boolean isVersion(int Version, int SubVersion) {
         String[] version = getVersion().split("\\.");
-        return version.length > 2 ? Long.parseLong(version[1]) == Version && Long.parseLong(version[2]) == SubVersion : Long.parseLong(version[1]) == Version && SubVersion == 0;
+        return version.length > 2 ? Integer.parseInt(version[1]) == Version && Integer.parseInt(version[2]) == SubVersion : Integer.parseInt(version[1]) == Version && SubVersion == 0;
     }
 
     public static Object getPackageObject(String ClassName, Object Object) {
@@ -45,7 +45,7 @@ public class NMSManager {
             String packageName = NMSManager.class.getPackage().getName();
             Class<?> mcvClass = Class.forName(packageName.substring(0, packageName.lastIndexOf('.')) + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
             return Object == null ? mcvClass.getConstructor().newInstance() : mcvClass.getConstructor(Object.getClass()).newInstance(Object);
-        } catch (Exception e) { return null; }
+        } catch (Throwable e) { return null; }
     }
 
     public static boolean hasPackageClass(String ClassName) {
@@ -53,7 +53,7 @@ public class NMSManager {
             String packageName = NMSManager.class.getPackage().getName();
             Class.forName(packageName.substring(0, packageName.lastIndexOf('.')) + ".mcv." + NMSManager.getPackageVersion() + "." + ClassName);
             return true;
-        } catch (Exception e) { return false; }
+        } catch (Throwable e) { return false; }
     }
 
     public static Method getMethod(String MethodName, Class<?> Class, Class<?>... Parameters) {
@@ -67,7 +67,7 @@ public class NMSManager {
             Method getHandle = Object.getClass().getDeclaredMethod("getHandle");
             getHandle.setAccessible(true);
             return getHandle.invoke(Object);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
         return null;
     }
 

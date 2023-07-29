@@ -148,22 +148,32 @@ public class MManager {
         }
     }
 
-    public String toFormattedMessage(String Text) {
-        String colorText = org.bukkit.ChatColor.translateAlternateColorCodes(PRE_FORMAT_COLOR_CHAR, Text);
+    public String toFormattedMessage(String Text, Object... RawReplaceList) {
+        String text = org.bukkit.ChatColor.translateAlternateColorCodes(PRE_FORMAT_COLOR_CHAR, Text);
         try {
-            Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(colorText);
-            while(matcher.find()) colorText = colorText.replaceFirst(matcher.group(), ChatColor.of(matcher.group()).toString());
+            Matcher matcher = Pattern.compile("(#[a-fA-F0-9]{6})").matcher(text);
+            while(matcher.find()) text = text.replaceFirst(matcher.group(), ChatColor.of(matcher.group()).toString());
         } catch (Throwable ignored) { }
-        return colorText.replace("<lang:key.sneak>", "Sneak");
+        text = text.replace("<lang:key.sneak>", "Sneak");
+        if(RawReplaceList.length > 0 && RawReplaceList.length % 2 == 0) for(int count = 0; count < RawReplaceList.length; count += 2) if(RawReplaceList[count] != null && RawReplaceList[count + 1] != null) text = text.replace(RawReplaceList[count].toString(), RawReplaceList[count + 1].toString());
+        return text;
     }
 
-    public Object toFormattedComponent(String Text) {
+    public Object toFormattedComponent(String Text, Object... RawReplaceList) {
         String text = Text;
         if(!allowComponentMessages) return text;
         for(Map.Entry<String, String> tag : TAGS.entrySet()) text = text.replace(PRE_FORMAT_COLOR_CHAR + tag.getKey(), tag.getValue()).replace(PRE_FORMAT_COLOR_CHAR + tag.getKey().toUpperCase(), tag.getValue()).replace(org.bukkit.ChatColor.COLOR_CHAR + tag.getKey(), tag.getValue()).replace(org.bukkit.ChatColor.COLOR_CHAR + tag.getKey().toUpperCase(), tag.getValue());
         text = text.replaceAll("(?<!<color:)#[a-fA-F0-9]{6}(?<!>)", "<color:$0>");
         text = fixMiniMessageFormat(text);
-        try { return MiniMessage.miniMessage().deserialize(text); } catch (Throwable e) { return Component.text(toFormattedMessage(Text)); }
+        Component component;
+        try { component = MiniMessage.miniMessage().deserialize(text); } catch (Throwable e) { component = Component.text(toFormattedMessage(Text)); }
+        if(RawReplaceList.length > 0 && RawReplaceList.length % 2 == 0) for(int count = 0; count < RawReplaceList.length; count += 2) if(RawReplaceList[count] != null && RawReplaceList[count + 1] != null) {
+            int finalCount = count;
+            component = component.replaceText((b) -> {
+                b.matchLiteral(RawReplaceList[finalCount].toString()).replacement(Component.text(RawReplaceList[finalCount + 1].toString()));
+            });
+        }
+        return component;
     }
 
     private String fixMiniMessageFormat(String Text) {
@@ -189,7 +199,10 @@ public class MManager {
                 else {
                     if(LEVEL_TAGS.stream().anyMatch(tag::startsWith)) {
                         level++;
-                    } else if(LEVEL_TAGS.contains(tag.substring(1))) {
+                    } else if(LEVEL_TAGS.contains(tag.substring(1)) && level > 0) {
+                        List<String> reset_list = reset_map.getOrDefault(level, new ArrayList<>());
+                        reset_list.clear();
+                        reset_map.put(level, reset_list);
                         level--;
                     }
                     if(COLOR_TAGS.containsValue("<" + tag.toLowerCase() + ">") || tag.startsWith("color")) {
