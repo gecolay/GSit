@@ -37,7 +37,7 @@ public class EntityUtil implements IEntityUtil {
 
         net.minecraft.world.entity.Entity rider = ((CraftEntity) Rider).getHandle();
 
-        SeatEntity seatEntity = new SeatEntity(Location);
+        net.minecraft.world.entity.Entity seatEntity = Rotate && !GPM.getViaBackwardsLink() ? new SeatDisplayEntity(Location) : new SeatEntity(Location);
 
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
@@ -53,7 +53,7 @@ public class EntityUtil implements IEntityUtil {
             return null;
         }
 
-        if(Rotate) seatEntity.startRotate();
+        if(Rotate && seatEntity instanceof SeatEntity) ((SeatEntity) seatEntity).startRotate();
 
         return seatEntity.getBukkitEntity();
     }

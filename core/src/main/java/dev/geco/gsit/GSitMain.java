@@ -2,6 +2,7 @@ package dev.geco.gsit;
 
 import org.bukkit.*;
 import org.bukkit.command.*;
+import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.*;
 
 import dev.geco.gsit.api.event.*;
@@ -71,6 +72,9 @@ public class GSitMain extends JavaPlugin {
 
     private PlotSquaredLink plotSquaredLink;
     public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
+
+    private boolean viaBackwardsLink;
+    public boolean getViaBackwardsLink() { return viaBackwardsLink; }
 
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
@@ -236,29 +240,44 @@ public class GSitMain extends JavaPlugin {
 
     private void loadPluginDependencies(CommandSender Sender) {
 
-        if(Bukkit.getPluginManager().getPlugin("GriefPrevention") != null && Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("GriefPrevention");
+
+        if(plugin != null && plugin.isEnabled()) {
             griefPreventionLink = new GriefPreventionLink(getInstance());
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "GriefPrevention");
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
         } else griefPreventionLink = null;
 
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+
+        if(plugin != null && plugin.isEnabled()) {
             placeholderAPILink = new PlaceholderAPILink(getInstance());
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlaceholderAPI");
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
             getPlaceholderAPILink().register();
         } else placeholderAPILink = null;
 
-        if(Bukkit.getPluginManager().getPlugin("PlotSquared") != null && Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
+        plugin = Bukkit.getPluginManager().getPlugin("PlotSquared");
+
+        if(plugin != null && plugin.isEnabled()) {
             plotSquaredLink = new PlotSquaredLink(getInstance());
-            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "PlotSquared");
+            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
             else plotSquaredLink = null;
         } else plotSquaredLink = null;
 
-        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+        plugin = Bukkit.getPluginManager().getPlugin("ViaBackwards");
+
+        if(plugin != null && plugin.isEnabled()) {
+            viaBackwardsLink = true;
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
+        } else viaBackwardsLink = false;
+
+        plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
+
+        if(plugin != null && plugin.isEnabled()) {
             if(worldGuardLink == null) {
                 worldGuardLink = new WorldGuardLink(getInstance());
                 getWorldGuardLink().registerFlags();
             }
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", "WorldGuard");
+            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
         } else worldGuardLink = null;
     }
 

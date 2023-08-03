@@ -6,7 +6,7 @@ website: https://www.spigotmc.org/resources/62325
 main: dev.geco.gsit.GSitMain
 api-version: 1.13
 folia-supported: true
-softdepend: [GriefPrevention, PlaceholderAPI, PlotSquared, WorldGuard]
+softdepend: [GriefPrevention, PlaceholderAPI, PlotSquared, ViaBackwards, WorldGuard]
 
 commands:
 
