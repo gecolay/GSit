@@ -15,10 +15,10 @@
     <properties>
         <paper.version>1.20.1-R0.1-SNAPSHOT</paper.version>
         <spigot.version>1.20.1-R0.1-SNAPSHOT</spigot.version>
-        <worldguard.version>7.0.7</worldguard.version>
+        <worldguard.version>7.0.9</worldguard.version>
         <placeholderapi.version>2.11.3</placeholderapi.version>
         <griefprevention.version>16.18.1</griefprevention.version>
-        <plotsquared.version>6.11.1</plotsquared.version>
+        <plotsquared.version>7.0.0</plotsquared.version>
     </properties>
 
     <repositories>
@@ -41,10 +41,6 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
-        </repository>
-        <repository>
-            <id>intellectualsites snapshots</id>
-            <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -80,16 +76,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared-Core</artifactId>
+            <groupId>com.intellectualsites.plotsquared</groupId>
+            <artifactId>plotsquared-core</artifactId>
             <version>${plotsquared.version}</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.kyori</groupId>
-                    <artifactId>adventure-text-minimessage</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 

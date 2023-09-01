@@ -106,13 +106,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>${spigot.version}</version>
-            <classifier>remapped-mojang</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>dev.geco.gsit</groupId>
             <artifactId>mcv1_20_R1</artifactId>
             <version>${project.parent.version}</version>
