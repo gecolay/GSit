@@ -150,12 +150,16 @@ public class SitManager {
 
         seats.remove(seat);
 
-        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? seat.getReturn() : seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d));
+        Location returnLocation = seat.getReturn();
 
         if(!GPM.getCManager().GET_UP_RETURN) {
 
-            returnLocation.setYaw(seat.getEntity().getLocation().getYaw());
-            returnLocation.setPitch(seat.getEntity().getLocation().getPitch());
+            try {
+
+                returnLocation = seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
+                returnLocation.setYaw(seat.getEntity().getLocation().getYaw());
+                returnLocation.setPitch(seat.getEntity().getLocation().getPitch());
+            } catch (Exception ignored) { }
         }
 
         if(seat.getEntity().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
