@@ -78,7 +78,13 @@ public class GCrawlCommand implements CommandExecutor {
 
             if(GPM.getPManager().hasPermission(Sender, "CrawlToggle")) {
 
-                if(GPM.getToggleManager().canCrawl(player.getUniqueId())) {
+                boolean toggle = GPM.getToggleManager().canCrawl(player.getUniqueId());
+
+                if(Args.length > 1 && Args[1].equalsIgnoreCase("off")) toggle = true;
+
+                if(Args.length > 1 && Args[1].equalsIgnoreCase("on")) toggle = false;
+
+                if(toggle) {
 
                     GPM.getToggleManager().setCanCrawl(player.getUniqueId(), false);
 

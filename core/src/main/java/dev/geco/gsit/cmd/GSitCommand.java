@@ -114,7 +114,13 @@ public class GSitCommand implements CommandExecutor {
 
                 if(GPM.getPManager().hasPermission(Sender, "SitToggle") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) {
 
-                    if(GPM.getToggleManager().canSit(player.getUniqueId())) {
+                    boolean toggle = GPM.getToggleManager().canSit(player.getUniqueId());
+
+                    if(Args.length > 1 && Args[1].equalsIgnoreCase("off")) toggle = true;
+
+                    if(Args.length > 1 && Args[1].equalsIgnoreCase("on")) toggle = false;
+
+                    if(toggle) {
 
                         GPM.getToggleManager().setCanSit(player.getUniqueId(), false);
 
@@ -132,7 +138,13 @@ public class GSitCommand implements CommandExecutor {
 
                 if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle") && GPM.getCManager().PS_ALLOW_SIT) {
 
-                    if(GPM.getToggleManager().canPlayerSit(player.getUniqueId())) {
+                    boolean toggle = GPM.getToggleManager().canPlayerSit(player.getUniqueId());
+
+                    if(Args.length > 1 && Args[1].equalsIgnoreCase("off")) toggle = true;
+
+                    if(Args.length > 1 && Args[1].equalsIgnoreCase("on")) toggle = false;
+
+                    if(toggle) {
 
                         GPM.getToggleManager().setCanPlayerSit(player.getUniqueId(), false);
 
