@@ -12,6 +12,7 @@ import dev.geco.gsit.events.*;
 import dev.geco.gsit.events.features.*;
 import dev.geco.gsit.link.*;
 import dev.geco.gsit.manager.*;
+import dev.geco.gsit.manager.mm.*;
 import dev.geco.gsit.util.*;
 
 public class GSitMain extends JavaPlugin {
@@ -152,7 +153,6 @@ public class GSitMain extends JavaPlugin {
         uManager = new UManager(getInstance());
         pManager = new PManager(getInstance());
         tManager = new TManager(getInstance());
-        mManager = new MManager(getInstance());
         sitManager = new SitManager(getInstance());
         poseManager = new PoseManager(getInstance());
         crawlManager = new CrawlManager(getInstance());
@@ -165,6 +165,8 @@ public class GSitMain extends JavaPlugin {
         environmentUtil = new EnvironmentUtil(getInstance());
 
         preloadPluginDependencies();
+
+        mManager = isBasicPaperBased() ? new PMManager(getInstance()) : new SMManager(getInstance());
     }
 
     public void onEnable() {
@@ -186,7 +188,7 @@ public class GSitMain extends JavaPlugin {
 
     public void onDisable() {
 
-        dManager.close();
+        getDManager().close();
         getSitManager().clearSeats();
         getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
@@ -228,10 +230,25 @@ public class GSitMain extends JavaPlugin {
 
     private void preloadPluginDependencies() {
 
+        try {
+            Class.forName("org.spigotmc.event.entity.EntityDismountEvent");
+            spigotBased = true;
+        } catch (ClassNotFoundException ignored) { }
+
+        try {
+            Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
+            basicPaperBased = true;
+        } catch (ClassNotFoundException ignored) { }
+
+        try {
+            Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
+            paperBased = true;
+        } catch (ClassNotFoundException ignored) { }
+
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
 
             worldGuardLink = new WorldGuardLink(getInstance());
-            worldGuardLink.registerFlags();
+            getWorldGuardLink().registerFlags();
         }
     }
 
@@ -278,7 +295,7 @@ public class GSitMain extends JavaPlugin {
         getCManager().reload();
         getMManager().loadMessages();
 
-        dManager.close();
+        getDManager().close();
         getSitManager().clearSeats();
         getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
@@ -294,7 +311,7 @@ public class GSitMain extends JavaPlugin {
 
     private boolean connectDatabase(CommandSender Sender) {
 
-        boolean connect = dManager.connect();
+        boolean connect = getDManager().connect();
 
         if(connect) return true;
 
@@ -306,11 +323,6 @@ public class GSitMain extends JavaPlugin {
     }
 
     private boolean versionCheck() {
-
-        try {
-            Class.forName("org.spigotmc.event.entity.EntityDismountEvent");
-            spigotBased = true;
-        } catch (ClassNotFoundException ignored) { }
 
         if(!isSpigotBased() || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("objects.SeatEntity"))) {
 
@@ -324,16 +336,6 @@ public class GSitMain extends JavaPlugin {
 
             return false;
         }
-
-        try {
-            Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
-            basicPaperBased = true;
-        } catch (ClassNotFoundException ignored) { }
-
-        try {
-            Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
-            paperBased = true;
-        } catch (ClassNotFoundException ignored) { }
 
         return true;
     }
