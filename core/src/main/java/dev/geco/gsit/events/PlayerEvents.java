@@ -40,6 +40,8 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getEmoteManager().isEmoting(player)) GPM.getEmoteManager().stopEmote(player);
 
+        GPM.getToggleManager().clearToggleCache(player.getUniqueId());
+
         crawlPlayers.remove(player);
     }
 
