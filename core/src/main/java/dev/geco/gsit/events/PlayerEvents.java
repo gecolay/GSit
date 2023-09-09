@@ -133,7 +133,7 @@ public class PlayerEvents implements Listener {
 
         if(last >= System.currentTimeMillis() - MAX_DOUBLE_SNEAK_TIME) {
 
-            if(!GPM.getPManager().hasPermission(player, "Crawl")) return;
+            if(!GPM.getPManager().hasPermission(player, "CrawlSneak", "Crawl.*")) return;
 
             if(!GPM.getPManager().hasPermission(player, "ByPass.Region", "ByPass.*") && !GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 

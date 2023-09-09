@@ -28,7 +28,7 @@ public class GBellyFlopCommand implements CommandExecutor {
 
         Player player = (Player) Sender;
 
-        if(!GPM.getPManager().hasPermission(Sender, "BellyFlop")) {
+        if(!GPM.getPManager().hasPermission(Sender, "BellyFlop", "Pose.*")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
             return true;

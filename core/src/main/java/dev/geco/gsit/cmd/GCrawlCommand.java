@@ -26,22 +26,22 @@ public class GCrawlCommand implements CommandExecutor {
 
         Player player = (Player) Sender;
 
-        if(!GPM.getPManager().hasPermission(Sender, "Crawl")) {
-
-            GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
-            return true;
-        }
-
-        if(!GPM.getCrawlManager().isAvailable()) {
-
-            String v = Bukkit.getServer().getClass().getPackage().getName();
-            v = v.substring(v.lastIndexOf('.') + 1);
-
-            GPM.getMManager().sendMessage(Sender, "Messages.command-version-error", "%Version%", v);
-            return true;
-        }
-
         if(Args.length == 0) {
+
+            if(!GPM.getPManager().hasPermission(Sender, "Crawl", "Crawl.*")) {
+
+                GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
+                return true;
+            }
+
+            if(!GPM.getCrawlManager().isAvailable()) {
+
+                String v = Bukkit.getServer().getClass().getPackage().getName();
+                v = v.substring(v.lastIndexOf('.') + 1);
+
+                GPM.getMManager().sendMessage(Sender, "Messages.command-version-error", "%Version%", v);
+                return true;
+            }
 
             if(GPM.getCrawlManager().isCrawling(player)) {
 
@@ -76,7 +76,7 @@ public class GCrawlCommand implements CommandExecutor {
 
         if(Args[0].equalsIgnoreCase("toggle") && GPM.getCManager().C_DOUBLE_SNEAK) {
 
-            if(GPM.getPManager().hasPermission(Sender, "CrawlToggle")) {
+            if(GPM.getPManager().hasPermission(Sender, "CrawlToggle", "Crawl.*")) {
 
                 boolean toggle = GPM.getToggleManager().canCrawl(player.getUniqueId());
 

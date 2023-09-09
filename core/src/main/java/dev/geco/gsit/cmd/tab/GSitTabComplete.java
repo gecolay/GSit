@@ -24,9 +24,9 @@ public class GSitTabComplete implements TabCompleter {
 
             if(Args.length == 1) {
 
-                if(GPM.getPManager().hasPermission(Sender, "SitToggle") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) complete.add("toggle");
+                if(GPM.getPManager().hasPermission(Sender, "SitToggle", "Sit.*") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) complete.add("toggle");
 
-                if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle") && GPM.getCManager().PS_ALLOW_SIT) complete.add("playertoggle");
+                if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle", "PlayerSit.*") && GPM.getCManager().PS_ALLOW_SIT) complete.add("playertoggle");
 
                 if(!Args[Args.length - 1].isEmpty()) {
 
@@ -36,13 +36,13 @@ public class GSitTabComplete implements TabCompleter {
                 }
             } else if(Args.length == 2) {
 
-                if(GPM.getPManager().hasPermission(Sender, "SitToggle") && Args[0].equalsIgnoreCase("toggle") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) {
+                if(GPM.getPManager().hasPermission(Sender, "SitToggle", "Sit.*") && Args[0].equalsIgnoreCase("toggle") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) {
 
                     complete.add("on");
                     complete.add("off");
                 }
 
-                if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle") && Args[0].equalsIgnoreCase("playertoggle") && GPM.getCManager().PS_ALLOW_SIT) {
+                if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle", "PlayerSit.*") && Args[0].equalsIgnoreCase("playertoggle") && GPM.getCManager().PS_ALLOW_SIT) {
 
                     complete.add("on");
                     complete.add("off");

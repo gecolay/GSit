@@ -34,7 +34,7 @@ public class InteractEvents implements Listener {
 
         if(GPM.getCManager().S_EMPTY_HAND_ONLY && Event.getItem() != null) return;
 
-        if(clickedBlock == null || !GPM.getPManager().hasPermission(player, "SitClick")) return;
+        if(clickedBlock == null || !GPM.getPManager().hasPermission(player, "SitClick", "Sit.*")) return;
 
         if(!GPM.getCManager().S_SITMATERIALS.containsKey(clickedBlock.getType()) && !GPM.getCManager().S_SITMATERIALS.containsKey(Material.AIR)) return;
 

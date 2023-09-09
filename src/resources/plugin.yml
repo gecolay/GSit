@@ -1,9 +1,9 @@
 name: ${project.parent.name}
 version: ${project.parent.version}
 description: ${project.description}
-author: Gecolay
+authors: [Gecolay]
 website: https://www.spigotmc.org/resources/62325
-main: dev.geco.gsit.GSitMain
+main: ${project.parent.groupId}.${project.parent.artifactId}Main
 api-version: 1.13
 folia-supported: true
 softdepend: [GriefPrevention, PlaceholderAPI, PlotSquared, WorldGuard]
@@ -12,45 +12,50 @@ commands:
 
   gsit:
 
-    usage: /<command>
+    usage: /<command> [toggle|playertoggle]
     aliases: [sit]
-    description: Sit-Command
+    description: Sit command
 
   glay:
 
     usage: /<command>
     aliases: [lay]
-    description: Lay-Command
+    description: Lay command
+    permission: GSit.Lay
 
   gbellyflop:
 
     usage: /<command>
     aliases: [bellyflop]
-    description: BellyFlop-Command
+    description: BellyFlop command
+    permission: GSit.BellyFlop
 
   gspin:
 
     usage: /<command>
     aliases: [spin]
-    description: Spin-Command
+    description: Spin command
+    permission: GSit.Spin
 
   gcrawl:
 
-    usage: /<command>
+    usage: /<command> [toggle]
     aliases: [crawl]
-    description: Crawl-Command
+    description: Crawl command
 
   gemote:
 
-    usage: /<command>
+    usage: /<command> [<Emote>]
     aliases: [emote]
-    description: Emote-Command
+    description: Emote command
+    permission: GSit.Emote
 
   gsitreload:
 
     usage: /<command>
     aliases: [gsitrl]
-    description: Plugin-Reload
+    description: Plugin reload command
+    permission: GSit.Reload
 
 
 
@@ -58,7 +63,7 @@ permissions:
 
   GSit.*:
     default: op
-    description: OP-Permission for all commands and features of GSit
+    description: GSit | Permissions
     children:
       GSit.Sit.*: true
       GSit.PlayerSit.*: true
@@ -71,7 +76,7 @@ permissions:
 
   GSit.Sit.*:
     default: op
-    description: Sit | Permission
+    description: Sit | Permissions
     children:
       GSit.Sit: true
       GSit.SitClick: true
@@ -91,7 +96,7 @@ permissions:
 
   GSit.PlayerSit.*:
     default: op
-    description: PlayerSit | Permission
+    description: PlayerSit | Permissions
     children:
       GSit.PlayerSit: true
       GSit.PlayerSitToggle: true
@@ -106,7 +111,7 @@ permissions:
 
   GSit.Pose.*:
     default: op
-    description: Pose | Permission
+    description: Pose | Permissions
     children:
       GSit.Lay: true
       GSit.BellyFlop: true
@@ -127,14 +132,19 @@ permissions:
 
   GSit.Crawl.*:
     default: op
-    description: Crawl | Permission
+    description: Crawl | Permissions
     children:
       GSit.Crawl: true
+      GSit.CrawlSneak: true
       GSit.Crawl.CrawlToggle: true
 
   GSit.Crawl:
     default: true
     description: Crawl command | Permission
+
+  GSit.CrawlSneak:
+    default: true
+    description: Crawl sneak | Permission
 
   GSit.CrawlToggle:
     default: true
@@ -142,7 +152,7 @@ permissions:
 
   GSit.Emote.*:
     default: true
-    description: Emote | Permission
+    description: Emote | Permissions
     children:
       GSit.Emote: true
 
@@ -152,7 +162,7 @@ permissions:
 
   GSit.Kick.*:
     default: op
-    description: Kick | Permission
+    description: Kick | Permissions
     children:
       GSit.Kick.Sit: true
       GSit.Kick.Pose: true
@@ -167,7 +177,7 @@ permissions:
 
   GSit.ByPass.*:
     default: op
-    description: ByPass | Permission
+    description: ByPass | Permissions
     children:
       GSit.ByPass.World: true
       GSit.ByPass.Region: true

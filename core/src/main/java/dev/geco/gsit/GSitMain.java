@@ -206,16 +206,21 @@ public class GSitMain extends JavaPlugin {
         getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));
         getCommand("glay").setExecutor(new GLayCommand(getInstance()));
         getCommand("glay").setTabCompleter(new EmptyTabComplete());
+        getCommand("glay").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
         getCommand("gbellyflop").setExecutor(new GBellyFlopCommand(getInstance()));
         getCommand("gbellyflop").setTabCompleter(new EmptyTabComplete());
+        getCommand("gbellyflop").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
         getCommand("gspin").setExecutor(new GSpinCommand(getInstance()));
         getCommand("gspin").setTabCompleter(new EmptyTabComplete());
+        getCommand("gspin").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
         getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
         getCommand("gcrawl").setTabCompleter(new GCrawlTabComplete(getInstance()));
         getCommand("gemote").setExecutor(new GEmoteCommand(getInstance()));
         getCommand("gemote").setTabCompleter(new GEmoteTabComplete(getInstance()));
+        getCommand("gemote").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
         getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
         getCommand("gsitreload").setTabCompleter(new EmptyTabComplete());
+        getCommand("gsitreload").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
     }
 
     private void setupEvents() {

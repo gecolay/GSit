@@ -96,7 +96,7 @@ public class PlayerSitEvents implements Listener {
 
         if(!GPM.getCManager().PS_ALLOW_SIT && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
 
-        if(!GPM.getPManager().hasPermission(player, "PlayerSit")) return;
+        if(!GPM.getPManager().hasPermission(player, "PlayerSit", "PlayerSit.*")) return;
 
         if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
