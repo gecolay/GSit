@@ -36,11 +36,11 @@ public class EmoteManager {
 
         clearEmotes();
 
-        if(GPM.getCManager().E_CREATE_DEFAULT_EMOTE) for(String emote : EMOTE_FILES) if(!new File(GPM.getDataFolder(), "emotes/" + emote + ".gex").exists()) GPM.saveResource("emotes/" + emote + ".gex", false);
-
         try {
 
             File directory = new File(GPM.getDataFolder(), "emotes/");
+
+            if(!directory.exists()) for(String emote : EMOTE_FILES) if(!new File(GPM.getDataFolder(), "emotes/" + emote + ".gex").exists()) GPM.saveResource("emotes/" + emote + ".gex", false);
 
             if(!directory.exists()) return;
 

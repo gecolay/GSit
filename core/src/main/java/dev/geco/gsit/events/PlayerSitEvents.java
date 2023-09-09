@@ -22,14 +22,14 @@ public class PlayerSitEvents implements Listener {
 
     public PlayerSitEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    private final List<Player> WAIT_EJECT = new ArrayList<>();
+    private final List<Player> wait_eject = new ArrayList<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void PTogSE(PlayerToggleSneakEvent Event) {
 
         Player player = Event.getPlayer();
 
-        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle() || WAIT_EJECT.contains(player)) return;
+        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.isInsideVehicle() || wait_eject.contains(player)) return;
 
         GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED);
     }
@@ -65,10 +65,10 @@ public class PlayerSitEvents implements Listener {
                 return;
             }
 
-            WAIT_EJECT.add(player);
+            wait_eject.add(player);
 
             GPM.getTManager().runDelayed(() -> {
-                WAIT_EJECT.remove(player);
+                wait_eject.remove(player);
             }, 2);
         }
 

@@ -82,8 +82,6 @@ public class CManager {
 
     public double E_MAX_DISTANCE;
 
-    public boolean E_CREATE_DEFAULT_EMOTE;
-
 
     public boolean TRUSTED_REGION_ONLY;
 
@@ -171,7 +169,7 @@ public class CManager {
         S_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.sit-message", true);
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);
 
-        PS_ALLOW_SIT = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit", false);
+        PS_ALLOW_SIT = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit", true);
         PS_ALLOW_SIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit-npc", false);
         PS_MAX_STACK = GPM.getConfig().getLong("Options.PlayerSit.max-stack", 0);
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
@@ -184,7 +182,7 @@ public class CManager {
         P_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.pose-message", true);
         P_INTERACT = GPM.getConfig().getBoolean("Options.Pose.interact", false);
         P_LAY_REST = GPM.getConfig().getBoolean("Options.Pose.lay-rest", true);
-        P_LAY_SNORING_SOUNDS = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-sounds", true);
+        P_LAY_SNORING_SOUNDS = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-sounds", false);
         P_LAY_SNORING_NIGHT_ONLY = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-night-only", true);
         P_LAY_NIGHT_SKIP = GPM.getConfig().getBoolean("Options.Pose.lay-night-skip", true);
 
@@ -192,7 +190,6 @@ public class CManager {
         C_DOUBLE_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.double-sneak", false);
 
         E_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Emote.max-distance", 192d);
-        E_CREATE_DEFAULT_EMOTE = GPM.getConfig().getBoolean("Options.Emote.create-default-emote", true);
 
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");

@@ -25,7 +25,7 @@ public class GEmoteCommand implements CommandExecutor {
 
         Player player = (Player) Sender;
 
-        if(!GPM.getPManager().hasPermission(Sender, "Emote")) {
+        if(!GPM.getPManager().hasPermission(Sender, "Emote", "Emote.*")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
             return true;
@@ -60,6 +60,12 @@ public class GEmoteCommand implements CommandExecutor {
         if(!player.isValid()) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.action-emote-now-error");
+            return true;
+        }
+
+        if(!GPM.getPManager().hasPermission(Sender, "Emote." + emote.getId(), "Emote.*")) {
+
+            GPM.getMManager().sendMessage(Sender, "Messages.action-emote-exist-error", "%Emote%", Args[0]);
             return true;
         }
 

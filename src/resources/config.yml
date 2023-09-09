@@ -67,7 +67,7 @@ Options:
     allow-sit: true
 
     # Defines whether a player can right-click to sit on an NPC
-    allow-sit-npc: true
+    allow-sit-npc: false
 
     # Defines the maximum number of players that can be stacked (0 means unlimited)
     max-stack: 0
@@ -129,9 +129,6 @@ Options:
 
     # Defines the maximum range at which emotes can be seen
     max-distance: 192.0
-
-    # Defines whether to create the default "happy" emote in the emotes folder if it is missing
-    create-default-emote: true
 
 
 

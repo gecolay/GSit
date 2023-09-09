@@ -20,7 +20,7 @@ public class PlayerEvents implements Listener {
 
     private final long MAX_DOUBLE_SNEAK_TIME = 400;
 
-    private final HashMap<Player, Long> crawlPlayers = new HashMap<>();
+    private final HashMap<Player, Long> crawl_players = new HashMap<>();
 
     public PlayerEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
@@ -42,7 +42,7 @@ public class PlayerEvents implements Listener {
 
         GPM.getToggleManager().clearToggleCache(player.getUniqueId());
 
-        crawlPlayers.remove(player);
+        crawl_players.remove(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -120,16 +120,16 @@ public class PlayerEvents implements Listener {
 
         if(!GPM.getToggleManager().canCrawl(player.getUniqueId())) return;
 
-        if(!crawlPlayers.containsKey(player)) {
+        if(!crawl_players.containsKey(player)) {
 
-            crawlPlayers.put(player, System.currentTimeMillis());
+            crawl_players.put(player, System.currentTimeMillis());
 
             return;
         }
 
-        long last = crawlPlayers.get(player);
+        long last = crawl_players.get(player);
 
-        crawlPlayers.put(player, System.currentTimeMillis());
+        crawl_players.put(player, System.currentTimeMillis());
 
         if(last >= System.currentTimeMillis() - MAX_DOUBLE_SNEAK_TIME) {
 
@@ -139,7 +139,7 @@ public class PlayerEvents implements Listener {
 
             if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) return;
 
-            if(GPM.getCrawlManager().startCrawl(player) == null) crawlPlayers.remove(player);
+            if(GPM.getCrawlManager().startCrawl(player) == null) crawl_players.remove(player);
         }
     }
 

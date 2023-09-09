@@ -60,65 +60,95 @@ permissions:
     default: op
     description: OP-Permission for all commands and features of GSit
     children:
-      GSit.Sit: true
-      GSit.SitClick: true
-      GSit.SitToggle: true
-      GSit.PlayerSit: true
-      GSit.PlayerSitToggle: true
-      GSit.CrawlToggle: true
-      GSit.Lay: true
-      GSit.BellyFlop: true
-      GSit.Spin: true
-      GSit.Crawl: true
-      GSit.Emote: true
+      GSit.Sit.*: true
+      GSit.PlayerSit.*: true
+      GSit.Pose.*: true
+      GSit.Emote.*: true
       GSit.Kick.*: true
       GSit.ByPass.*: true
       GSit.Update: true
       GSit.Reload: true
 
+  GSit.Sit.*:
+    default: op
+    description: Sit | Permission
+    children:
+      GSit.Sit: true
+      GSit.SitClick: true
+      GSit.SitToggle: true
+
   GSit.Sit:
     default: true
-    description: Sit | Permission
+    description: Sit command | Permission
 
   GSit.SitClick:
     default: true
-    description: Sit Click | Permission
+    description: Sit click | Permission
 
   GSit.SitToggle:
     default: true
-    description: Toggle Sit-Ability | Permission
+    description: Toggle Sit ability | Permission
+
+  GSit.PlayerSit.*:
+    default: op
+    description: PlayerSit | Permission
+    children:
+      GSit.PlayerSit: true
+      GSit.PlayerSitToggle: true
 
   GSit.PlayerSit:
     default: true
-    description: PlayerSit | Permission
+    description: PlayerSit click | Permission
 
   GSit.PlayerSitToggle:
     default: true
-    description: Toggle PlayerSit-Ability | Permission
+    description: Toggle PlayerSit ability | Permission
 
-  GSit.CrawlToggle:
-    default: true
-    description: Toggle Crawl-Ability | Permission
+  GSit.Pose.*:
+    default: op
+    description: Pose | Permission
+    children:
+      GSit.Lay: true
+      GSit.BellyFlop: true
+      GSit.Spin: true
+      GSit.Crawl.*: true
 
   GSit.Lay:
     default: true
-    description: Lay | Permission
+    description: Lay command | Permission
 
   GSit.BellyFlop:
     default: true
-    description: BellyFlop | Permission
+    description: BellyFlop command | Permission
 
   GSit.Spin:
     default: true
-    description: Spin | Permission
+    description: Spin command | Permission
+
+  GSit.Crawl.*:
+    default: op
+    description: Crawl | Permission
+    children:
+      GSit.Crawl: true
+      GSit.Crawl.CrawlToggle: true
 
   GSit.Crawl:
     default: true
-    description: Crawl | Permission
+    description: Crawl command | Permission
+
+  GSit.CrawlToggle:
+    default: true
+    description: Toggle Crawl ability | Permission
+
+  GSit.Emote.*:
+    default: true
+    description: Emote | Permission
+    children:
+      GSit.Emote: true
 
   GSit.Emote:
     default: true
-    description: Emote | Permission
+    description: Emote command | Permission
 
   GSit.Kick.*:
     default: op
@@ -129,11 +159,11 @@ permissions:
 
   GSit.Kick.Sit:
     default: op
-    description: Kick Sit | Permission
+    description: Kick sit | Permission
 
   GSit.Kick.Pose:
     default: op
-    description: Kick Pose | Permission
+    description: Kick pose | Permission
 
   GSit.ByPass.*:
     default: op
@@ -144,16 +174,16 @@ permissions:
 
   GSit.ByPass.World:
     default: op
-    description: ByPass World | Permission
+    description: ByPass world | Permission
 
   GSit.ByPass.Region:
     default: op
-    description: ByPass Region | Permission
+    description: ByPass region | Permission
 
   GSit.Update:
     default: op
-    description: Update-Notification | Permission
+    description: Update notification | Permission
 
   GSit.Reload:
     default: op
-    description: Plugin-Reload-Command | Permission
+    description: Plugin reload command | Permission
