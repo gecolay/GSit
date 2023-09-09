@@ -18,7 +18,7 @@ public class EntityUtil implements IEntityUtil {
 
             Object entity = NMSManager.getHandle(Entity);
 
-            entity.getClass().getMethod("setPosition", double.class, double.class, double.class).invoke(entity, Location.getX(), Location.getY(), Location.getZ());
+            NMSManager.getMethod("setPosition", entity.getClass(), double.class, double.class, double.class).invoke(entity, Location.getX(), Location.getY(), Location.getZ());
         } catch (Exception ignored) { }
     }
 
@@ -26,7 +26,7 @@ public class EntityUtil implements IEntityUtil {
 
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-            try { armorStand.setInvisible(true); } catch (Throwable e) { try { armorStand.getClass().getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
+            try { armorStand.setInvisible(true); } catch (Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
             try { armorStand.setMarker(true); } catch (Throwable ignored) { }
         });
 
@@ -41,9 +41,9 @@ public class EntityUtil implements IEntityUtil {
 
         Entity playerSeatEntity = Holder.getWorld().spawn(Holder.getLocation(), AreaEffectCloud.class, areaEffectCloud -> {
 
-            try { areaEffectCloud.setRadius(0); } catch (Exception ignored) { }
-            try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
-            try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
+            try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
+            try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Throwable ignored) { }
+            try { areaEffectCloud.setWaitTime(0); } catch (Throwable ignored) { }
         });
 
         boolean valid = playerSeatEntity.isValid();
@@ -59,7 +59,7 @@ public class EntityUtil implements IEntityUtil {
 
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-            try { armorStand.setInvisible(true); } catch (Throwable e) { try { armorStand.getClass().getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
+            try { armorStand.setInvisible(true); } catch (Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
             try { armorStand.setGravity(false); } catch (Throwable ignored) { }
             try { armorStand.setMarker(true); } catch (Throwable ignored) { }
             try { armorStand.setInvulnerable(true); } catch (Throwable ignored) { }
@@ -95,12 +95,12 @@ public class EntityUtil implements IEntityUtil {
 
             lastEntity = finalLastEntity.getWorld().spawn(finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloud -> {
 
-                try { areaEffectCloud.setRadius(0); } catch (Exception ignored) { }
-                try { areaEffectCloud.setGravity(false); } catch (Exception ignored) { }
-                try { areaEffectCloud.setInvulnerable(true); } catch (Exception ignored) { }
-                try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Exception ignored) { }
-                try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Exception ignored) { }
-                try { areaEffectCloud.setWaitTime(0); } catch (Exception ignored) { }
+                try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
+                try { areaEffectCloud.setGravity(false); } catch (Throwable ignored) { }
+                try { areaEffectCloud.setInvulnerable(true); } catch (Throwable ignored) { }
+                try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Throwable ignored) { }
+                try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Throwable ignored) { }
+                try { areaEffectCloud.setWaitTime(0); } catch (Throwable ignored) { }
 
                 areaEffectCloud.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, finalLastEntity));
 
