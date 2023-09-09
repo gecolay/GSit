@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.game.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.mcv.x.objects.*;
+import dev.geco.gsit.objects.*;
 
 public class EntityUtil extends dev.geco.gsit.util.EntityUtil {
 
@@ -51,5 +52,9 @@ public class EntityUtil extends dev.geco.gsit.util.EntityUtil {
 
         return seatEntity.getBukkitEntity();
     }
+
+    public IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose) { return new GPoseSeat(Seat, Pose); }
+
+    public IGCrawl createCrawlObject(Player Player) { return new GCrawl(Player); }
 
 }

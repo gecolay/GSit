@@ -105,7 +105,7 @@ public class PoseManager {
             }
         }
 
-        IGPoseSeat poseSeat = getPoseSeatInstance(new GSeat(Block, playerLocation, Player, seatEntity, returnLocation), Pose);
+        IGPoseSeat poseSeat = GPM.getEntityUtil().createPoseSeatObject(new GSeat(Block, playerLocation, Player, seatEntity, returnLocation), Pose);
 
         poseSeat.spawn();
 
@@ -116,16 +116,6 @@ public class PoseManager {
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseSeat));
 
         return poseSeat;
-    }
-
-    private IGPoseSeat getPoseSeatInstance(GSeat Seat, Pose Pose) {
-        try {
-            Class<?> petClass = Class.forName("dev.geco.gsit.mcv." + NMSManager.getPackageVersion() + ".objects.GPoseSeat");
-            return (IGPoseSeat) petClass.getConstructor(GSeat.class, Pose.class).newInstance(Seat, Pose);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public boolean removePose(Player Player, GetUpReason Reason) { return removePose(Player, Reason, true); }

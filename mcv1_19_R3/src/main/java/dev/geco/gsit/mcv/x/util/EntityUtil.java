@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.*;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.util.*;
 import dev.geco.gsit.mcv.x.objects.*;
+import dev.geco.gsit.objects.*;
 
 public class EntityUtil implements IEntityUtil {
 
@@ -102,5 +103,9 @@ public class EntityUtil implements IEntityUtil {
 
         return false;
     }
+
+    public IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose) { return new GPoseSeat(Seat, Pose); }
+
+    public IGCrawl createCrawlObject(Player Player) { return new GCrawl(Player); }
 
 }

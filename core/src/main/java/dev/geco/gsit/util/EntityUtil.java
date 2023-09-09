@@ -6,6 +6,7 @@ import org.bukkit.metadata.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.manager.*;
+import dev.geco.gsit.objects.*;
 
 public class EntityUtil implements IEntityUtil {
 
@@ -17,7 +18,7 @@ public class EntityUtil implements IEntityUtil {
 
             Object entity = NMSManager.getHandle(Entity);
 
-            NMSManager.getMethod("setPosition", entity.getClass(), double.class, double.class, double.class).invoke(entity, Location.getX(), Location.getY(), Location.getZ());
+            entity.getClass().getMethod("setPosition", double.class, double.class, double.class).invoke(entity, Location.getX(), Location.getY(), Location.getZ());
         } catch (Exception ignored) { }
     }
 
@@ -25,7 +26,7 @@ public class EntityUtil implements IEntityUtil {
 
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-            try { armorStand.setInvisible(true); } catch (Throwable e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
+            try { armorStand.setInvisible(true); } catch (Throwable e) { try { armorStand.getClass().getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
             try { armorStand.setMarker(true); } catch (Throwable ignored) { }
         });
 
@@ -58,7 +59,7 @@ public class EntityUtil implements IEntityUtil {
 
         Entity seatEntity = Location.getWorld().spawn(Location, ArmorStand.class, armorStand -> {
 
-            try { armorStand.setInvisible(true); } catch (Throwable e) { try { NMSManager.getMethod("setVisible", armorStand.getClass(), boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
+            try { armorStand.setInvisible(true); } catch (Throwable e) { try { armorStand.getClass().getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
             try { armorStand.setGravity(false); } catch (Throwable ignored) { }
             try { armorStand.setMarker(true); } catch (Throwable ignored) { }
             try { armorStand.setInvulnerable(true); } catch (Throwable ignored) { }
@@ -108,5 +109,9 @@ public class EntityUtil implements IEntityUtil {
             });
         }
     }
+
+    public IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose) { return null; }
+
+    public IGCrawl createCrawlObject(Player Player) { return null; }
 
 }

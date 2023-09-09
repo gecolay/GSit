@@ -56,12 +56,6 @@ public class NMSManager {
         } catch (Throwable e) { return false; }
     }
 
-    public static Method getMethod(String MethodName, Class<?> Class, Class<?>... Parameters) {
-        Class<?>[] type = toPrimitiveTypeArray(Parameters);
-        for(Method method : Class.getMethods()) if(method.getName().equals(MethodName) && equalsTypeArray(toPrimitiveTypeArray(method.getParameterTypes()), type)) return method;
-        return null;
-    }
-
     public static Object getHandle(Object Object) {
         try {
             Method getHandle = Object.getClass().getDeclaredMethod("getHandle");

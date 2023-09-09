@@ -46,7 +46,7 @@ public class CrawlManager {
 
         if(preEvent.isCancelled()) return null;
 
-        IGCrawl crawl = getCrawlInstance(Player);
+        IGCrawl crawl = GPM.getEntityUtil().createCrawlObject(Player);
 
         crawl.start();
 
@@ -57,16 +57,6 @@ public class CrawlManager {
         Bukkit.getPluginManager().callEvent(new PlayerCrawlEvent(crawl));
 
         return crawl;
-    }
-
-    private IGCrawl getCrawlInstance(Player Player) {
-        try {
-            Class<?> petClass = Class.forName("dev.geco.gsit.mcv." + NMSManager.getPackageVersion() + ".objects.GCrawl");
-            return (IGCrawl) petClass.getConstructor(Player.class).newInstance(Player);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public boolean stopCrawl(Player Player, GetUpReason Reason) {
