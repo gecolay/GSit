@@ -65,7 +65,7 @@ public class GEmoteCommand implements CommandExecutor {
 
         if(!GPM.getPManager().hasPermission(Sender, "Emote." + emote.getId(), "Emote.*")) {
 
-            GPM.getMManager().sendMessage(Sender, "Messages.action-emote-exist-error", "%Emote%", Args[0]);
+            GPM.getMManager().sendMessage(Sender, "Messages.action-emote-exist-error", "%Emote%", emote.getId());
             return true;
         }
 

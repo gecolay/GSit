@@ -25,7 +25,7 @@ public class GEmoteTabComplete implements TabCompleter {
 
             if(Args.length == 1) {
 
-                if(GPM.getPManager().hasPermission(Sender, "Emote")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) complete.add(emote.getId());
+                if(GPM.getPManager().hasPermission(Sender, "Emote", "Emote.*")) for(GEmote emote : GPM.getEmoteManager().getAvailableEmotes()) if(GPM.getPManager().hasPermission(Sender, "Emote." + emote.getId(), "Emote.*")) complete.add(emote.getId());
 
                 if(!Args[Args.length - 1].isEmpty()) {
 
