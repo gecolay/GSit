@@ -50,7 +50,7 @@ public class PlotSquaredLink {
             new PlotAPI();
 
             return true;
-        } catch(Throwable ignored) { }
+        } catch (Throwable ignored) { }
 
         return false;
     }

@@ -2,6 +2,7 @@ package dev.geco.gsit.manager;
 
 import java.io.*;
 import java.util.*;
+import java.util.jar.*;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -22,10 +23,6 @@ public class EmoteManager {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
-    private final List<String> EMOTE_FILES = new ArrayList<>(); {
-        EMOTE_FILES.add("happy");
-    }
-
     private final List<GEmote> available_emotes = new ArrayList<>();
 
     public List<GEmote> getAvailableEmotes() { return new ArrayList<>(available_emotes); }
@@ -33,27 +30,26 @@ public class EmoteManager {
     public GEmote getEmoteByName(String Name) { return available_emotes.stream().filter(e -> e.getId().equalsIgnoreCase(Name)).findFirst().orElse(null); }
 
     public void reloadEmotes() {
-
         clearEmotes();
-
         try {
-
             File directory = new File(GPM.getDataFolder(), "emotes/");
-
-            if(!directory.exists()) for(String emote : EMOTE_FILES) if(!new File(GPM.getDataFolder(), "emotes/" + emote + ".gex").exists()) GPM.saveResource("emotes/" + emote + ".gex", false);
-
+            if(!directory.exists()) {
+                JarFile jarFile = new JarFile(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+                Enumeration<JarEntry> jarFiles = jarFile.entries();
+                while(jarFiles.hasMoreElements()) {
+                    JarEntry jarEntry = jarFiles.nextElement();
+                    if(!jarEntry.getName().startsWith("emotes") || jarEntry.isDirectory()) continue;
+                    if(!new File(GPM.getDataFolder(), jarEntry.getName()).exists()) GPM.saveResource(jarEntry.getName(), false);
+                }
+            }
             if(!directory.exists()) return;
-
             for(File emoteFile : directory.listFiles()) {
-
                 if(emoteFile.getName().toLowerCase().endsWith(".gex")) {
-
                     GEmote emote = GPM.getEmoteUtil().createEmoteFromRawData(emoteFile);
-
                     if(emote != null) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
                 }
             }
-        } catch (Exception ignored) { }
+        } catch (Throwable e) { e.printStackTrace(); }
     }
 
     private final HashMap<LivingEntity, GEmote> emotes = new HashMap<>();

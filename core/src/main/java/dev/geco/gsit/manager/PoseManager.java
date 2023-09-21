@@ -63,23 +63,11 @@ public class PoseManager {
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
-        Location playerLocation = Player.getLocation().clone();
+        Location returnLocation = Player.getLocation().clone();
 
-        Location returnLocation = playerLocation.clone();
+        Location seatLocation = GPM.getSitManager().getSeatLocation(Block, returnLocation, XOffset, YOffset, ZOffset, SitAtBlock);
 
-        double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
-
-        offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
-
-        if(SitAtBlock) {
-
-            playerLocation = Block.getLocation().clone().add(0.5d + XOffset, YOffset + offset - 0.2d, 0.5d + ZOffset);
-        } else {
-
-            playerLocation = playerLocation.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
-        }
-
-        if(!GPM.getEntityUtil().isLocationValid(playerLocation)) return null;
+        if(!GPM.getEntityUtil().isLocationValid(seatLocation)) return null;
 
         PrePlayerPoseEvent preEvent = new PrePlayerPoseEvent(Player, Block);
 
@@ -87,9 +75,9 @@ public class PoseManager {
 
         if(preEvent.isCancelled()) return null;
 
-        playerLocation.setYaw(SeatRotation);
+        seatLocation.setYaw(SeatRotation);
 
-        Entity seatEntity = GPM.getEntityUtil().createSeatEntity(playerLocation, Player, true);
+        Entity seatEntity = GPM.getEntityUtil().createSeatEntity(seatLocation, Player, true);
 
         if(seatEntity == null) return null;
 
@@ -105,7 +93,7 @@ public class PoseManager {
             }
         }
 
-        IGPoseSeat poseSeat = GPM.getEntityUtil().createPoseSeatObject(new GSeat(Block, playerLocation, Player, seatEntity, returnLocation), Pose);
+        IGPoseSeat poseSeat = GPM.getEntityUtil().createPoseSeatObject(new GSeat(Block, seatLocation, Player, seatEntity, returnLocation), Pose);
 
         poseSeat.spawn();
 
@@ -136,7 +124,7 @@ public class PoseManager {
 
         poseSeat.remove();
 
-        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? poseSeat.getSeat().getReturn() : poseSeat.getSeat().getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(poseSeat.getSeat().getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(poseSeat.getSeat().getBlock().getType(), 0d), 0d));
+        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? poseSeat.getSeat().getReturn() : poseSeat.getSeat().getLocation().add(0d, GPM.getSitManager().BASE_OFFSET + (Tag.STAIRS.isTagged(poseSeat.getSeat().getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(poseSeat.getSeat().getBlock().getType(), 0d), 0d));
 
         if(!GPM.getCManager().GET_UP_RETURN) {
             returnLocation.setYaw(poseSeat.getPlayer().getLocation().getYaw());

@@ -13,6 +13,9 @@ public class CManager {
 
     public String L_LANG;
 
+    public boolean L_CLIENT_LANG;
+
+
     public boolean CHECK_FOR_UPDATE;
 
     public boolean GET_UP_DAMAGE;
@@ -132,7 +135,8 @@ public class CManager {
 
         GPM.reloadConfig();
 
-        L_LANG = GPM.getConfig().getString("Lang.lang", "en_en").toLowerCase();
+        L_LANG = GPM.getConfig().getString("Lang.lang", "en_us").toLowerCase();
+        L_CLIENT_LANG = GPM.getConfig().getBoolean("Lang.client-lang", true);
 
         CHECK_FOR_UPDATE = GPM.getConfig().getBoolean("Options.check-for-update", true);
         GET_UP_DAMAGE = GPM.getConfig().getBoolean("Options.get-up-damage", false);
@@ -170,7 +174,7 @@ public class CManager {
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);
 
         PS_ALLOW_SIT = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit", true);
-        PS_ALLOW_SIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit-npc", false);
+        PS_ALLOW_SIT_NPC = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit-npc", true);
         PS_MAX_STACK = GPM.getConfig().getLong("Options.PlayerSit.max-stack", 0);
         PS_SNEAK_EJECTS = GPM.getConfig().getBoolean("Options.PlayerSit.sneak-ejects", true);
         PS_BOTTOM_RETURN = GPM.getConfig().getBoolean("Options.PlayerSit.bottom-return", false);

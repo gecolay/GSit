@@ -8,7 +8,7 @@ Plugin:
 
   plugin-enabled: "[P]&a The plugin was successfully enabled."
   plugin-link: "[P]&a Link with&6 %Link%&a successful!"
-  plugin-update: "[P]&a New version available:&6 %NewVersion%&a!\n[P]&a You are currently running version:&6 %Version%&a!\n[P]&a Download the latest version at:\n[P]&6 %Path%"
+  plugin-update: "[P]&a New version available:&6 %NewVersion%&a!\n[P]&a Current version:&6 %Version%&a!\n[P]&a Download the latest version:\n[P]&6 %Path%"
   plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c The plugin can't be used with this server version! (&b%Version%&c)"
   plugin-reload: "[P]&a The plugin was successfully reloaded."
@@ -21,14 +21,14 @@ Messages:
 
   command-permission-error: "[P]&c You don't have permission to use this command!"
   command-sender-error: "[P]&c You can't run this command!"
-  command-version-error: "[P]&c Outdated server version! (&b%Version%&c)\n[P]&c Update this server to use this feature!"
+  command-version-error: "[P]&c Outdated server version! (&b%Version%&c)\n[P]&c Upgrade the server to use this feature!"
 
-  command-gsit-toggle-on: "[P]&a You have enabled click-interactions for sit."
-  command-gsit-toggle-off: "[P]&a You have disabled click-interactions for sit."
-  command-gsit-playertoggle-on: "[P]&a You have enabled click-interactions for playersit."
-  command-gsit-playertoggle-off: "[P]&a You have disabled click-interactions for playersit."
-  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
-  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
+  command-gsit-toggle-on: "[P]&a You have enabled&6 sit&a click-interactions."
+  command-gsit-toggle-off: "[P]&a You have disabled&6 sit&a click-interactions."
+  command-gsit-playertoggle-on: "[P]&a You have enabled&6 playersit&a click-interactions."
+  command-gsit-playertoggle-off: "[P]&a You have disabled&6 playersit&a click-interactions."
+  command-gcrawl-toggle-on: "[P]&a You have enabled&6 crawl&a double-sneak."
+  command-gcrawl-toggle-off: "[P]&a You have disabled&6 crawl&a double-sneak."
 
   action-sit-now-error: "[P]&c You can't sit right now!"
   action-sit-world-error: "[P]&c You can't sit in this world!"
@@ -36,9 +36,9 @@ Messages:
   action-sit-safe-error: "[P]&c It's not safe to sit here!"
   action-sit-region-error: "[P]&c You can't sit in this region!"
   action-sit-kick-error: "[P]&c Someone is already sitting here!"
-  action-sit-info: "&aUse your&6 <lang:key.sneak>&a key to get up"
+  action-sit-info: "&6<lang:key.sneak>&a to get up"
 
-  action-playersit-info: "&aUse your&6 <lang:key.sneak>&a key to get up"
+  action-playersit-info: "&6<lang:key.sneak>&a to get up"
 
   action-pose-now-error: "[P]&c You can't pose right now!"
   action-pose-world-error: "[P]&c You can't pose in this world!"
@@ -46,12 +46,12 @@ Messages:
   action-pose-safe-error: "[P]&c It's not safe to pose here!"
   action-pose-region-error: "[P]&c You can't pose in this region!"
   action-pose-kick-error: "[P]&c Someone is already posing here!"
-  action-pose-info: "&aUse your&6 <lang:key.sneak>&a key to get up"
+  action-pose-info: "&6<lang:key.sneak>&a to get up"
 
   action-crawl-now-error: "[P]&c You can't crawl right now!"
   action-crawl-world-error: "[P]&c You can't crawl in this world!"
   action-crawl-region-error: "[P]&c You can't crawl in this region!"
-  action-crawl-info: "&aUse your&6 <lang:key.sneak>&a key to get up"
+  action-crawl-info: "&6<lang:key.sneak>&a to get up"
 
   action-emote-none-error: "[P]&c You're not using an emote right now!"
   action-emote-stop-error: "[P]&c You can't stop emoting!"

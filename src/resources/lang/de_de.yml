@@ -8,7 +8,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Das Plugin wurde erfolgreich aktiviert."
   plugin-link: "[P]&a Verknüpfung mit&6 %Link%&a erfolgreich!"
-  plugin-update: "[P]&a Neue Version verfügbar:&6 %NewVersion%&a!\n[P]&a Aktuell verwendete Version:&6 %Version%&a!\n[P]&a Laden Sie die neuste Version von:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Neue Version verfügbar:&6 %NewVersion%&a!\n[P]&a Aktuelle Version:&6 %Version%&a!\n[P]&a Lade die neuste Version:\n[P]&6 %Path%"
   plugin-data: "[P]&c Es konnte keine Verbindung zum Datenspeicher hergestellt werden. Bitte überprüfe die Serverkonsole!"
   plugin-version: "[P]&c Das Plugin kann mit dieser Server-Version nicht genutzt werden! (&b%Version%&c)"
   plugin-reload: "[P]&a Das Plugin wurde erfolgreich neu geladen."
@@ -21,14 +21,14 @@ Messages:
 
   command-permission-error: "[P]&c Du hast keine Berechtigung, diesen Befehl zu verwenden!"
   command-sender-error: "[P]&c Du kann diesen Befehl nicht ausführen!"
-  command-version-error: "[P]&c Veraltete Serverversion! (&b%Version%&c)\n[P]&c Aktualisiere den Server, um diese Funktion zu verwenden!"
+  command-version-error: "[P]&c Veraltete Serverversion! (&b%Version%&c)\n[P]&c Aktualisiere den Server, um dieses Feature zu verwenden!"
 
-  command-gsit-toggle-on: "[P]&a Du hast Klick-Interaktionen für sitzen aktiviert."
-  command-gsit-toggle-off: "[P]&a Du hast Klick-Interaktionen für sitzen deaktiviert."
-  command-gsit-playertoggle-on: "[P]&a Du hast Klick-Interaktionen für Spieler-sitzen aktiviert."
-  command-gsit-playertoggle-off: "[P]&a Du hast Klick-Interaktionen für Spieler-sitzen deaktiviert."
-  command-gcrawl-toggle-on: "[P]&a Du hast Doppel-Schleichen für kriechen aktiviert."
-  command-gcrawl-toggle-off: "[P]&a Du hast Doppel-Schleichen für kriechen deaktiviert."
+  command-gsit-toggle-on: "[P]&a Du hast&6 Sitzen&a Klick-Interaktionen aktiviert."
+  command-gsit-toggle-off: "[P]&a Du hast&6 Sitzen&a Klick-Interaktionen deaktiviert."
+  command-gsit-playertoggle-on: "[P]&a Du hast&6 Spielersitzen Klick-Interaktionen aktiviert."
+  command-gsit-playertoggle-off: "[P]&a Du hast&6 Spielersitzen Klick-Interaktionen deaktiviert."
+  command-gcrawl-toggle-on: "[P]&a Du hast&6 Kriechen&a Doppel-Schleichen aktiviert."
+  command-gcrawl-toggle-off: "[P]&a Du hast&6 Kriechen&a Doppel-Schleichen deaktiviert."
 
   action-sit-now-error: "[P]&c Du kannst gerade nicht sitzen!"
   action-sit-world-error: "[P]&c Du kannst in dieser Welt nicht sitzen!"
@@ -36,9 +36,9 @@ Messages:
   action-sit-safe-error: "[P]&c Es ist nicht sicher, hier zu sitzen!"
   action-sit-region-error: "[P]&c Du kannst in dieser Region nicht sitzen!"
   action-sit-kick-error: "[P]&c Jemand sitzt hier bereits!"
-  action-sit-info: "&aNutze deine&6 <lang:key.sneak>&a Taste zum aufstehen"
+  action-sit-info: "&6<lang:key.sneak>&a zum aufstehen"
 
-  action-playersit-info: "&aNutze deine&6 <lang:key.sneak>&a Taste zum aufstehen"
+  action-playersit-info: "&6<lang:key.sneak>&a zum aufstehen"
 
   action-pose-now-error: "[P]&c Du kannst gerade nicht posieren!"
   action-pose-world-error: "[P]&c Du kannst in dieser Welt nicht posieren!"
@@ -46,12 +46,12 @@ Messages:
   action-pose-safe-error: "[P]&c Es ist nicht sicher, hier zu posieren!"
   action-pose-region-error: "[P]&c Du kannst in dieser Region nicht posieren!"
   action-pose-kick-error: "[P]&c Jemand posiert hier bereits!"
-  action-pose-info: "&aNutze deine&6 <lang:key.sneak>&a Taste zum aufstehen"
+  action-pose-info: "&6<lang:key.sneak>&a zum aufstehen"
 
   action-crawl-now-error: "[P]&c Du kannst gerade nicht kriechen!"
   action-crawl-world-error: "[P]&c Du kannst in dieser Welt nicht kriechen!"
   action-crawl-region-error: "[P]&c Du kannst in dieser Region nicht kriechen!"
-  action-crawl-info: "&aNutze deine&6 <lang:key.sneak>&a Taste zum aufstehen"
+  action-crawl-info: "&6<lang:key.sneak>&a zum aufstehen"
 
   action-emote-none-error: "[P]&c Du nutzt gerade kein Emote!"
   action-emote-stop-error: "[P]&c Du kannst nicht aufhören zu emoten!"

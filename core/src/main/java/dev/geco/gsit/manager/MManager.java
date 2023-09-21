@@ -3,6 +3,7 @@ package dev.geco.gsit.manager;
 import java.io.*;
 import java.nio.charset.*;
 import java.util.*;
+import java.util.jar.*;
 import java.util.regex.*;
 
 import org.jetbrains.annotations.*;
@@ -19,11 +20,11 @@ abstract public class MManager {
 
     protected final GSitMain GPM;
 
+    protected String DEFAULT_LANG;
     protected boolean allowBungeeMessages = true;
 
     protected final HashMap<String, FileConfiguration> messages = new HashMap<>();
     protected final HashMap<UUID, String> languages = new HashMap<>();
-
     protected final char PRE_FORMAT_COLOR_CHAR = '&';
 
     protected final HashMap<String, String> COLOR_TAGS = new HashMap<>(); {
@@ -78,66 +79,56 @@ abstract public class MManager {
         LEVEL_TAGS.add("click");
     }
 
-    protected final List<String> LANG_FILES = new ArrayList<>(); {
-
-        LANG_FILES.add("cs_cz");
-        LANG_FILES.add("de_de");
-        LANG_FILES.add("en_en");
-        LANG_FILES.add("es_es");
-        LANG_FILES.add("fi_fi");
-        LANG_FILES.add("fr_fr");
-        LANG_FILES.add("id_id");
-        LANG_FILES.add("it_it");
-        LANG_FILES.add("ja_jp");
-        LANG_FILES.add("pl_pl");
-        LANG_FILES.add("pt_br");
-        LANG_FILES.add("ru_ru");
-        LANG_FILES.add("sk_sk");
-        LANG_FILES.add("uk_ua");
-        LANG_FILES.add("zh_cn");
-        LANG_FILES.add("zh_tw");
-    }
-
     public MManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
         try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch (Throwable e) { allowBungeeMessages = false; }
     }
 
-    public FileConfiguration getMessages() { return getMessages(GPM.getCManager().L_LANG); }
+    public FileConfiguration getMessages() { return getMessages(DEFAULT_LANG); }
 
     public FileConfiguration getMessages(String LanguageCode) { return messages.getOrDefault(LanguageCode, new YamlConfiguration()); }
 
     public void loadMessages() {
         messages.clear();
-        if(NMSManager.isNewerOrVersion(18, 2)) {
-            for(String langFileName : LANG_FILES) {
-                File langFile = new File(GPM.getDataFolder(), "lang/" + langFileName + ".yml");
-                try {
-                    FileConfiguration lang = YamlConfiguration.loadConfiguration(langFile);
-                    InputStream langSteam = GPM.getResource("lang/" + langFileName + ".yml");
-                    if(langSteam != null) {
-                        FileConfiguration langSteamConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(langSteam, StandardCharsets.UTF_8));
-                        lang.setDefaults(langSteamConfig);
-                        YamlConfigurationOptions options = (YamlConfigurationOptions) lang.options();
-                        options.parseComments(true).copyDefaults(true).width(500);
-                        lang.loadFromString(lang.saveToString());
-                        for(String comments : lang.getKeys(true)) lang.setComments(comments, langSteamConfig.getComments(comments));
+        try {
+            JarFile jarFile = new JarFile(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+            Enumeration<JarEntry> jarFiles = jarFile.entries();
+            if(NMSManager.isNewerOrVersion(18, 2)) {
+                while(jarFiles.hasMoreElements()) {
+                    JarEntry jarEntry = jarFiles.nextElement();
+                    if(!jarEntry.getName().startsWith("lang") || jarEntry.isDirectory()) continue;
+                    File langFile = new File(GPM.getDataFolder(), jarEntry.getName());
+                    String langFileName = jarEntry.getName().replaceFirst("lang/", "").replaceFirst(".yml", "");
+                    try {
+                        FileConfiguration lang = YamlConfiguration.loadConfiguration(langFile);
+                        InputStream langSteam = GPM.getResource(jarEntry.getName());
+                        if(langSteam != null) {
+                            FileConfiguration langSteamConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(langSteam, StandardCharsets.UTF_8));
+                            lang.setDefaults(langSteamConfig);
+                            YamlConfigurationOptions options = (YamlConfigurationOptions) lang.options();
+                            options.parseComments(true).copyDefaults(true).width(500);
+                            lang.loadFromString(lang.saveToString());
+                            for(String comments : lang.getKeys(true)) lang.setComments(comments, langSteamConfig.getComments(comments));
+                        }
+                        lang.save(langFile);
+                        messages.put(langFileName, lang);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        if(!langFile.exists()) GPM.saveResource(jarEntry.getName(), false);
+                        messages.put(langFileName, YamlConfiguration.loadConfiguration(langFile));
                     }
-                    lang.save(langFile);
-                    messages.put(langFileName, lang);
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                    if(!langFile.exists()) GPM.saveResource("lang/" + langFileName + ".yml", false);
-                    messages.put(langFileName, YamlConfiguration.loadConfiguration(langFile));
+                }
+            } else {
+                while(jarFiles.hasMoreElements()) {
+                    JarEntry jarEntry = jarFiles.nextElement();
+                    if(!jarEntry.getName().startsWith("lang") || jarEntry.isDirectory()) continue;
+                    File langFile = new File(GPM.getDataFolder(), jarEntry.getName());
+                    if(!langFile.exists()) GPM.saveResource(jarEntry.getName(), false);
+                    messages.put(jarEntry.getName().replaceFirst("lang/", "").replaceFirst(".yml", ""), YamlConfiguration.loadConfiguration(langFile));
                 }
             }
-        } else {
-            for(String langFileName : LANG_FILES) {
-                File langFile = new File(GPM.getDataFolder(), "lang/" + langFileName + ".yml");
-                if(!langFile.exists()) GPM.saveResource("lang/" + langFileName + ".yml", false);
-                messages.put(langFileName, YamlConfiguration.loadConfiguration(langFile));
-            }
-        }
+        } catch (Throwable e) { e.printStackTrace(); }
+        DEFAULT_LANG = messages.containsKey(GPM.getCManager().L_LANG) ? GPM.getCManager().L_LANG : "en_us";
     }
 
     public String toFormattedMessage(String Text, Object... RawReplaceList) {
@@ -155,13 +146,13 @@ abstract public class MManager {
 
     abstract public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList);
 
-    public String getMessage(String Message, Object... ReplaceList) { return getLanguageMessage(Message, GPM.getCManager().L_LANG, ReplaceList); }
+    public String getMessage(String Message, Object... ReplaceList) { return getLanguageMessage(Message, DEFAULT_LANG, ReplaceList); }
 
     public String getLanguageMessage(String Message, CommandSender Target, Object... ReplaceList) { return getLanguageMessage(Message, getLanguage(Target), ReplaceList); }
 
     public String getLanguageMessage(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedMessage(getRawLanguageMessage(Message, LanguageCode, ReplaceList)); }
 
-    public String getRawMessage(String Message, Object... ReplaceList) { return getRawLanguageMessage(Message, GPM.getCManager().L_LANG, ReplaceList); }
+    public String getRawMessage(String Message, Object... ReplaceList) { return getRawLanguageMessage(Message, DEFAULT_LANG, ReplaceList); }
 
     public String getRawLanguageMessage(String Message, CommandSender Target, Object... ReplaceList) { return getRawLanguageMessage(Message, getLanguage(Target), ReplaceList); }
 
@@ -173,8 +164,14 @@ abstract public class MManager {
     }
 
     public String getLanguage(CommandSender Target) {
-        if(!(Target instanceof Entity)) return GPM.getCManager().L_LANG;
-        return languages.getOrDefault(((Entity) Target).getUniqueId(), GPM.getCManager().L_LANG);
+        if(!(Target instanceof Entity)) return DEFAULT_LANG;
+        String language = languages.get(((Entity) Target).getUniqueId());
+        if(language != null) return language;
+        if(GPM.getCManager().L_CLIENT_LANG && Target instanceof Player) {
+            language = ((Player) Target).getLocale();
+            if(messages.containsKey(language)) return language;
+        }
+        return DEFAULT_LANG;
     }
 
     public void setLanguage(CommandSender Target, String LanguageCode) {

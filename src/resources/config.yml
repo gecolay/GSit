@@ -1,7 +1,10 @@
 Lang:
 
   # Defines the plugin language
-  lang: en_en
+  lang: en_us
+
+  # Defines whether the client language should be used, if it is available
+  client-lang: true
 
 
 
@@ -67,7 +70,7 @@ Options:
     allow-sit: true
 
     # Defines whether a player can right-click to sit on an NPC
-    allow-sit-npc: false
+    allow-sit-npc: true
 
     # Defines the maximum number of players that can be stacked (0 means unlimited)
     max-stack: 0

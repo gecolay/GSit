@@ -99,7 +99,7 @@
     <dependencies>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>mcv1_19_R2</artifactId>
+            <artifactId>mc${project.artifactId}</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

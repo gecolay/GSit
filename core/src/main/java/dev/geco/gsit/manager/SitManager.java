@@ -27,6 +27,8 @@ public class SitManager {
 
     private final List<GSeat> seats = new ArrayList<>();
 
+    public double BASE_OFFSET = NMSManager.isNewerOrVersion(20, 2) ? -0.05d : 0.2d;
+
     public List<GSeat> getSeats() { return new ArrayList<>(seats); }
 
     public boolean isSitting(LivingEntity Entity) { return getSeat(Entity) != null; }
@@ -57,23 +59,11 @@ public class SitManager {
 
     public GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
-        Location playerLocation = Entity.getLocation().clone();
+        Location returnLocation = Entity.getLocation().clone();
 
-        Location returnLocation = playerLocation.clone();
+        Location seatLocation = getSeatLocation(Block, returnLocation, XOffset, YOffset, ZOffset, SitAtBlock);
 
-        double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
-
-        offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
-
-        if(SitAtBlock) {
-
-            playerLocation = Block.getLocation().clone().add(0.5d + XOffset, YOffset + offset - 0.2d, 0.5d + ZOffset);
-        } else {
-
-            playerLocation = playerLocation.add(XOffset, YOffset - 0.2d + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
-        }
-
-        if(!GPM.getEntityUtil().isLocationValid(playerLocation)) return null;
+        if(!GPM.getEntityUtil().isLocationValid(seatLocation)) return null;
 
         PreEntitySitEvent preEvent = new PreEntitySitEvent(Entity, Block);
 
@@ -81,9 +71,9 @@ public class SitManager {
 
         if(preEvent.isCancelled()) return null;
 
-        playerLocation.setYaw(SeatRotation);
+        seatLocation.setYaw(SeatRotation);
 
-        Entity seatEntity = GPM.getEntityUtil().createSeatEntity(playerLocation, Entity, Rotate);
+        Entity seatEntity = GPM.getEntityUtil().createSeatEntity(seatLocation, Entity, Rotate);
 
         if(seatEntity == null) return null;
 
@@ -99,7 +89,7 @@ public class SitManager {
             }
         }
 
-        GSeat seat = new GSeat(Block, playerLocation, Entity, seatEntity, returnLocation);
+        GSeat seat = new GSeat(Block, seatLocation, Entity, seatEntity, returnLocation);
 
         seats.add(seat);
 
@@ -108,6 +98,17 @@ public class SitManager {
         Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
         return seat;
+    }
+
+    public Location getSeatLocation(Block Block, Location PlayerLocation, double XOffset, double YOffset, double ZOffset, boolean SitAtBlock) {
+
+        double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
+
+        offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
+
+        if(SitAtBlock) return Block.getLocation().clone().add(0.5d + XOffset, YOffset - BASE_OFFSET + offset, 0.5d + ZOffset);
+
+        return PlayerLocation.clone().add(XOffset, YOffset - BASE_OFFSET + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
     }
 
     public void moveSeat(LivingEntity Entity, BlockFace BlockFace) {
@@ -156,10 +157,10 @@ public class SitManager {
 
             try {
 
-                returnLocation = seat.getLocation().add(0d, 0.2d + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
+                returnLocation = seat.getLocation().add(0d, BASE_OFFSET + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
                 returnLocation.setYaw(seat.getEntity().getLocation().getYaw());
                 returnLocation.setPitch(seat.getEntity().getLocation().getPitch());
-            } catch (Exception ignored) { }
+            } catch (Throwable ignored) { }
         }
 
         if(seat.getEntity().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
