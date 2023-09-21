@@ -68,6 +68,7 @@ permissions:
       GSit.Sit.*: true
       GSit.PlayerSit.*: true
       GSit.Pose.*: true
+      GSit.Crawl.*: true
       GSit.Emote.*: true
       GSit.Kick.*: true
       GSit.ByPass.*: true
