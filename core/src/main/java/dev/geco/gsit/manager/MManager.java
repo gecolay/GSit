@@ -2,6 +2,7 @@ package dev.geco.gsit.manager;
 
 import java.io.*;
 import java.nio.charset.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.jar.*;
 import java.util.regex.*;
@@ -90,8 +91,7 @@ abstract public class MManager {
 
     public void loadMessages() {
         messages.clear();
-        try {
-            JarFile jarFile = new JarFile(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        try(JarFile jarFile = new JarFile(Paths.get(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toString())) {
             Enumeration<JarEntry> jarFiles = jarFile.entries();
             if(NMSManager.isNewerOrVersion(18, 2)) {
                 while(jarFiles.hasMoreElements()) {

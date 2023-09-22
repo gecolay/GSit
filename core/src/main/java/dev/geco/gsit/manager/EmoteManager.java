@@ -1,6 +1,7 @@
 package dev.geco.gsit.manager;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.jar.*;
 
@@ -34,16 +35,17 @@ public class EmoteManager {
         try {
             File directory = new File(GPM.getDataFolder(), "emotes/");
             if(!directory.exists()) {
-                JarFile jarFile = new JarFile(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-                Enumeration<JarEntry> jarFiles = jarFile.entries();
-                while(jarFiles.hasMoreElements()) {
-                    JarEntry jarEntry = jarFiles.nextElement();
-                    if(!jarEntry.getName().startsWith("emotes") || jarEntry.isDirectory()) continue;
-                    if(!new File(GPM.getDataFolder(), jarEntry.getName()).exists()) GPM.saveResource(jarEntry.getName(), false);
-                }
+                try(JarFile jarFile = new JarFile(Paths.get(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toString())) {
+                    Enumeration<JarEntry> jarFiles = jarFile.entries();
+                    while(jarFiles.hasMoreElements()) {
+                        JarEntry jarEntry = jarFiles.nextElement();
+                        if(!jarEntry.getName().startsWith("emotes") || jarEntry.isDirectory()) continue;
+                        if(!new File(GPM.getDataFolder(), jarEntry.getName()).exists()) GPM.saveResource(jarEntry.getName(), false);
+                    }
+                } catch (Throwable e) { e.printStackTrace(); }
             }
             if(!directory.exists()) return;
-            for(File emoteFile : directory.listFiles()) {
+            for(File emoteFile : Objects.requireNonNull(directory.listFiles())) {
                 if(emoteFile.getName().toLowerCase().endsWith(".gex")) {
                     GEmote emote = GPM.getEmoteUtil().createEmoteFromRawData(emoteFile);
                     if(emote != null) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
