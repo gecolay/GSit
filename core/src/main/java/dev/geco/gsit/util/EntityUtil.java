@@ -2,7 +2,6 @@ package dev.geco.gsit.util;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
-import org.bukkit.metadata.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.manager.*;
@@ -65,7 +64,7 @@ public class EntityUtil implements IEntityUtil {
             try { armorStand.setInvulnerable(true); } catch (Throwable ignored) { }
             try { armorStand.setSmall(true); } catch (Throwable ignored) { }
             try { armorStand.setBasePlate(false); } catch (Throwable ignored) { }
-
+            armorStand.addScoreboardTag(GPM.NAME + "_SeatEntity");
             if(!GPM.getCManager().ENHANCED_COMPATIBILITY && Rider != null && Rider.isValid()) riding[0] = armorStand.addPassenger(Rider);
         });
 
@@ -101,9 +100,7 @@ public class EntityUtil implements IEntityUtil {
                 try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Throwable ignored) { }
                 try { areaEffectCloud.setParticle(Particle.BLOCK_CRACK, Material.AIR.createBlockData()); } catch (Throwable ignored) { }
                 try { areaEffectCloud.setWaitTime(0); } catch (Throwable ignored) { }
-
-                areaEffectCloud.setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, finalLastEntity));
-
+                areaEffectCloud.addScoreboardTag(GPM.NAME + "_PlayerSeatEntity");
                 finalLastEntity.addPassenger(areaEffectCloud);
                 if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(Rider);
             });

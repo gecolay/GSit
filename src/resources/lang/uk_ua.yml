@@ -36,6 +36,7 @@ Messages:
   action-sit-safe-error: "[P]&c Тут небезпечно сидіти!"
   action-sit-region-error: "[P]&c Ви не можете сидіти у цьому регіоні!"
   action-sit-kick-error: "[P]&c Хтось уже сидить тут!"
+  action-sit-error: "[P]&c Due to an error you can't sit here!"
   action-sit-info: "&aВикористовуйте&6 <lang:key.sneak>&a, щоби встати."
 
   action-playersit-info: "&aВикористовуйте&6 <lang:key.sneak>&a, щоби встати."
@@ -46,6 +47,7 @@ Messages:
   action-pose-safe-error: "[P]&c Тут небезпечно використовувати цю команду!"
   action-pose-region-error: "[P]&c Ви не можете використовувати цю команду в цьому регіоні!"
   action-pose-kick-error: "[P]&c Хтось уже тут використовує цю команду!"
+  action-pose-error: "[P]&c Due to an error you can't pose here!"
   action-pose-info: "&aВикористовуйте&6 <lang:key.sneak>&a, щоби встати."
 
   action-crawl-now-error: "[P]&c Ти не можеш повзати прямо зараз!"

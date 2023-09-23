@@ -36,6 +36,7 @@ Messages:
   action-sit-safe-error: "[P]&c Tässä ei ole turvallista istua!"
   action-sit-region-error: "[P]&c Tällä alueella ei voi istua!"
   action-sit-kick-error: "[P]&c Joku istuu jo tässä!"
+  action-sit-error: "[P]&c Due to an error you can't sit here!"
   action-sit-info: "&aNouse painamalla&6 <lang:key.sneak>&a -näppäintä."
 
   action-playersit-info: "&aNouse painamalla&6 <lang:key.sneak>&a -näppäintä."
@@ -46,6 +47,7 @@ Messages:
   action-pose-safe-error: "[P]&c Tässä ei ole turvallista!"
   action-pose-region-error: "[P]&c Tällä alueella ei voi käyttää tätä ominaisuutta!"
   action-pose-kick-error: "[P]&c Tässä on jo joku!"
+  action-pose-error: "[P]&c Due to an error you can't pose here!"
   action-pose-info: "&aNouse painamalla&6 <lang:key.sneak>&a -näppäintä."
 
   action-crawl-now-error: "[P]&c Et voi ryömiä juuri nyt!"

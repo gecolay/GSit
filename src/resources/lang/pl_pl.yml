@@ -36,6 +36,7 @@ Messages:
   action-sit-safe-error: "[P]&c Nie jest bezpiecznie, aby tutaj siadać!"
   action-sit-region-error: "[P]&c Nie możesz siadać w tym regionie!"
   action-sit-kick-error: "[P]&c Ktoś już tu siedzi!"
+  action-sit-error: "[P]&c Due to an error you can't sit here!"
   action-sit-info: "&aUżyj swojego przycisku&6 <lang:key.sneak>&a, aby wstać."
 
   action-playersit-info: "&aUżyj swojego przycisku&6 <lang:key.sneak>&a, aby wstać."
@@ -46,6 +47,7 @@ Messages:
   action-pose-safe-error: "[P]&c Nie jest bezpiecznie, aby się tutaj kłaść!"
   action-pose-region-error: "[P]&c Nie możesz się kłaść w tym regionie!"
   action-pose-kick-error: "[P]&c Ktoś już tu leży!"
+  action-pose-error: "[P]&c Due to an error you can't pose here!"
   action-pose-info: "&aUżyj swojego przycisku&6 <lang:key.sneak>&a, aby wstać."
 
   action-crawl-now-error: "[P]&c Nie możesz się teraz czołgać!"

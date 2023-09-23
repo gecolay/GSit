@@ -36,6 +36,7 @@ Messages:
   action-sit-safe-error: "[P]&c Nie je bezpečné tu sedieť!"
   action-sit-region-error: "[P]&c Nemôžeš sedieť v tomto regióne!"
   action-sit-kick-error: "[P]&c Už tu niekto sedí!"
+  action-sit-error: "[P]&c Due to an error you can't sit here!"
   action-sit-info: "&aPouži&6 <lang:key.sneak>&a klávesu pre vstatie"
 
   action-playersit-info: "&aPouži&6 <lang:key.sneak>&a klávesu pre zoskočenie"
@@ -46,6 +47,7 @@ Messages:
   action-pose-safe-error: "[P]&c Nie je bezpečné tu pózovať!"
   action-pose-region-error: "[P]&c Nemôžeš pózovať v tomto regióne!"
   action-pose-kick-error: "[P]&c Už tu niekto pózuje!"
+  action-pose-error: "[P]&c Due to an error you can't pose here!"
   action-pose-info: "&aPouži&6 <lang:key.sneak>&a klávesu pre zastavenie pózovania"
 
   action-crawl-now-error: "[P]&c Teraz sa nemôžeš plaziť!"

@@ -49,7 +49,7 @@ public class GLayCommand implements CommandExecutor {
             return true;
         }
 
-        if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping()) {
+        if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping()) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.action-pose-now-error");
             return true;
@@ -111,7 +111,7 @@ public class GLayCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getPoseManager().createPose(block, player, Pose.SLEEPING) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-pose-region-error");
+        if(GPM.getPoseManager().createPose(block, player, Pose.SLEEPING) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-pose-error");
         return true;
     }
 

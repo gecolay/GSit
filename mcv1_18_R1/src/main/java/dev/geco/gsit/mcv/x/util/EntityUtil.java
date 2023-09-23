@@ -4,7 +4,6 @@ import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_18_R1.*;
 import org.bukkit.craftbukkit.v1_18_R1.entity.*;
 import org.bukkit.entity.*;
-import org.bukkit.metadata.*;
 
 import net.minecraft.network.protocol.game.*;
 
@@ -68,8 +67,6 @@ public class EntityUtil implements IEntityUtil {
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
             net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(lastEntity.getLocation());
-
-            playerSeatEntity.getBukkitEntity().setMetadata(GPM.NAME + "A", new FixedMetadataValue(GPM, lastEntity));
 
             playerSeatEntity.startRiding(((CraftEntity) lastEntity).getHandle(), true);
 

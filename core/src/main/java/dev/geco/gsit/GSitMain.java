@@ -161,7 +161,7 @@ public class GSitMain extends JavaPlugin {
         toggleManager = new ToggleManager(getInstance());
 
         emoteUtil = new EmoteUtil();
-        passengerUtil = new PassengerUtil(getInstance());
+        passengerUtil = new PassengerUtil();
         environmentUtil = new EnvironmentUtil(getInstance());
 
         preloadPluginDependencies();

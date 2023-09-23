@@ -42,7 +42,7 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping()) {
+            if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping()) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-sit-now-error");
                 return true;
@@ -104,7 +104,7 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(Tag.STAIRS.isTagged(block.getType()) ? GPM.getEnvironmentUtil().createSeatForStair(block, player) == null : GPM.getSitManager().createSeat(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-region-error");
+            if(Tag.STAIRS.isTagged(block.getType()) ? GPM.getEnvironmentUtil().createSeatForStair(block, player) == null : GPM.getSitManager().createSeat(block, player) == null) GPM.getMManager().sendMessage(Sender, "Messages.action-sit-error");
             return true;
         }
 

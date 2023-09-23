@@ -5,28 +5,19 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
-import dev.geco.gsit.GSitMain;
-
 public class PassengerUtil {
-
-    private final GSitMain GPM;
-
-    public PassengerUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public long getVehicleAmount(Entity Entity) {
 
         long amount = 0;
 
-        if(Entity.isInsideVehicle()) {
+        Entity entity = Entity.getVehicle();
 
-            Entity entity = Entity.getVehicle();
+        if(entity == null) return amount;
 
-            if(entity instanceof Player) amount++;
+        if(entity instanceof Player) amount++;
 
-            amount += getVehicleAmount(entity);
-        }
-
-        return amount;
+        return amount + getVehicleAmount(entity);
     }
 
     public long getPassengerAmount(Entity Entity) {
@@ -61,7 +52,7 @@ public class PassengerUtil {
 
     public Entity getHighestEntity(Entity Entity) { return Entity == null || Entity.getPassengers().isEmpty() ? Entity : getHighestEntity(Entity.getPassengers().get(0)); }
 
-    public Entity getBottomEntity(Entity Entity) { return Entity == null || !Entity.isInsideVehicle() ? Entity : getBottomEntity(Entity.getVehicle()); }
+    public Entity getBottomEntity(Entity Entity) { return Entity == null || Entity.getVehicle() == null ? Entity : getBottomEntity(Entity.getVehicle()); }
 
     public boolean isNPC(Player P) { return !Bukkit.getOnlinePlayers().contains(P); }
 

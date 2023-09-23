@@ -36,6 +36,7 @@ Messages:
   action-sit-safe-error: "[P]&c ここに座るのは安全ではありません！"
   action-sit-region-error: "[P]&c この領域で座ることはできません！"
   action-sit-kick-error: "[P]&c そこには既に誰かが座っています！"
+  action-sit-error: "[P]&c Due to an error you can't sit here!"
   action-sit-info: "&6 <lang:key.sneak>&a キーで立ち上がる。"
 
   action-playersit-info: "&6 <lang:key.sneak>&a キーで立ち上がる。"
@@ -46,6 +47,7 @@ Messages:
   action-pose-safe-error: "[P]&c ここでポーズをとることは安全ではありません！"
   action-pose-region-error: "[P]&c この領域でポーズをとることはできません！"
   action-pose-kick-error: "[P]&c そこでは既に誰かがポーズをとっています！"
+  action-pose-error: "[P]&c Due to an error you can't pose here!"
   action-pose-info: "&6 <lang:key.sneak>&a キーでポーズをやめる。"
 
   action-crawl-now-error: "[P]&c 今クロールをすることはできません！"

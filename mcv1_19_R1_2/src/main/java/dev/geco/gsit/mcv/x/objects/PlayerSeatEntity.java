@@ -19,6 +19,7 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         setDuration(Integer.MAX_VALUE);
         setParticle(CraftParticle.toNMS(Particle.BLOCK_CRACK, Material.AIR.createBlockData()));
         setWaitTime(0);
+        addTag("GSit_PlayerSeatEntity");
     }
 
     public void tick() { }

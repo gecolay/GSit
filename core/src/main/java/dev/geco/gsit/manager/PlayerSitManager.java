@@ -19,7 +19,7 @@ public class PlayerSitManager {
 
     public void resetFeatureUsedCount() { feature_used = 0; }
 
-    public void clearSeats() { for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.hasMetadata(GPM.NAME + "A")) entity.remove(); }
+    public void clearSeats() { for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) entity.remove(); }
 
     public boolean sitOnPlayer(Player Player, Player Target) {
 
@@ -57,7 +57,7 @@ public class PlayerSitManager {
 
         removeVehicles(Entity);
 
-        if(Entity.hasMetadata(GPM.NAME + "A")) Entity.remove();
+        if(Entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) Entity.remove();
 
         if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
 
@@ -68,28 +68,25 @@ public class PlayerSitManager {
 
         for(Entity passenger : Entity.getPassengers()) {
 
-            if(passenger.hasMetadata(GPM.NAME + "A")) {
+            if(!passenger.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) continue;
 
-                removePassengers(passenger);
+            removePassengers(passenger);
 
-                passenger.remove();
-            }
+            passenger.remove();
         }
     }
 
     private void removeVehicles(Entity Entity) {
 
-        if(Entity.isInsideVehicle()) {
+        Entity vehicle = Entity.getVehicle();
 
-            Entity vehicle = Entity.getVehicle();
+        if(vehicle == null) return;
 
-            if(vehicle.hasMetadata(GPM.NAME + "A")) {
+        if(!vehicle.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) return;
 
-                removeVehicles(vehicle);
+        removeVehicles(vehicle);
 
-                vehicle.remove();
-            }
-        }
+        vehicle.remove();
     }
 
 }

@@ -29,6 +29,7 @@ public class SeatEntity extends ArmorStand {
         yRotO = getYRot();
         setYBodyRot(yRotO);
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(1f);
+        addTag("GSit_SeatEntity");
     }
 
     public void startRotate() { rotate = true; }

@@ -36,6 +36,7 @@ Messages:
   action-sit-safe-error: "[P]&c Tidak aman duduk di sini!"
   action-sit-region-error: "[P]&c Kamu tidak bisa duduk di daerah ini!"
   action-sit-kick-error: "[P]&c Seseorang sudah duduk di sini!"
+  action-sit-error: "[P]&c Due to an error you can't sit here!"
   action-sit-info: "&aPakai key&6 <lang:key.sneak>&a mu untuk berdiri"
 
   action-playersit-info: "&aPakai key&6 <lang:key.sneak>&a mu untuk berdiri"
@@ -46,6 +47,7 @@ Messages:
   action-pose-safe-error: "[P]&c Tidak aman berpose di sini!"
   action-pose-region-error: "[P]&c Kamu tidak bisa berpose di daerah ini!"
   action-pose-kick-error: "[P]&c Seseorang sudah berpose di sini!"
+  action-pose-error: "[P]&c Due to an error you can't pose here!"
   action-pose-info: "&aPakai key&6 <lang:key.sneak>&a mu untuk berdiri"
 
   action-crawl-now-error: "[P]&c Kamu tidak bisa merangkak sekarang!"

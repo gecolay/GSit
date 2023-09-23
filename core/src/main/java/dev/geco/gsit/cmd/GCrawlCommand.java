@@ -49,7 +49,7 @@ public class GCrawlCommand implements CommandExecutor {
                 return true;
             }
 
-            if(!player.isValid() || !player.isOnGround() || player.isInsideVehicle() || player.isSleeping()) {
+            if(!player.isValid() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping()) {
 
                 GPM.getMManager().sendMessage(Sender, "Messages.action-crawl-now-error");
                 return true;
