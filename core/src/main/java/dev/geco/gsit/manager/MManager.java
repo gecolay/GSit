@@ -93,7 +93,7 @@ abstract public class MManager {
         messages.clear();
         try(JarFile jarFile = new JarFile(Paths.get(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toString())) {
             Enumeration<JarEntry> jarFiles = jarFile.entries();
-            if(NMSManager.isNewerOrVersion(18, 2)) {
+            if(GPM.getSVManager().isNewerOrVersion(18, 2)) {
                 while(jarFiles.hasMoreElements()) {
                     JarEntry jarEntry = jarFiles.nextElement();
                     if(!jarEntry.getName().startsWith("lang") || jarEntry.isDirectory()) continue;

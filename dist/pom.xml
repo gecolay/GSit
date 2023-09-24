@@ -53,52 +53,52 @@
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_17_R1</artifactId>
+            <artifactId>v1_17</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_17_R1_2</artifactId>
+            <artifactId>v1_17_1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_18_R1</artifactId>
+            <artifactId>v1_18</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_18_R2</artifactId>
+            <artifactId>v1_18_2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_19_R1</artifactId>
+            <artifactId>v1_19</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_19_R1_2</artifactId>
+            <artifactId>v1_19_1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_19_R2</artifactId>
+            <artifactId>v1_19_3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_19_R3</artifactId>
+            <artifactId>v1_19_4</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_20_R1</artifactId>
+            <artifactId>v1_20</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_20_R2</artifactId>
+            <artifactId>v1_20_2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

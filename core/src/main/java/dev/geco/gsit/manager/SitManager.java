@@ -17,7 +17,12 @@ public class SitManager {
 
     private final GSitMain GPM;
 
-    public SitManager(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public final double BASE_OFFSET;
+
+    public SitManager(GSitMain GPluginMain) {
+        GPM = GPluginMain;
+        BASE_OFFSET = GPM.getSVManager().isNewerOrVersion(20, 2) ? -0.05d : 0.2d;
+    }
 
     private int feature_used = 0;
 
@@ -26,8 +31,6 @@ public class SitManager {
     public void resetFeatureUsedCount() { feature_used = 0; }
 
     private final List<GSeat> seats = new ArrayList<>();
-
-    public double BASE_OFFSET = NMSManager.isNewerOrVersion(20, 2) ? -0.05d : 0.2d;
 
     public List<GSeat> getSeats() { return new ArrayList<>(seats); }
 
@@ -163,9 +166,9 @@ public class SitManager {
             } catch (Throwable ignored) { }
         }
 
-        if(seat.getEntity().isValid() && Safe && NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
+        if(seat.getEntity().isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
 
-        if(seat.getSeatEntity().isValid() && !NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
+        if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
 
         seat.getSeatEntity().remove();
 

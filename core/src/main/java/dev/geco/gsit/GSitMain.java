@@ -17,6 +17,9 @@ import dev.geco.gsit.util.*;
 
 public class GSitMain extends JavaPlugin {
 
+    private SVManager svManager;
+    public SVManager getSVManager() { return svManager; }
+
     private CManager cManager;
     public CManager getCManager() { return cManager; }
 
@@ -148,6 +151,7 @@ public class GSitMain extends JavaPlugin {
 
         GPM = this;
 
+        svManager = new SVManager(getInstance());
         cManager = new CManager(getInstance());
         dManager = new DManager(getInstance());
         uManager = new UManager(getInstance());
@@ -174,7 +178,7 @@ public class GSitMain extends JavaPlugin {
         loadSettings(Bukkit.getConsoleSender());
         if(!versionCheck()) return;
 
-        entityUtil = NMSManager.isNewerOrVersion(17, 0) ? (IEntityUtil) NMSManager.getPackageObject("util.EntityUtil", null) : new EntityUtil();
+        entityUtil = getSVManager().isNewerOrVersion(17, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil", null) : new EntityUtil();
 
         setupCommands();
         setupEvents();
@@ -329,7 +333,7 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
 
-        if(!isSpigotBased() || !NMSManager.isNewerOrVersion(13, 0) || (NMSManager.isNewerOrVersion(17, 0) && !NMSManager.hasPackageClass("objects.SeatEntity"))) {
+        if(!isSpigotBased() || !getSVManager().isNewerOrVersion(13, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().hasPackageClass("objects.SeatEntity"))) {
 
             String version = Bukkit.getServer().getClass().getPackage().getName();
 

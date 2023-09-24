@@ -1,10 +1,11 @@
 package dev.geco.gsit.util;
 
+import java.lang.reflect.*;
+
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 
 public class EntityUtil implements IEntityUtil {
@@ -15,9 +16,10 @@ public class EntityUtil implements IEntityUtil {
 
         try {
 
-            Object entity = NMSManager.getHandle(Entity);
-
-            NMSManager.getMethod("setPosition", entity.getClass(), double.class, double.class, double.class).invoke(entity, Location.getX(), Location.getY(), Location.getZ());
+            Method getHandle = Entity.getClass().getDeclaredMethod("getHandle");
+            Object entity = getHandle.invoke(Entity);
+            Method setPosition = entity.getClass().getDeclaredMethod("setPosition", double.class, double.class, double.class);
+            setPosition.invoke(entity, Location.getX(), Location.getY(), Location.getZ());
         } catch (Exception ignored) { }
     }
 

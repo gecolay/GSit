@@ -107,7 +107,7 @@ public class CManager {
 
         GPM = GPluginMain;
 
-        if(NMSManager.isNewerOrVersion(18, 2)) {
+        if(GPM.getSVManager().isNewerOrVersion(18, 2)) {
             try {
                 File configFile = new File(GPM.getDataFolder(), "config.yml");
                 FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);

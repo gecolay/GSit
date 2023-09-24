@@ -17,7 +17,7 @@ import dev.geco.gsit.manager.*;
 
 public class PMManager extends MManager {
 
-    private boolean allowComponentMessages = NMSManager.isNewerOrVersion(18, 2);
+    private boolean allowComponentMessages = GPM.getSVManager().isNewerOrVersion(18, 2);
 
     public PMManager(GSitMain GPluginMain) {
         super(GPluginMain);

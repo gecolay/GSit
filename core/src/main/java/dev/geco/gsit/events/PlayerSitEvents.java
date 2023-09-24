@@ -13,7 +13,6 @@ import org.spigotmc.event.entity.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.*;
-import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 
 public class PlayerSitEvents implements Listener {
@@ -77,9 +76,9 @@ public class PlayerSitEvents implements Listener {
 
         Entity bottom = GPM.getPassengerUtil().getBottomEntity(Event.getDismounted());
 
-        if(GPM.getCManager().PS_BOTTOM_RETURN && Event.getEntity().isValid() && Event.getEntity() instanceof Player && NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Event.getEntity(), bottom.getLocation());
+        if(GPM.getCManager().PS_BOTTOM_RETURN && Event.getEntity().isValid() && Event.getEntity() instanceof Player && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Event.getEntity(), bottom.getLocation());
 
-        if(Event.getDismounted().getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity") && !NMSManager.isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Event.getDismounted(), bottom.getLocation());
+        if(Event.getDismounted().getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity") && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Event.getDismounted(), bottom.getLocation());
 
         GPM.getPlayerSitManager().stopPlayerSit(Event.getDismounted(), GetUpReason.GET_UP);
 

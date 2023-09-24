@@ -20,7 +20,7 @@ public class PoseManager {
 
     public PoseManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
-        available = NMSManager.hasPackageClass("objects.GPoseSeat");
+        available = GPM.getSVManager().hasPackageClass("objects.GPoseSeat");
     }
 
     public boolean isAvailable() { return available; }

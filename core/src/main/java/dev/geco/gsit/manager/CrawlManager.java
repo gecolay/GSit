@@ -17,7 +17,7 @@ public class CrawlManager {
 
     public CrawlManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
-        available = NMSManager.hasPackageClass("objects.GCrawl");
+        available = GPM.getSVManager().hasPackageClass("objects.GCrawl");
     }
 
     public boolean isAvailable() { return available; }
