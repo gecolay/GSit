@@ -38,27 +38,7 @@ public class GEmotePart {
         data = Data != null && Particle.getDataType().equals(Data.getClass()) ? Data : null;
     }
 
-    private Vector getCords(LivingEntity Entity) {
-
-        float yaw = Entity.getLocation().getYaw(), yawF = yaw + 180f;
-
-        Vector xVector = new Vector(Math.cos(Math.toRadians(yawF)) * getXOffset(), 0, Math.sin(Math.toRadians(yawF)) * getXOffset());
-
-        Vector zVector = new Vector(-Math.sin(Math.toRadians(yaw)) * getZOffset(), 0, Math.cos(Math.toRadians(yaw)) * getZOffset());
-
-        Location location = Entity.getLocation().clone().add(xVector).add(zVector);
-
-        return new Vector(location.getX(), 0, location.getZ());
-    }
-
-    protected void start(Player Player, LivingEntity Origin, boolean Head) {
-
-        if(getParticle() == null) return;
-
-        Vector vector = getCords(Origin);
-
-        Player.spawnParticle(getParticle(), vector.getX(), (Head ? Origin.getEyeLocation() : Origin.getLocation()).getY() + getYOffset(), vector.getZ(), getAmount(), 0, 0, 0, getExtra(), getData());
-    }
+    protected void spawn(Player Player, Vector Vector) { Player.spawnParticle(getParticle(), Vector.getX(), Vector.getY(), Vector.getZ(), getAmount(), 0, 0, 0, getExtra(), getData()); }
 
     public Particle getParticle() { return particle; }
 

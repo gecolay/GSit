@@ -63,7 +63,7 @@ public class GSpinCommand implements CommandExecutor {
 
         Location playerLocation = player.getLocation();
 
-        Block block = playerLocation.getBlock().isPassable() ? playerLocation.clone().subtract(0, 0.0625, 0).getBlock() : playerLocation.getBlock();
+        Block block = playerLocation.getBlock().isPassable() ? playerLocation.subtract(0, 0.0625, 0).getBlock() : playerLocation.getBlock();
 
         if(GPM.getCManager().MATERIALBLACKLIST.contains(block.getType())) {
 

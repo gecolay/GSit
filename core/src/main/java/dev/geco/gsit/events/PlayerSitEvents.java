@@ -28,7 +28,7 @@ public class PlayerSitEvents implements Listener {
 
         Player player = Event.getPlayer();
 
-        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.getVehicle() != null || wait_eject.contains(player)) return;
+        if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.getVehicle() != null || wait_eject.contains(player) || player.getPassengers().isEmpty()) return;
 
         GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED);
     }
@@ -114,7 +114,7 @@ public class PlayerSitEvents implements Listener {
 
         double distance = GPM.getCManager().PS_MAX_DISTANCE;
 
-        if(distance > 0d && target.getLocation().clone().add(0, target.getHeight() / 2, 0).distance(player.getLocation().clone().add(0, player.getHeight() / 2, 0)) > distance) return;
+        if(distance > 0d && target.getLocation().add(0, target.getHeight() / 2, 0).distance(player.getLocation().clone().add(0, player.getHeight() / 2, 0)) > distance) return;
 
         if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(target.getLocation(), player)) return;
 

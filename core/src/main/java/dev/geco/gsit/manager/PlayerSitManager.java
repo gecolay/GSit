@@ -11,13 +11,20 @@ public class PlayerSitManager {
 
     private final GSitMain GPM;
 
-    public PlayerSitManager(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public PlayerSitManager(GSitMain GPluginMain) {
+        GPM = GPluginMain;
+        seat_entity_count = GPM.getSVManager().isNewerOrVersion(20, 2) ? 1 : 2;
+    }
 
     private int feature_used = 0;
 
     public int getFeatureUsedCount() { return feature_used; }
 
     public void resetFeatureUsedCount() { feature_used = 0; }
+
+    private final int seat_entity_count;
+
+    public int getSeatEntityCount() { return seat_entity_count; }
 
     public void clearSeats() { for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) entity.remove(); }
 

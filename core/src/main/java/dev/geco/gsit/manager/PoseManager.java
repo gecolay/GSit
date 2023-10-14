@@ -63,7 +63,7 @@ public class PoseManager {
 
     public IGPoseSeat createPose(Block Block, Player Player, Pose Pose, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
-        Location returnLocation = Player.getLocation().clone();
+        Location returnLocation = Player.getLocation();
 
         Location seatLocation = GPM.getSitManager().getSeatLocation(Block, returnLocation, XOffset, YOffset, ZOffset, SitAtBlock);
 

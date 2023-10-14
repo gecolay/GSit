@@ -54,26 +54,26 @@ public class EmoteManager {
         } catch (Throwable e) { e.printStackTrace(); }
     }
 
-    private final HashMap<LivingEntity, GEmote> emotes = new HashMap<>();
+    private final HashMap<Player, GEmote> emotes = new HashMap<>();
 
-    public HashMap<LivingEntity, GEmote> getEmotes() { return new HashMap<>(emotes); }
+    public HashMap<Player, GEmote> getEmotes() { return new HashMap<>(emotes); }
 
-    public boolean isEmoting(LivingEntity Entity) { return getEmote(Entity) != null; }
+    public boolean isEmoting(Player Player) { return getEmote(Player) != null; }
 
-    public GEmote getEmote(LivingEntity Entity) {
+    public GEmote getEmote(Player Player) {
 
-        for(Map.Entry<LivingEntity, GEmote> emote : getEmotes().entrySet()) if(Entity.equals(emote.getKey())) return emote.getValue();
+        for(Map.Entry<Player, GEmote> emote : getEmotes().entrySet()) if(Player.equals(emote.getKey())) return emote.getValue();
         return null;
     }
 
     public void clearEmotes() {
-        for(LivingEntity entity : getEmotes().keySet()) stopEmote(entity);
+        for(Player player : getEmotes().keySet()) stopEmote(player);
         available_emotes.clear();
     }
 
-    public boolean startEmote(LivingEntity Entity, GEmote Emote) {
+    public boolean startEmote(Player Player, GEmote Emote) {
 
-        PreEntityEmoteEvent preEvent = new PreEntityEmoteEvent(Entity, Emote);
+        PreEntityEmoteEvent preEvent = new PreEntityEmoteEvent(Player, Emote);
 
         Bukkit.getPluginManager().callEvent(preEvent);
 
@@ -81,36 +81,36 @@ public class EmoteManager {
 
         if(!available_emotes.contains(Emote) || Emote.getParts().isEmpty()) return false;
 
-        if(!stopEmote(Entity)) return false;
+        if(!stopEmote(Player)) return false;
 
-        Emote.start(Entity);
+        Emote.start(Player);
 
-        emotes.put(Entity, Emote);
+        emotes.put(Player, Emote);
 
         feature_used++;
 
-        Bukkit.getPluginManager().callEvent(new EntityEmoteEvent(Entity, Emote));
+        Bukkit.getPluginManager().callEvent(new EntityEmoteEvent(Player, Emote));
 
         return true;
     }
 
-    public boolean stopEmote(LivingEntity Entity) {
+    public boolean stopEmote(Player Player) {
 
-        if(!isEmoting(Entity)) return true;
+        if(!isEmoting(Player)) return true;
 
-        GEmote emote = getEmote(Entity);
+        GEmote emote = getEmote(Player);
 
-        PreEntityStopEmoteEvent preEvent = new PreEntityStopEmoteEvent(Entity, emote);
+        PreEntityStopEmoteEvent preEvent = new PreEntityStopEmoteEvent(Player, emote);
 
         Bukkit.getPluginManager().callEvent(preEvent);
 
         if(preEvent.isCancelled()) return false;
 
-        emote.stop(Entity);
+        emote.stop(Player);
 
-        emotes.remove(Entity);
+        emotes.remove(Player);
 
-        Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Entity, emote));
+        Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Player, emote));
 
         return true;
     }

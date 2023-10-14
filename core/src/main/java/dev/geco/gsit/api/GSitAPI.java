@@ -410,14 +410,14 @@ public class GSitAPI {
     }
 
     /**
-     * Checks if an Entity is currently emoting
+     * Checks if a Player is currently emoting
      * @author Gecolay
      * @since 1.1.1
-     * @param Entity Entity for this Emote-Object
-     * @return <code>true</code> if the Entity is emoting
+     * @param Player Player for this Emote-Object
+     * @return <code>true</code> if the Player is emoting
      */
-    public static boolean isEmoting(@NotNull LivingEntity Entity) {
-        return getInstance().getEmoteManager().isEmoting(Entity);
+    public static boolean isEmoting(@NotNull Player Player) {
+        return getInstance().getEmoteManager().isEmoting(Player);
     }
 
     /**
@@ -426,7 +426,7 @@ public class GSitAPI {
      * @since 1.1.1
      * @return List of all Emote-Objects
      */
-    public static HashMap<LivingEntity, GEmote> getEmotes() {
+    public static HashMap<Player, GEmote> getEmotes() {
         return getInstance().getEmoteManager().getEmotes();
     }
 
@@ -441,37 +441,37 @@ public class GSitAPI {
     }
 
     /**
-     * Gets the Emote-Object of an Entity
+     * Gets the Emote-Object of a Player
      * @author Gecolay
      * @since 1.1.1
-     * @param Entity Entity for this Emote-Object
+     * @param Player Player for this Emote-Object
      * @return Emote-Object or <code>null</code> if there was no Emote-Object
      */
-    public static GEmote getEmote(@NotNull LivingEntity Entity) {
-        return getInstance().getEmoteManager().getEmote(Entity);
+    public static GEmote getEmote(@NotNull Player Player) {
+        return getInstance().getEmoteManager().getEmote(Player);
     }
 
     /**
-     * Starts an Emote for an Entity
+     * Starts an Emote for a Player
      * @author Gecolay
      * @since 1.1.1
-     * @param Entity Entity for this Emote-Object
+     * @param Player Player for this Emote-Object
      * @param Emote Emote
      * @return <code>true</code> or <code>false</code> if the creation was canceled
      */
-    public static boolean startEmote(@NotNull LivingEntity Entity, @NotNull GEmote Emote) {
-        return getInstance().getEmoteManager().startEmote(Entity, Emote);
+    public static boolean startEmote(@NotNull Player Player, @NotNull GEmote Emote) {
+        return getInstance().getEmoteManager().startEmote(Player, Emote);
     }
 
     /**
-     * Stops an Emote from an Entity
+     * Stops an Emote from a Player
      * @author Gecolay
      * @since 1.1.1
-     * @param Entity Entity for this Emote-Object
+     * @param Player Player for this Emote-Object
      * @return <code>true</code> or <code>false</code> if the deletion was canceled
      */
-    public static boolean stopEmote(@NotNull LivingEntity Entity) {
-        return getInstance().getEmoteManager().stopEmote(Entity);
+    public static boolean stopEmote(@NotNull Player Player) {
+        return getInstance().getEmoteManager().stopEmote(Player);
     }
 
 }

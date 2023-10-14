@@ -62,7 +62,7 @@ public class SitManager {
 
     public GSeat createSeat(Block Block, LivingEntity Entity, boolean Rotate, double XOffset, double YOffset, double ZOffset, float SeatRotation, boolean SitAtBlock) {
 
-        Location returnLocation = Entity.getLocation().clone();
+        Location returnLocation = Entity.getLocation();
 
         Location seatLocation = getSeatLocation(Block, returnLocation, XOffset, YOffset, ZOffset, SitAtBlock);
 
@@ -103,15 +103,15 @@ public class SitManager {
         return seat;
     }
 
-    public Location getSeatLocation(Block Block, Location PlayerLocation, double XOffset, double YOffset, double ZOffset, boolean SitAtBlock) {
+    public Location getSeatLocation(Block Block, Location EntityLocation, double XOffset, double YOffset, double ZOffset, boolean SitAtBlock) {
 
         double offset = SitAtBlock ? Block.getBoundingBox().getMinY() + Block.getBoundingBox().getHeight() : 0d;
 
         offset = (SitAtBlock ? offset == 0d ? 1d : offset - Block.getY() : offset) + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d);
 
-        if(SitAtBlock) return Block.getLocation().clone().add(0.5d + XOffset, YOffset - BASE_OFFSET + offset, 0.5d + ZOffset);
+        if(SitAtBlock) return Block.getLocation().add(0.5d + XOffset, YOffset - BASE_OFFSET + offset, 0.5d + ZOffset);
 
-        return PlayerLocation.clone().add(XOffset, YOffset - BASE_OFFSET + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
+        return EntityLocation.add(XOffset, YOffset - BASE_OFFSET + GPM.getCManager().S_SITMATERIALS.getOrDefault(Block.getType(), 0d), ZOffset);
     }
 
     public void moveSeat(LivingEntity Entity, BlockFace BlockFace) {
@@ -122,7 +122,7 @@ public class SitManager {
 
             Player player = (Player) Entity;
 
-            PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent(player, player.getLocation(), player.getLocation().clone().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
+            PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent(player, player.getLocation(), player.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
 
             Bukkit.getPluginManager().callEvent(playerMoveEvent);
 

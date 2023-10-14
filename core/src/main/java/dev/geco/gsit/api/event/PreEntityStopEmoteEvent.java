@@ -4,11 +4,11 @@ import org.jetbrains.annotations.*;
 
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.player.*;
 
 import dev.geco.gsit.objects.*;
 
-public class PreEntityStopEmoteEvent extends EntityEvent implements Cancellable {
+public class PreEntityStopEmoteEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -16,9 +16,9 @@ public class PreEntityStopEmoteEvent extends EntityEvent implements Cancellable 
 
     private final GEmote emote;
 
-    public PreEntityStopEmoteEvent(LivingEntity Entity, GEmote Emote) {
+    public PreEntityStopEmoteEvent(Player Player, GEmote Emote) {
 
-        super(Entity);
+        super(Player);
 
         emote = Emote;
     }
@@ -26,8 +26,6 @@ public class PreEntityStopEmoteEvent extends EntityEvent implements Cancellable 
     public boolean isCancelled() { return cancel; }
 
     public void setCancelled(boolean Cancel) { cancel = Cancel; }
-
-    public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
     public GEmote getEmote() { return emote; }
 

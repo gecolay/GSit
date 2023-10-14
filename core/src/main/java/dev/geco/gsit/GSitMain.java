@@ -93,8 +93,6 @@ public class GSitMain extends JavaPlugin {
 
     public final String RESOURCE = "62325";
 
-    public final int PLAYER_SIT_SEAT_ENTITIES = 2;
-
     private static GSitMain GPM;
 
     public static GSitMain getInstance() { return GPM; }
@@ -170,15 +168,16 @@ public class GSitMain extends JavaPlugin {
 
         preloadPluginDependencies();
 
-        mManager = isBasicPaperBased() ? new PMManager(getInstance()) : new SMManager(getInstance());
+        mManager = isBasicPaperBased() && GPM.getSVManager().isNewerOrVersion(18, 2) ? new MPaperManager(getInstance()) : new MSpigotManager(getInstance());
     }
 
     public void onEnable() {
 
-        loadSettings(Bukkit.getConsoleSender());
         if(!versionCheck()) return;
 
         entityUtil = getSVManager().isNewerOrVersion(17, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil", null) : new EntityUtil();
+
+        loadSettings(Bukkit.getConsoleSender());
 
         setupCommands();
         setupEvents();
@@ -192,6 +191,12 @@ public class GSitMain extends JavaPlugin {
 
     public void onDisable() {
 
+        unload();
+        getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
+    }
+
+    private void unload() {
+
         getDManager().close();
         getSitManager().clearSeats();
         getPlayerSitManager().clearSeats();
@@ -200,8 +205,6 @@ public class GSitMain extends JavaPlugin {
         getEmoteManager().clearEmotes();
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
-
-        getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
 
     private void setupCommands() {
@@ -304,14 +307,7 @@ public class GSitMain extends JavaPlugin {
         getCManager().reload();
         getMManager().loadMessages();
 
-        getDManager().close();
-        getSitManager().clearSeats();
-        getPlayerSitManager().clearSeats();
-        getPoseManager().clearPoses();
-        getCrawlManager().clearCrawls();
-        getEmoteManager().clearEmotes();
-
-        if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
+        unload();
 
         loadSettings(Sender);
         loadPluginDependencies(Sender);

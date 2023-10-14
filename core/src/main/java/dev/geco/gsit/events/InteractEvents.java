@@ -48,7 +48,7 @@ public class InteractEvents implements Listener {
 
         double distance = GPM.getCManager().S_MAX_DISTANCE;
 
-        if(distance > 0d && clickedBlock.getLocation().clone().add(0.5, 0.5, 0.5).distance(player.getLocation()) > distance) return;
+        if(distance > 0d && clickedBlock.getLocation().add(0.5, 0.5, 0.5).distance(player.getLocation()) > distance) return;
 
         if(!GPM.getCManager().ALLOW_UNSAFE && !(clickedBlock.getRelative(BlockFace.UP).isPassable())) return;
 

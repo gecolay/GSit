@@ -37,7 +37,7 @@ public class GSeat {
 
     public GSeat setLocation(Location Location) {
 
-        location = Location.clone();
+        location = Location;
         return this;
     }
 
@@ -49,7 +49,7 @@ public class GSeat {
 
     public GSeat setReturn(Location ReturnLocation) {
 
-        returnLocation = ReturnLocation.clone();
+        returnLocation = ReturnLocation;
         return this;
     }
 

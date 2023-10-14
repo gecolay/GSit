@@ -1,13 +1,18 @@
 package dev.geco.gsit.objects;
 
 import java.util.*;
-import java.util.stream.*;
 
+import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.util.Vector;
+
+import com.destroystokyo.paper.*;
 
 import dev.geco.gsit.GSitMain;
 
 public class GEmote {
+
+    private final GSitMain GPM = GSitMain.getInstance();
 
     protected final String id;
 
@@ -19,60 +24,55 @@ public class GEmote {
 
     protected final HashMap<Long, List<GEmotePart>> setParts = new HashMap<>();
 
-    protected HashMap<Entity, UUID> tasks = new HashMap<>();
+    protected HashMap<Player, UUID> tasks = new HashMap<>();
 
-    protected double range = GSitMain.getInstance().getCManager().E_MAX_DISTANCE;
+    protected double range = GPM.getCManager().E_MAX_DISTANCE;
 
     public GEmote(String Id, List<GEmotePart> Parts, long Loop, boolean Head) {
 
         id = Id;
-        parts = new ArrayList<>(Parts);
+        parts = Parts;
         loop = Loop;
         head = Head;
 
         long partCounter = 0;
 
         for(GEmotePart part : parts) {
-
             partCounter += part.getDelay();
-
             List<GEmotePart> sParts = setParts.containsKey(partCounter) ? setParts.get(partCounter) : new ArrayList<>();
-
             sParts.add(part);
-
             setParts.put(partCounter, sParts);
         }
     }
 
-    public void start(LivingEntity Entity) {
+    public void start(Player Player) {
 
         if(parts.isEmpty()) return;
 
-        boolean isPlayer = Entity instanceof Player;
+        UUID uuid = GPM.isBasicPaperBased() ? startPaper(Player) : startSpigot(Player);
+
+        tasks.put(Player, uuid);
+    }
+
+    private UUID startSpigot(Player Player) {
 
         final long[] tick = {0};
         final long[] loopTick = {0};
         final long maxTick = Collections.max(setParts.keySet());
+        final double finalRange = range * range;
 
-        UUID uuid = GSitMain.getInstance().getTManager().runAtFixedRate(() -> {
+        return GPM.getTManager().runAtFixedRate(() -> {
 
-            if(setParts.containsKey(tick[0])) {
+            Location location = isFromHead() ? Player.getEyeLocation() : Player.getLocation();
 
-                for(GEmotePart part : setParts.get(tick[0])) {
+            List<GEmotePart> emoteParts = setParts.get(tick[0]);
 
-                    if(isPlayer) {
+            if(emoteParts != null) for(GEmotePart part : emoteParts) {
 
-                        Player p = (Player) Entity;
-
-                        for(Player t : Entity.getWorld().getPlayers().stream().filter(o -> Entity.getLocation().distance(o.getLocation()) <= range && o.canSee(p)).collect(Collectors.toSet())) {
-                            part.start(t, Entity, isFromHead());
-                        }
-                    } else {
-
-                        for(Player t : Entity.getWorld().getPlayers().stream().filter(o -> Entity.getLocation().distance(o.getLocation()) <= range).collect(Collectors.toSet())) {
-                            part.start(t, Entity, isFromHead());
-                        }
-                    }
+                org.bukkit.util.Vector vector = getCords(location, part.getXOffset(), part.getYOffset(), part.getZOffset());
+                for(Player player : location.getWorld().getPlayers()) {
+                    if(location.distanceSquared(player.getLocation()) > finalRange) continue;
+                    part.spawn(player, vector);
                 }
             }
 
@@ -80,25 +80,69 @@ public class GEmote {
 
             if(tick[0] >= maxTick) {
 
-                if(getLoop() > 0 && getLoop() <= loopTick[0]) GSitMain.getInstance().getEmoteManager().stopEmote(Entity);
+                if(getLoop() > 0 && getLoop() <= loopTick[0]) GPM.getEmoteManager().stopEmote(Player);
                 else {
 
                     tick[0] = 0;
                     loopTick[0]++;
                 }
             }
-        }, Entity, 0, 1);
-
-        tasks.put(Entity, uuid);
+        }, false, Player, 0, 1);
     }
 
-    public void stop(Entity Entity) {
+    private UUID startPaper(Player Player) {
 
-        if(!tasks.containsKey(Entity)) return;
+        final long[] tick = {0};
+        final long[] loopTick = {0};
+        final long maxTick = Collections.max(setParts.keySet());
 
-        GSitMain.getInstance().getTManager().cancel(tasks.get(Entity));
+        HashMap<GEmotePart, ParticleBuilder> particleBuilders = new HashMap<>();
 
-        tasks.remove(Entity);
+        for(List<GEmotePart> partEntry : setParts.values()) for(GEmotePart part : partEntry) {
+
+            particleBuilders.put(part, new ParticleBuilder(part.getParticle()).location(Player.getLocation()).source(Player).count(part.getAmount()).extra(part.getExtra()).data(part.getData()));
+        }
+
+        return GPM.getTManager().runAtFixedRate(() -> {
+
+            Location location = isFromHead() ? Player.getEyeLocation() : Player.getLocation();
+
+            List<GEmotePart> emoteParts = setParts.get(tick[0]);
+
+            if(emoteParts != null) for(GEmotePart part : emoteParts) {
+
+                org.bukkit.util.Vector vector = getCords(location, part.getXOffset(), part.getYOffset(), part.getZOffset());
+                particleBuilders.get(part).location(location.getWorld(), vector.getX(), vector.getY(), vector.getZ()).receivers((int) range).spawn();
+            }
+
+            tick[0]++;
+
+            if(tick[0] >= maxTick) {
+
+                if(getLoop() > 0 && getLoop() <= loopTick[0]) GPM.getEmoteManager().stopEmote(Player);
+                else {
+
+                    tick[0] = 0;
+                    loopTick[0]++;
+                }
+            }
+        }, false, Player, 0, 1);
+    }
+
+    private Vector getCords(Location PlayerLocation, double XOffset, double YOffset, double ZOffset) {
+
+        float yaw = PlayerLocation.getYaw(), yawF = yaw + 180f;
+        Vector xVector = new Vector(Math.cos(Math.toRadians(yawF)) * XOffset, 0, Math.sin(Math.toRadians(yawF)) * XOffset);
+        Vector zVector = new Vector(-Math.sin(Math.toRadians(yaw)) * ZOffset, 0, Math.cos(Math.toRadians(yaw)) * ZOffset);
+        Location location = PlayerLocation.clone().add(xVector).add(zVector);
+        return new Vector(location.getX(), location.getY() + YOffset, location.getZ());
+    }
+
+    public void stop(Player Player) {
+
+        if(!tasks.containsKey(Player)) return;
+        GPM.getTManager().cancel(tasks.get(Player));
+        tasks.remove(Player);
     }
 
     public String getId() { return id; }

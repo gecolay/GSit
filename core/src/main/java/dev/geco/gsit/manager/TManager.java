@@ -53,13 +53,12 @@ public class TManager {
                 tasks.remove(uuid);
             });
             else task = Bukkit.getAsyncScheduler().runNow(GPM, scheduledTask -> {
-                Call.call();
-                tasks.remove(uuid);
-            });
+                    Call.call();
+                    tasks.remove(uuid);
+                });
             tasks.put(uuid, task);
         } else {
             BukkitRunnable task = new BukkitRunnable() {
-                @Override
                 public void run() {
                     Call.call();
                     tasks.remove(uuid);
@@ -105,13 +104,12 @@ public class TManager {
                 tasks.remove(uuid);
             }, Ticks);
             else task = Bukkit.getAsyncScheduler().runDelayed(GPM, scheduledTask -> {
-                Call.call();
-                tasks.remove(uuid);
-            }, Ticks * 50, TimeUnit.MILLISECONDS);
+                    Call.call();
+                    tasks.remove(uuid);
+                }, Ticks * 50, TimeUnit.MILLISECONDS);
             tasks.put(uuid, task);
         } else {
             BukkitRunnable task = new BukkitRunnable() {
-                @Override
                 public void run() {
                     Call.call();
                     tasks.remove(uuid);
@@ -130,39 +128,26 @@ public class TManager {
 
     public UUID runAtFixedRate(Callback Call, Entity Entity, long Delay, long Ticks) { return runAtFixedRate(Call, true, Entity, null, Delay, Ticks); }
 
-    public UUID runAtFixedRate(Callback Call, boolean Sync, Entity Entity, long Delay, long Ticks) { return runAtFixedRate(Call, true, Entity, null, Delay, Ticks); }
+    public UUID runAtFixedRate(Callback Call, boolean Sync, Entity Entity, long Delay, long Ticks) { return runAtFixedRate(Call, Sync, Entity, null, Delay, Ticks); }
 
     public UUID runAtFixedRate(Callback Call, Location Location, long Delay, long Ticks) { return runAtFixedRate(Call, true, null, Location, Delay, Ticks); }
 
-    public UUID runAtFixedRate(Callback Call, boolean Sync, Location Location, long Delay, long Ticks) { return runAtFixedRate(Call, true, null, Location, Delay, Ticks); }
+    public UUID runAtFixedRate(Callback Call, boolean Sync, Location Location, long Delay, long Ticks) { return runAtFixedRate(Call, Sync, null, Location, Delay, Ticks); }
 
     private UUID runAtFixedRate(Callback Call, boolean Sync, Entity Entity, Location Location, long Delay, long Ticks) {
         UUID uuid = UUID.randomUUID();
         if(GPM.isPaperBased()) {
             if(Entity != null) {
-                tasks.put(uuid, Entity.getScheduler().runAtFixedRate(GPM, scheduledTask -> {
-                    Call.call();
-                }, null, Delay <= 0 ? 1 : Delay, Ticks <= 0 ? 1 : Ticks));
+                tasks.put(uuid, Entity.getScheduler().runAtFixedRate(GPM, scheduledTask -> { Call.call(); }, null, Delay <= 0 ? 1 : Delay, Ticks <= 0 ? 1 : Ticks));
                 return uuid;
             }
             ScheduledTask task;
-            if(Location != null) task = Bukkit.getRegionScheduler().runAtFixedRate(GPM, Location, scheduledTask -> {
-                Call.call();
-            }, Delay <= 0 ? 1 : Delay, Ticks <= 0 ? 1 : Ticks);
-            else if(Sync) task = Bukkit.getGlobalRegionScheduler().runAtFixedRate(GPM, scheduledTask -> {
-                Call.call();
-            }, Delay <= 0 ? 1 : Delay, Ticks <= 0 ? 1 : Ticks);
-            else task = Bukkit.getAsyncScheduler().runAtFixedRate(GPM, scheduledTask -> {
-                Call.call();
-            }, Delay <= 0 ? 1 : Delay * 50, (Ticks <= 0 ? 1 : Ticks) * 50, TimeUnit.MILLISECONDS);
+            if(Location != null) task = Bukkit.getRegionScheduler().runAtFixedRate(GPM, Location, scheduledTask -> { Call.call(); }, Delay <= 0 ? 1 : Delay, Ticks <= 0 ? 1 : Ticks);
+            else if(Sync) task = Bukkit.getGlobalRegionScheduler().runAtFixedRate(GPM, scheduledTask -> { Call.call(); }, Delay <= 0 ? 1 : Delay, Ticks <= 0 ? 1 : Ticks);
+            else task = Bukkit.getAsyncScheduler().runAtFixedRate(GPM, scheduledTask -> { Call.call(); }, Delay <= 0 ? 1 : Delay * 50, (Ticks <= 0 ? 1 : Ticks) * 50, TimeUnit.MILLISECONDS);
             tasks.put(uuid, task);
         } else {
-            BukkitRunnable task = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Call.call();
-                }
-            };
+            BukkitRunnable task = new BukkitRunnable() { public void run() { Call.call(); } };
             tasks.put(uuid, task);
             if(Sync) task.runTaskTimer(GPM, Delay, Ticks);
             else task.runTaskTimerAsynchronously(GPM, Delay, Ticks);
@@ -171,12 +156,11 @@ public class TManager {
     }
 
     public void cancel(UUID Task) {
-        if(tasks.containsKey(Task)) {
-            Object task = tasks.get(Task);
-            if(task instanceof BukkitRunnable) ((BukkitRunnable) task).cancel();
-            else ((ScheduledTask) task).cancel();
-            tasks.remove(Task);
-        }
+        if(!tasks.containsKey(Task)) return;
+        Object task = tasks.get(Task);
+        if(task instanceof BukkitRunnable) ((BukkitRunnable) task).cancel();
+        else ((ScheduledTask) task).cancel();
+        tasks.remove(Task);
     }
 
     public interface Callback { void call(); }

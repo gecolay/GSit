@@ -64,7 +64,7 @@ public class EntityUtil implements IEntityUtil {
 
         Entity lastEntity = Holder;
 
-        int maxEntities = GPM.PLAYER_SIT_SEAT_ENTITIES;
+        int maxEntities = GPM.getPlayerSitManager().getSeatEntityCount();
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
