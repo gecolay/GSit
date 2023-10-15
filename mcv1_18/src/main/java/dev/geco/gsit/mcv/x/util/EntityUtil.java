@@ -60,21 +60,27 @@ public class EntityUtil implements IEntityUtil {
 
         if(Rider == null || !Rider.isValid()) return;
 
-        Entity lastEntity = Holder;
+        net.minecraft.world.entity.Entity lastEntity = ((CraftEntity) Holder).getHandle();
 
         int maxEntities = GPM.getPlayerSitManager().getSeatEntityCount();
 
+        if(maxEntities == 0) {
+
+            ((CraftEntity) Rider).getHandle().startRiding(lastEntity, true);
+            return;
+        }
+
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
-            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(lastEntity.getLocation());
+            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
 
-            playerSeatEntity.startRiding(((CraftEntity) lastEntity).getHandle(), true);
+            playerSeatEntity.startRiding(lastEntity, true);
 
             if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
-            ((CraftWorld) lastEntity.getWorld()).getHandle().entityManager.addNewEntity(playerSeatEntity);
+            ((CraftWorld) Holder.getWorld()).getHandle().entityManager.addNewEntity(playerSeatEntity);
 
-            lastEntity = playerSeatEntity.getBukkitEntity();
+            lastEntity = playerSeatEntity;
         }
     }
 

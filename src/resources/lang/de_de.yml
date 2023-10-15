@@ -25,8 +25,8 @@ Messages:
 
   command-gsit-toggle-on: "[P]&a Du hast&6 Sitzen&a Klick-Interaktionen aktiviert."
   command-gsit-toggle-off: "[P]&a Du hast&6 Sitzen&a Klick-Interaktionen deaktiviert."
-  command-gsit-playertoggle-on: "[P]&a Du hast&6 Spielersitzen Klick-Interaktionen aktiviert."
-  command-gsit-playertoggle-off: "[P]&a Du hast&6 Spielersitzen Klick-Interaktionen deaktiviert."
+  command-gsit-playertoggle-on: "[P]&a Du hast&6 Spielersitzen&a Klick-Interaktionen aktiviert."
+  command-gsit-playertoggle-off: "[P]&a Du hast&6 Spielersitzen&a Klick-Interaktionen deaktiviert."
   command-gcrawl-toggle-on: "[P]&a Du hast&6 Kriechen&a Doppel-Schleichen aktiviert."
   command-gcrawl-toggle-off: "[P]&a Du hast&6 Kriechen&a Doppel-Schleichen deaktiviert."
 

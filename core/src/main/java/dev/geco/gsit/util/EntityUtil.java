@@ -89,6 +89,12 @@ public class EntityUtil implements IEntityUtil {
 
         int maxEntities = GPM.getPlayerSitManager().getSeatEntityCount();
 
+        if(maxEntities == 0) {
+
+            lastEntity.addPassenger(Rider);
+            return;
+        }
+
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
             Entity finalLastEntity = lastEntity;
