@@ -16,6 +16,8 @@ abstract public class MManager {
 
     protected final GSitMain GPM;
 
+    protected String PREFIX_PLACEHOLDER = "[P]";
+    protected String PREFIX_REPLACE = "&7[&6" + GSitMain.getInstance().NAME + "&7]";
     protected String DEFAULT_LANG;
     protected final HashMap<String, FileConfiguration> messages = new HashMap<>();
     protected final HashMap<UUID, String> languages = new HashMap<>();
@@ -31,43 +33,32 @@ abstract public class MManager {
 
     public void loadMessages() {
         messages.clear();
+        boolean betterSave = GPM.getSVManager().isNewerOrVersion(18, 2);
         try(JarFile jarFile = new JarFile(Paths.get(GPM.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toString())) {
             Enumeration<JarEntry> jarFiles = jarFile.entries();
-            if(GPM.getSVManager().isNewerOrVersion(18, 2)) {
-                while(jarFiles.hasMoreElements()) {
-                    JarEntry jarEntry = jarFiles.nextElement();
-                    if(!jarEntry.getName().startsWith("lang") || jarEntry.isDirectory()) continue;
-                    File langFile = new File(GPM.getDataFolder(), jarEntry.getName());
-                    String langFileName = jarEntry.getName().replaceFirst("lang/", "").replaceFirst(".yml", "");
-                    try {
-                        FileConfiguration lang = YamlConfiguration.loadConfiguration(langFile);
-                        InputStream langSteam = GPM.getResource(jarEntry.getName());
-                        if(langSteam != null) {
-                            FileConfiguration langSteamConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(langSteam, StandardCharsets.UTF_8));
-                            lang.setDefaults(langSteamConfig);
-                            YamlConfigurationOptions options = (YamlConfigurationOptions) lang.options();
-                            options.parseComments(true).copyDefaults(true).width(500);
-                            lang.loadFromString(lang.saveToString());
-                            for(String comments : lang.getKeys(true)) lang.setComments(comments, langSteamConfig.getComments(comments));
-                        }
-                        lang.save(langFile);
-                        messages.put(langFileName, lang);
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        if(!langFile.exists()) GPM.saveResource(jarEntry.getName(), false);
-                        messages.put(langFileName, YamlConfiguration.loadConfiguration(langFile));
-                    }
-                }
-            } else {
-                while(jarFiles.hasMoreElements()) {
-                    JarEntry jarEntry = jarFiles.nextElement();
-                    if(!jarEntry.getName().startsWith("lang") || jarEntry.isDirectory()) continue;
-                    File langFile = new File(GPM.getDataFolder(), jarEntry.getName());
+            while(jarFiles.hasMoreElements()) {
+                JarEntry jarEntry = jarFiles.nextElement();
+                if(!jarEntry.getName().startsWith("lang") || jarEntry.isDirectory()) continue;
+                File langFile = new File(GPM.getDataFolder(), jarEntry.getName());
+                if(!betterSave) {
                     if(!langFile.exists()) GPM.saveResource(jarEntry.getName(), false);
-                    messages.put(jarEntry.getName().replaceFirst("lang/", "").replaceFirst(".yml", ""), YamlConfiguration.loadConfiguration(langFile));
+                    continue;
                 }
+                FileConfiguration lang = YamlConfiguration.loadConfiguration(langFile);
+                InputStream langSteam = GPM.getResource(jarEntry.getName());
+                if(langSteam != null) {
+                    FileConfiguration langSteamConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(langSteam, StandardCharsets.UTF_8));
+                    lang.setDefaults(langSteamConfig);
+                    YamlConfigurationOptions options = (YamlConfigurationOptions) lang.options();
+                    options.parseComments(true).copyDefaults(true).width(500);
+                    lang.loadFromString(lang.saveToString());
+                    for(String comments : lang.getKeys(true)) lang.setComments(comments, langSteamConfig.getComments(comments));
+                }
+                lang.save(langFile);
             }
         } catch (Throwable e) { e.printStackTrace(); }
+        File langFolder = new File(GPM.getDataFolder(), "lang");
+        for(File langFile : Objects.requireNonNull(langFolder.listFiles())) messages.put(langFile.getName().replaceFirst("lang/", "").replaceFirst(".yml", ""), YamlConfiguration.loadConfiguration(langFile));
         DEFAULT_LANG = messages.containsKey(GPM.getCManager().L_LANG) ? GPM.getCManager().L_LANG : "en_us";
     }
 
@@ -121,7 +112,7 @@ abstract public class MManager {
 
     private String replaceWithLanguageCode(String Message, String LanguageCode, Object ... ReplaceList) {
         Message = replaceText(Message, ReplaceList);
-        return Message.replace("[P]", getMessages(LanguageCode).getString("Plugin.plugin-prefix", "&7[&6" + GPM.NAME + "&7]"));
+        return Message.replace(PREFIX_PLACEHOLDER, getMessages(LanguageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE));
     }
 
 }
