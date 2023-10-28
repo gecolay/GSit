@@ -36,6 +36,8 @@ public class GCrawl implements IGCrawl {
     private final Listener moveListener;
     private final Listener stopListener;
 
+    private final long spawnTime = System.nanoTime();
+
     public GCrawl(Player Player) {
 
         player = Player;
@@ -208,6 +210,8 @@ public class GCrawl implements IGCrawl {
     private boolean isValidArea(Block BlockUp, Block AboveBlock, Block LocationBlock) { return BlockUp.equals(AboveBlock) || BlockUp.equals(LocationBlock); }
 
     public Player getPlayer() { return player; }
+
+    public long getSeconds() { return (System.nanoTime() - spawnTime) / 1_000_000_000; }
 
     public String toString() { return boxEntity.getUUID().toString(); }
 

@@ -28,6 +28,8 @@ public class GEmote {
 
     protected double range = GPM.getCManager().E_MAX_DISTANCE;
 
+    private final long spawnTime = System.nanoTime();
+
     public GEmote(String Id, List<GEmotePart> Parts, long Loop, boolean Head) {
 
         id = Id;
@@ -152,6 +154,8 @@ public class GEmote {
     public long getLoop() { return loop; }
 
     public boolean isFromHead() { return head; }
+
+    public long getSeconds() { return (System.nanoTime() - spawnTime) / 1_000_000_000; }
 
     public String toString() { return getId(); }
 

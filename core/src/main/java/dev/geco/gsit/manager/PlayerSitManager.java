@@ -16,11 +16,13 @@ public class PlayerSitManager {
         seat_entity_count = GPM.getSVManager().isNewerOrVersion(20, 2) ? 1 : 2;
     }
 
-    private int feature_used = 0;
+    private int playersit_used = 0;
 
-    public int getFeatureUsedCount() { return feature_used; }
+    public int getPlayerSitUsedCount() { return playersit_used; }
 
-    public void resetFeatureUsedCount() { feature_used = 0; }
+    public void resetFeatureUsedCount() {
+        playersit_used = 0;
+    }
 
     private final int seat_entity_count;
 
@@ -42,7 +44,7 @@ public class PlayerSitManager {
 
         if(GPM.getCManager().PS_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-playersit-info");
 
-        feature_used++;
+        playersit_used++;
 
         Bukkit.getPluginManager().callEvent(new PlayerPlayerSitEvent(Player, Target));
 

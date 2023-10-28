@@ -10,4 +10,6 @@ public interface IGCrawl {
 
     Player getPlayer();
 
+    long getSeconds();
+
 }

@@ -111,38 +111,39 @@ public class GSitMain extends JavaPlugin {
         BStatsLink bstats = new BStatsLink(getInstance(), 4914);
 
         bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getCManager().L_LANG));
-
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> {
-            int count = getSitManager().getFeatureUsedCount();
-            getSitManager().resetFeatureUsedCount();
-            return count;
+            return getSitManager().getSitUsedCount();
         }));
-
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_sit_feature", () -> {
+            return (int) getSitManager().getSitUsedSeconds();
+        }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> {
-            if(!getPoseManager().isAvailable()) return 0;
-            int count = getPoseManager().getFeatureUsedCount();
-            getPoseManager().resetFeatureUsedCount();
-            return count;
+            return getPoseManager().getPoseUsedCount();
         }));
-
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_pose_feature", () -> {
+            return (int) getPoseManager().getPoseUsedSeconds();
+        }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> {
-            int count = getPlayerSitManager().getFeatureUsedCount();
-            getPlayerSitManager().resetFeatureUsedCount();
-            return count;
+            return getPlayerSitManager().getPlayerSitUsedCount();
         }));
-
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> {
-            if(!getCrawlManager().isAvailable()) return 0;
-            int count = getCrawlManager().getFeatureUsedCount();
-            getCrawlManager().resetFeatureUsedCount();
-            return count;
+            return getCrawlManager().getCrawlUsedCount();
+        }));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_crawl_feature", () -> {
+            return (int) getCrawlManager().getCrawlUsedSeconds();
+        }));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
+            return getEmoteManager().getEmoteUsedCount();
+        }));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_emote_feature", () -> {
+            return (int) getEmoteManager().getEmoteUsedSeconds();
         }));
 
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
-            int count = getEmoteManager().getFeatureUsedCount();
-            getEmoteManager().resetFeatureUsedCount();
-            return count;
-        }));
+        getSitManager().resetFeatureUsedCount();
+        getPoseManager().resetFeatureUsedCount();
+        getPlayerSitManager().resetFeatureUsedCount();
+        getCrawlManager().resetFeatureUsedCount();
+        getEmoteManager().resetFeatureUsedCount();
     }
 
     public void onLoad() {

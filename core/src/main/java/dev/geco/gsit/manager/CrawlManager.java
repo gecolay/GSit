@@ -22,11 +22,16 @@ public class CrawlManager {
 
     public boolean isAvailable() { return available; }
 
-    private int feature_used = 0;
+    private int crawl_used = 0;
+    private long crawl_used_seconds = 0;
 
-    public int getFeatureUsedCount() { return feature_used; }
+    public int getCrawlUsedCount() { return crawl_used; }
+    public long getCrawlUsedSeconds() { return crawl_used_seconds; }
 
-    public void resetFeatureUsedCount() { feature_used = 0; }
+    public void resetFeatureUsedCount() {
+        crawl_used = 0;
+        crawl_used_seconds = 0;
+    }
 
     private final List<IGCrawl> crawls = new ArrayList<>();
 
@@ -52,7 +57,7 @@ public class CrawlManager {
 
         crawls.add(crawl);
 
-        feature_used++;
+        crawl_used++;
 
         Bukkit.getPluginManager().callEvent(new PlayerCrawlEvent(crawl));
 
@@ -76,6 +81,8 @@ public class CrawlManager {
         crawl.stop();
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpCrawlEvent(crawl, Reason));
+
+        crawl_used_seconds += crawl.getSeconds();
 
         return true;
     }

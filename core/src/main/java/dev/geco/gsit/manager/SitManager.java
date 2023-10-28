@@ -24,11 +24,16 @@ public class SitManager {
         BASE_OFFSET = GPM.getSVManager().isNewerOrVersion(20, 2) ? -0.05d : 0.2d;
     }
 
-    private int feature_used = 0;
+    private int sit_used = 0;
+    private long sit_used_seconds = 0;
 
-    public int getFeatureUsedCount() { return feature_used; }
+    public int getSitUsedCount() { return sit_used; }
+    public long getSitUsedSeconds() { return sit_used_seconds; }
 
-    public void resetFeatureUsedCount() { feature_used = 0; }
+    public void resetFeatureUsedCount() {
+        sit_used = 0;
+        sit_used_seconds = 0;
+    }
 
     private final List<GSeat> seats = new ArrayList<>();
 
@@ -96,7 +101,7 @@ public class SitManager {
 
         seats.add(seat);
 
-        feature_used++;
+        sit_used++;
 
         Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
@@ -173,6 +178,8 @@ public class SitManager {
         seat.getSeatEntity().remove();
 
         Bukkit.getPluginManager().callEvent(new EntityGetUpSitEvent(seat, Reason));
+
+        sit_used_seconds += seat.getSeconds();
 
         return true;
     }

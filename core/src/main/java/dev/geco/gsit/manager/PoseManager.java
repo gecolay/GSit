@@ -25,11 +25,16 @@ public class PoseManager {
 
     public boolean isAvailable() { return available; }
 
-    private int feature_used = 0;
+    private int pose_used = 0;
+    private long pose_used_seconds = 0;
 
-    public int getFeatureUsedCount() { return feature_used; }
+    public int getPoseUsedCount() { return pose_used; }
+    public long getPoseUsedSeconds() { return pose_used_seconds; }
 
-    public void resetFeatureUsedCount() { feature_used = 0; }
+    public void resetFeatureUsedCount() {
+        pose_used = 0;
+        pose_used_seconds = 0;
+    }
 
     private final List<IGPoseSeat> poses = new ArrayList<>();
 
@@ -99,7 +104,7 @@ public class PoseManager {
 
         poses.add(poseSeat);
 
-        feature_used++;
+        pose_used++;
 
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseSeat));
 
@@ -136,6 +141,8 @@ public class PoseManager {
         poseSeat.getSeat().getSeatEntity().remove();
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseSeat, Reason));
+
+        pose_used_seconds += poseSeat.getSeat().getSeconds();
 
         return true;
     }

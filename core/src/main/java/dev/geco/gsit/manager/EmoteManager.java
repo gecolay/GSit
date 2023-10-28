@@ -18,11 +18,16 @@ public class EmoteManager {
 
     public EmoteManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    private int feature_used = 0;
+    private int emote_used = 0;
+    private long emote_used_seconds = 0;
 
-    public int getFeatureUsedCount() { return feature_used; }
+    public int getEmoteUsedCount() { return emote_used; }
+    public long getEmoteUsedSeconds() { return emote_used_seconds; }
 
-    public void resetFeatureUsedCount() { feature_used = 0; }
+    public void resetFeatureUsedCount() {
+        emote_used = 0;
+        emote_used_seconds = 0;
+    }
 
     private final List<GEmote> available_emotes = new ArrayList<>();
 
@@ -87,7 +92,7 @@ public class EmoteManager {
 
         emotes.put(Player, Emote);
 
-        feature_used++;
+        emote_used++;
 
         Bukkit.getPluginManager().callEvent(new EntityEmoteEvent(Player, Emote));
 
@@ -111,6 +116,8 @@ public class EmoteManager {
         emotes.remove(Player);
 
         Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Player, emote));
+
+        emote_used_seconds += emote.getSeconds();
 
         return true;
     }
