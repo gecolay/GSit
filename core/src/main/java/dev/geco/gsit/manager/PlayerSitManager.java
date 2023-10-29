@@ -80,7 +80,10 @@ public class PlayerSitManager {
 
         if(Entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) {
             long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
-            if(spawnTime != -1) playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+            if(spawnTime != -1) {
+                playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+                spawnTimes.remove(Entity.getUniqueId());
+            }
             Entity.remove();
         }
 
@@ -98,7 +101,10 @@ public class PlayerSitManager {
             removePassengers(passenger);
 
             long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
-            if(spawnTime != -1) playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+            if(spawnTime != -1) {
+                playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+                spawnTimes.remove(Entity.getUniqueId());
+            }
 
             passenger.remove();
         }
@@ -115,7 +121,10 @@ public class PlayerSitManager {
         removeVehicles(vehicle);
 
         long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
-        if(spawnTime != -1) playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+        if(spawnTime != -1) {
+            playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+            spawnTimes.remove(Entity.getUniqueId());
+        }
 
         vehicle.remove();
     }
