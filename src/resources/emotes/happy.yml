@@ -7,7 +7,7 @@ loop: 0
 # Optional: Defines whether the emote is played when the player is a passenger
 #hide-as-passenger: false
 
-# Optional: Defines whether the emote is played when the player is a passenger
+# Optional: Defines whether the emote is played when the player is a vehicle
 #hide-as-vehicle: false
 
 # Defines the pattern of the emote

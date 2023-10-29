@@ -64,6 +64,7 @@ public class EmoteManager {
                 }
             }
         } catch (Throwable e) { e.printStackTrace(); }
+        if(GPM.getCManager().E_RESTORE) for(Player player : Bukkit.getOnlinePlayers()) restoreEmote(player);
     }
 
     private final HashMap<Player, GEmote> emotes = new HashMap<>();
@@ -79,7 +80,7 @@ public class EmoteManager {
     }
 
     public void clearEmotes() {
-        for(Player player : getEmotes().keySet()) stopEmote(player);
+        for(Player player : getEmotes().keySet()) stopEmote(player, true);
         available_emotes.clear();
     }
 
@@ -106,7 +107,9 @@ public class EmoteManager {
         return true;
     }
 
-    public boolean stopEmote(Player Player) {
+    public boolean stopEmote(Player Player) { return stopEmote(Player, false); }
+
+    public boolean stopEmote(Player Player, boolean SaveRestore) {
 
         if(!isEmoting(Player)) return true;
 
@@ -123,6 +126,7 @@ public class EmoteManager {
         emotes.remove(Player);
 
         GPM.getDManager().execute("DELETE FROM emote_save WHERE uuid = ?", Player.getUniqueId().toString());
+        if(GPM.getCManager().E_RESTORE && SaveRestore) GPM.getDManager().execute("INSERT INTO emote_save (uuid, emote) VALUES (?, ?)", Player.getUniqueId().toString(), emote.getId());
 
         Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Player, emote));
 
@@ -140,14 +144,6 @@ public class EmoteManager {
             GEmote emote = getEmoteByName(name);
             if(emote != null) startEmote(Player, emote);
         } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    public void saveEmote(Player Player) {
-
-        GEmote emote = getEmote(Player);
-
-        GPM.getDManager().execute("DELETE FROM emote_save WHERE uuid = ?", Player.getUniqueId().toString());
-        GPM.getDManager().execute("INSERT INTO emote_save (uuid, emote) VALUES (?, ?)", Player.getUniqueId().toString(), emote.getId());
     }
 
 }

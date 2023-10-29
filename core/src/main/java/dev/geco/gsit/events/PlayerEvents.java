@@ -39,19 +39,17 @@ public class PlayerEvents implements Listener {
 
         Player player = Event.getPlayer();
 
-        if(GPM.getSitManager().isSitting(player)) GPM.getSitManager().removeSeat(player, GetUpReason.QUIT, true);
+        GPM.getSitManager().removeSeat(player, GetUpReason.QUIT, true);
 
-        if(GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
+        GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
 
-        if(GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
+        GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
+
+        GPM.getEmoteManager().stopEmote(player, true);
 
         GPM.getToggleManager().clearToggleCache(player.getUniqueId());
 
         crawl_players.remove(player);
-
-        if(GPM.getCManager().E_RESTORE) GPM.getEmoteManager().saveEmote(player);
-
-        GPM.getEmoteManager().stopEmote(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -59,11 +57,11 @@ public class PlayerEvents implements Listener {
 
         Player player = Event.getPlayer();
 
-        if(GPM.getSitManager().isSitting(player) && !GPM.getSitManager().removeSeat(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
+        if(!GPM.getSitManager().removeSeat(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
 
-        if(GPM.getPoseManager().isPosing(player) && !GPM.getPoseManager().removePose(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
+        if(!GPM.getPoseManager().removePose(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
 
-        if(GPM.getCrawlManager().isCrawling(player) && !GPM.getCrawlManager().stopCrawl(player, GetUpReason.TELEPORT)) Event.setCancelled(true);
+        if(!GPM.getCrawlManager().stopCrawl(player, GetUpReason.TELEPORT)) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -89,11 +87,11 @@ public class PlayerEvents implements Listener {
 
         Player player = (Player) entity;
 
-        if(GPM.getSitManager().isSitting(player)) GPM.getSitManager().removeSeat(player, GetUpReason.DAMAGE, true);
+        GPM.getSitManager().removeSeat(player, GetUpReason.DAMAGE, true);
 
-        if(GPM.getPoseManager().isPosing(player)) GPM.getPoseManager().removePose(player, GetUpReason.DAMAGE, true);
+        GPM.getPoseManager().removePose(player, GetUpReason.DAMAGE, true);
 
-        if(GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.DAMAGE);
+        GPM.getCrawlManager().stopCrawl(player, GetUpReason.DAMAGE);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

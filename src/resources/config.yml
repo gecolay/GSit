@@ -130,7 +130,7 @@ Options:
 
   Emote:
 
-    # Defines whether a player's emote is restore on rejoin
+    # Defines whether a player's emote is restore on rejoin / reload
     restore: true
 
     # Defines the maximum range at which emotes can be seen

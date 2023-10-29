@@ -199,12 +199,12 @@ public class GSitMain extends JavaPlugin {
 
     private void unload() {
 
+        getEmoteManager().clearEmotes();
         getDManager().close();
         getSitManager().clearSeats();
         getPlayerSitManager().clearSeats();
         getPoseManager().clearPoses();
         getCrawlManager().clearCrawls();
-        getEmoteManager().clearEmotes();
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
     }

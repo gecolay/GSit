@@ -474,4 +474,16 @@ public class GSitAPI {
         return getInstance().getEmoteManager().stopEmote(Player);
     }
 
+    /**
+     * Stops an Emote from a Player
+     * @author Gecolay
+     * @since 1.5.2
+     * @param Player Player for this Emote-Object
+     * @param SaveRestore Defines whether the emote is saved for restore
+     * @return <code>true</code> or <code>false</code> if the deletion was canceled
+     */
+    public static boolean stopEmote(@NotNull Player Player, boolean SaveRestore) {
+        return getInstance().getEmoteManager().stopEmote(Player, SaveRestore);
+    }
+
 }
