@@ -115,28 +115,31 @@ public class GSitMain extends JavaPlugin {
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> {
             return getSitManager().getSitUsedCount();
         }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_sit_feature", () -> {
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> {
             return (int) getSitManager().getSitUsedSeconds();
         }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> {
             return getPoseManager().getPoseUsedCount();
         }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_pose_feature", () -> {
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> {
             return (int) getPoseManager().getPoseUsedSeconds();
         }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> {
             return getPlayerSitManager().getPlayerSitUsedCount();
         }));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_psit_feature", () -> {
+            return (int) getPlayerSitManager().getPlayerSitUsedSeconds();
+        }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> {
             return getCrawlManager().getCrawlUsedCount();
         }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_crawl_feature", () -> {
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> {
             return (int) getCrawlManager().getCrawlUsedSeconds();
         }));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
             return getEmoteManager().getEmoteUsedCount();
         }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("time_emote_feature", () -> {
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_emote_feature", () -> {
             return (int) getEmoteManager().getEmoteUsedSeconds();
         }));
 

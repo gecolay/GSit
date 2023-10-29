@@ -1,5 +1,7 @@
 package dev.geco.gsit.util;
 
+import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
@@ -15,7 +17,7 @@ public interface IEntityUtil {
 
     Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate);
 
-    void createPlayerSeatEntity(Entity Holder, Entity Rider);
+    UUID createPlayerSeatEntity(Entity Holder, Entity Rider);
 
     IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose);
 

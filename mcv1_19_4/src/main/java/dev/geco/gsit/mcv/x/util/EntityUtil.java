@@ -1,5 +1,7 @@
 package dev.geco.gsit.mcv.x.util;
 
+import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R3.*;
 import org.bukkit.craftbukkit.v1_19_R3.entity.*;
@@ -58,9 +60,9 @@ public class EntityUtil implements IEntityUtil {
         return seatEntity.getBukkitEntity();
     }
 
-    public void createPlayerSeatEntity(Entity Holder, Entity Rider) {
+    public UUID createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
-        if(Rider == null || !Rider.isValid()) return;
+        if(Rider == null || !Rider.isValid()) return null;
 
         net.minecraft.world.entity.Entity lastEntity = ((CraftEntity) Holder).getHandle();
 
@@ -69,7 +71,7 @@ public class EntityUtil implements IEntityUtil {
         if(maxEntities == 0) {
 
             ((CraftEntity) Rider).getHandle().startRiding(lastEntity, true);
-            return;
+            return null;
         }
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
@@ -84,6 +86,8 @@ public class EntityUtil implements IEntityUtil {
 
             if(spawn) lastEntity = playerSeatEntity;
         }
+
+        return lastEntity.getUUID();
     }
 
     private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {

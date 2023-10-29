@@ -71,7 +71,7 @@ public class GEmote {
 
         return GPM.getTManager().runAtFixedRate(() -> {
 
-            if((!getHideAsPassenger() || Player.getVehicle() == null) && (!getHideAsVehicle() || Player.getPassengers().size() == 0)) {
+            if((!getHideAsPassenger() || Player.getVehicle() == null) && (!getHideAsVehicle() || Player.getPassengers().size() == 0) && Player.getGameMode() != GameMode.SPECTATOR) {
 
                 Location location = isFromHead() ? Player.getEyeLocation() : Player.getLocation();
 

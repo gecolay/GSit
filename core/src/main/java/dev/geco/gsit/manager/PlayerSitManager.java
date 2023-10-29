@@ -1,5 +1,7 @@
 package dev.geco.gsit.manager;
 
+import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
@@ -11,24 +13,32 @@ public class PlayerSitManager {
 
     private final GSitMain GPM;
 
+    private final HashMap<UUID, Long> spawnTimes = new HashMap<>();
+
     public PlayerSitManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
         seat_entity_count = GPM.getSVManager().isNewerOrVersion(20, 2) ? 1 : 2;
     }
 
     private int playersit_used = 0;
+    private long playersit_used_seconds = 0;
 
     public int getPlayerSitUsedCount() { return playersit_used; }
+    public long getPlayerSitUsedSeconds() { return playersit_used_seconds; }
 
     public void resetFeatureUsedCount() {
         playersit_used = 0;
+        playersit_used_seconds = 0;
     }
 
     private final int seat_entity_count;
 
     public int getSeatEntityCount() { return seat_entity_count; }
 
-    public void clearSeats() { for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) entity.remove(); }
+    public void clearSeats() {
+        for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) entity.remove();
+        spawnTimes.clear();
+    }
 
     public boolean sitOnPlayer(Player Player, Player Target) {
 
@@ -40,13 +50,15 @@ public class PlayerSitManager {
 
         if(!GPM.getEntityUtil().isPlayerSitLocationValid(Target)) return false;
 
-        GPM.getEntityUtil().createPlayerSeatEntity(Target, Player);
+        UUID lastUUID = GPM.getEntityUtil().createPlayerSeatEntity(Target, Player);
 
         if(GPM.getCManager().PS_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-playersit-info");
 
         playersit_used++;
 
         Bukkit.getPluginManager().callEvent(new PlayerPlayerSitEvent(Player, Target));
+
+        if(lastUUID != null) spawnTimes.put(lastUUID, System.nanoTime());
 
         return true;
     }
@@ -66,7 +78,11 @@ public class PlayerSitManager {
 
         removeVehicles(Entity);
 
-        if(Entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) Entity.remove();
+        if(Entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) {
+            long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
+            if(spawnTime != -1) playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+            Entity.remove();
+        }
 
         if(Entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) Entity, Reason));
 
@@ -81,6 +97,9 @@ public class PlayerSitManager {
 
             removePassengers(passenger);
 
+            long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
+            if(spawnTime != -1) playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+
             passenger.remove();
         }
     }
@@ -94,6 +113,9 @@ public class PlayerSitManager {
         if(!vehicle.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) return;
 
         removeVehicles(vehicle);
+
+        long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
+        if(spawnTime != -1) playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
 
         vehicle.remove();
     }

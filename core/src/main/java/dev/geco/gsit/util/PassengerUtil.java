@@ -11,24 +11,24 @@ public class PassengerUtil {
 
         long amount = 0;
 
-        Entity entity = Entity.getVehicle();
+        Entity vehicle = Entity.getVehicle();
 
-        if(entity == null) return amount;
+        if(vehicle == null) return amount;
 
-        if(entity instanceof Player) amount++;
+        if(vehicle instanceof Player) amount++;
 
-        return amount + getVehicleAmount(entity);
+        return amount + getVehicleAmount(vehicle);
     }
 
     public long getPassengerAmount(Entity Entity) {
 
         long amount = 0;
 
-        for(Entity entity : Entity.getPassengers()) {
+        for(Entity passenger : Entity.getPassengers()) {
 
-            if(entity instanceof Player) amount++;
+            if(passenger instanceof Player) amount++;
 
-            amount += getPassengerAmount(entity);
+            amount += getPassengerAmount(passenger);
         }
 
         return amount;
@@ -40,11 +40,11 @@ public class PassengerUtil {
 
         if(passengers.contains(Passenger)) return true;
 
-        for(Entity i : passengers) {
+        for(Entity passenger : passengers) {
 
-            boolean r = isInPassengerList(i, Passenger);
+            boolean isList = isInPassengerList(passenger, Passenger);
 
-            if(r) return true;
+            if(isList) return true;
         }
 
         return false;

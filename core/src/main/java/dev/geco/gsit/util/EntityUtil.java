@@ -1,6 +1,7 @@
 package dev.geco.gsit.util;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -81,9 +82,9 @@ public class EntityUtil implements IEntityUtil {
         return seatEntity;
     }
 
-    public void createPlayerSeatEntity(Entity Holder, Entity Rider) {
+    public UUID createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
-        if(Rider == null || !Rider.isValid()) return;
+        if(Rider == null || !Rider.isValid()) return null;
 
         Entity lastEntity = Holder;
 
@@ -92,7 +93,7 @@ public class EntityUtil implements IEntityUtil {
         if(maxEntities == 0) {
 
             lastEntity.addPassenger(Rider);
-            return;
+            return null;
         }
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
@@ -113,6 +114,8 @@ public class EntityUtil implements IEntityUtil {
                 if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(Rider);
             });
         }
+
+        return lastEntity.getUniqueId();
     }
 
     public IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose) { return null; }
