@@ -10,6 +10,7 @@ import org.bukkit.block.data.*;
 import org.bukkit.configuration.file.*;
 import org.bukkit.inventory.*;
 
+import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 
 public class EmoteUtil {
@@ -94,7 +95,14 @@ public class EmoteUtil {
                 } catch (Throwable e) { e.printStackTrace(); }
             }
 
-            return new GEmote(File.getName().replace(".gex", "").toLowerCase(), parts, configuration.getLong("loop", 0), configuration.getBoolean("head", true));
+            String name = File.getName().toLowerCase();
+            for(String extension : EmoteManager.FILE_EXTENSIONS) name = name.replace(extension, "");
+            long loop = configuration.getLong("loop", 0);
+            boolean head = configuration.getBoolean("head", true);
+            boolean hideAsPassenger = configuration.getBoolean("hide-as-passenger", false);
+            boolean hideAsVehicle = configuration.getBoolean("hide-as-vehicle", false);
+
+            return new GEmote(name, parts, loop, head, hideAsPassenger, hideAsVehicle);
         } catch (Throwable e) { e.printStackTrace(); }
 
         return null;

@@ -1,21 +1,27 @@
 # Defines how often the emote is looped (0 means unlimited)
 loop: 0
 
-# Defines whether the emote is played from the entity's head height
-head: true
+# Optional: Defines whether the emote is played from the player's head height
+#head: true
+
+# Optional: Defines whether the emote is played when the player is a passenger
+#hide-as-passenger: false
+
+# Optional: Defines whether the emote is played when the player is a passenger
+#hide-as-vehicle: false
 
 # Defines the pattern of the emote
 #
-# Available Options:
+# Available options:
 #
-# particle:particle_id		- the id of the particle
+# particle:particle_id		- the id / name of the particle
 # delay:integer				- the delay until the particle is played
 # repeat:integer			- the amount of times the particle is repeated
 # amount:integer			- the amount of particles displayed
 # xoffset:number			- the x offset of the spawn location
 # yoffset:number			- the y offset of the spawn location
 # zoffset:number			- the z offset of the spawn location
-# extra:number				- the speed or other specific parameter of the particle
+# extra:number				- the speed / extra parameter of the particle
 # data:particle_data		- the specific data of the particle
 pattern:
 - "particle:redstone delay:0 repeat:1 amount:1 xoffset:0.0 yoffset:0.8 zoffset:0.0 extra:1.0 data:200:200:200"

@@ -2,6 +2,7 @@ package dev.geco.gsit.manager;
 
 import java.io.*;
 import java.nio.file.*;
+import java.sql.*;
 import java.util.*;
 import java.util.jar.*;
 
@@ -16,6 +17,8 @@ public class EmoteManager {
 
     private final GSitMain GPM;
 
+    public static final List<String> FILE_EXTENSIONS = Arrays.asList(".gex", ".yml");
+
     public EmoteManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     private int emote_used = 0;
@@ -29,11 +32,15 @@ public class EmoteManager {
         emote_used_seconds = 0;
     }
 
-    private final List<GEmote> available_emotes = new ArrayList<>();
+    public void createTable() {
+        GPM.getDManager().execute("CREATE TABLE IF NOT EXISTS emote_save (uuid TEXT, emote TEXT);");
+    }
 
-    public List<GEmote> getAvailableEmotes() { return new ArrayList<>(available_emotes); }
+    private final HashMap<String, GEmote> available_emotes = new HashMap<>();
 
-    public GEmote getEmoteByName(String Name) { return available_emotes.stream().filter(e -> e.getId().equalsIgnoreCase(Name)).findFirst().orElse(null); }
+    public List<GEmote> getAvailableEmotes() { return new ArrayList<>(available_emotes.values()); }
+
+    public GEmote getEmoteByName(String Name) { return available_emotes.get(Name.toLowerCase()); }
 
     public void reloadEmotes() {
         clearEmotes();
@@ -51,9 +58,9 @@ public class EmoteManager {
             }
             if(!directory.exists()) return;
             for(File emoteFile : Objects.requireNonNull(directory.listFiles())) {
-                if(emoteFile.getName().toLowerCase().endsWith(".gex")) {
+                if(FILE_EXTENSIONS.stream().anyMatch(extension -> emoteFile.getName().endsWith(extension))) {
                     GEmote emote = GPM.getEmoteUtil().createEmoteFromRawData(emoteFile);
-                    if(emote != null) available_emotes.add(GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
+                    if(emote != null) available_emotes.put(emote.getId(), GPM.getEmoteUtil().createEmoteFromRawData(emoteFile));
                 }
             }
         } catch (Throwable e) { e.printStackTrace(); }
@@ -84,7 +91,7 @@ public class EmoteManager {
 
         if(preEvent.isCancelled()) return false;
 
-        if(!available_emotes.contains(Emote) || Emote.getParts().isEmpty()) return false;
+        if(!available_emotes.containsValue(Emote) || Emote.getParts().isEmpty()) return false;
 
         if(!stopEmote(Player)) return false;
 
@@ -115,11 +122,32 @@ public class EmoteManager {
 
         emotes.remove(Player);
 
+        GPM.getDManager().execute("DELETE FROM emote_save WHERE uuid = ?", Player.getUniqueId().toString());
+
         Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Player, emote));
 
         emote_used_seconds += emote.getSeconds();
 
         return true;
+    }
+
+    public void restoreEmote(Player Player) {
+
+        try {
+            ResultSet resultSet = GPM.getDManager().executeAndGet("SELECT emote FROM emote_save WHERE uuid = ?", Player.getUniqueId().toString());
+            if(!resultSet.next()) return;
+            String name = resultSet.getString("emote");
+            GEmote emote = getEmoteByName(name);
+            if(emote != null) startEmote(Player, emote);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void saveEmote(Player Player) {
+
+        GEmote emote = getEmote(Player);
+
+        GPM.getDManager().execute("DELETE FROM emote_save WHERE uuid = ?", Player.getUniqueId().toString());
+        GPM.getDManager().execute("INSERT INTO emote_save (uuid, emote) VALUES (?, ?)", Player.getUniqueId().toString(), emote.getId());
     }
 
 }

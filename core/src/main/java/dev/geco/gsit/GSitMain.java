@@ -101,6 +101,7 @@ public class GSitMain extends JavaPlugin {
 
         if(!connectDatabase(Sender)) return;
 
+        getEmoteManager().createTable();
         getEmoteManager().reloadEmotes();
 
         getToggleManager().createTable();

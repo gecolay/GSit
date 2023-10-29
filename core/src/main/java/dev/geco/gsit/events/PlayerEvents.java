@@ -25,7 +25,14 @@ public class PlayerEvents implements Listener {
     public PlayerEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @EventHandler
-    public void PJoiE(PlayerJoinEvent Event) { GPM.getUManager().loginCheckForUpdates(Event.getPlayer()); }
+    public void PJoiE(PlayerJoinEvent Event) {
+
+        Player player = Event.getPlayer();
+
+        GPM.getUManager().loginCheckForUpdates(player);
+
+        if(GPM.getCManager().E_RESTORE) GPM.getEmoteManager().restoreEmote(player);
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PQuiE(PlayerQuitEvent Event) {
@@ -38,11 +45,13 @@ public class PlayerEvents implements Listener {
 
         if(GPM.getCrawlManager().isCrawling(player)) GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
 
-        if(GPM.getEmoteManager().isEmoting(player)) GPM.getEmoteManager().stopEmote(player);
-
         GPM.getToggleManager().clearToggleCache(player.getUniqueId());
 
         crawl_players.remove(player);
+
+        if(GPM.getCManager().E_RESTORE) GPM.getEmoteManager().saveEmote(player);
+
+        GPM.getEmoteManager().stopEmote(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

@@ -130,8 +130,11 @@ Options:
 
   Emote:
 
+    # Defines whether a player's emote is restore on rejoin
+    restore: true
+
     # Defines the maximum range at which emotes can be seen
-    max-distance: 192.0
+    max-distance: 128.0
 
 
 
