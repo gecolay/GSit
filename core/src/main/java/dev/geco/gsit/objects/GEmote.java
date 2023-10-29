@@ -28,9 +28,9 @@ public class GEmote {
 
     protected HashMap<Player, UUID> tasks = new HashMap<>();
 
-    protected double range = GPM.getCManager().E_MAX_DISTANCE;
+    protected HashMap<Player, Long> spawnTimes = new HashMap<>();
 
-    private final long spawnTime = System.nanoTime();
+    protected double range = GPM.getCManager().E_MAX_DISTANCE;
 
     public GEmote(String Id, List<GEmotePart> Parts, long Loop, boolean Head, boolean HideAsPassenger, boolean HideAsVehicle) {
 
@@ -54,6 +54,8 @@ public class GEmote {
     public void start(Player Player) {
 
         if(parts.isEmpty()) return;
+
+        spawnTimes.put(Player, System.nanoTime());
 
         UUID uuid = startTaskForPlayer(Player);
 
@@ -127,7 +129,12 @@ public class GEmote {
 
     public boolean getHideAsVehicle() { return hideAsVehicle; }
 
-    public long getSeconds() { return (System.nanoTime() - spawnTime) / 1_000_000_000; }
+    public long getSeconds(Player Player) {
+
+        long seconds = (System.nanoTime() - spawnTimes.get(Player)) / 1_000_000_000;
+        spawnTimes.remove(Player);
+        return seconds;
+    }
 
     public String toString() { return getId(); }
 

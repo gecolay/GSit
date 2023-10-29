@@ -126,7 +126,7 @@ public class EmoteManager {
 
         Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Player, emote));
 
-        emote_used_seconds += emote.getSeconds();
+        emote_used_seconds += emote.getSeconds(Player);
 
         return true;
     }
