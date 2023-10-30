@@ -16,18 +16,21 @@ import dev.geco.gsit.manager.*;
 public class MPaperManager extends MManager {
 
     protected final LegacyComponentSerializer legacyComponentSerializer;
-    protected final JSONComponentSerializer jsonComponentSerializer;
+    protected Object jsonComponentSerializer;
     protected final MiniMessage miniMessage;
     protected final Pattern HEX_PATTERN = Pattern.compile(LegacyComponentSerializer.HEX_CHAR + "([a-fA-F0-9]{6})");
 
     public MPaperManager(GSitMain GPluginMain) {
         super(GPluginMain);
         legacyComponentSerializer = LegacyComponentSerializer.builder().character(LegacyComponentSerializer.AMPERSAND_CHAR).hexColors().build();
-        jsonComponentSerializer = JSONComponentSerializer.json();
+        if(GPluginMain.getSVManager().isNewerOrVersion(20, 0)) jsonComponentSerializer = JSONComponentSerializer.json();
         miniMessage = MiniMessage.miniMessage();
     }
 
-    public String getAsJSON(String Text, Object... RawReplaceList) { return jsonComponentSerializer.serialize(toFormattedComponent(Text, RawReplaceList)); }
+    public String getAsJSON(String Text, Object... RawReplaceList) {
+        if(jsonComponentSerializer == null) return super.getAsJSON(Text, RawReplaceList);
+        return ((JSONComponentSerializer) jsonComponentSerializer).serialize(toFormattedComponent(Text, RawReplaceList));
+    }
 
     public String toFormattedMessage(String Text, Object... RawReplaceList) { return legacyComponentSerializer.serialize(toFormattedComponent(Text, RawReplaceList)); }
 

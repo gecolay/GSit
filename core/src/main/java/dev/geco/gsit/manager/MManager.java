@@ -62,7 +62,7 @@ abstract public class MManager {
         DEFAULT_LANG = messages.containsKey(GPM.getCManager().L_LANG) ? GPM.getCManager().L_LANG : "en_us";
     }
 
-    abstract public String getAsJSON(String Text, Object... RawReplaceList);
+    public String getAsJSON(String Text, Object... RawReplaceList) { return null; }
 
     abstract public String toFormattedMessage(String Text, Object... RawReplaceList);
 

@@ -21,8 +21,6 @@ public class MSpigotManager extends MManager {
         try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch (Throwable e) { allowBungeeMessages = false; }
     }
 
-    public String getAsJSON(String Text, Object... RawReplaceList) { return null; }
-
     public String toFormattedMessage(String Text, Object... RawReplaceList) {
         String text = org.bukkit.ChatColor.translateAlternateColorCodes(PRE_FORMAT_COLOR_CHAR, Text);
         Matcher matcher = HEX_PATTERN.matcher(text);
