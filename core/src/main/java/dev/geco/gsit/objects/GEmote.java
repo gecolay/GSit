@@ -129,11 +129,11 @@ public class GEmote {
 
     public boolean getHideAsVehicle() { return hideAsVehicle; }
 
-    public long getSeconds(Player Player) {
+    public long getNano(Player Player) {
 
-        long seconds = (System.nanoTime() - spawnTimes.get(Player)) / 1_000_000_000;
+        long nano = System.nanoTime() - spawnTimes.get(Player);
         spawnTimes.remove(Player);
-        return seconds;
+        return nano;
     }
 
     public String toString() { return getId(); }

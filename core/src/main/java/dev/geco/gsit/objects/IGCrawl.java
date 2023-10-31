@@ -10,6 +10,6 @@ public interface IGCrawl {
 
     Player getPlayer();
 
-    long getSeconds();
+    long getNano();
 
 }

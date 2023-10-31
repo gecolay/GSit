@@ -29,11 +29,11 @@ public class GSitMain extends JavaPlugin {
     private SitManager sitManager;
     public SitManager getSitManager() { return sitManager; }
 
-    private PoseManager poseManager;
-    public PoseManager getPoseManager() { return poseManager; }
-
     private PlayerSitManager playerSitManager;
     public PlayerSitManager getPlayerSitManager() { return playerSitManager; }
+
+    private PoseManager poseManager;
+    public PoseManager getPoseManager() { return poseManager; }
 
     private CrawlManager crawlManager;
     public CrawlManager getCrawlManager() { return crawlManager; }
@@ -112,40 +112,20 @@ public class GSitMain extends JavaPlugin {
         BStatsLink bstats = new BStatsLink(getInstance(), 4914);
 
         bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getCManager().L_LANG));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> {
-            return getSitManager().getSitUsedCount();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> {
-            return (int) getSitManager().getSitUsedSeconds();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> {
-            return getPoseManager().getPoseUsedCount();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> {
-            return (int) getPoseManager().getPoseUsedSeconds();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> {
-            return getPlayerSitManager().getPlayerSitUsedCount();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_psit_feature", () -> {
-            return (int) getPlayerSitManager().getPlayerSitUsedSeconds();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> {
-            return getCrawlManager().getCrawlUsedCount();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> {
-            return (int) getCrawlManager().getCrawlUsedSeconds();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> {
-            return getEmoteManager().getEmoteUsedCount();
-        }));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_emote_feature", () -> {
-            return (int) getEmoteManager().getEmoteUsedSeconds();
-        }));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> getSitManager().getSitUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> (int) getSitManager().getSitUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> getPlayerSitManager().getPlayerSitUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_psit_feature", () -> (int) getPlayerSitManager().getPlayerSitUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> getPoseManager().getPoseUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> (int) getPoseManager().getPoseUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> getCrawlManager().getCrawlUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> (int) getCrawlManager().getCrawlUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> getEmoteManager().getEmoteUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_emote_feature", () -> (int) getEmoteManager().getEmoteUsedSeconds()));
 
         getSitManager().resetFeatureUsedCount();
-        getPoseManager().resetFeatureUsedCount();
         getPlayerSitManager().resetFeatureUsedCount();
+        getPoseManager().resetFeatureUsedCount();
         getCrawlManager().resetFeatureUsedCount();
         getEmoteManager().resetFeatureUsedCount();
     }
@@ -161,9 +141,9 @@ public class GSitMain extends JavaPlugin {
         pManager = new PManager(getInstance());
         tManager = new TManager(getInstance());
         sitManager = new SitManager(getInstance());
+        playerSitManager = new PlayerSitManager(getInstance());
         poseManager = new PoseManager(getInstance());
         crawlManager = new CrawlManager(getInstance());
-        playerSitManager = new PlayerSitManager(getInstance());
         emoteManager = new EmoteManager(getInstance());
         toggleManager = new ToggleManager(getInstance());
 

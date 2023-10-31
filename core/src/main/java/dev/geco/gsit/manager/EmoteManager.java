@@ -22,14 +22,14 @@ public class EmoteManager {
     public EmoteManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     private int emote_used = 0;
-    private long emote_used_seconds = 0;
+    private long emote_used_nano = 0;
 
     public int getEmoteUsedCount() { return emote_used; }
-    public long getEmoteUsedSeconds() { return emote_used_seconds; }
+    public long getEmoteUsedSeconds() { return emote_used_nano / 1_000_000_000; }
 
     public void resetFeatureUsedCount() {
         emote_used = 0;
-        emote_used_seconds = 0;
+        emote_used_nano = 0;
     }
 
     public void createTable() {
@@ -130,7 +130,7 @@ public class EmoteManager {
 
         Bukkit.getPluginManager().callEvent(new EntityStopEmoteEvent(Player, emote));
 
-        emote_used_seconds += emote.getSeconds(Player);
+        emote_used_nano += emote.getNano(Player);
 
         return true;
     }

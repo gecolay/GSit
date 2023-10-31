@@ -4,8 +4,6 @@ import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
 
-import java.util.concurrent.TimeUnit;
-
 public class GSeat {
 
     protected Block block;
@@ -57,7 +55,7 @@ public class GSeat {
         return this;
     }
 
-    public long getSeconds() { return (System.nanoTime() - spawnTime) / 1_000_000_000; }
+    public long getNano() { return System.nanoTime() - spawnTime; }
 
     public String toString() { return seatEntity.getUniqueId().toString(); }
 

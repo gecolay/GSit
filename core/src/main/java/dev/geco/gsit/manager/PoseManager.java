@@ -26,14 +26,14 @@ public class PoseManager {
     public boolean isAvailable() { return available; }
 
     private int pose_used = 0;
-    private long pose_used_seconds = 0;
+    private long pose_used_nano = 0;
 
     public int getPoseUsedCount() { return pose_used; }
-    public long getPoseUsedSeconds() { return pose_used_seconds; }
+    public long getPoseUsedSeconds() { return pose_used_nano / 1_000_000_000; }
 
     public void resetFeatureUsedCount() {
         pose_used = 0;
-        pose_used_seconds = 0;
+        pose_used_nano = 0;
     }
 
     private final List<IGPoseSeat> poses = new ArrayList<>();
@@ -142,7 +142,7 @@ public class PoseManager {
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseSeat, Reason));
 
-        pose_used_seconds += poseSeat.getSeat().getSeconds();
+        pose_used_nano += poseSeat.getSeat().getNano();
 
         return true;
     }

@@ -25,14 +25,14 @@ public class SitManager {
     }
 
     private int sit_used = 0;
-    private long sit_used_seconds = 0;
+    private long sit_used_nano = 0;
 
     public int getSitUsedCount() { return sit_used; }
-    public long getSitUsedSeconds() { return sit_used_seconds; }
+    public long getSitUsedSeconds() { return sit_used_nano  / 1_000_000_000; }
 
     public void resetFeatureUsedCount() {
         sit_used = 0;
-        sit_used_seconds = 0;
+        sit_used_nano = 0;
     }
 
     private final List<GSeat> seats = new ArrayList<>();
@@ -179,7 +179,7 @@ public class SitManager {
 
         Bukkit.getPluginManager().callEvent(new EntityGetUpSitEvent(seat, Reason));
 
-        sit_used_seconds += seat.getSeconds();
+        sit_used_nano += seat.getNano();
 
         return true;
     }

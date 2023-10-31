@@ -21,14 +21,14 @@ public class PlayerSitManager {
     }
 
     private int playersit_used = 0;
-    private long playersit_used_seconds = 0;
+    private long playersit_used_nano = 0;
 
     public int getPlayerSitUsedCount() { return playersit_used; }
-    public long getPlayerSitUsedSeconds() { return playersit_used_seconds; }
+    public long getPlayerSitUsedSeconds() { return playersit_used_nano / 1_000_000_000; }
 
     public void resetFeatureUsedCount() {
         playersit_used = 0;
-        playersit_used_seconds = 0;
+        playersit_used_nano = 0;
     }
 
     private final int seat_entity_count;
@@ -81,7 +81,7 @@ public class PlayerSitManager {
         if(Entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) {
             long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
             if(spawnTime != -1) {
-                playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+                playersit_used_nano += System.nanoTime() - spawnTime;
                 spawnTimes.remove(Entity.getUniqueId());
             }
             Entity.remove();
@@ -102,7 +102,7 @@ public class PlayerSitManager {
 
             long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
             if(spawnTime != -1) {
-                playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+                playersit_used_nano += System.nanoTime() - spawnTime;
                 spawnTimes.remove(Entity.getUniqueId());
             }
 
@@ -122,7 +122,7 @@ public class PlayerSitManager {
 
         long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
         if(spawnTime != -1) {
-            playersit_used_seconds += (System.nanoTime() - spawnTime) / 1_000_000_000;
+            playersit_used_nano += System.nanoTime() - spawnTime;
             spawnTimes.remove(Entity.getUniqueId());
         }
 
