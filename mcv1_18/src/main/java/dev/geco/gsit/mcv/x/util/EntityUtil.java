@@ -17,6 +17,9 @@ import dev.geco.gsit.objects.*;
 public class EntityUtil implements IEntityUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
+    protected final HashMap<Integer, Entity> playerMap = new HashMap<>();
+
+    public HashMap<Integer, Entity> getSeatMap() { return playerMap; }
 
     public void posEntity(org.bukkit.entity.Entity Entity, Location Location) {
 
@@ -41,6 +44,8 @@ public class EntityUtil implements IEntityUtil {
 
         SeatEntity seatEntity = new SeatEntity(Location);
 
+        playerMap.put(seatEntity.getId(), Rider);
+
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
         ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(seatEntity);
@@ -50,12 +55,18 @@ public class EntityUtil implements IEntityUtil {
         if(!riding || !seatEntity.passengers.contains(rider)) {
 
             seatEntity.discard();
+            playerMap.remove(seatEntity.getId());
             return null;
         }
 
         if(Rotate) seatEntity.startRotate();
 
         return seatEntity.getBukkitEntity();
+    }
+
+    public void removeSeatEntity(Entity Entity) {
+        playerMap.remove(Entity.getEntityId());
+        Entity.remove();
     }
 
     public UUID createPlayerSeatEntity(Entity Holder, Entity Rider) {

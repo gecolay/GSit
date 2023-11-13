@@ -9,6 +9,8 @@ import dev.geco.gsit.objects.*;
 
 public interface IEntityUtil {
 
+    HashMap<Integer, Entity> getSeatMap();
+
     void posEntity(Entity Entity, Location Location);
 
     boolean isLocationValid(Location Location);
@@ -16,6 +18,8 @@ public interface IEntityUtil {
     boolean isPlayerSitLocationValid(Entity Holder);
 
     Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate);
+
+    void removeSeatEntity(Entity Entity);
 
     UUID createPlayerSeatEntity(Entity Holder, Entity Rider);
 

@@ -12,8 +12,8 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
-import org.bukkit.craftbukkit.v1_17_R1.*;
-import org.bukkit.craftbukkit.v1_17_R1.entity.*;
+import org.bukkit.craftbukkit.v1_19_R3.*;
+import org.bukkit.craftbukkit.v1_19_R3.entity.*;
 
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
@@ -50,17 +50,18 @@ public class GPoseSeat implements IGPoseSeat {
     private final Direction direction;
 
     protected ClientboundBlockUpdatePacket setBedPacket;
-    protected ClientboundPlayerInfoPacket addNpcInfoPacket;
-    protected ClientboundPlayerInfoPacket removeNpcInfoPacket;
+    protected ClientboundPlayerInfoUpdatePacket addNpcInfoPacket;
+    protected ClientboundPlayerInfoRemovePacket removeNpcInfoPacket;
     protected ClientboundRemoveEntitiesPacket removeNpcPacket;
     protected ClientboundAddPlayerPacket createNpcPacket;
     protected ClientboundSetEntityDataPacket metaNpcPacket;
     protected ClientboundTeleportEntityPacket teleportNpcPacket;
     protected ClientboundMoveEntityPacket.PosRot rotateNpcPacket;
+    protected ClientboundBundlePacket bundle;
 
     private List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentSlotCache;
     private float directionCache;
-    protected int renderRange = 12 * 16;
+    protected int renderRange = Bukkit.getServer().getSimulationDistance() * 16;
 
     private UUID task;
 
@@ -88,8 +89,8 @@ public class GPoseSeat implements IGPoseSeat {
         direction = getDirection();
 
         if(pose == org.bukkit.entity.Pose.SLEEPING) setBedPacket = new ClientboundBlockUpdatePacket(bedPos, Blocks.WHITE_BED.defaultBlockState().setValue(BedBlock.FACING, direction.getOpposite()).setValue(BedBlock.PART, BedPart.HEAD));
-        addNpcInfoPacket = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, playerNpc);
-        removeNpcInfoPacket = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.REMOVE_PLAYER, playerNpc);
+        addNpcInfoPacket = new ClientboundPlayerInfoUpdatePacket(EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, ClientboundPlayerInfoUpdatePacket.Action.INITIALIZE_CHAT, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_GAME_MODE, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_DISPLAY_NAME), Collections.singletonList(playerNpc));
+        removeNpcInfoPacket = new ClientboundPlayerInfoRemovePacket(Collections.singletonList(playerNpc.getUUID()));
         removeNpcPacket = new ClientboundRemoveEntitiesPacket(playerNpc.getId());
         createNpcPacket = new ClientboundAddPlayerPacket(playerNpc);
         if(pose == org.bukkit.entity.Pose.SLEEPING) teleportNpcPacket = new ClientboundTeleportEntityPacket(playerNpc);
@@ -148,7 +149,18 @@ public class GPoseSeat implements IGPoseSeat {
             if(GPM.getCManager().P_LAY_REST) seatPlayer.setStatistic(Statistic.TIME_SINCE_REST, 0);
         }
 
-        metaNpcPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), playerNpc.getEntityData(), false);
+        metaNpcPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), playerNpc.getEntityData().isDirty() ? playerNpc.getEntityData().packDirty() : playerNpc.getEntityData().getNonDefaultValues());
+
+        List<Packet<ClientGamePacketListener>> packages = new ArrayList<>();
+
+        packages.add(addNpcInfoPacket);
+        packages.add(createNpcPacket);
+        if(pose == Pose.SLEEPING) packages.add(setBedPacket);
+        packages.add(metaNpcPacket);
+        if(pose == Pose.SLEEPING) packages.add(teleportNpcPacket);
+        if(pose == Pose.SPIN_ATTACK) packages.add(rotateNpcPacket);
+
+        bundle = new ClientboundBundlePacket(packages);
 
         for(Player nearPlayer : nearPlayers) spawnToPlayer(nearPlayer);
 
@@ -157,21 +169,7 @@ public class GPoseSeat implements IGPoseSeat {
         startUpdate();
     }
 
-    private void spawnToPlayer(Player Player) {
-
-        ServerPlayer spawnPlayer = ((CraftPlayer) Player).getHandle();
-
-        sendPacket(spawnPlayer, addNpcInfoPacket);
-        sendPacket(spawnPlayer, createNpcPacket);
-        if(pose == Pose.SLEEPING) sendPacket(spawnPlayer, setBedPacket);
-        sendPacket(spawnPlayer, metaNpcPacket);
-        if(pose == Pose.SLEEPING) sendPacket(spawnPlayer, teleportNpcPacket);
-        if(pose == Pose.SPIN_ATTACK) sendPacket(spawnPlayer, rotateNpcPacket);
-
-        GPM.getTManager().runDelayed(() -> {
-            sendPacket(spawnPlayer, removeNpcInfoPacket);
-        }, seatPlayer, 15);
-    }
+    private void spawnToPlayer(Player Player) { sendPacket(Player, bundle); }
 
     public void remove() {
 
@@ -324,7 +322,7 @@ public class GPoseSeat implements IGPoseSeat {
 
         if(!entityData.isDirty()) return;
 
-        ClientboundSetEntityDataPacket entityDataPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), entityData, false);
+        ClientboundSetEntityDataPacket entityDataPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), entityData.packDirty());
 
         for(Player nearPlayer : nearPlayers) sendPacket(nearPlayer, entityDataPacket);
     }

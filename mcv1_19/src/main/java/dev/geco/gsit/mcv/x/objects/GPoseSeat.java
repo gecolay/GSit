@@ -59,6 +59,7 @@ public class GPoseSeat implements IGPoseSeat {
     protected ClientboundMoveEntityPacket.PosRot rotateNpcPacket;
 
     private List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentSlotCache;
+    private float directionCache;
     protected int renderRange = Bukkit.getServer().getSimulationDistance() * 16;
 
     private UUID task;
@@ -275,6 +276,10 @@ public class GPoseSeat implements IGPoseSeat {
 
             byte fixedRotation = getFixedRotation(seatPlayer.getLocation().getYaw());
 
+            if(directionCache == fixedRotation) return;
+
+            directionCache = fixedRotation;
+
             ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(playerNpc, fixedRotation);
             ClientboundMoveEntityPacket.PosRot moveEntityPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, fixedRotation, (byte) 0, true);
 
@@ -290,6 +295,10 @@ public class GPoseSeat implements IGPoseSeat {
         }
 
         float playerYaw = seatPlayer.getLocation().getYaw();
+
+        if(directionCache == playerYaw) return;
+
+        directionCache = playerYaw;
 
         if(direction == Direction.WEST) playerYaw -= 90;
         if(direction == Direction.EAST) playerYaw += 90;

@@ -5,6 +5,7 @@ import java.util.*;
 import com.mojang.authlib.*;
 import com.mojang.datafixers.util.*;
 
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.bukkit.*;
 import org.bukkit.block.data.*;
 import org.bukkit.event.*;
@@ -57,8 +58,10 @@ public class GPoseSeat implements IGPoseSeat {
     protected ClientboundSetEntityDataPacket metaNpcPacket;
     protected ClientboundTeleportEntityPacket teleportNpcPacket;
     protected ClientboundMoveEntityPacket.PosRot rotateNpcPacket;
+    protected ClientboundBundlePacket bundle;
 
     private List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentSlotCache;
+    private float directionCache;
     protected int renderRange = Bukkit.getServer().getSimulationDistance() * 16;
 
     private UUID task;
@@ -149,6 +152,17 @@ public class GPoseSeat implements IGPoseSeat {
 
         metaNpcPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), playerNpc.getEntityData().isDirty() ? playerNpc.getEntityData().packDirty() : playerNpc.getEntityData().getNonDefaultValues());
 
+        List<Packet<ClientGamePacketListener>> packages = new ArrayList<>();
+
+        packages.add(addNpcInfoPacket);
+        packages.add(createNpcPacket);
+        if(pose == Pose.SLEEPING) packages.add(setBedPacket);
+        packages.add(metaNpcPacket);
+        if(pose == Pose.SLEEPING) packages.add(teleportNpcPacket);
+        if(pose == Pose.SPIN_ATTACK) packages.add(rotateNpcPacket);
+
+        bundle = new ClientboundBundlePacket(packages);
+
         for(Player nearPlayer : nearPlayers) spawnToPlayer(nearPlayer);
 
         Bukkit.getPluginManager().registerEvents(listener, GPM);
@@ -156,17 +170,7 @@ public class GPoseSeat implements IGPoseSeat {
         startUpdate();
     }
 
-    private void spawnToPlayer(Player Player) {
-
-        ServerPlayer spawnPlayer = ((CraftPlayer) Player).getHandle();
-
-        sendPacket(spawnPlayer, addNpcInfoPacket);
-        sendPacket(spawnPlayer, createNpcPacket);
-        if(pose == Pose.SLEEPING) sendPacket(spawnPlayer, setBedPacket);
-        sendPacket(spawnPlayer, metaNpcPacket);
-        if(pose == Pose.SLEEPING) sendPacket(spawnPlayer, teleportNpcPacket);
-        if(pose == Pose.SPIN_ATTACK) sendPacket(spawnPlayer, rotateNpcPacket);
-    }
+    private void spawnToPlayer(Player Player) { sendPacket(Player, bundle); }
 
     public void remove() {
 
@@ -271,6 +275,10 @@ public class GPoseSeat implements IGPoseSeat {
 
             byte fixedRotation = getFixedRotation(seatPlayer.getLocation().getYaw());
 
+            if(directionCache == fixedRotation) return;
+
+            directionCache = fixedRotation;
+
             ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(playerNpc, fixedRotation);
             ClientboundMoveEntityPacket.PosRot moveEntityPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, fixedRotation, (byte) 0, true);
 
@@ -286,6 +294,10 @@ public class GPoseSeat implements IGPoseSeat {
         }
 
         float playerYaw = seatPlayer.getLocation().getYaw();
+
+        if(directionCache == playerYaw) return;
+
+        directionCache = playerYaw;
 
         if(direction == Direction.WEST) playerYaw -= 90;
         if(direction == Direction.EAST) playerYaw += 90;

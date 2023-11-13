@@ -36,6 +36,8 @@ public class EntityUtil extends dev.geco.gsit.util.EntityUtil {
 
         SeatEntity seatEntity = new SeatEntity(Location);
 
+        playerMap.put(seatEntity.getId(), Rider);
+
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
         ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(seatEntity);
@@ -45,6 +47,7 @@ public class EntityUtil extends dev.geco.gsit.util.EntityUtil {
         if(!riding || !seatEntity.passengers.contains(rider)) {
 
             seatEntity.discard();
+            playerMap.remove(seatEntity.getId());
             return null;
         }
 

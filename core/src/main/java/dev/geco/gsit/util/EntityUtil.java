@@ -12,6 +12,9 @@ import dev.geco.gsit.objects.*;
 public class EntityUtil implements IEntityUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
+    protected final HashMap<Integer, Entity> playerMap = new HashMap<>();
+
+    public HashMap<Integer, Entity> getSeatMap() { return playerMap; }
 
     public void posEntity(Entity Entity, Location Location) {
 
@@ -19,7 +22,7 @@ public class EntityUtil implements IEntityUtil {
 
             Method getHandle = Entity.getClass().getDeclaredMethod("getHandle");
             Object entity = getHandle.invoke(Entity);
-            Method setPosition = entity.getClass().getDeclaredMethod("setPosition", double.class, double.class, double.class);
+            Method setPosition = entity.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setPosition", double.class, double.class, double.class);
             setPosition.invoke(entity, Location.getX(), Location.getY(), Location.getZ());
         } catch (Exception ignored) { }
     }
@@ -80,6 +83,11 @@ public class EntityUtil implements IEntityUtil {
         }
 
         return seatEntity;
+    }
+
+    public void removeSeatEntity(Entity Entity) {
+        playerMap.remove(Entity.getEntityId());
+        Entity.remove();
     }
 
     public UUID createPlayerSeatEntity(Entity Holder, Entity Rider) {
