@@ -5,7 +5,6 @@ import java.util.*;
 import com.mojang.authlib.*;
 import com.mojang.datafixers.util.*;
 
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.bukkit.*;
 import org.bukkit.block.data.*;
 import org.bukkit.event.*;

@@ -74,7 +74,7 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
     }
 
     private void modifyClientboundAddEntityPacket(ClientboundAddEntityPacket Packet) {
-
+        if(GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
         try {
             addEntityYField.set(Packet, Packet.getY() + GPM.getViaVersionLink().getVersionOffset(player));
         } catch (Exception e) { e.printStackTrace(); }
