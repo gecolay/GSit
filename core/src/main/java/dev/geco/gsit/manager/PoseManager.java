@@ -16,6 +16,8 @@ public class PoseManager {
 
     private final GSitMain GPM;
 
+    public static final String POSE_TAG = GSitMain.getInstance().NAME + "_POSE";
+
     private final boolean available;
 
     public PoseManager(GSitMain GPluginMain) {

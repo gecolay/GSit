@@ -14,6 +14,7 @@ import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.network.*;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.manager.*;
 import dev.geco.gsit.util.*;
 
 public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPackageUtil {
@@ -75,8 +76,8 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
         if(msg instanceof ClientboundSetEntityDataPacket) {
             ClientboundSetEntityDataPacket packet = (ClientboundSetEntityDataPacket) msg;
             if(packet.id() == player.getEntityId() && GPM.getPoseManager().isPosing(player)) {
-                if(player.getScoreboardTags().contains("GSIT_LAY")) return;
-                player.addScoreboardTag("GSIT_LAY");
+                if(player.getScoreboardTags().contains(PoseManager.POSE_TAG)) return;
+                player.addScoreboardTag(PoseManager.POSE_TAG);
             }
         }
 

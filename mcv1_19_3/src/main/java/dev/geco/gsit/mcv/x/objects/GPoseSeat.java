@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.*;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.manager.*;
 import dev.geco.gsit.objects.*;
 
 public class GPoseSeat implements IGPoseSeat {
@@ -117,15 +118,12 @@ public class GPoseSeat implements IGPoseSeat {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void PAniE(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getAnimationType() == PlayerAnimationType.ARM_SWING) playAnimation(Event.getPlayer().getMainHand().equals(MainHand.RIGHT) ? 0 : 3); }
 
-            @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void ICliE(InventoryClickEvent Event) { if(Event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
         };
     }
 
     public void spawn() {
-
-        seatPlayer.removeScoreboardTag("GSIT_LAY");
-
 
         nearPlayers = getNearPlayers();
 
@@ -183,6 +181,7 @@ public class GPoseSeat implements IGPoseSeat {
         stopUpdate();
 
         HandlerList.unregisterAll(listener);
+        seatPlayer.removeScoreboardTag(PoseManager.POSE_TAG);
 
         for(Player nearPlayer : nearPlayers) removeToPlayer(nearPlayer);
 
