@@ -60,6 +60,14 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
 
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
 
+        if(msg instanceof ClientboundSetEntityDataPacket) {
+            ClientboundSetEntityDataPacket packet = (ClientboundSetEntityDataPacket) msg;
+            if(packet.getId() == player.getEntityId() && GPM.getPoseManager().isPosing(player)) {
+                if(player.getScoreboardTags().contains("GSIT_LAY")) return;
+                player.addScoreboardTag("GSIT_LAY");
+            }
+        }
+
         if(msg instanceof ClientboundTeleportEntityPacket) {
             ClientboundTeleportEntityPacket packet = (ClientboundTeleportEntityPacket) msg;
             if(GPM.getEntityUtil().getSeatMap().containsKey(packet.getId())) return;
@@ -74,7 +82,7 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
     }
 
     private void modifyClientboundAddEntityPacket(ClientboundAddEntityPacket Packet) {
-        if(GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
+        if(GPM.getViaVersionLink() == null || GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
         try {
             addEntityYField.set(Packet, Packet.getY() + GPM.getViaVersionLink().getVersionOffset(player));
         } catch (Exception e) { e.printStackTrace(); }

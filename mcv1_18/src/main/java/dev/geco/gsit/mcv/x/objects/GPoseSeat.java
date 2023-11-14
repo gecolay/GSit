@@ -9,6 +9,7 @@ import org.bukkit.*;
 import org.bukkit.block.data.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
@@ -58,7 +59,8 @@ public class GPoseSeat implements IGPoseSeat {
     protected ClientboundTeleportEntityPacket teleportNpcPacket;
     protected ClientboundMoveEntityPacket.PosRot rotateNpcPacket;
 
-    private List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentSlotCache;
+    private NonNullList<net.minecraft.world.item.ItemStack> equipmentSlotCache;
+    private net.minecraft.world.item.ItemStack mainSlotCache;
     private float directionCache;
     protected int renderRange = Bukkit.getServer().getSimulationDistance() * 16;
 
@@ -116,11 +118,13 @@ public class GPoseSeat implements IGPoseSeat {
             public void PAniE(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getAnimationType() == PlayerAnimationType.ARM_SWING) playAnimation(Event.getPlayer().getMainHand().equals(MainHand.RIGHT) ? 0 : 3); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PGamMCE(PlayerGameModeChangeEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getNewGameMode() == GameMode.CREATIVE) setEquipmentVisibility(true); }
+            public void ICliE(InventoryClickEvent Event) { if(Event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
         };
     }
 
     public void spawn() {
+
+        seatPlayer.removeScoreboardTag("GSIT_LAY");
 
         nearPlayers = getNearPlayers();
 
@@ -245,24 +249,17 @@ public class GPoseSeat implements IGPoseSeat {
 
             updateSkin();
 
-            if(pose == Pose.SLEEPING) {
+            if(pose != Pose.SLEEPING || !GPM.getCManager().P_LAY_SNORING_SOUNDS) return;
 
-                for(Player nearPlayer : nearPlayers) sendPacket(nearPlayer, setBedPacket);
+            sleepTick[0]++;
 
-                if(GPM.getCManager().P_LAY_SNORING_SOUNDS) {
+            if(sleepTick[0] < 90) return;
 
-                    sleepTick[0]++;
+            long tick = seatPlayer.getPlayerTime();
 
-                    if(sleepTick[0] >= 90) {
+            if(!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) for(Player nearPlayer : nearPlayers) nearPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
 
-                        long tick = seatPlayer.getPlayerTime();
-
-                        if(!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) for(Player nearPlayer : nearPlayers) nearPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
-
-                        sleepTick[0] = 0;
-                    }
-                }
-            }
+            sleepTick[0] = 0;
         }, false, 5, 1);
     }
 
@@ -331,6 +328,14 @@ public class GPoseSeat implements IGPoseSeat {
 
     private void updateEquipment() {
 
+        net.minecraft.world.item.ItemStack mainItemStack = serverPlayer.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+
+        if(equipmentSlotCache != null && equipmentSlotCache.equals(serverPlayer.getInventory().getContents()) && mainSlotCache == mainItemStack) return;
+
+        equipmentSlotCache = NonNullList.create();
+        equipmentSlotCache.addAll(serverPlayer.getInventory().getContents());
+        mainSlotCache = mainItemStack;
+
         List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentList = new ArrayList<>();
 
         for(net.minecraft.world.entity.EquipmentSlot equipmentSlot : net.minecraft.world.entity.EquipmentSlot.values()) {
@@ -340,13 +345,11 @@ public class GPoseSeat implements IGPoseSeat {
             if(itemStack != null) equipmentList.add(Pair.of(equipmentSlot, itemStack));
         }
 
-        if(equipmentSlotCache != null && equipmentSlotCache.equals(equipmentList)) return;
-
-        equipmentSlotCache = equipmentList;
-
-        ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(playerNpc.getId(), equipmentSlotCache);
+        ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(playerNpc.getId(), equipmentList);
 
         for(Player nearPlayer : nearPlayers) sendPacket(nearPlayer, setEquipmentPacket);
+
+        serverPlayer.containerMenu.sendAllDataToRemote();
     }
 
     private void setEquipmentVisibility(boolean Visibility) {
@@ -362,19 +365,7 @@ public class GPoseSeat implements IGPoseSeat {
 
         ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(serverPlayer.getId(), equipmentList);
 
-        for(Player nearPlayer : nearPlayers) {
-
-            if(nearPlayer == seatPlayer) continue;
-
-            sendPacket(nearPlayer, setEquipmentPacket);
-        }
-
-        if(seatPlayer.getGameMode() != GameMode.CREATIVE) {
-
-            seatPlayer.updateInventory();
-
-            if(!Visibility) sendPacket(serverPlayer, setEquipmentPacket);
-        }
+        for(Player nearPlayer : nearPlayers) sendPacket(nearPlayer, setEquipmentPacket);
     }
 
     private void playAnimation(int Arm) {

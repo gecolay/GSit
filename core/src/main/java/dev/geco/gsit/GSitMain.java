@@ -111,6 +111,8 @@ public class GSitMain extends JavaPlugin {
         getEmoteManager().reloadEmotes();
 
         getToggleManager().createTable();
+
+        if(getPackageUtil() != null) getPackageUtil().registerPlayers();
     }
 
     private void linkBStats() {
@@ -197,7 +199,7 @@ public class GSitMain extends JavaPlugin {
         getCrawlManager().clearCrawls();
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
-        if(getViaVersionLink() != null) getPackageUtil().unregisterPlayers();
+        if(getPackageUtil() != null) getPackageUtil().unregisterPlayers();
     }
 
     private void setupCommands() {
@@ -286,7 +288,6 @@ public class GSitMain extends JavaPlugin {
 
         if(getPackageUtil() != null && plugin != null && plugin.isEnabled()) {
             viaVersionLink = new ViaVersionLink(getInstance());
-            getPackageUtil().registerPlayers();
             getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
         } else viaVersionLink = null;
 
