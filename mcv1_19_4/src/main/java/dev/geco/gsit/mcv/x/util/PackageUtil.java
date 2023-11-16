@@ -20,26 +20,22 @@ import dev.geco.gsit.util.*;
 public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPackageUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
-    private final Player player;
 
+    private Player player;
     private Field channelField;
     private Field addEntityYField;
     private final HashMap<Player, Channel> players = new HashMap<>();
 
     public int getProtocolVersion() { return SharedConstants.getProtocolVersion(); }
 
-    public PackageUtil() { this(null); }
-
-    public PackageUtil(Player Player) {
-        player = Player;
+    public PackageUtil() {
         Class<?> serverGamePacketListenerClass = ServerGamePacketListenerImpl.class;
-        if(serverGamePacketListenerClass.getSuperclass() != null) serverGamePacketListenerClass = serverGamePacketListenerClass.getSuperclass();
+        if(serverGamePacketListenerClass.getSuperclass() != Object.class) serverGamePacketListenerClass = serverGamePacketListenerClass.getSuperclass();
         for(Field declaredField : serverGamePacketListenerClass.getDeclaredFields()) if(declaredField.getType().equals(Connection.class)) {
             declaredField.setAccessible(true);
             channelField = declaredField;
             break;
         }
-        if(player == null) return;
         int count = 0;
         for(Field declaredField : ClientboundAddEntityPacket.class.getDeclaredFields()) if(declaredField.getType().equals(double.class) && !Modifier.isStatic(declaredField.getModifiers())) {
             if(count == 1) {
@@ -51,16 +47,20 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
         }
     }
 
+    public PackageUtil(Player Player, Field ChannelField, Field AddEntityYField) {
+        player = Player;
+        channelField = ChannelField;
+        addEntityYField = AddEntityYField;
+    }
+
     public void registerPlayer(Player Player) {
         try {
             ServerGamePacketListenerImpl packetListener = ((CraftPlayer) Player).getHandle().connection;
             Channel channel = ((Connection) channelField.get(packetListener)).channel;
             players.put(Player, channel);
-            channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), new PackageUtil(Player));
+            channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), new PackageUtil(Player, channelField, addEntityYField));
         } catch (Exception e) { e.printStackTrace(); }
     }
-
-    public void registerPlayers() { for(Player player : Bukkit.getOnlinePlayers()) registerPlayer(player); }
 
     public void unregisterPlayer(Player Player) {
         Channel channel = players.get(Player);
@@ -102,7 +102,7 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
     }
 
     private void modifyClientboundAddEntityPacket(ClientboundAddEntityPacket Packet) {
-        if(GPM.getViaVersionLink() == null || GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
+        if(GPM.getViaVersionLink() == null || !GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
         try {
             addEntityYField.set(Packet, Packet.getY() + GPM.getViaVersionLink().getVersionOffset(player));
         } catch (Exception e) { e.printStackTrace(); }

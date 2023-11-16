@@ -8,8 +8,6 @@ public interface IPackageUtil {
 
     void registerPlayer(Player Player);
 
-    void registerPlayers();
-
     void unregisterPlayer(Player Player);
 
     void unregisterPlayers();

@@ -81,9 +81,15 @@ public class SitManager {
 
         seatLocation.setYaw(SeatRotation);
 
+        if(GPM.getPackageUtil() != null && Entity instanceof Player) GPM.getPackageUtil().registerPlayer((Player) Entity);
+
         Entity seatEntity = GPM.getEntityUtil().createSeatEntity(seatLocation, Entity, Rotate);
 
-        if(seatEntity == null) return null;
+        if(seatEntity == null) {
+
+            if(GPM.getPackageUtil() != null && Entity instanceof Player) GPM.getPackageUtil().unregisterPlayer((Player) Entity);
+            return null;
+        }
 
         if(GPM.getCManager().S_SIT_MESSAGE && Entity instanceof Player) {
 
@@ -171,11 +177,13 @@ public class SitManager {
             } catch (Throwable ignored) { }
         }
 
-        if(seat.getEntity().isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
+        if(seat.getEntity().isValid() && Safe && GPM.getEntityUtil() != null) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
 
-        if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
+        if(seat.getSeatEntity().isValid() && GPM.getEntityUtil() == null) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
 
         GPM.getEntityUtil().removeSeatEntity(seat.getSeatEntity());
+
+        if(GPM.getPackageUtil() != null && Entity instanceof Player) GPM.getPackageUtil().unregisterPlayer((Player) Entity);
 
         Bukkit.getPluginManager().callEvent(new EntityGetUpSitEvent(seat, Reason));
 

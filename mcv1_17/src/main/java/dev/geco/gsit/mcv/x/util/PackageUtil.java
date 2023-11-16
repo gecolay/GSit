@@ -18,17 +18,14 @@ import dev.geco.gsit.util.*;
 public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPackageUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
-    private final Player player;
 
+    private Player player;
     private Field addEntityYField;
     private final HashMap<Player, Channel> players = new HashMap<>();
 
     public int getProtocolVersion() { return SharedConstants.getProtocolVersion(); }
 
-    public PackageUtil() { player = null; }
-
-    public PackageUtil(Player Player) {
-        player = Player;
+    public PackageUtil() {
         int count = 0;
         for(Field declaredField : ClientboundAddMobPacket.class.getDeclaredFields()) if(declaredField.getType().equals(double.class) && !Modifier.isStatic(declaredField.getModifiers())) {
             if(count == 1) {
@@ -40,15 +37,18 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
         }
     }
 
+    public PackageUtil(Player Player, Field AddEntityYField) {
+        player = Player;
+        addEntityYField = AddEntityYField;
+    }
+
     public void registerPlayer(Player Player) {
         try {
             Channel channel = ((CraftPlayer) Player).getHandle().connection.connection.channel;
             players.put(Player, channel);
-            channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), new PackageUtil(Player));
+            channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), new PackageUtil(Player, addEntityYField));
         } catch (Exception e) { e.printStackTrace(); }
     }
-
-    public void registerPlayers() { for(Player player : Bukkit.getOnlinePlayers()) registerPlayer(player); }
 
     public void unregisterPlayer(Player Player) {
         Channel channel = players.get(Player);
@@ -83,7 +83,7 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
     }
 
     private void modifyClientboundAddMobPacket(ClientboundAddMobPacket Packet) {
-        if(GPM.getViaVersionLink() == null || GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
+        if(GPM.getViaVersionLink() == null || !GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
         try {
             addEntityYField.set(Packet, Packet.getY() + GPM.getViaVersionLink().getVersionOffset(player));
         } catch (Exception e) { e.printStackTrace(); }
