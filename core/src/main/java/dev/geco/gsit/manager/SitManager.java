@@ -81,13 +81,13 @@ public class SitManager {
 
         seatLocation.setYaw(SeatRotation);
 
-        if(GPM.getPackageUtil() != null && Entity instanceof Player) GPM.getPackageUtil().registerPlayer((Player) Entity);
+        if(GPM.getViaVersionLink() != null && Entity instanceof Player) GPM.getPackageUtil().registerPlayer((Player) Entity);
 
         Entity seatEntity = GPM.getEntityUtil().createSeatEntity(seatLocation, Entity, Rotate);
 
         if(seatEntity == null) {
 
-            if(GPM.getPackageUtil() != null && Entity instanceof Player) GPM.getPackageUtil().unregisterPlayer((Player) Entity);
+            if(GPM.getViaVersionLink() != null && Entity instanceof Player) GPM.getPackageUtil().unregisterPlayer((Player) Entity);
             return null;
         }
 
@@ -183,7 +183,7 @@ public class SitManager {
 
         GPM.getEntityUtil().removeSeatEntity(seat.getSeatEntity());
 
-        if(GPM.getPackageUtil() != null && Entity instanceof Player) GPM.getPackageUtil().unregisterPlayer((Player) Entity);
+        if(GPM.getViaVersionLink() != null && Entity instanceof Player) GPM.getPackageUtil().unregisterPlayer((Player) Entity);
 
         Bukkit.getPluginManager().callEvent(new EntityGetUpSitEvent(seat, Reason));
 
