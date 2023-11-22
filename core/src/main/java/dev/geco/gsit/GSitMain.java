@@ -159,7 +159,7 @@ public class GSitMain extends JavaPlugin {
 
         preloadPluginDependencies();
 
-        mManager = isBasicPaperBased() && GPM.getSVManager().isNewerOrVersion(18, 2) ? new MPaperManager(getInstance()) : new MSpigotManager(getInstance());
+        mManager = isBasicPaperBased() && getSVManager().isNewerOrVersion(18, 2) ? new MPaperManager(getInstance()) : new MSpigotManager(getInstance());
     }
 
     public void onEnable() {
@@ -178,7 +178,7 @@ public class GSitMain extends JavaPlugin {
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
 
         loadPluginDependencies(Bukkit.getConsoleSender());
-        GPM.getUManager().checkForUpdates();
+        getUManager().checkForUpdates();
     }
 
     public void onDisable() {
@@ -251,7 +251,6 @@ public class GSitMain extends JavaPlugin {
         } catch (ClassNotFoundException ignored) { }
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-
             worldGuardLink = new WorldGuardLink(getInstance());
             getWorldGuardLink().registerFlags();
         }
@@ -311,7 +310,7 @@ public class GSitMain extends JavaPlugin {
 
         loadSettings(Sender);
         loadPluginDependencies(Sender);
-        GPM.getUManager().checkForUpdates();
+        getUManager().checkForUpdates();
     }
 
     private boolean connectDatabase(CommandSender Sender) {
@@ -335,7 +334,7 @@ public class GSitMain extends JavaPlugin {
 
             getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", !isSpigotBased() ? "bukkit-based" : version.substring(version.lastIndexOf('.') + 1));
 
-            GPM.getUManager().checkForUpdates();
+            getUManager().checkForUpdates();
 
             Bukkit.getPluginManager().disablePlugin(getInstance());
 

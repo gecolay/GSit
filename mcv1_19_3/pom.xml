@@ -13,6 +13,8 @@
     </parent>
 
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <spigot.version>1.19.3-R0.1-SNAPSHOT</spigot.version>
     </properties>
 

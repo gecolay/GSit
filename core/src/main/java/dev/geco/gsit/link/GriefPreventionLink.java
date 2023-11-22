@@ -20,7 +20,6 @@ public class GriefPreventionLink {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(Location, false, null);
 
             return claim == null || (!GPM.getCManager().TRUSTED_REGION_ONLY || claim.canSiege(Player));
-
         } catch (Throwable e) { e.printStackTrace(); }
 
         return true;
