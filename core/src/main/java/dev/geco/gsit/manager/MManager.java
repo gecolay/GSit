@@ -5,6 +5,7 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.jar.*;
+import java.util.regex.*;
 
 import org.bukkit.command.*;
 import org.bukkit.configuration.file.*;
@@ -16,11 +17,13 @@ abstract public class MManager {
 
     protected final GSitMain GPM;
 
-    protected String PREFIX_PLACEHOLDER = "[P]";
-    protected String PREFIX_REPLACE = "&7[&6" + GSitMain.getInstance().NAME + "&7]";
-    protected String DEFAULT_LANG;
+    protected final String PREFIX_PLACEHOLDER = "[P]";
+    protected final String PREFIX_REPLACE = "&7[&6" + GSitMain.getInstance().NAME + "&7]";
+    protected final char HEX_CHAR = '#';
+    protected final char AMPERSAND_CHAR = '&';
+    protected final Pattern HEX_PATTERN = Pattern.compile(HEX_CHAR + "([a-fA-F0-9]{6})");
     protected final HashMap<String, FileConfiguration> messages = new HashMap<>();
-    protected final HashMap<UUID, String> languages = new HashMap<>();
+    protected String DEFAULT_LANG;
 
     public MManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
@@ -62,7 +65,7 @@ abstract public class MManager {
         DEFAULT_LANG = messages.containsKey(GPM.getCManager().L_LANG) ? GPM.getCManager().L_LANG : "en_us";
     }
 
-    public String getAsJSON(String Text, Object... RawReplaceList) { return null; }
+    public String getAsJSON(String Text, Object... RawReplaceList) { return "{}"; }
 
     abstract public String toFormattedMessage(String Text, Object... RawReplaceList);
 
@@ -70,32 +73,21 @@ abstract public class MManager {
 
     abstract public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList);
 
-    public String getMessage(String Message, Object... ReplaceList) { return getLanguageMessage(Message, DEFAULT_LANG, ReplaceList); }
+    public String getMessage(String Message, Object... ReplaceList) { return getMessage(Message, null, ReplaceList); }
 
-    public String getLanguageMessage(String Message, CommandSender Target, Object... ReplaceList) { return getLanguageMessage(Message, getLanguage(Target), ReplaceList); }
+    public String getMessage(String Message, Entity Entity, Object... ReplaceList) { return getMessageByLanguage(Message, getLanguage(Entity), ReplaceList); }
 
-    public String getLanguageMessage(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedMessage(getRawLanguageMessage(Message, LanguageCode, ReplaceList)); }
+    public String getMessageByLanguage(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedMessage(getRawMessageByLanguage(Message, LanguageCode, ReplaceList)); }
 
-    public String getRawMessage(String Message, Object... ReplaceList) { return getRawLanguageMessage(Message, DEFAULT_LANG, ReplaceList); }
-
-    public String getRawLanguageMessage(String Message, CommandSender Target, Object... ReplaceList) { return getRawLanguageMessage(Message, getLanguage(Target), ReplaceList); }
-
-    public String getRawLanguageMessage(String Message, String LanguageCode, Object... ReplaceList) { return replaceWithLanguageCode(Message == null || Message.isEmpty() ? "" : getMessages(LanguageCode).getString(Message, Message), LanguageCode, ReplaceList); }
+    public String getRawMessageByLanguage(String Message, String LanguageCode, Object... ReplaceList) { return replaceWithLanguageCode(Message == null || Message.isEmpty() ? "" : getMessages(LanguageCode).getString(Message, Message), LanguageCode, ReplaceList); }
 
     public String getLanguage(CommandSender Target) {
         if(!(Target instanceof Entity)) return DEFAULT_LANG;
-        String language = languages.get(((Entity) Target).getUniqueId());
-        if(language != null) return language;
         if(GPM.getCManager().L_CLIENT_LANG && Target instanceof Player) {
-            language = ((Player) Target).getLocale();
+            String language = ((Player) Target).getLocale();
             if(messages.containsKey(language)) return language;
         }
         return DEFAULT_LANG;
-    }
-
-    public void setLanguage(CommandSender Target, String LanguageCode) {
-        if(!(Target instanceof Entity)) return;
-        languages.put(((Entity) Target).getUniqueId(), LanguageCode);
     }
 
     protected String replaceText(String Text, Object ... ReplaceList) {
@@ -108,6 +100,18 @@ abstract public class MManager {
             }
         }
         return Text;
+    }
+
+    protected String replaceHexColors(String Text) {
+        Matcher matcher = HEX_PATTERN.matcher(Text);
+        StringBuilder result = new StringBuilder(Text.length());
+        int lastIndex = 0;
+        while(matcher.find()) {
+            result.append(Text, lastIndex, matcher.start()).append(AMPERSAND_CHAR).append(matcher.group());
+            lastIndex = matcher.end();
+        }
+        result.append(Text.substring(lastIndex));
+        return result.toString();
     }
 
     private String replaceWithLanguageCode(String Message, String LanguageCode, Object ... ReplaceList) {

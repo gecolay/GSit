@@ -12,7 +12,7 @@ public class SVManager {
 
     private final String SERVER_VERSION;
 
-    private final String PACKAGE_PATH;
+    public final String PACKAGE_PATH;
 
     protected final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); {
 
@@ -43,10 +43,12 @@ public class SVManager {
         return version.length > 2 ? Integer.parseInt(version[1]) == Version && Integer.parseInt(version[2]) == SubVersion : Integer.parseInt(version[1]) == Version && SubVersion == 0;
     }
 
-    public Object getPackageObject(String ClassName, Object Object) {
+    public Object getPackageObject(String ClassName, Object... Objects) {
         try {
             Class<?> mcvClass = Class.forName(PACKAGE_PATH + ClassName);
-            return Object == null ? mcvClass.getConstructor().newInstance() : mcvClass.getConstructor(Object.getClass()).newInstance(Object);
+            if(Objects.length == 0) return mcvClass.getConstructor().newInstance();
+            Class<?>[] classes = Arrays.stream(Objects).map(Object::getClass).toArray(Class<?>[]::new);
+            return mcvClass.getConstructor(classes).newInstance(Objects);
         } catch (Throwable e) { e.printStackTrace(); }
         return null;
     }

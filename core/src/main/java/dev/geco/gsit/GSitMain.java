@@ -166,8 +166,8 @@ public class GSitMain extends JavaPlugin {
 
         if(!versionCheck()) return;
 
-        entityUtil = getSVManager().isNewerOrVersion(17, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil", null) : new EntityUtil();
-        packageUtil = getSVManager().isNewerOrVersion(17, 0) ? (IPackageUtil) getSVManager().getPackageObject("util.PackageUtil", null) : null;
+        entityUtil = getSVManager().isNewerOrVersion(17, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil") : new EntityUtil();
+        packageUtil = getSVManager().isNewerOrVersion(17, 0) ? (IPackageUtil) getSVManager().getPackageObject("util.PackageUtil") : null;
 
         loadSettings(Bukkit.getConsoleSender());
 
