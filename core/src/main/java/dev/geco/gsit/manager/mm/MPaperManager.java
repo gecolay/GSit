@@ -1,5 +1,7 @@
 package dev.geco.gsit.manager.mm;
 
+import org.jetbrains.annotations.*;
+
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
 
@@ -24,40 +26,21 @@ public class MPaperManager extends MManager {
         miniMessage = MiniMessage.miniMessage();
     }
 
-    public String getAsJSON(String Text, Object... RawReplaceList) {
-        if(jsonComponentSerializer == null) return super.getAsJSON(Text, RawReplaceList);
-        return ((JSONComponentSerializer) jsonComponentSerializer).serialize(toFormattedComponent(Text, RawReplaceList));
-    }
+    public String getAsJSON(String Text, Object... RawReplaceList) { return jsonComponentSerializer != null ? ((JSONComponentSerializer) jsonComponentSerializer).serialize(toFormattedComponent(Text, RawReplaceList)) : super.getAsJSON(Text, RawReplaceList); }
 
-    public String toFormattedMessage(String Text, Object... RawReplaceList) {
+    public String toFormattedMessage(String Text, Object... RawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirect(formatText(Text, RawReplaceList))); }
+
+    public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
+
+    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) { Target.sendActionBar(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
+
+    private @NotNull Component getLanguageComponent(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedComponent(getRawMessageByLanguage(Message, LanguageCode, ReplaceList)); }
+
+    private @NotNull Component toFormattedComponent(String Text, Object... RawReplaceList) { return legacyComponentSerializer.deserialize(replaceHexColors(formatText(Text, RawReplaceList))); }
+
+    private String formatText(String Text, Object... RawReplaceList) {
         Component component = miniMessage.deserialize(replaceText(Text, RawReplaceList));
-        Text = legacyComponentSerializer.serialize(component);
-        Text = replaceHexColors(Text);
-        return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, Text);
-    }
-
-    public void sendMessage(CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
-
-    public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList) { Target.sendActionBar(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
-
-    private Component getLanguageComponent(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedComponent(getRawMessageByLanguage(Message, LanguageCode, ReplaceList)); }
-
-    private Component toFormattedComponent(String Text, Object... RawReplaceList) {
-        Component component = miniMessage.deserialize(Text);
-        Text = legacyComponentSerializer.serialize(component);
-        Text = replaceHexColors(Text);
-        component = legacyComponentSerializer.deserialize(Text);
-        if(RawReplaceList.length > 0 && RawReplaceList.length % 2 == 0) component = applyRawReplacements(component, RawReplaceList);
-        return component;
-    }
-
-    private Component applyRawReplacements(Component TextComponent, Object... RawReplaceList) {
-        for(int count = 0; count < RawReplaceList.length; count += 2) {
-            if(RawReplaceList[count] == null || RawReplaceList[count + 1] == null) continue;
-            int finalCount = count;
-            TextComponent = TextComponent.replaceText(b -> b.matchLiteral(RawReplaceList[finalCount].toString()).replacement(Component.text(RawReplaceList[finalCount + 1].toString())));
-        }
-        return TextComponent;
+        return legacyComponentSerializer.serialize(component);
     }
 
 }

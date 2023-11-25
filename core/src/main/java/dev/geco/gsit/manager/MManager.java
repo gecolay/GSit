@@ -1,5 +1,7 @@
 package dev.geco.gsit.manager;
 
+import org.jetbrains.annotations.*;
+
 import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
@@ -19,9 +21,8 @@ abstract public class MManager {
 
     protected final String PREFIX_PLACEHOLDER = "[P]";
     protected final String PREFIX_REPLACE = "&7[&6" + GSitMain.getInstance().NAME + "&7]";
-    protected final char HEX_CHAR = '#';
     protected final char AMPERSAND_CHAR = '&';
-    protected final Pattern HEX_PATTERN = Pattern.compile(HEX_CHAR + "([a-fA-F0-9]{6})");
+    protected final Pattern HEX_PATTERN = Pattern.compile("#([a-fA-F0-9]{6})");
     protected final HashMap<String, FileConfiguration> messages = new HashMap<>();
     protected String DEFAULT_LANG;
 
@@ -69,9 +70,9 @@ abstract public class MManager {
 
     abstract public String toFormattedMessage(String Text, Object... RawReplaceList);
 
-    abstract public void sendMessage(CommandSender Target, String Message, Object... ReplaceList);
+    abstract public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList);
 
-    abstract public void sendActionBarMessage(Player Target, String Message, Object... ReplaceList);
+    abstract public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList);
 
     public String getMessage(String Message, Object... ReplaceList) { return getMessage(Message, null, ReplaceList); }
 
@@ -82,15 +83,12 @@ abstract public class MManager {
     public String getRawMessageByLanguage(String Message, String LanguageCode, Object... ReplaceList) { return replaceWithLanguageCode(Message == null || Message.isEmpty() ? "" : getMessages(LanguageCode).getString(Message, Message), LanguageCode, ReplaceList); }
 
     public String getLanguage(CommandSender Target) {
-        if(!(Target instanceof Entity)) return DEFAULT_LANG;
-        if(GPM.getCManager().L_CLIENT_LANG && Target instanceof Player) {
-            String language = ((Player) Target).getLocale();
-            if(messages.containsKey(language)) return language;
-        }
-        return DEFAULT_LANG;
+        if(!GPM.getCManager().L_CLIENT_LANG || !(Target instanceof Player)) return DEFAULT_LANG;
+        String language = ((Player) Target).getLocale();
+        return messages.containsKey(language) ? language : DEFAULT_LANG;
     }
 
-    protected String replaceText(String Text, Object ... ReplaceList) {
+    protected String replaceText(String Text, Object @NotNull ... ReplaceList) {
         if(ReplaceList.length == 0 || ReplaceList.length % 2 != 0) return Text;
         for(int count = 0; count < ReplaceList.length; count += 2) {
             if(ReplaceList[count] != null && ReplaceList[count + 1] != null) {
@@ -100,6 +98,20 @@ abstract public class MManager {
             }
         }
         return Text;
+    }
+
+    protected String replaceHexColorsDirect(String Text) {
+        Matcher matcher = HEX_PATTERN.matcher(Text);
+        StringBuilder result = new StringBuilder(Text.length());
+        int lastIndex = 0;
+        while(matcher.find()) {
+            result.append(Text, lastIndex, matcher.start()).append(org.bukkit.ChatColor.COLOR_CHAR).append('x');
+            char[] chars = matcher.group().substring(1).toCharArray();
+            for(char c : chars) result.append(org.bukkit.ChatColor.COLOR_CHAR).append(c);
+            lastIndex = matcher.end();
+        }
+        result.append(Text.substring(lastIndex));
+        return result.toString();
     }
 
     protected String replaceHexColors(String Text) {
