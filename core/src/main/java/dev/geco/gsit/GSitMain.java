@@ -111,6 +111,8 @@ public class GSitMain extends JavaPlugin {
         getEmoteManager().reloadEmotes();
 
         getToggleManager().createTable();
+
+        if(getPackageUtil() != null) getPackageUtil().registerPlayers();
     }
 
     private void linkBStats() {

@@ -15,11 +15,10 @@ import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.manager.*;
 import dev.geco.gsit.util.*;
 
-public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPackageUtil {
+public class PackageUtil implements IPackageUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
 
-    private Player player;
     private Field addEntityYField;
     private final HashMap<Player, Channel> players = new HashMap<>();
 
@@ -37,16 +36,49 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
         }
     }
 
-    public PackageUtil(Player Player, Field AddEntityYField) {
-        player = Player;
-        addEntityYField = AddEntityYField;
-    }
-
     public void registerPlayer(Player Player) {
         try {
             Channel channel = ((CraftPlayer) Player).getHandle().connection.connection.channel;
             players.put(Player, channel);
-            channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), new PackageUtil(Player, addEntityYField));
+            channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), getHandler(Player));
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void registerPlayers() { for(Player player : Bukkit.getOnlinePlayers()) registerPlayer(player); }
+
+    private ChannelDuplexHandler getHandler(Player Player) {
+
+        return new ChannelDuplexHandler() {
+
+            public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+
+                if(msg instanceof ClientboundSetEntityDataPacket) {
+                    ClientboundSetEntityDataPacket packet = (ClientboundSetEntityDataPacket) msg;
+                    if(packet.getId() == Player.getEntityId() && GPM.getPoseManager().isPosing(Player)) {
+                        if(Player.getScoreboardTags().contains(PoseManager.POSE_TAG)) return;
+                        Player.addScoreboardTag(PoseManager.POSE_TAG);
+                    }
+                }
+
+                if(msg instanceof ClientboundTeleportEntityPacket) {
+                    ClientboundTeleportEntityPacket packet = (ClientboundTeleportEntityPacket) msg;
+                    if(GPM.getEntityUtil().getSeatMap().containsKey(packet.getId())) return;
+                }
+
+                if(msg instanceof ClientboundAddEntityPacket) {
+                    ClientboundAddEntityPacket packet = (ClientboundAddEntityPacket) msg;
+                    modifyClientboundAddEntityPacket(Player, packet);
+                }
+
+                super.write(ctx, msg, promise);
+            }
+        };
+    }
+
+    private void modifyClientboundAddEntityPacket(Player Player, ClientboundAddEntityPacket Packet) {
+        if(GPM.getViaVersionLink() == null || !GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
+        try {
+            addEntityYField.set(Packet, Packet.getY() + GPM.getViaVersionLink().getVersionOffset(Player));
         } catch (Exception e) { e.printStackTrace(); }
     }
 
@@ -58,35 +90,5 @@ public class PackageUtil extends ChannelOutboundHandlerAdapter implements IPacka
     }
 
     public void unregisterPlayers() { for(Player player : Bukkit.getOnlinePlayers()) unregisterPlayer(player); }
-
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-
-        if(msg instanceof ClientboundSetEntityDataPacket) {
-            ClientboundSetEntityDataPacket packet = (ClientboundSetEntityDataPacket) msg;
-            if(packet.getId() == player.getEntityId() && GPM.getPoseManager().isPosing(player)) {
-                if(player.getScoreboardTags().contains(PoseManager.POSE_TAG)) return;
-                player.addScoreboardTag(PoseManager.POSE_TAG);
-            }
-        }
-
-        if(msg instanceof ClientboundTeleportEntityPacket) {
-            ClientboundTeleportEntityPacket packet = (ClientboundTeleportEntityPacket) msg;
-            if(GPM.getEntityUtil().getSeatMap().containsKey(packet.getId())) return;
-        }
-
-        if(msg instanceof ClientboundAddEntityPacket) {
-            ClientboundAddEntityPacket packet = (ClientboundAddEntityPacket) msg;
-            modifyClientboundAddEntityPacket(packet);
-        }
-
-        super.write(ctx, msg, promise);
-    }
-
-    private void modifyClientboundAddEntityPacket(ClientboundAddEntityPacket Packet) {
-        if(GPM.getViaVersionLink() == null || !GPM.getEntityUtil().getSeatMap().containsKey(Packet.getId())) return;
-        try {
-            addEntityYField.set(Packet, Packet.getY() + GPM.getViaVersionLink().getVersionOffset(player));
-        } catch (Exception e) { e.printStackTrace(); }
-    }
 
 }

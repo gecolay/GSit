@@ -84,15 +84,9 @@ public class PoseManager {
 
         seatLocation.setYaw(SeatRotation);
 
-        GPM.getPackageUtil().registerPlayer(Player);
-
         Entity seatEntity = GPM.getEntityUtil().createSeatEntity(seatLocation, Player, true);
 
-        if(seatEntity == null) {
-
-            GPM.getPackageUtil().unregisterPlayer(Player);
-            return null;
-        }
+        if(seatEntity == null) return null;
 
         if(GPM.getCManager().P_POSE_MESSAGE) {
 
@@ -147,8 +141,6 @@ public class PoseManager {
         if(poseSeat.getPlayer().isValid() && Safe) GPM.getEntityUtil().posEntity(poseSeat.getPlayer(), returnLocation);
 
         GPM.getEntityUtil().removeSeatEntity(poseSeat.getSeat().getSeatEntity());
-
-        GPM.getPackageUtil().unregisterPlayer(Player);
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseSeat, Reason));
 

@@ -32,6 +32,8 @@ public class PlayerEvents implements Listener {
         GPM.getUManager().loginCheckForUpdates(player);
 
         if(GPM.getCManager().E_RESTORE) GPM.getEmoteManager().restoreEmote(player);
+
+        if(GPM.getPackageUtil() != null) GPM.getPackageUtil().registerPlayer(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -50,6 +52,8 @@ public class PlayerEvents implements Listener {
         GPM.getToggleManager().clearToggleCache(player.getUniqueId());
 
         crawl_players.remove(player);
+
+        if(GPM.getPackageUtil() != null) GPM.getPackageUtil().unregisterPlayer(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
