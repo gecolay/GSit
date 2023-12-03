@@ -173,6 +173,8 @@ public class SitManager {
 
         if(seat.getEntity().isValid() && Safe && GPM.getPackageUtil() != null) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
 
+        if(seat.getSeatEntity().isValid() && GPM.getPackageUtil() == null) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
+
         GPM.getEntityUtil().removeSeatEntity(seat.getSeatEntity());
 
         Bukkit.getPluginManager().callEvent(new EntityGetUpSitEvent(seat, Reason));
