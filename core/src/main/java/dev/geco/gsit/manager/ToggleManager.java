@@ -66,17 +66,17 @@ public class ToggleManager {
     }
 
     public void setCanSit(UUID UUID, boolean Toggle) {
-        boolean canSit = (Toggle && GPM.getCManager().S_DEFAULT_SIT_MODE) || (!Toggle && !GPM.getCManager().S_DEFAULT_SIT_MODE);
-        if(canSit) GPM.getDManager().execute("DELETE FROM sit_toggle WHERE uuid = ?", UUID.toString());
+        boolean delete = (Toggle && GPM.getCManager().S_DEFAULT_SIT_MODE) || (!Toggle && !GPM.getCManager().S_DEFAULT_SIT_MODE);
+        if(delete) GPM.getDManager().execute("DELETE FROM sit_toggle WHERE uuid = ?", UUID.toString());
         else GPM.getDManager().execute("INSERT INTO sit_toggle (uuid) VALUES (?)", UUID.toString());
-        sit_cache.put(UUID, canSit);
+        sit_cache.put(UUID, Toggle);
     }
 
     public void setCanPlayerSit(UUID UUID, boolean PlayerToggle) {
-        boolean canPlayerSit = (PlayerToggle && GPM.getCManager().PS_DEFAULT_SIT_MODE) || (!PlayerToggle && !GPM.getCManager().PS_DEFAULT_SIT_MODE);
-        if(canPlayerSit) GPM.getDManager().execute("DELETE FROM player_toggle WHERE uuid = ?", UUID.toString());
+        boolean delete = (PlayerToggle && GPM.getCManager().PS_DEFAULT_SIT_MODE) || (!PlayerToggle && !GPM.getCManager().PS_DEFAULT_SIT_MODE);
+        if(delete) GPM.getDManager().execute("DELETE FROM player_toggle WHERE uuid = ?", UUID.toString());
         else GPM.getDManager().execute("INSERT INTO player_toggle (uuid) VALUES (?)", UUID.toString());
-        playersit_cache.put(UUID, canPlayerSit);
+        playersit_cache.put(UUID, PlayerToggle);
     }
 
     public void setCanCrawl(UUID UUID, boolean Toggle) {
