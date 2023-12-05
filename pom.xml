@@ -36,6 +36,7 @@
         <module>mcv1_19_4</module>
         <module>mcv1_20</module>
         <module>mcv1_20_2</module>
+        <module>mcv1_20_3</module>
         <module>v1_17</module>
         <module>v1_17_1</module>
         <module>v1_18</module>
@@ -46,6 +47,7 @@
         <module>v1_19_4</module>
         <module>v1_20</module>
         <module>v1_20_2</module>
+        <module>v1_20_3</module>
         <module>dist</module>
     </modules>
 
