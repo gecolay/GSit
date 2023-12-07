@@ -14,5 +14,5 @@ before_install:
     (mkdir BuildTools_1.19.4 && cd BuildTools_1.19.4 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.19.4 --remapped > /dev/null) &
     (mkdir BuildTools_1.20 && cd BuildTools_1.20 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.20.1 --remapped > /dev/null) &
     (mkdir BuildTools_1.20.2 && cd BuildTools_1.20.2 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.20.2 --remapped > /dev/null) &
-    (mkdir BuildTools_1.20.3 && cd BuildTools_1.20.3 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.20.3 --remapped > /dev/null)
+    (mkdir BuildTools_1.20.4 && cd BuildTools_1.20.4 && curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar && $JAVA_17 -jar BuildTools.jar --rev 1.20.4 --remapped > /dev/null)
   - sdk use java 17.0.5-tem
