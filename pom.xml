@@ -24,6 +24,13 @@
         <url>https://github.com/Gecolay/GSit/issues</url>
     </issueManagement>
 
+    <repositories>
+        <repository>
+            <id>codemc</id>
+            <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
+    </repositories>
+
     <modules>
         <module>core</module>
         <module>mcv1_17</module>
