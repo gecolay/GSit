@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c Nie możesz się czołgać w tym regionie!"
   action-crawl-info: "&aUżyj swojego przycisku&6 <lang:key.sneak>&a, aby wstać."
 
-  action-emote-none-error: "[P]&c You're not using an emote right now!"
-  action-emote-stop-error: "[P]&c You can't stop emoting!"
-  action-emote-stop: "[P]&a You stopped emoting."
-  action-emote-exist-error: "[P]&c The Emote&6 %Emote%&c does not exist!"
-  action-emote-now-error: "[P]&c You can't emote right now!"
-  action-emote-world-error: "[P]&c You can't emote in this world!"
-  action-emote-region-error: "[P]&c You can't emote in this region!"
-
   action-blocked-error: "[P]&c Nie posiadasz uprawnień, aby użyć tej komendy w tej chwili!"

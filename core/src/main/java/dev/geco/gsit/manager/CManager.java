@@ -83,11 +83,6 @@ public class CManager {
     public boolean C_DOUBLE_SNEAK;
 
 
-    public boolean E_RESTORE;
-
-    public double E_MAX_DISTANCE;
-
-
     public boolean TRUSTED_REGION_ONLY;
 
     public List<String> WORLDBLACKLIST = new ArrayList<>();
@@ -194,9 +189,6 @@ public class CManager {
 
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
         C_DOUBLE_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.double-sneak", false);
-
-        E_RESTORE = GPM.getConfig().getBoolean("Options.Emote.restore", true);
-        E_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Emote.max-distance", 128d);
 
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");

@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c Вы не можете ползать в этом регионе!"
   action-crawl-info: "&aИспользуйте &6 <lang:key.sneak>&a, чтобы встать."
 
-  action-emote-none-error: "[P]&c Вы не используете эмоцию сейчас!"
-  action-emote-stop-error: "[P]&c Вы не можете перестать использовать эмоцию!"
-  action-emote-stop: "[P]&a Вы перестали использовать эмоцию."
-  action-emote-exist-error: "[P]&c Эмоции &6 %Emote%&c не существует!"
-  action-emote-now-error: "[P]&c Вы не можете использовать эмоцию сейчас!"
-  action-emote-world-error: "[P]&c Ты не можешь использовать эмоции в этом мире!"
-  action-emote-region-error: "[P]&c Ты не можешь использовать эмоции в этом регионе!"
-
   action-blocked-error: "[P]&c Вам не разрешено выполнять эту команду прямо сейчас!"

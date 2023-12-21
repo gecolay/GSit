@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c Du kannst in dieser Region nicht kriechen!"
   action-crawl-info: "&6<lang:key.sneak>&a zum aufstehen"
 
-  action-emote-none-error: "[P]&c Du nutzt gerade kein Emote!"
-  action-emote-stop-error: "[P]&c Du kannst nicht aufhören zu emoten!"
-  action-emote-stop: "[P]&a Du hast aufgehört zu emoten."
-  action-emote-exist-error: "[P]&c Das Emote&6 %Emote%&c existiert nicht!"
-  action-emote-now-error: "[P]&c Du kannst gerade nicht emoten!"
-  action-emote-world-error: "[P]&c Du kannst in dieser Welt nicht emoten!"
-  action-emote-region-error: "[P]&c Du kannst in dieser Region nicht emoten!"
-
   action-blocked-error: "[P]&c Du darfst diesen Befehl im Moment nicht ausführen!"

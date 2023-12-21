@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c 你不能在这个区域爬行!"
   action-crawl-info: "&a使用&6 <lang:key.sneak>&a 键起来"
 
-  action-emote-none-error: "[P]&c 你现在没有做表情!"
-  action-emote-stop-error: "[P]&c 你不能停止做表情!"
-  action-emote-stop: "[P]&a 你停止了做表情."
-  action-emote-exist-error: "[P]&c 表情&6 %Emote%&c 不存在!"
-  action-emote-now-error: "[P]&c 你现在不能做表情!"
-  action-emote-world-error: "[P]&c 你不能在这个世界做表情!"
-  action-emote-region-error: "[P]&c 你不能在这个区域做表情!"
-
   action-blocked-error: "[P]&c 你现在不能执行此指令!"

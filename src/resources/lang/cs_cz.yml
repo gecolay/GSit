@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c V téhle oblasti se nemůžeš plazit!"
   action-crawl-info: "&aPoužij&6 <lang:key.sneak>&a klávesu ke vstání"
 
-  action-emote-none-error: "[P]&c Právě teď nepoužíváš emote!"
-  action-emote-stop-error: "[P]&c Nemůžeš zastavit emote!"
-  action-emote-stop: "[P]&a Zrušil jsi emote."
-  action-emote-exist-error: "[P]&c Emote&6 %Emote%&c neexistuje!"
-  action-emote-now-error: "[P]&c Právě teď nemůžeš použít emote!"
-  action-emote-world-error: "[P]&c V tomhle světě nemůžeš použít emote!"
-  action-emote-region-error: "[P]&c V téhle oblasti nemůžeš použít emote!"
-
   action-blocked-error: "[P]&c Právě teď nejsi oprávněn použít tento příkaz!"
