@@ -43,7 +43,9 @@ public class GBellyFlopCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getPoseManager().isPosing(player) && GPM.getPoseManager().getPose(player).getPose() == Pose.SWIMMING) {
+        IGPoseSeat currentPoseSeat = GPM.getPoseManager().getPose(player);
+
+        if(currentPoseSeat != null && currentPoseSeat.getPose() == Pose.SWIMMING) {
 
             GPM.getPoseManager().removePose(player, GetUpReason.GET_UP);
             return true;

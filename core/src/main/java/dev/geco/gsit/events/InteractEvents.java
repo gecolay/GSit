@@ -42,9 +42,9 @@ public class InteractEvents implements Listener {
 
         if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
-        if(!player.isValid() || player.isSneaking() || GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player)) return;
+        if(!player.isValid() || player.isSneaking()) return;
 
-        if(GPM.getCrawlManager().isCrawling(player)) return;
+        if(GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player) || GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().S_MAX_DISTANCE;
 

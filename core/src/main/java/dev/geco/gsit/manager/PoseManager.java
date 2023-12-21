@@ -117,9 +117,9 @@ public class PoseManager {
 
     public boolean removePose(Player Player, GetUpReason Reason, boolean Safe) {
 
-        if(!isPosing(Player)) return true;
-
         IGPoseSeat poseSeat = getPose(Player);
+
+        if(poseSeat == null) return true;
 
         PrePlayerGetUpPoseEvent preEvent = new PrePlayerGetUpPoseEvent(poseSeat, Reason);
 
