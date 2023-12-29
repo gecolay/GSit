@@ -207,13 +207,11 @@ public class GPoseSeat implements IGPoseSeat {
     private List<Player> getNearPlayers() {
 
         List<Player> playerList = new ArrayList<>();
-        seat.getLocation().getWorld().getPlayers().stream().filter(player -> seat.getLocation().distance(player.getLocation()) <= renderRange && player.canSee(seatPlayer)).forEach(playerList::add);
+        seatPlayer.getWorld().getPlayers().stream().filter(player -> seat.getLocation().distance(player.getLocation()) <= renderRange && player.canSee(seatPlayer)).forEach(playerList::add);
         return playerList;
     }
 
     private void startUpdate() {
-
-        final long[] sleepTick = {0};
 
         task = GPM.getTManager().runAtFixedRate(() -> {
 
@@ -249,15 +247,12 @@ public class GPoseSeat implements IGPoseSeat {
 
             if(pose != Pose.SLEEPING || !GPM.getCManager().P_LAY_SNORING_SOUNDS) return;
 
-            sleepTick[0]++;
+            long tick = serverPlayer.getPlayerTime();
 
-            if(sleepTick[0] < 90) return;
+            if((!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) && tick % 90 == 0) {
 
-            long tick = seatPlayer.getPlayerTime();
-
-            if(!GPM.getCManager().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) for(Player nearPlayer : nearPlayers) nearPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
-
-            sleepTick[0] = 0;
+                for(Player nearPlayer : nearPlayers) nearPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
+            }
         }, false, 0, 1);
     }
 

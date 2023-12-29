@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c You can't crawl in this region!"
   action-crawl-info: "&6<lang:key.sneak>&a to get up"
 
-  action-emote-none-error: "[P]&c You're not using an emote right now!"
-  action-emote-stop-error: "[P]&c You can't stop emoting!"
-  action-emote-stop: "[P]&a You stopped emoting."
-  action-emote-exist-error: "[P]&c The emote&6 %Emote%&c doesn't exist!"
-  action-emote-now-error: "[P]&c You can't emote right now!"
-  action-emote-world-error: "[P]&c You can't emote in this world!"
-  action-emote-region-error: "[P]&c You can't emote in this region!"
-
   action-blocked-error: "[P]&c You are not allowed to run this command right now!"

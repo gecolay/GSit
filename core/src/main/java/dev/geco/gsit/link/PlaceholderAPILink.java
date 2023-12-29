@@ -42,8 +42,6 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
 
         if(Params.equalsIgnoreCase("crawling")) return Player.isOnline() ? "" + (GPM.getCrawlManager().isCrawling((Player) Player)) : "" + false;
 
-        if(Params.equalsIgnoreCase("emoting")) return Player.isOnline() ? "" + GPM.getEmoteManager().isEmoting((Player) Player) : "" + false;
-
         if(Params.equalsIgnoreCase("playertoggle")) return "" + GPM.getToggleManager().canPlayerSit(Player.getUniqueId());
 
         if(Params.equalsIgnoreCase("posing")) return Player.isOnline() ? "" + (GPM.getPoseManager().isPosing((Player) Player)) : "" + false;

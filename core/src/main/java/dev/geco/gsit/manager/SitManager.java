@@ -121,7 +121,9 @@ public class SitManager {
 
     public void moveSeat(LivingEntity Entity, BlockFace BlockFace) {
 
-        if(!isSitting(Entity)) return;
+        GSeat seat = getSeat(Entity);
+
+        if(seat == null) return;
 
         if(Entity instanceof Player) {
 
@@ -134,8 +136,6 @@ public class SitManager {
             if(playerMoveEvent.isCancelled()) return;
         }
 
-        GSeat seat = getSeat(Entity);
-
         seat.setBlock(seat.getBlock().getRelative(BlockFace));
 
         seat.setLocation(seat.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
@@ -147,9 +147,9 @@ public class SitManager {
 
     public boolean removeSeat(LivingEntity Entity, GetUpReason Reason, boolean Safe) {
 
-        if(!isSitting(Entity)) return true;
-
         GSeat seat = getSeat(Entity);
+
+        if(seat == null) return true;
 
         PreEntityGetUpSitEvent preEvent = new PreEntityGetUpSitEvent(seat, Reason);
 

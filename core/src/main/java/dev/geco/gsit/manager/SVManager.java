@@ -19,6 +19,7 @@ public class SVManager {
         VERSION_MAPPING.put("v1_18_1", "v1_18");
         VERSION_MAPPING.put("v1_19_2", "v1_19_1");
         VERSION_MAPPING.put("v1_20_1", "v1_20");
+        VERSION_MAPPING.put("v1_20_4", "v1_20_3");
     }
 
     public SVManager(GSitMain GPluginMain) {

@@ -43,7 +43,9 @@ public class GLayCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getPoseManager().isPosing(player) && GPM.getPoseManager().getPose(player).getPose() == Pose.SLEEPING) {
+        IGPoseSeat currentPoseSeat = GPM.getPoseManager().getPose(player);
+
+        if(currentPoseSeat != null && currentPoseSeat.getPose() == Pose.SLEEPING) {
 
             GPM.getPoseManager().removePose(player, GetUpReason.GET_UP);
             return true;

@@ -9,17 +9,17 @@
     <parent>
         <groupId>dev.geco.gsit</groupId>
         <artifactId>GSit</artifactId>
-        <version>1.5.5</version>
+        <version>1.7.0</version>
     </parent>
 
     <properties>
-        <paper.version>1.20.2-R0.1-SNAPSHOT</paper.version>
-        <spigot.version>1.20.2-R0.1-SNAPSHOT</spigot.version>
+        <paper.version>1.20.4-R0.1-SNAPSHOT</paper.version>
+        <spigot.version>1.20.4-R0.1-SNAPSHOT</spigot.version>
         <worldguard.version>7.0.9</worldguard.version>
         <placeholderapi.version>2.11.5</placeholderapi.version>
         <griefprevention.version>16.18.1</griefprevention.version>
         <plotsquared.version>7.2.0</plotsquared.version>
-        <viaversion.version>4.8.1</viaversion.version>
+        <viaversion.version>4.9.2</viaversion.version>
     </properties>
 
     <repositories>

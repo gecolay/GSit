@@ -128,24 +128,14 @@ Options:
 
 
 
-  Emote:
-
-    # Defines whether a player's emote is restore on rejoin / reload
-    restore: true
-
-    # Defines the maximum range at which emotes can be seen
-    max-distance: 128.0
-
-
-
   # Defines whether a player can only sit or pose in a region where they are trusted
   trusted-region-only: false
 
-  # Defines the worlds in which a player cannot sit, pose, crawl or emote
+  # Defines the worlds in which a player cannot sit, pose or crawl
   WorldBlacklist:
   - "blocked_world"
 
-  # Defines the worlds in which a player can sit, pose, crawl or emote (all other worlds will be blocked when the list is not empty)
+  # Defines the worlds in which a player can sit, pose or crawl (all other worlds will be blocked when the list is not empty)
   WorldWhitelist: []
 
   # Defines the list of materials on which a player may not sit or pose

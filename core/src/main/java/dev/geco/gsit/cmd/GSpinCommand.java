@@ -43,7 +43,9 @@ public class GSpinCommand implements CommandExecutor {
             return true;
         }
 
-        if(GPM.getPoseManager().isPosing(player) && GPM.getPoseManager().getPose(player).getPose() == Pose.SPIN_ATTACK) {
+        IGPoseSeat currentPoseSeat = GPM.getPoseManager().getPose(player);
+
+        if(currentPoseSeat != null && currentPoseSeat.getPose() == Pose.SPIN_ATTACK) {
 
             GPM.getPoseManager().removePose(player, GetUpReason.GET_UP);
             return true;

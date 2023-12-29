@@ -43,13 +43,6 @@ commands:
     aliases: [crawl]
     description: Crawl command
 
-  gemote:
-
-    usage: /<command> [<Emote>]
-    aliases: [emote]
-    description: Emote command
-    permission: GSit.Emote
-
   gsitreload:
 
     usage: /<command>
@@ -69,7 +62,6 @@ permissions:
       GSit.PlayerSit.*: true
       GSit.Pose.*: true
       GSit.Crawl.*: true
-      GSit.Emote.*: true
       GSit.Kick.*: true
       GSit.ByPass.*: true
       GSit.Update: true
@@ -149,16 +141,6 @@ permissions:
   GSit.CrawlToggle:
     default: true
     description: Toggle Crawl ability | Permission
-
-  GSit.Emote.*:
-    default: true
-    description: Emote | Permissions
-    children:
-      GSit.Emote: true
-
-  GSit.Emote:
-    default: true
-    description: Emote command | Permission
 
   GSit.Kick.*:
     default: op

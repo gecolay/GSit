@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c Vous ne pouvez pas ramper dans cette zone !"
   action-crawl-info: "&aUtiliser votre touche&6 <lang:key.sneak>&a pour vous lever."
 
-  action-emote-none-error: "[P]&c Vous n'utilisez pas d'emote actuellement !"
-  action-emote-stop-error: "[P]&c Vous ne pouvez pas arrêter d'emote !"
-  action-emote-stop: "[P]&a Vous avez arrêté d'emote."
-  action-emote-exist-error: "[P]&c L'emote&6 %Emote%&c n'existe pas !"
-  action-emote-now-error: "[P]&c Vous ne pouvez pas emote tout de suite !"
-  action-emote-world-error: "[P]&c Vous ne pouvez pas emote dans ce monde !"
-  action-emote-region-error: "[P]&c Vous ne pouvez pas emote dans cette région !"
-
   action-blocked-error: "[P]&c Vous n'êtes pas autorisé à utiliser cette commande pour le moment !"

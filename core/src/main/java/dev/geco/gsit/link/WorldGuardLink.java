@@ -22,7 +22,6 @@ public class WorldGuardLink {
         FLAGS.put("playersit", new StateFlag("playersit", true));
         FLAGS.put("pose", new StateFlag("pose", true));
         FLAGS.put("crawl", new StateFlag("crawl", true));
-        FLAGS.put("emote", new StateFlag("emote", true));
     }
 
     public StateFlag getFlag(String FlagName) { return FlagName != null ? FLAGS.getOrDefault(FlagName.toLowerCase(), null) : null; }

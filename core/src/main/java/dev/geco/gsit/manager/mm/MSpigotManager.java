@@ -21,8 +21,8 @@ public class MSpigotManager extends MManager {
 
     public String toFormattedMessage(String Text, Object... RawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirect(replaceText(Text, RawReplaceList).replace("<lang:key.sneak>", "Sneak"))); }
 
-    public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getMessage(Message, getLanguage(Target), ReplaceList)); }
+    public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getMessageByLanguage(Message, getLanguage(Target), ReplaceList)); }
 
-    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) { if(allowBungeeMessages) Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getMessage(Message, getLanguage(Target), ReplaceList))); }
+    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) { if(allowBungeeMessages) Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getMessageByLanguage(Message, getLanguage(Target), ReplaceList))); }
 
 }

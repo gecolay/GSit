@@ -42,9 +42,9 @@ public class InteractEvents implements Listener {
 
         if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
-        if(!player.isValid() || player.isSneaking() || GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player)) return;
+        if(!player.isValid() || player.isSneaking()) return;
 
-        if(GPM.getCrawlManager().isCrawling(player)) return;
+        if(GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player) || GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().S_MAX_DISTANCE;
 
@@ -69,11 +69,9 @@ public class InteractEvents implements Listener {
                 if(GPM.getEnvironmentUtil().createSeatForStair(clickedBlock, player) != null) {
 
                     Event.setCancelled(true);
-
                     return;
                 }
             } else if(GPM.getCManager().S_BOTTOM_PART_ONLY) return;
-
         } else if(Tag.SLABS.isTagged(clickedBlock.getType())) {
 
             if(((Slab) clickedBlock.getBlockData()).getType() != Type.BOTTOM && GPM.getCManager().S_BOTTOM_PART_ONLY) return;

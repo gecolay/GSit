@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c Non puoi strisciare in questa regione!"
   action-crawl-info: "&aUsa il pulsante&6 <lang:key.sneak>&a per alzarti."
 
-  action-emote-none-error: "[P]&c Non stai usando un emote in questo momento!"
-  action-emote-stop-error: "[P]&c Non puoi smettere di fare emote!"
-  action-emote-stop: "[P]&a Hai smesso di fare emote."
-  action-emote-exist-error: "[P]&c Emote&6 %Emote%&c non esiste!"
-  action-emote-now-error: "[P]&c Non puoi eseguire emote ora!"
-  action-emote-world-error: "[P]&c Non puoi eseguire emote in questo mondo!"
-  action-emote-region-error: "[P]&c Non puoi eseguire emote in questa regione!"
-
   action-blocked-error: "[P]&c Non hai il permesso di eseguire questo comando ora!"

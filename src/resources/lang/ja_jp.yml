@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c この領域でクロールをすることはできません！"
   action-crawl-info: "&6 <lang:key.sneak>&a キーで立ち上がる。"
 
-  action-emote-none-error: "[P]&c You're not using an emote right now!"
-  action-emote-stop-error: "[P]&c エモートを止めることはできません！"
-  action-emote-stop: "[P]&a エモートを止めました。"
-  action-emote-exist-error: "[P]&6 %Emote%&c というエモートは存在しません！"
-  action-emote-now-error: "[P]&c 今エモートをすることはできません！"
-  action-emote-world-error: "[P]&c このワールドでエモートをすることはできません！"
-  action-emote-region-error: "[P]&c この領域でエモートをすることはできません！"
-
   action-blocked-error: "[P]&c 現在、このコマンドを実行することは許可されていません！"

@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c Сез бу регионда шуыша алмыйсыз!"
   action-crawl-info: "Төшү өчен, &6<lang:key.sneak>&a басыгыз"
 
-  action-emote-none-error: "[P]&c Сез эмоцияне хәзер үк кулланмыйсыз!"
-  action-emote-stop-error: "[P]&c Сез эмоция уйнатуны туктата алмыйсыз!"
-  action-emote-stop: "[P]&a Сез эмоция уйнатуны туктаттыгыз."
-  action-emote-exist-error: "[P]&c&6 %Emote%&c эмоциясе юк!"
-  action-emote-now-error: "[P]&c Сез эмоцияне уйната хәзер үк алмыйсыз!"
-  action-emote-world-error: "[P]&c Сез бу дөньяда эмоцияне уйната алмыйсыз!"
-  action-emote-region-error: "[P]&c Сез бу регионда эмоцияне уйната алмыйсыз!"
-
   action-blocked-error: "[P]&c Сезгә бу боерыкны хәзер үк кабызырга рөхсәт ителмәде!"

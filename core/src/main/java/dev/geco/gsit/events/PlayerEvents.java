@@ -31,8 +31,6 @@ public class PlayerEvents implements Listener {
 
         GPM.getUManager().loginCheckForUpdates(player);
 
-        if(GPM.getCManager().E_RESTORE) GPM.getEmoteManager().restoreEmote(player);
-
         if(GPM.getPackageUtil() != null) GPM.getPackageUtil().registerPlayer(player);
     }
 
@@ -46,8 +44,6 @@ public class PlayerEvents implements Listener {
         GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
 
         GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
-
-        GPM.getEmoteManager().stopEmote(player, true);
 
         GPM.getToggleManager().clearToggleCache(player.getUniqueId());
 

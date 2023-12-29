@@ -38,9 +38,6 @@ public class GSitMain extends JavaPlugin {
     private CrawlManager crawlManager;
     public CrawlManager getCrawlManager() { return crawlManager; }
 
-    private EmoteManager emoteManager;
-    public EmoteManager getEmoteManager() { return emoteManager; }
-
     private ToggleManager toggleManager;
     public ToggleManager getToggleManager() { return toggleManager; }
 
@@ -55,9 +52,6 @@ public class GSitMain extends JavaPlugin {
 
     private MManager mManager;
     public MManager getMManager() { return mManager; }
-
-    private EmoteUtil emoteUtil;
-    public EmoteUtil getEmoteUtil() { return emoteUtil; }
 
     private PassengerUtil passengerUtil;
     public PassengerUtil getPassengerUtil() { return passengerUtil; }
@@ -107,9 +101,6 @@ public class GSitMain extends JavaPlugin {
 
         if(!connectDatabase(Sender)) return;
 
-        getEmoteManager().createTable();
-        getEmoteManager().reloadEmotes();
-
         getToggleManager().createTable();
 
         if(getPackageUtil() != null) getPackageUtil().registerPlayers();
@@ -128,14 +119,11 @@ public class GSitMain extends JavaPlugin {
         bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> (int) getPoseManager().getPoseUsedSeconds()));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> getCrawlManager().getCrawlUsedCount()));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> (int) getCrawlManager().getCrawlUsedSeconds()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_emote_feature", () -> getEmoteManager().getEmoteUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_emote_feature", () -> (int) getEmoteManager().getEmoteUsedSeconds()));
 
         getSitManager().resetFeatureUsedCount();
         getPlayerSitManager().resetFeatureUsedCount();
         getPoseManager().resetFeatureUsedCount();
         getCrawlManager().resetFeatureUsedCount();
-        getEmoteManager().resetFeatureUsedCount();
     }
 
     public void onLoad() {
@@ -152,10 +140,8 @@ public class GSitMain extends JavaPlugin {
         playerSitManager = new PlayerSitManager(getInstance());
         poseManager = new PoseManager(getInstance());
         crawlManager = new CrawlManager(getInstance());
-        emoteManager = new EmoteManager(getInstance());
         toggleManager = new ToggleManager(getInstance());
 
-        emoteUtil = new EmoteUtil();
         passengerUtil = new PassengerUtil();
         environmentUtil = new EnvironmentUtil(getInstance());
 
@@ -191,7 +177,6 @@ public class GSitMain extends JavaPlugin {
 
     private void unload() {
 
-        getEmoteManager().clearEmotes();
         getDManager().close();
         getSitManager().clearSeats();
         getPlayerSitManager().clearSeats();
@@ -217,9 +202,6 @@ public class GSitMain extends JavaPlugin {
         getCommand("gspin").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
         getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
         getCommand("gcrawl").setTabCompleter(new GCrawlTabComplete(getInstance()));
-        getCommand("gemote").setExecutor(new GEmoteCommand(getInstance()));
-        getCommand("gemote").setTabCompleter(new GEmoteTabComplete(getInstance()));
-        getCommand("gemote").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
         getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
         getCommand("gsitreload").setTabCompleter(new EmptyTabComplete());
         getCommand("gsitreload").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));

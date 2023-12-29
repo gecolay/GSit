@@ -102,7 +102,9 @@ public class PackageUtil implements IPackageUtil {
     public void unregisterPlayer(Player Player) {
         Channel channel = players.get(Player);
         if(channel == null) return;
-        if(channel.pipeline().get(GPM.NAME.toLowerCase()) != null) channel.pipeline().remove(GPM.NAME.toLowerCase());
+        try {
+            if(channel.pipeline().get(GPM.NAME.toLowerCase()) != null) channel.pipeline().remove(GPM.NAME.toLowerCase());
+        } catch (Throwable ignored) { }
         players.remove(Player);
     }
 
