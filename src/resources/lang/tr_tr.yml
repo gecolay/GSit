@@ -1,0 +1,58 @@
+#
+# Language-File created by:		hhhhh-ckr
+#
+
+
+
+Plugin:
+
+  plugin-enabled: "[P]&a Eklenti başarıyla etkinleştirildi."
+  plugin-link: "[P]&6 %Link%&a ile bağlantı başarılı!"
+  plugin-update: "[P]&a Yeni sürüm mevcut:&6 %NewVersion%&a!\n[P]&a Şu anki sürüm:&6 %Version%&a!\n[P]&a En son sürümü indirin:\n[P]&6 %Path%"
+  plugin-data: "[P]&c Veri depolama alanıyla bağlantı kurulamadı. Lütfen sunucu konsolunu kontrol edin!"
+  plugin-version: "[P]&c Eklenti bu sunucu sürümüyle kullanılamaz! (&b%Version%&c)"
+  plugin-reload: "[P]&a Eklenti başarıyla yeniden yüklendi."
+  plugin-disabled: "[P]&a Eklenti başarıyla devre dışı bırakıldı."
+  plugin-prefix: "&7[&6GSit&7]"
+
+
+
+Messages:
+
+  command-permission-error: "[P]&c Bu komutu kullanma yetkiniz yok!"
+  command-sender-error: "[P]&c Bu komutu çalıştıramazsın!"
+  command-version-error: "[P]&c Eski sunucu sürümü! (&b%Version%&c)\n[P]&c Bu özelliği kullanabilmek için sunucunuzu yükseltin!"
+
+  command-gsit-toggle-on: "[P]&6 Oturma&a için tıklama etkileşimlerini etkinleştirdiniz."
+  command-gsit-toggle-off: "[P]&6 Oturma&a için tıklama etkileşimlerini devre dışı bıraktınız."
+  command-gsit-playertoggle-on: "[P]&6 Oyuncuya Oturma&a için tıklama etkileşimlerini etkinleştirdiniz."
+  command-gsit-playertoggle-off: "[P]&6 Oyuncuya Oturma&a için tıklama etkileşimlerini devre dışı bıraktınız."
+  command-gcrawl-toggle-on: "[P]&6 Sürünme&a için çift eğilmeyi etkinleştirdiniz."
+  command-gcrawl-toggle-off: "[P]&6 Sürünme&a için çift eğilmeyi devre dışı bıraktınız."
+
+  action-sit-now-error: "[P]&c Şu an oturamazsın!"
+  action-sit-world-error: "[P]&c Bu dünyada oturamazsın!"
+  action-sit-location-error: "[P]&c Buraya oturamazsın!"
+  action-sit-safe-error: "[P]&c Burada oturmak güvenli değil!"
+  action-sit-region-error: "[P]&c Bu bölgede oturamazsınız!"
+  action-sit-kick-error: "[P]&c Birisi zaten burada oturuyor!"
+  action-sit-error: "[P]&c Bir hatadan dolayı burada oturamazsınız!"
+  action-sit-info: "&a Ayağa kalkmak için &6<lang:key.sneak>"
+
+  action-playersit-info: "&a Ayağa kalkmak için &6<lang:key.sneak>"
+
+  action-pose-now-error: "[P]&c Şu anda poz veremezsin!"
+  action-pose-world-error: "[P]&c Bu dünyada poz veremezsin!"
+  action-pose-location-error: "[P]&c Burada poz veremezsin!"
+  action-pose-safe-error: "[P]&c Burada poz vermek güvenli değil!"
+  action-pose-region-error: "[P]&c Bu bölgede poz veremezsiniz!"
+  action-pose-kick-error: "[P]&c Birisi zaten burada poz veriyor!"
+  action-pose-error: "[P]&c Bir hatadan dolayı burada poz veremezsiniz!"
+  action-pose-info: "&a Ayağa kalkmak için &6<lang:key.sneak>"
+
+  action-crawl-now-error: "[P]&c Şu anda sürünemezsin!"
+  action-crawl-world-error: "[P]&c Bu dünyada sürünemezsin!"
+  action-crawl-region-error: "[P]&c Bu bölgede sürünemezsiniz!"
+  action-crawl-info: "&a Ayağa kalkmak için &6<lang:key.sneak>"
+
+  action-blocked-error: "[P]&c Şu anda bu komutu çalıştırmak için izniniz yok!"
