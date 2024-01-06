@@ -55,12 +55,4 @@ Messages:
   action-crawl-region-error: "[P]&c Bu bölgede sürünemezsiniz!"
   action-crawl-info: "&a Ayağa kalkmak için &6<lang:key.sneak>"
 
-  action-emote-none-error: "[P]&c Şu anda bir ifade kullanmıyorsunuz!"
-  action-emote-stop-error: "[P]&c İfade kullanmayı bırakamıyorsunuz!"
-  action-emote-stop: "[P]&a İfade kullanmayı bıraktın."
-  action-emote-exist-error: "[P]&6 %Emote%&c ifadesi mevcut değil!"
-  action-emote-now-error: "[P]&c Şu anda ifade kullanamazsın!"
-  action-emote-world-error: "[P]&c Bu dünyada ifade kullanamazsın!"
-  action-emote-region-error: "[P]&c Bu bölgede ifade kullanamazsın!"
-
   action-blocked-error: "[P]&c Şu anda bu komutu çalıştırmak için izniniz yok!"
