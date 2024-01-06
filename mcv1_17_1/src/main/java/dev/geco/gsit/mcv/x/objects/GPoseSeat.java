@@ -63,7 +63,7 @@ public class GPoseSeat implements IGPoseSeat {
     private NonNullList<net.minecraft.world.item.ItemStack> equipmentSlotCache;
     private net.minecraft.world.item.ItemStack mainSlotCache;
     private float directionCache;
-    protected int renderRange = 12 * 16;
+    protected int renderRange = 10 * 16;
 
     private UUID task;
 
