@@ -64,7 +64,7 @@ public class GPoseSeat implements IGPoseSeat {
     private NonNullList<net.minecraft.world.item.ItemStack> equipmentSlotCache;
     private net.minecraft.world.item.ItemStack mainSlotCache;
     private float directionCache;
-    protected int renderRange = Bukkit.getServer().getSimulationDistance() * 16;
+    protected int renderRange;
 
     private UUID task;
 
@@ -79,6 +79,8 @@ public class GPoseSeat implements IGPoseSeat {
         Location seatLocation = seat.getLocation();
 
         serverPlayer = ((CraftPlayer) seatPlayer).getHandle();
+
+        renderRange = seatPlayer.getWorld().getSimulationDistance() * 16;
 
         playerNpc = createNPC();
         playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + (pose == org.bukkit.entity.Pose.SLEEPING ? 0.3125d : pose == org.bukkit.entity.Pose.SPIN_ATTACK ? 0.2d : 0d), seatLocation.getZ(), 0f, 0f);

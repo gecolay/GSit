@@ -6,7 +6,6 @@ import com.mojang.authlib.*;
 import com.mojang.datafixers.util.*;
 
 import org.bukkit.*;
-import org.bukkit.block.data.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
@@ -46,7 +45,7 @@ public class GPoseSeat implements IGPoseSeat {
 
     private final Location blockLocation;
 
-    private final BlockData bedData;
+    private final org.bukkit.block.Block bedBlock;
     private final BlockPos bedPos;
 
     private final Direction direction;
@@ -64,7 +63,7 @@ public class GPoseSeat implements IGPoseSeat {
     private NonNullList<net.minecraft.world.item.ItemStack> equipmentSlotCache;
     private net.minecraft.world.item.ItemStack mainSlotCache;
     private float directionCache;
-    protected int renderRange = Bukkit.getServer().getSimulationDistance() * 16;
+    protected int renderRange;
 
     private final Listener listener;
 
@@ -78,13 +77,15 @@ public class GPoseSeat implements IGPoseSeat {
 
         serverPlayer = ((CraftPlayer) seatPlayer).getHandle();
 
+        renderRange = seatPlayer.getWorld().getSimulationDistance() * 16;
+
         playerNpc = createNPC();
         playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + GPM.getSitManager().BASE_OFFSET + (pose == org.bukkit.entity.Pose.SLEEPING ? 0.1125d : 0d), seatLocation.getZ(), 0f, 0f);
 
         blockLocation = seatLocation.clone();
         blockLocation.setY(blockLocation.getWorld().getMinHeight());
 
-        bedData = blockLocation.getBlock().getBlockData();
+        bedBlock = blockLocation.getBlock();
         bedPos = new BlockPos(blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
 
         direction = getDirection();
@@ -239,7 +240,7 @@ public class GPoseSeat implements IGPoseSeat {
         sendPacket(removePlayer, removeNpcInfoPacket);
         sendPacket(removePlayer, removeNpcPacket);
 
-        Player.sendBlockChange(blockLocation, bedData);
+        Player.sendBlockChange(blockLocation, bedBlock.getBlockData());
     }
 
     private List<Player> getNearPlayers() {

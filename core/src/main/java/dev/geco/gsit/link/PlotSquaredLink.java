@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 
 import com.plotsquared.core.*;
+import com.plotsquared.core.player.*;
 import com.plotsquared.core.plot.*;
 
 import dev.geco.gsit.GSitMain;
@@ -26,7 +27,11 @@ public class PlotSquaredLink {
 
             PlotAPI plotAPI = new PlotAPI();
 
-            com.plotsquared.core.location.Location location = com.plotsquared.core.location.Location.at(plotAPI.wrapPlayer(Player.getUniqueId()).getLocation().getWorld(), Location.getBlockX(), Location.getBlockY(), Location.getBlockZ());
+            PlotPlayer<?> plotPlayer = plotAPI.wrapPlayer(Player.getUniqueId());
+
+            if(plotPlayer == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
+
+            com.plotsquared.core.location.Location location = com.plotsquared.core.location.Location.at(plotPlayer.getLocation().getWorld(), Location.getBlockX(), Location.getBlockY(), Location.getBlockZ());
 
             PlotArea plotArea = plotAPI.getPlotSquared().getPlotAreaManager().getApplicablePlotArea(location);
 
