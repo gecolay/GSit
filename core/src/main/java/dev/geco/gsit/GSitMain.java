@@ -80,14 +80,17 @@ public class GSitMain extends JavaPlugin {
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
 
-    private boolean spigotBased = false;
-    public boolean isSpigotBased() { return spigotBased; }
+    private boolean supportsSpigotMountFeature = false;
+    public boolean supportsSpigotMountFeature() { return supportsSpigotMountFeature; }
 
-    private boolean basicPaperBased = false;
-    public boolean isBasicPaperBased() { return basicPaperBased; }
+    private boolean supportsBukkitMountFeature = false;
+    public boolean supportsBukkitMountFeature() { return supportsBukkitMountFeature; }
 
-    private boolean paperBased = false;
-    public boolean isPaperBased() { return paperBased; }
+    private boolean supportsPaperFeature = false;
+    public boolean supportsPaperFeature() { return supportsPaperFeature; }
+
+    private boolean supportsTaskFeature = false;
+    public boolean supportsTaskFeature() { return supportsTaskFeature; }
 
     public final String NAME = "GSit";
 
@@ -147,7 +150,7 @@ public class GSitMain extends JavaPlugin {
 
         preloadPluginDependencies();
 
-        mManager = isBasicPaperBased() && getSVManager().isNewerOrVersion(18, 2) ? new MPaperManager(getInstance()) : new MSpigotManager(getInstance());
+        mManager = supportsPaperFeature() && getSVManager().isNewerOrVersion(18, 2) ? new MPaperManager(getInstance()) : new MSpigotManager(getInstance());
     }
 
     public void onEnable() {
@@ -213,6 +216,7 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerSitEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
+        getServer().getPluginManager().registerEvents(supportsBukkitMountFeature() ? new EntityEvents(getInstance()) : new dev.geco.gsit.events.deprecated.EntityEvents(getInstance()), getInstance());
 
         getServer().getPluginManager().registerEvents(new SpinConfusionEvent(getInstance()), getInstance());
     }
@@ -220,19 +224,24 @@ public class GSitMain extends JavaPlugin {
     private void preloadPluginDependencies() {
 
         try {
-            Class.forName("org.spigotmc.event.entity.EntityDismountEvent");
-            spigotBased = true;
-        } catch (ClassNotFoundException ignored) { }
+            Class.forName("org.spigotmc.event.entity.EntityMountEvent");
+            supportsSpigotMountFeature = true;
+        } catch (ClassNotFoundException ignored) { supportsSpigotMountFeature = false; }
+
+        try {
+            Class.forName("org.bukkit.event.entity.EntityMountEvent");
+            supportsBukkitMountFeature = true;
+        } catch (ClassNotFoundException ignored) { supportsBukkitMountFeature = false; }
 
         try {
             Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
-            basicPaperBased = true;
-        } catch (ClassNotFoundException ignored) { }
+            supportsPaperFeature = true;
+        } catch (ClassNotFoundException ignored) { supportsPaperFeature = false; }
 
         try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
-            paperBased = true;
-        } catch (ClassNotFoundException ignored) { }
+            supportsTaskFeature = true;
+        } catch (ClassNotFoundException ignored) { supportsTaskFeature = false; }
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
             worldGuardLink = new WorldGuardLink(getInstance());
@@ -312,11 +321,15 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
 
-        if(!isSpigotBased() || !getSVManager().isNewerOrVersion(13, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().hasPackageClass("objects.SeatEntity"))) {
+        boolean baseMissing = !supportsSpigotMountFeature() && !supportsBukkitMountFeature();
+
+        if(getCManager().DEBUG) getMManager().sendMessage(Bukkit.getConsoleSender(), supportsSpigotMountFeature() + " " + supportsBukkitMountFeature() + " " + supportsPaperFeature() + " " + supportsTaskFeature());
+
+        if(baseMissing || !getSVManager().isNewerOrVersion(13, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().hasPackageClass("objects.SeatEntity"))) {
 
             String version = Bukkit.getServer().getClass().getPackage().getName();
 
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", !isSpigotBased() ? "bukkit-based" : version.substring(version.lastIndexOf('.') + 1));
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", baseMissing ? "outdated-server" : version.substring(version.lastIndexOf('.') + 1));
 
             getUManager().checkForUpdates();
 

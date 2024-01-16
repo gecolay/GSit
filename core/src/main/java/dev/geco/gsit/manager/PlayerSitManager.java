@@ -15,6 +15,8 @@ public class PlayerSitManager {
 
     private final HashMap<UUID, Long> spawnTimes = new HashMap<>();
 
+    public final List<Player> WAIT_EJECT = new ArrayList<>();
+
     public PlayerSitManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
         seat_entity_count = GPM.getSVManager().isNewerOrVersion(20, 2) ? 1 : 2;
@@ -36,7 +38,11 @@ public class PlayerSitManager {
     public int getSeatEntityCount() { return seat_entity_count; }
 
     public void clearSeats() {
-        for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) entity.remove();
+        for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) {
+            try {
+                if(entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) entity.remove();
+            } catch (Throwable ignored) { }
+        }
         spawnTimes.clear();
     }
 

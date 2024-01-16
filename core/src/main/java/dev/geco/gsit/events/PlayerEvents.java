@@ -7,8 +7,6 @@ import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 
-import org.spigotmc.event.entity.*;
-
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.objects.*;
 
@@ -62,20 +60,6 @@ public class PlayerEvents implements Listener {
         if(!GPM.getPoseManager().removePose(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
 
         if(!GPM.getCrawlManager().stopCrawl(player, GetUpReason.TELEPORT)) Event.setCancelled(true);
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void EDisE(EntityDismountEvent Event) {
-
-        Entity entity = Event.getEntity();
-
-        if(!(entity instanceof Player)) return;
-
-        Player player = (Player) entity;
-
-        if(GPM.getSitManager().isSitting(player) && (!GPM.getCManager().GET_UP_SNEAK || (!GPM.getSitManager().removeSeat(player, GetUpReason.GET_UP, true)))) Event.setCancelled(true);
-
-        if(GPM.getPoseManager().isPosing(player) && (!GPM.getCManager().GET_UP_SNEAK || !GPM.getPoseManager().removePose(player, GetUpReason.GET_UP, true))) Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

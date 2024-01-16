@@ -35,7 +35,7 @@ public class TManager {
 
     private UUID run(Callback Call, boolean Sync, Entity Entity, Location Location) {
         UUID uuid = UUID.randomUUID();
-        if(GPM.isPaperBased()) {
+        if(GPM.supportsTaskFeature()) {
             if(Entity != null) {
                 tasks.put(uuid, Entity.getScheduler().run(GPM, scheduledTask -> {
                     Call.call();
@@ -85,7 +85,7 @@ public class TManager {
 
     private UUID runDelayed(Callback Call, boolean Sync, Entity Entity, Location Location, long Ticks) {
         UUID uuid = UUID.randomUUID();
-        if(GPM.isPaperBased()) {
+        if(GPM.supportsTaskFeature()) {
             if(Ticks <= 0) return run(Call, Sync, Entity);
             if(Entity != null) {
                 tasks.put(uuid, Entity.getScheduler().runDelayed(GPM, scheduledTask -> {
@@ -136,7 +136,7 @@ public class TManager {
 
     private UUID runAtFixedRate(Callback Call, boolean Sync, Entity Entity, Location Location, long Delay, long Ticks) {
         UUID uuid = UUID.randomUUID();
-        if(GPM.isPaperBased()) {
+        if(GPM.supportsTaskFeature()) {
             if(Entity != null) {
                 tasks.put(uuid, Entity.getScheduler().runAtFixedRate(GPM, scheduledTask -> { Call.call(); }, null, Delay <= 0 ? 1 : Delay, Ticks <= 0 ? 1 : Ticks));
                 return uuid;
