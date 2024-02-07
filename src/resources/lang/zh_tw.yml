@@ -1,58 +1,58 @@
 #
-# Language-File created by:		flandretw
+# Language-File created by:		flandretw and notlin4
 #
 
 
 
 Plugin:
 
-  plugin-enabled: "[P]&a 插件已成功載入"
-  plugin-link: "[P]&a 成功連接到&6 %Link%&a!"
-  plugin-update: "[P]&a 新版本可用:&6 %NewVersion%&a!\n[P]&a 目前使用版本:&6 %Version%&a!\n[P]&a 下载最新版本:\n[P]&6 %Path%"
-  plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
-  plugin-version: "[P]&c 插件與目前伺服器版本不相容! (&b%Version%&c)"
-  plugin-reload: "[P]&a The plugin was successfully reloaded."
-  plugin-disabled: "[P]&a 插件已成功禁用"
+  plugin-enabled: "[P]&a 插件已成功啟用。"
+  plugin-link: "[P]&a 成功連結到&6 %Link%&a！"
+  plugin-update: "[P]&a 新版本可用：&6 %NewVersion%&a！\n[P]&a 目前使用版本：&6 %Version%&a！\n[P]&a 下載最新版本：\n[P]&6 %Path%"
+  plugin-data: "[P]&c 無法建立到資料儲存的連線。請檢查伺服器控制台！"
+  plugin-version: "[P]&c 插件與目前伺服器版本不相容！(&b%Version%&c)"
+  plugin-reload: "[P]&a 插件已成功重新載入。"
+  plugin-disabled: "[P]&a 插件已成功停用。"
   plugin-prefix: "&7[&6GSit&7]"
 
 
 
 Messages:
 
-  command-permission-error: "[P]&c 你不能執行此指令!"
-  command-sender-error: "[P]&c 目前玩家不能執行此指令!"
-  command-version-error: "[P]&c 過時伺服器版本! (&b%Version%&c)\n[P]&c 更新伺服器以使用此功能!"
+  command-permission-error: "[P]&c 你沒有權限執行此指令！"
+  command-sender-error: "[P]&c 你不能執行此指令！"
+  command-version-error: "[P]&c 伺服器版本太舊！(&b%Version%&c)\n[P]&c 升級伺服器以使用此功能！"
 
-  command-gsit-toggle-on: "[P]&a 你可以使用右键坐下了"
-  command-gsit-toggle-off: "[P]&a 你不能使用右键坐下了"
-  command-gsit-playertoggle-on: "[P]&a 你可以使用右键坐在其他玩家身上了"
-  command-gsit-playertoggle-off: "[P]&a 你不能使用右键坐在其他玩家身上了"
-  command-gcrawl-toggle-on: "[P]&a You have enabled double-sneak for crawl."
-  command-gcrawl-toggle-off: "[P]&a You have disabled double-sneak for crawl."
+  command-gsit-toggle-on: "[P]&a 你可以使用右鍵坐下了。"
+  command-gsit-toggle-off: "[P]&a 你不能使用右鍵坐下了。"
+  command-gsit-playertoggle-on: "[P]&a 你可以使用右鍵坐在其他玩家身上了。"
+  command-gsit-playertoggle-off: "[P]&a 你不能使用右鍵坐在其他玩家身上了。"
+  command-gcrawl-toggle-on: "[P]&a 你可以按兩下潛行來爬行了。"
+  command-gcrawl-toggle-off: "[P]&a 你不能可以按兩下潛行來爬行了。"
 
-  action-sit-now-error: "[P]&c 你現在不能坐下!"
-  action-sit-world-error: "[P]&c 你不能在這個世界坐下!"
-  action-sit-location-error: "[P]&c 你不能在這坐下!"
-  action-sit-safe-error: "[P]&c 你不能在不安全的地方坐下!"
-  action-sit-region-error: "[P]&c 你不能在這個區域坐下!"
-  action-sit-kick-error: "[P]&c 已經有人在這裡坐下了!"
-  action-sit-error: "[P]&c Due to an error you can't sit here!"
+  action-sit-now-error: "[P]&c 你現在不能坐下！"
+  action-sit-world-error: "[P]&c 你不能在這個世界坐下！"
+  action-sit-location-error: "[P]&c 你不能在這坐下！"
+  action-sit-safe-error: "[P]&c 你不能在不安全的地方坐下！"
+  action-sit-region-error: "[P]&c 你不能在這個區域坐下！"
+  action-sit-kick-error: "[P]&c 已經有人在這裡坐下了！"
+  action-sit-error: "[P]&c 由於錯誤，你無法在這裡坐下！"
   action-sit-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
 
   action-playersit-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
 
-  action-pose-now-error: "[P]&c 你現在不能躺下!"
-  action-pose-world-error: "[P]&c 你不能在這個世界躺下!"
-  action-pose-location-error: "[P]&c 你不能在這躺下!"
-  action-pose-safe-error: "[P]&c 你不能在不安全的地方躺下!"
-  action-pose-region-error: "[P]&c 你不能在這個區域躺下!"
-  action-pose-kick-error: "[P]&c 已經有人在這裡躺下了!"
-  action-pose-error: "[P]&c Due to an error you can't pose here!"
+  action-pose-now-error: "[P]&c 你現在不能躺下！"
+  action-pose-world-error: "[P]&c 你不能在這個世界躺下！"
+  action-pose-location-error: "[P]&c 你不能在這躺下！"
+  action-pose-safe-error: "[P]&c 你不能在不安全的地方躺下！"
+  action-pose-region-error: "[P]&c 你不能在這個區域躺下！"
+  action-pose-kick-error: "[P]&c 已經有人在這裡躺下了！"
+  action-pose-error: "[P]&c 由於錯誤，你無法在這裡躺下！"
   action-pose-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
 
-  action-crawl-now-error: "[P]&c 你現在不能爬行!"
-  action-crawl-world-error: "[P]&c 你不能在這個世界爬行!"
-  action-crawl-region-error: "[P]&c 你不能在這個區域爬行!"
+  action-crawl-now-error: "[P]&c 你現在不能爬行！"
+  action-crawl-world-error: "[P]&c 你不能在這個世界爬行！"
+  action-crawl-region-error: "[P]&c 你不能在這個區域爬行！"
   action-crawl-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
 
-  action-blocked-error: "[P]&c 你現在不能使用此指令!"
+  action-blocked-error: "[P]&c 你現在不能使用此指令！"
