@@ -9,7 +9,7 @@
     <parent>
         <groupId>dev.geco.gsit</groupId>
         <artifactId>GSit</artifactId>
-        <version>1.7.0</version>
+        <version>1.7.1</version>
     </parent>
 
     <properties>
