@@ -114,18 +114,6 @@ abstract public class MManager {
         return result.toString();
     }
 
-    protected String replaceHexColors(String Text) {
-        Matcher matcher = HEX_PATTERN.matcher(Text);
-        StringBuilder result = new StringBuilder(Text.length());
-        int lastIndex = 0;
-        while(matcher.find()) {
-            result.append(Text, lastIndex, matcher.start()).append(AMPERSAND_CHAR).append(matcher.group());
-            lastIndex = matcher.end();
-        }
-        result.append(Text.substring(lastIndex));
-        return result.toString();
-    }
-
     private String replaceWithLanguageCode(String Message, String LanguageCode, Object ... ReplaceList) {
         Message = replaceText(Message, ReplaceList);
         return Message.replace(PREFIX_PLACEHOLDER, getMessages(LanguageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE));
