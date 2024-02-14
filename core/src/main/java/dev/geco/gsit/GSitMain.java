@@ -325,9 +325,7 @@ public class GSitMain extends JavaPlugin {
 
         if(baseMissing || !getSVManager().isNewerOrVersion(13, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().hasPackageClass("objects.SeatEntity"))) {
 
-            String version = Bukkit.getServer().getClass().getPackage().getName();
-
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", baseMissing ? "outdated-server" : version.substring(version.lastIndexOf('.') + 1));
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", baseMissing ? "outdated-server" : getSVManager().getServerVersion());
 
             getUManager().checkForUpdates();
 

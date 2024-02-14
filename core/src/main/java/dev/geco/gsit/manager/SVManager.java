@@ -29,6 +29,8 @@ public class SVManager {
         PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + getPackageVersion() + ".";
     }
 
+    public String getServerVersion() { return SERVER_VERSION; }
+
     public String getPackageVersion() {
         String package_version = "v" + SERVER_VERSION.replace(".", "_");
         return VERSION_MAPPING.getOrDefault(package_version, package_version);
