@@ -51,6 +51,8 @@ public class SeatEntity extends ArmorStand {
 
     public boolean damageEntity0(DamageSource DamageSource, float Damage) { return false; }
 
+    public boolean hurt(DamageSource DamageSource, float Damage) { return false; }
+
     public boolean canChangeDimensions() { return false; }
 
     public boolean isAffectedByFluids() { return false; }
