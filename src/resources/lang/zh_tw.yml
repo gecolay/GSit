@@ -1,5 +1,5 @@
 #
-# Language-File created by:		flandretw and notlin4
+# Language-File created by:		flandretw and notlin4 and Tsaitou7361
 #
 
 
@@ -37,9 +37,9 @@ Messages:
   action-sit-region-error: "[P]&c 你不能在這個區域坐下！"
   action-sit-kick-error: "[P]&c 已經有人在這裡坐下了！"
   action-sit-error: "[P]&c 由於錯誤，你無法在這裡坐下！"
-  action-sit-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
+  action-sit-info: "&a使用&6 <lang:key.sneak>&a 鍵起來"
 
-  action-playersit-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
+  action-playersit-info: "&a使用&6 <lang:key.sneak>&a 鍵起來"
 
   action-pose-now-error: "[P]&c 你現在不能躺下！"
   action-pose-world-error: "[P]&c 你不能在這個世界躺下！"
@@ -48,11 +48,11 @@ Messages:
   action-pose-region-error: "[P]&c 你不能在這個區域躺下！"
   action-pose-kick-error: "[P]&c 已經有人在這裡躺下了！"
   action-pose-error: "[P]&c 由於錯誤，你無法在這裡躺下！"
-  action-pose-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
+  action-pose-info: "&a使用&6 <lang:key.sneak>&a 鍵起來"
 
   action-crawl-now-error: "[P]&c 你現在不能爬行！"
   action-crawl-world-error: "[P]&c 你不能在這個世界爬行！"
   action-crawl-region-error: "[P]&c 你不能在這個區域爬行！"
-  action-crawl-info: "&a使用&6 <lang:key.sneak>&a 鍵起来"
+  action-crawl-info: "&a使用&6 <lang:key.sneak>&a 鍵起來"
 
   action-blocked-error: "[P]&c 你現在不能使用此指令！"
