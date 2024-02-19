@@ -58,7 +58,7 @@ public class PlayerSitManager {
 
         UUID lastUUID = GPM.getEntityUtil().createPlayerSeatEntity(Target, Player);
 
-        if(GPM.getCManager().PS_SIT_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-playersit-info");
+        GPM.getMManager().sendActionBarMessage(Player, "Messages.action-playersit-info");
 
         playersit_used++;
 

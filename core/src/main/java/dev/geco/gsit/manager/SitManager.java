@@ -85,7 +85,7 @@ public class SitManager {
 
         if(seatEntity == null) return null;
 
-        if(GPM.getCManager().S_SIT_MESSAGE && Entity instanceof Player) {
+        if(Entity instanceof Player) {
 
             GPM.getMManager().sendActionBarMessage((Player) Entity, "Messages.action-sit-info");
 

@@ -43,8 +43,6 @@ public class CManager {
 
     public double S_MAX_DISTANCE;
 
-    public boolean S_SIT_MESSAGE;
-
     public boolean S_DEFAULT_SIT_MODE;
 
 
@@ -61,8 +59,6 @@ public class CManager {
     public boolean PS_EMPTY_HAND_ONLY;
 
     public double PS_MAX_DISTANCE;
-
-    public boolean PS_SIT_MESSAGE;
 
     public boolean PS_DEFAULT_SIT_MODE;
 
@@ -83,6 +79,8 @@ public class CManager {
     public boolean C_GET_UP_SNEAK;
 
     public boolean C_DOUBLE_SNEAK;
+
+    public boolean C_DEFAULT_CRAWL_MODE;
 
 
     public boolean TRUSTED_REGION_ONLY;
@@ -170,7 +168,6 @@ public class CManager {
         S_BOTTOM_PART_ONLY = GPM.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
-        S_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.Sit.sit-message", true);
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);
 
         PS_ALLOW_SIT = GPM.getConfig().getBoolean("Options.PlayerSit.allow-sit", true);
@@ -180,7 +177,6 @@ public class CManager {
         PS_BOTTOM_RETURN = GPM.getConfig().getBoolean("Options.PlayerSit.bottom-return", false);
         PS_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.PlayerSit.empty-hand-only", true);
         PS_MAX_DISTANCE = GPM.getConfig().getDouble("Options.PlayerSit.max-distance", 0d);
-        PS_SIT_MESSAGE = GPM.getConfig().getBoolean("Options.PlayerSit.sit-message", true);
         PS_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.PlayerSit.default-sit-mode", true);
 
         P_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.pose-message", true);
@@ -192,6 +188,7 @@ public class CManager {
 
         C_GET_UP_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
         C_DOUBLE_SNEAK = GPM.getConfig().getBoolean("Options.Crawl.double-sneak", false);
+        C_DEFAULT_CRAWL_MODE = GPM.getConfig().getBoolean("Options.Crawl.default-crawl-mode", true);
 
         TRUSTED_REGION_ONLY = GPM.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = GPM.getConfig().getStringList("Options.WorldBlacklist");
