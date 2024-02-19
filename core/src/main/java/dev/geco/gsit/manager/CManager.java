@@ -111,6 +111,7 @@ public class CManager {
                 InputStream configSteam = GPM.getResource("config.yml");
                 if(configSteam != null) {
                     FileConfiguration configSteamConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(configSteam, StandardCharsets.UTF_8));
+                    if(config.getKeys(true).equals(configSteamConfig.getKeys(true))) return;
                     config.setDefaults(configSteamConfig);
                     YamlConfigurationOptions options = (YamlConfigurationOptions) config.options();
                     options.parseComments(true).copyDefaults(true).width(500);
@@ -118,11 +119,9 @@ public class CManager {
                     for(String comments : config.getKeys(true)) {
                         config.setComments(comments, configSteamConfig.getComments(comments));
                     }
-                }
-                config.save(configFile);
-            } catch (Throwable e) {
-                GPM.saveDefaultConfig();
-            }
+                    config.save(configFile);
+                } else GPM.saveDefaultConfig();
+            } catch (Throwable e) { GPM.saveDefaultConfig(); }
         } else GPM.saveDefaultConfig();
 
         reload();

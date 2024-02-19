@@ -1,5 +1,6 @@
 package dev.geco.gsit.manager;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.*;
 
 import java.io.*;
@@ -52,13 +53,14 @@ abstract public class MManager {
                 InputStream langSteam = GPM.getResource(jarEntry.getName());
                 if(langSteam != null) {
                     FileConfiguration langSteamConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(langSteam, StandardCharsets.UTF_8));
+                    if(lang.getKeys(true).equals(langSteamConfig.getKeys(true))) continue;
                     lang.setDefaults(langSteamConfig);
                     YamlConfigurationOptions options = (YamlConfigurationOptions) lang.options();
                     options.parseComments(true).copyDefaults(true).width(500);
                     lang.loadFromString(lang.saveToString());
                     for(String comments : lang.getKeys(true)) lang.setComments(comments, langSteamConfig.getComments(comments));
-                }
-                lang.save(langFile);
+                    lang.save(langFile);
+                } else if(!langFile.exists()) GPM.saveResource(jarEntry.getName(), false);
             }
         } catch (Throwable e) { e.printStackTrace(); }
         File langFolder = new File(GPM.getDataFolder(), "lang");
