@@ -10,6 +10,7 @@ import org.bukkit.event.*;
 import org.bukkit.event.block.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.*;
+import org.bukkit.util.*;
 
 import dev.geco.gsit.GSitMain;
 
@@ -48,15 +49,17 @@ public class InteractEvents implements Listener {
 
         double distance = GPM.getCManager().S_MAX_DISTANCE;
 
-        if(distance > 0d && clickedBlock.getLocation().add(0.5, 0.5, 0.5).distance(player.getLocation()) > distance) return;
+        Location location = clickedBlock.getLocation();
+
+        if(distance > 0d && location.clone().add(0.5, 0.5, 0.5).distance(player.getLocation()) > distance) return;
 
         if(!GPM.getCManager().ALLOW_UNSAFE && !(clickedBlock.getRelative(BlockFace.UP).isPassable())) return;
 
-        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreatePlayerSeat(clickedBlock.getLocation(), player)) return;
+        if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreatePlayerSeat(location, player)) return;
 
-        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(clickedBlock.getLocation(), GPM.getWorldGuardLink().getFlag("sit"))) return;
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(location, GPM.getWorldGuardLink().getFlag("sit"))) return;
 
-        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(clickedBlock.getLocation(), player)) return;
+        if(GPM.getGriefPreventionLink() != null && !GPM.getGriefPreventionLink().check(location, player)) return;
 
         if(!GPM.getCManager().SAME_BLOCK_REST && !GPM.getSitManager().kickSeat(clickedBlock, player)) return;
 
@@ -77,7 +80,34 @@ public class InteractEvents implements Listener {
             if(((Slab) clickedBlock.getBlockData()).getType() != Type.BOTTOM && GPM.getCManager().S_BOTTOM_PART_ONLY) return;
         }
 
-        if(GPM.getSitManager().createSeat(clickedBlock, player, true, 0d, 0d, 0d, player.getLocation().getYaw(), true) != null) Event.setCancelled(true);
+        boolean interactionPointAvailable = GPM.getCManager().CENTER_BLOCK;
+
+        double xoffset = interactionPointAvailable ? 0 : -0.5d;
+        double zoffset = interactionPointAvailable ? 0 : -0.5d;
+
+        if(!interactionPointAvailable) {
+            try {
+                Vector interactionPointVector = Event.getClickedPosition();
+                if(interactionPointVector != null) {
+                    interactionPointAvailable = true;
+                    xoffset += interactionPointVector.getX() - interactionPointVector.getBlockX();
+                    zoffset += interactionPointVector.getZ() - interactionPointVector.getBlockZ();
+                }
+            } catch (Throwable ignored) { }
+        }
+
+        if(!interactionPointAvailable) {
+            try {
+                Location interactionPoint = Event.getInteractionPoint();
+                if(interactionPoint != null) {
+                    interactionPointAvailable = true;
+                    xoffset += interactionPoint.getX() - interactionPoint.getBlockX();
+                    zoffset += interactionPoint.getZ() - interactionPoint.getBlockZ();
+                }
+            } catch (Throwable ignored) { }
+        }
+
+        if(GPM.getSitManager().createSeat(clickedBlock, player, true, interactionPointAvailable ? xoffset : 0d, 0d, interactionPointAvailable ? zoffset : 0, player.getLocation().getYaw(), true) != null) Event.setCancelled(true);
     }
 
 }
