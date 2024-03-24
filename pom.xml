@@ -48,6 +48,7 @@
         <module>v1_20</module>
         <module>v1_20_2</module>
         <module>v1_20_3</module>
+        <module>v1_20_3_m</module>
         <module>dist</module>
     </modules>
 

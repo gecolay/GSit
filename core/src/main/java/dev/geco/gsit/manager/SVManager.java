@@ -10,9 +10,11 @@ public class SVManager {
 
     private final GSitMain GPM;
 
-    private final String SERVER_VERSION;
+    private final String LATEST = "v1_20_3";
 
-    public final String PACKAGE_PATH;
+    private final String SERVER_VERSION;
+    private String PACKAGE_PATH;
+    private boolean AVAILABLE = true;
 
     protected final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); {
 
@@ -26,15 +28,19 @@ public class SVManager {
         GPM = GPluginMain;
         String version = Bukkit.getServer().getBukkitVersion();
         SERVER_VERSION = version.substring(0, version.indexOf('-'));
-        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + getPackageVersion() + ".";
+        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
+        if(hasPackageClass("objects.SeatEntity")) return;
+        PACKAGE_PATH += "_m";
+        if(hasPackageClass("objects.SeatEntity")) return;
+        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + LATEST;
+        if(hasPackageClass("objects.SeatEntity")) return;
+        PACKAGE_PATH += "_m";
+        if(!hasPackageClass("objects.SeatEntity")) AVAILABLE = false;
     }
 
     public String getServerVersion() { return SERVER_VERSION; }
 
-    public String getPackageVersion() {
-        String package_version = "v" + SERVER_VERSION.replace(".", "_");
-        return VERSION_MAPPING.getOrDefault(package_version, package_version);
-    }
+    public boolean isAvailable() { return AVAILABLE; }
 
     public boolean isNewerOrVersion(int Version, int SubVersion) {
         String[] version = SERVER_VERSION.split("\\.");
@@ -48,7 +54,7 @@ public class SVManager {
 
     public Object getPackageObject(String ClassName, Object... Objects) {
         try {
-            Class<?> mcvClass = Class.forName(PACKAGE_PATH + ClassName);
+            Class<?> mcvClass = Class.forName(PACKAGE_PATH + "." + ClassName);
             if(Objects.length == 0) return mcvClass.getConstructor().newInstance();
             Class<?>[] classes = Arrays.stream(Objects).map(Object::getClass).toArray(Class<?>[]::new);
             return mcvClass.getConstructor(classes).newInstance(Objects);
@@ -58,10 +64,15 @@ public class SVManager {
 
     public boolean hasPackageClass(String ClassName) {
         try {
-            Class.forName(PACKAGE_PATH + ClassName);
+            Class.forName(PACKAGE_PATH + "." + ClassName);
             return true;
         } catch (Throwable ignored) { }
         return false;
+    }
+
+    private String getPackageVersion() {
+        String package_version = "v" + SERVER_VERSION.replace(".", "_");
+        return VERSION_MAPPING.getOrDefault(package_version, package_version);
     }
 
 }

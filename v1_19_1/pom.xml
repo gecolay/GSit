@@ -17,6 +17,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <spigot.version>1.19.2-R0.1-SNAPSHOT</spigot.version>
         <mcv.version>v1_19_R1</mcv.version>
+        <mcparent.version>mc${project.artifactId}</mcparent.version>
     </properties>
 
     <build>
@@ -44,12 +45,9 @@
                                     <shadedPattern>${project.groupId}.mcv.${project.artifactId}</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.bukkit.craftbukkit.v1_17_R1</pattern>
-                                    <shadedPattern>org.bukkit.craftbukkit.${mcv.version}</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.bukkit.craftbukkit.v1_18_R1</pattern>
-                                    <shadedPattern>org.bukkit.craftbukkit.${mcv.version}</shadedPattern>
+                                    <pattern>org/bukkit/craftbukkit/v1_[^/]+/</pattern>
+                                    <shadedPattern>org/bukkit/craftbukkit/${mcv.version}/</shadedPattern>
+                                    <rawString>true</rawString>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -95,7 +93,7 @@
     <dependencies>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>mc${project.artifactId}</artifactId>
+            <artifactId>${mcparent.version}</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

@@ -322,8 +322,9 @@ public class GSitMain extends JavaPlugin {
     private boolean versionCheck() {
 
         boolean baseMissing = !supportsSpigotMountFeature() && !supportsBukkitMountFeature();
+        boolean internalMissing = !getSVManager().isAvailable();
 
-        if(baseMissing || !getSVManager().isNewerOrVersion(13, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().hasPackageClass("objects.SeatEntity"))) {
+        if(baseMissing || !getSVManager().isNewerOrVersion(13, 0) || (getSVManager().isNewerOrVersion(17, 0) && internalMissing)) {
 
             getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", baseMissing ? "outdated-server" : getSVManager().getServerVersion());
 
