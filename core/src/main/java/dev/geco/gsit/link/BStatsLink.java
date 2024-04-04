@@ -61,7 +61,7 @@ public class BStatsLink {
         builder.appendField("playerAmount", getPlayerAmount());
         builder.appendField("onlineMode", Bukkit.getOnlineMode() ? 1 : 0);
         builder.appendField("bukkitVersion", Bukkit.getVersion());
-        builder.appendField("bukkitName", !Bukkit.getName().equalsIgnoreCase("Unknown") ? Bukkit.getName() : (Bukkit.getVersion().split("-").length > 1 ? Bukkit.getVersion().split("-")[1] : Bukkit.getName()));
+        builder.appendField("bukkitName", Bukkit.getName());
         builder.appendField("javaVersion", System.getProperty("java.version"));
         builder.appendField("osName", System.getProperty("os.name"));
         builder.appendField("osArch", System.getProperty("os.arch"));
