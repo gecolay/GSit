@@ -40,7 +40,8 @@ public class PackageUtil implements IPackageUtil {
         try {
             Channel channel = ((CraftPlayer) Player).getHandle().connection.connection.channel;
             players.put(Player, channel);
-            channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), getHandler(Player));
+            if(channel.pipeline().get("packet_handler") != null) channel.pipeline().addBefore("packet_handler", GPM.NAME.toLowerCase(), getHandler(Player));
+            else channel.pipeline().addLast(GPM.NAME.toLowerCase(), getHandler(Player));
         } catch (Exception e) { e.printStackTrace(); }
     }
 
