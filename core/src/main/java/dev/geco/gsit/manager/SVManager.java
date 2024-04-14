@@ -28,17 +28,19 @@ public class SVManager {
         GPM = GPluginMain;
         String version = Bukkit.getServer().getBukkitVersion();
         SERVER_VERSION = version.substring(0, version.indexOf('-'));
-        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
+        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + getPackageVersion() + "_m";
         if(hasPackageClass("objects.SeatEntity")) return;
-        PACKAGE_PATH += "_m";
+        PACKAGE_PATH = PACKAGE_PATH.substring(0, PACKAGE_PATH.length() - 2);
         if(hasPackageClass("objects.SeatEntity")) return;
-        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + LATEST;
+        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + LATEST + "_m";
         if(hasPackageClass("objects.SeatEntity")) return;
-        PACKAGE_PATH += "_m";
+        PACKAGE_PATH = PACKAGE_PATH.substring(0, PACKAGE_PATH.length() - 2);
         if(!hasPackageClass("objects.SeatEntity")) AVAILABLE = false;
     }
 
     public String getServerVersion() { return SERVER_VERSION; }
+
+    public String getPackagePath() { return PACKAGE_PATH; }
 
     public boolean isAvailable() { return AVAILABLE; }
 
