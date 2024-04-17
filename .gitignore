@@ -1,14 +1,13 @@
 ## environment -->
-.fleet/
-.idea/
+.vscode
+.idea
+.fleet
+.DS_Store
 ## environment <--
 
-## maven -->
-target/
+## build -->
+target
 *.iml
-## maven <--
-
-## gradle -->
-build/
-.gradle/
-## gradle <--
+build
+.gradle
+## build <--

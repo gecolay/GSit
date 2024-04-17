@@ -17,9 +17,9 @@
         <spigot.version>1.20.4-R0.1-SNAPSHOT</spigot.version>
         <worldguard.version>7.0.9</worldguard.version>
         <placeholderapi.version>2.11.5</placeholderapi.version>
-        <griefprevention.version>16.18.1</griefprevention.version>
-        <plotsquared.version>7.2.0</plotsquared.version>
-        <viaversion.version>4.9.2</viaversion.version>
+        <griefprevention.version>16.18.2</griefprevention.version>
+        <plotsquared.version>7.3.8</plotsquared.version>
+        <viaversion.version>4.9.3</viaversion.version>
     </properties>
 
     <repositories>

@@ -88,7 +88,7 @@ public class PoseManager {
 
         if(seatEntity == null) return null;
 
-        if(GPM.getCManager().P_POSE_MESSAGE) {
+        if(GPM.getCManager().CUSTOM_MESSAGE) {
 
             GPM.getMManager().sendActionBarMessage(Player, "Messages.action-pose-info");
 

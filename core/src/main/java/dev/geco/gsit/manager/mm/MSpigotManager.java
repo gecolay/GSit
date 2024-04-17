@@ -23,11 +23,6 @@ public class MSpigotManager extends MManager {
 
     public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getMessageByLanguage(Message, getLanguage(Target), ReplaceList)); }
 
-    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) {
-        if(!allowBungeeMessages) return;
-        String message = getMessageByLanguage(Message, getLanguage(Target), ReplaceList);
-        if(message.isEmpty()) return;
-        Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(message));
-    }
+    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) { if(allowBungeeMessages) Target.spigot().sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(getMessageByLanguage(Message, getLanguage(Target), ReplaceList))); }
 
 }

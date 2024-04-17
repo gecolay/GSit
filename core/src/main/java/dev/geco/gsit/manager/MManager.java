@@ -81,7 +81,7 @@ abstract public class MManager {
 
     public String getMessageByLanguage(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedMessage(getRawMessageByLanguage(Message, LanguageCode, ReplaceList)); }
 
-    public String getRawMessageByLanguage(String Message, String LanguageCode, Object... ReplaceList) { return replaceWithLanguageCode(Message == null || Message.isEmpty() ? "" : getMessages(LanguageCode).getString(Message, ""), LanguageCode, ReplaceList); }
+    public String getRawMessageByLanguage(String Message, String LanguageCode, Object... ReplaceList) { return replaceWithLanguageCode(Message == null || Message.isEmpty() ? "" : getMessages(LanguageCode).getString(Message, Message), LanguageCode, ReplaceList); }
 
     public String getLanguage(CommandSender Target) {
         if(!GPM.getCManager().L_CLIENT_LANG || !(Target instanceof Player)) return DEFAULT_LANG;

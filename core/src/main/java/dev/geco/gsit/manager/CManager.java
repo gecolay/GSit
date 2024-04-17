@@ -34,6 +34,8 @@ public class CManager {
 
     public boolean CENTER_BLOCK;
 
+    public boolean CUSTOM_MESSAGE;
+
 
     public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
 
@@ -62,8 +64,6 @@ public class CManager {
 
     public boolean PS_DEFAULT_SIT_MODE;
 
-
-    public boolean P_POSE_MESSAGE;
 
     public boolean P_INTERACT;
 
@@ -142,6 +142,7 @@ public class CManager {
         ALLOW_UNSAFE = GPM.getConfig().getBoolean("Options.allow-unsafe", false);
         SAME_BLOCK_REST = GPM.getConfig().getBoolean("Options.same-block-rest", false);
         CENTER_BLOCK = GPM.getConfig().getBoolean("Options.center-block", true);
+        CUSTOM_MESSAGE = GPM.getConfig().getBoolean("Options.custom-message", true);
 
         S_SITMATERIALS.clear();
         for(String material : GPM.getConfig().getStringList("Options.Sit.SitMaterials")) {
@@ -177,7 +178,6 @@ public class CManager {
         PS_MAX_DISTANCE = GPM.getConfig().getDouble("Options.PlayerSit.max-distance", 0d);
         PS_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.PlayerSit.default-sit-mode", true);
 
-        P_POSE_MESSAGE = GPM.getConfig().getBoolean("Options.Pose.pose-message", true);
         P_INTERACT = GPM.getConfig().getBoolean("Options.Pose.interact", false);
         P_LAY_REST = GPM.getConfig().getBoolean("Options.Pose.lay-rest", true);
         P_LAY_SNORING_SOUNDS = GPM.getConfig().getBoolean("Options.Pose.lay-snoring-sounds", false);
