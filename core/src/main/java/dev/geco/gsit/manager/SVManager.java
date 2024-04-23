@@ -10,7 +10,7 @@ public class SVManager {
 
     private final GSitMain GPM;
 
-    private final String LATEST = "v1_20_3";
+    private final String LATEST = "v1_20_5";
 
     private final String SERVER_VERSION;
     private String PACKAGE_PATH;

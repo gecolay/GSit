@@ -14,7 +14,7 @@
 
     <properties>
         <paper.version>1.20.4-R0.1-SNAPSHOT</paper.version>
-        <spigot.version>1.20.4-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.20.5-R0.1-SNAPSHOT</spigot.version>
         <worldguard.version>7.0.9</worldguard.version>
         <placeholderapi.version>2.11.5</placeholderapi.version>
         <griefprevention.version>16.18.2</griefprevention.version>

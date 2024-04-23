@@ -1,5 +1,7 @@
 package dev.geco.gsit.mcv.x.objects;
 
+import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R3.*;
 
@@ -28,7 +30,7 @@ public class SeatEntity extends ArmorStand {
         setRot(Location.getYaw(), Location.getPitch());
         yRotO = getYRot();
         setYBodyRot(yRotO);
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(1f);
+        Objects.requireNonNull(getAttribute(Attributes.MAX_HEALTH)).setBaseValue(1f);
         addTag("GSit_SeatEntity");
     }
 

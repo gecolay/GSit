@@ -108,7 +108,12 @@
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>v1_20_3_m</artifactId>
+            <artifactId>v1_20_5</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.geco.gsit</groupId>
+            <artifactId>v1_20_5_m</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
