@@ -7,7 +7,7 @@
     <groupId>dev.geco.gsit</groupId>
     <artifactId>GSit</artifactId>
     <name>GSit</name>
-    <version>1.8.0</version>
+    <version>1.9.0</version>
     <description>Relax with other players on nice seats!</description>
     <url>https://www.spigotmc.org/resources/62325</url>
     <inceptionYear>2018</inceptionYear>
@@ -55,8 +55,7 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.release>16</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -81,10 +80,7 @@
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
-                                <exclude>META-INF/license/**</exclude>
-                                <exclude>META-INF/*</exclude>
-                                <exclude>META-INF/maven/**</exclude>
-                                <exclude>build.properties</exclude>
+                                <exclude>META-INF/**</exclude>
                             </excludes>
                         </filter>
                     </filters>
