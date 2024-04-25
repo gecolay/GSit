@@ -1,5 +1,6 @@
 before_install:
   - git config --global --unset core.autocrlf
+  - sdk install maven
   - sdk install java 16.0.2-open
   - JAVA_16=/home/jitpack/.sdkman/candidates/java/16.0.2-open/bin/java
   - sdk install java 17.0.2-open
