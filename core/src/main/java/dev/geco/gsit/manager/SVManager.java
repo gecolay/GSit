@@ -11,7 +11,7 @@ public class SVManager {
     private final GSitMain GPM;
 
     private final String SERVER_VERSION;
-    private String PACKAGE_PATH;
+    private final String PACKAGE_PATH;
     private boolean AVAILABLE = true;
 
     protected final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); {

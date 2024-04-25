@@ -72,12 +72,12 @@ public class MPaperManager extends MManager {
         Matcher matcher = HEX_PATTERN.matcher(text);
         StringBuilder result = new StringBuilder(text.length());
         int lastIndex = 0;
-        while (matcher.find()) {
+        while(matcher.find()) {
             result.append(text, lastIndex, matcher.start()).append("<color:").append(matcher.group()).append(">");
             lastIndex = matcher.end();
         }
         result.append(text, lastIndex, text.length());
-        for (Map.Entry<String, String> tag : TAGS.entrySet()) {
+        for(Map.Entry<String, String> tag : TAGS.entrySet()) {
             String key = tag.getKey();
             String value = tag.getValue();
             String upperKey = key.toUpperCase();
