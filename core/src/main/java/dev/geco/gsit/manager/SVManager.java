@@ -47,6 +47,16 @@ public class SVManager {
         return version.length > 2 ? Integer.parseInt(version[1]) == Version && Integer.parseInt(version[2]) == SubVersion : Integer.parseInt(version[1]) == Version && SubVersion == 0;
     }
 
+    public Object getLegacyPackageObject(String ClassName, Object... Objects) {
+        try {
+            Class<?> mcvClass = Class.forName(GPM.getClass().getPackage().getName() + ".mcv.v1_17." + ClassName);
+            if(Objects.length == 0) return mcvClass.getConstructor().newInstance();
+            Class<?>[] classes = Arrays.stream(Objects).map(Object::getClass).toArray(Class<?>[]::new);
+            return mcvClass.getConstructor(classes).newInstance(Objects);
+        } catch (Throwable e) { e.printStackTrace(); }
+        return null;
+    }
+
     public Object getPackageObject(String ClassName, Object... Objects) {
         try {
             Class<?> mcvClass = Class.forName(PACKAGE_PATH + "." + ClassName);

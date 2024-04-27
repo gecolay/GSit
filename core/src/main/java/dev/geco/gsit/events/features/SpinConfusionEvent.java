@@ -20,7 +20,7 @@ public class SpinConfusionEvent implements Listener {
 
         if(!GPM.getCManager().FEATUREFLAGS.contains("SPIN_CONFUSION")) return;
 
-        Event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 120, 2));
+        Event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.getByName(GPM.getSVManager().isNewerOrVersion(20, 5) ? "NAUSEA" : "CONFUSION"), 180, 2));
     }
 
 }

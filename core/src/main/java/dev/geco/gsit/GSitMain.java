@@ -2,6 +2,7 @@ package dev.geco.gsit;
 
 import org.bukkit.*;
 import org.bukkit.command.*;
+import org.bukkit.event.*;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.*;
 
@@ -79,12 +80,6 @@ public class GSitMain extends JavaPlugin {
 
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
-
-    private boolean supportsSpigotMountFeature = false;
-    public boolean supportsSpigotMountFeature() { return supportsSpigotMountFeature; }
-
-    private boolean supportsBukkitMountFeature = false;
-    public boolean supportsBukkitMountFeature() { return supportsBukkitMountFeature; }
 
     private boolean supportsPaperFeature = false;
     public boolean supportsPaperFeature() { return supportsPaperFeature; }
@@ -216,22 +211,15 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerSitEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
-        getServer().getPluginManager().registerEvents(supportsBukkitMountFeature() ? new EntityEvents(getInstance()) : new dev.geco.gsit.events.deprecated.EntityEvents(getInstance()), getInstance());
+
+        Listener entityEvents = getSVManager().isNewerOrVersion(17, 0) ? (Listener) getSVManager().getPackageObject("events.EntityEvents", getInstance()) : null;
+        if(entityEvents == null) entityEvents = (Listener) getSVManager().getLegacyPackageObject("events.EntityEvents", getInstance());
+        if(entityEvents != null) getServer().getPluginManager().registerEvents(entityEvents, getInstance());
 
         getServer().getPluginManager().registerEvents(new SpinConfusionEvent(getInstance()), getInstance());
     }
 
     private void preloadPluginDependencies() {
-
-        try {
-            Class.forName("org.spigotmc.event.entity.EntityMountEvent");
-            supportsSpigotMountFeature = true;
-        } catch (ClassNotFoundException ignored) { supportsSpigotMountFeature = false; }
-
-        try {
-            Class.forName("org.bukkit.event.entity.EntityMountEvent");
-            supportsBukkitMountFeature = true;
-        } catch (ClassNotFoundException ignored) { supportsBukkitMountFeature = false; }
 
         try {
             Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
@@ -321,12 +309,9 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
 
-        boolean baseMissing = !supportsSpigotMountFeature() && !supportsBukkitMountFeature();
-        boolean internalMissing = !getSVManager().isAvailable();
+        if(!getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().isAvailable())) {
 
-        if(baseMissing || !getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(17, 0) && internalMissing)) {
-
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", baseMissing ? "outdated-server" : getSVManager().getServerVersion());
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", getSVManager().getServerVersion());
 
             getUManager().checkForUpdates();
 

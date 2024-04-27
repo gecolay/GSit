@@ -11,7 +11,7 @@ public class DManager {
 
     private final GSitMain GPM;
 
-    private final int MAX_RETRIES = 3;
+    protected final int MAX_RETRIES = 3;
 
     private Connection connection;
     private String type = null;
@@ -63,7 +63,7 @@ public class DManager {
     }
 
     public boolean execute(String Query, Object... Data) throws SQLException {
-        if(connection == null) throw new SQLException("missing database connection");
+        if(connection == null) throw new SQLException("missing " + type + " database connection");
         if(connection.isClosed() && !reconnect()) return false;
         PreparedStatement preparedStatement = connection.prepareStatement(Query);
         for(int i = 1; i <= Data.length; i++) preparedStatement.setObject(i, Data[i - 1]);
@@ -71,7 +71,7 @@ public class DManager {
     }
 
     public ResultSet executeAndGet(String Query, Object... Data) throws SQLException {
-        if(connection == null) throw new SQLException("missing database connection");
+        if(connection == null) throw new SQLException("missing " + type + " database connection");
         if(connection.isClosed() && !reconnect()) return null;
         PreparedStatement preparedStatement = connection.prepareStatement(Query);
         for(int i = 1; i <= Data.length; i++) preparedStatement.setObject(i, Data[i - 1]);
