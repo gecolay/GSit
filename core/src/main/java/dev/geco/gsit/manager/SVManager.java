@@ -49,7 +49,7 @@ public class SVManager {
 
     public Object getLegacyPackageObject(String ClassName, Object... Objects) {
         try {
-            Class<?> mcvClass = Class.forName(GPM.getClass().getPackage().getName() + ".mcv.v1_17." + ClassName);
+            Class<?> mcvClass = Class.forName(GPM.getClass().getPackage().getName() + ".mcv.v1_17_1." + ClassName);
             if(Objects.length == 0) return mcvClass.getConstructor().newInstance();
             Class<?>[] classes = Arrays.stream(Objects).map(Object::getClass).toArray(Class<?>[]::new);
             return mcvClass.getConstructor(classes).newInstance(Objects);
