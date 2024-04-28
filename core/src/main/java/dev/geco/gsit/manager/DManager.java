@@ -40,11 +40,16 @@ public class DManager {
     private boolean reconnect() {
         try {
             if(type.equals("sqlite")) Class.forName("org.sqlite.JDBC");
-            connection = getConnection();
+            connection = getConnection(false);
             if(connection != null) {
-                if(!type.equals("sqlite")) execute("CREATE DATABASE IF NOT EXISTS " + database);
-                retries = 0;
-                return true;
+                if(!type.equals("sqlite")) {
+                    execute("CREATE DATABASE IF NOT EXISTS " + database);
+                    connection = getConnection(true);
+                }
+                if(connection != null) {
+                    retries = 0;
+                    return true;
+                }
             }
         } catch (Exception e) { e.printStackTrace(); }
         if(retries == MAX_RETRIES) return false;
@@ -52,10 +57,10 @@ public class DManager {
         return reconnect();
     }
 
-    private Connection getConnection() throws SQLException {
+    private Connection getConnection(boolean WithDatabase) throws SQLException {
         switch(type) {
             case "mysql":
-                return DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, user, password);
+                return DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + (WithDatabase ? "/" + database : ""), user, password);
             case "sqlite":
                 return DriverManager.getConnection("jdbc:sqlite:" + new File(GPM.getDataFolder(), "data/data.db").getPath());
         }
