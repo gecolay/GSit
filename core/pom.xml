@@ -19,7 +19,7 @@
         <placeholderapi.version>2.11.5</placeholderapi.version>
         <griefprevention.version>16.18.2</griefprevention.version>
         <plotsquared.version>7.3.8</plotsquared.version>
-        <viaversion.version>4.9.3</viaversion.version>
+        <viaversion.version>4.10.0</viaversion.version>
     </properties>
 
     <repositories>

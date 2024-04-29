@@ -3,9 +3,7 @@ package dev.geco.gsit.mcv.x.objects;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.*;
 
-import net.minecraft.core.particles.*;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.level.block.*;
 
 public class PlayerSeatEntity extends AreaEffectCloud {
 
@@ -19,7 +17,6 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         setNoGravity(true);
         setInvulnerable(true);
         setDuration(Integer.MAX_VALUE);
-        setParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.AIR.defaultBlockState()));
         setWaitTime(0);
         addTag("GSit_PlayerSeatEntity");
     }
