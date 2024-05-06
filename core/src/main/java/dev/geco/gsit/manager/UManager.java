@@ -31,15 +31,14 @@ public class UManager {
     public void loginCheckForUpdates(Player Player) { if(GPM.getCManager().CHECK_FOR_UPDATE && !latestVersion && GPM.getPManager().hasPermission(Player, "Update")) GPM.getMManager().sendMessage(Player, "Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite()); }
 
     private void getSpigotVersion(final Consumer<String> VersionConsumer) {
-        if(Integer.parseInt(GPM.RESOURCE) == 0) {
-            VersionConsumer.accept(null);
-            return;
-        }
         GPM.getTManager().run(() -> {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + GPM.RESOURCE).openStream();
                  Scanner scanner = new Scanner(inputStream)) {
                 if(scanner.hasNext() && VersionConsumer != null) VersionConsumer.accept(scanner.next());
-            } catch (IOException e) { e.printStackTrace(); }
+            } catch (IOException e) {
+                if(e.getMessage().contains("50")) return;
+                e.printStackTrace();
+            }
         }, false);
     }
 
