@@ -33,6 +33,7 @@ Install all the [BuildTools](https://www.spigotmc.org/wiki/buildtools/) versions
 - [1.20.2](https://www.spigotmc.org/wiki/buildtools/#1-20-2)
 - [1.20.4](https://www.spigotmc.org/wiki/buildtools/#1-20-4)
 - [1.20.5](https://www.spigotmc.org/wiki/buildtools/#1-20-5)
+- [1.21](https://www.spigotmc.org/wiki/buildtools/#1-21)
 
 ### Build
 
