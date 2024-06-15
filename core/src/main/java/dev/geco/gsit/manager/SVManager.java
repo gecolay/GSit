@@ -11,8 +11,8 @@ public class SVManager {
     private final GSitMain GPM;
 
     private final String SERVER_VERSION;
-    private String PACKAGE_PATH;
-    private boolean AVAILABLE = true;
+    private final String PACKAGE_PATH;
+    private final boolean AVAILABLE;
 
     protected final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); {
 
@@ -27,9 +27,6 @@ public class SVManager {
         GPM = GPluginMain;
         String version = Bukkit.getServer().getBukkitVersion();
         SERVER_VERSION = version.substring(0, version.indexOf('-'));
-        boolean isMojangMappingEnvironment = isMojangMappingEnvironment();
-        PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + getPackageVersion() + (isMojangMappingEnvironment ? "_m" : "");
-        if(hasPackageClass("objects.SeatEntity")) return;
         PACKAGE_PATH = GPM.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
         AVAILABLE = hasPackageClass("objects.SeatEntity");
     }
@@ -73,14 +70,6 @@ public class SVManager {
     public boolean hasPackageClass(String ClassName) {
         try {
             Class.forName(PACKAGE_PATH + "." + ClassName);
-            return true;
-        } catch (Throwable ignored) { }
-        return false;
-    }
-
-    public boolean isMojangMappingEnvironment() {
-        try {
-            Class.forName("net.minecraft.world.entity.Mob");
             return true;
         } catch (Throwable ignored) { }
         return false;
