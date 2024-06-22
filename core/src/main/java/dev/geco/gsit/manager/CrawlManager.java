@@ -51,6 +51,8 @@ public class CrawlManager {
 
         if(preEvent.isCancelled()) return null;
 
+        if(GPM.getCManager().CUSTOM_MESSAGE) GPM.getMManager().sendActionBarMessage(Player, "Messages.action-crawl-info");
+
         IGCrawl crawl = GPM.getEntityUtil().createCrawlObject(Player);
 
         crawl.start();
