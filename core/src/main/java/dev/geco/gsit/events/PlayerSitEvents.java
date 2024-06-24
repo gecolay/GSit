@@ -64,8 +64,6 @@ public class PlayerSitEvents implements Listener {
 
         if(GPM.getCManager().FEATUREFLAGS.contains("DISABLE_PLAYERSIT_ELYTRA") && player.isGliding()) return;
 
-        if((player.getGameMode() == GameMode.CREATIVE && player.getOpenInventory().getType() != InventoryType.CREATIVE) || (player.getGameMode() != GameMode.CREATIVE && player.getOpenInventory().getType() != InventoryType.CRAFTING)) return;
-
         if(GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().PS_MAX_DISTANCE;
