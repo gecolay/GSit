@@ -35,6 +35,10 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
     @Override
     public @NotNull List<String> getPlaceholders() { return Arrays.asList("crawling", "emoting", "playertoggle", "posing", "sitting", "toggle"); }
 
+    // https://wiki.placeholderapi.com/developers/creating-a-placeholderexpansion/#making-an-internal-expansion
+    @Override
+    public boolean persist() { return true; }
+    
     @Override
     public String onRequest(OfflinePlayer Player, @NotNull String Params) {
 
