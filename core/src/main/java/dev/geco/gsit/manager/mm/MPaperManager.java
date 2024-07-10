@@ -60,7 +60,7 @@ public class MPaperManager extends MManager {
 
     public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
 
-    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) { Target.sendActionBar(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
+    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) { if(!Message.trim().isEmpty()) Target.sendActionBar(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
 
     private @NotNull Component getLanguageComponent(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedComponent(getRawMessageByLanguage(Message, LanguageCode, ReplaceList)); }
 
