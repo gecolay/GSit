@@ -173,7 +173,7 @@ public class GCrawl implements IGCrawl {
 
         blockLocation = Location;
 
-        player.sendBlockChange(blockLocation, blockData);
+        if(blockLocation != null) player.sendBlockChange(blockLocation, blockData);
     }
 
     private void destoryBlock() {
