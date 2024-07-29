@@ -17,6 +17,10 @@ public class ViaVersionLink {
         ORIGIN_VERSION = GPM.getPackageUtil().getProtocolVersion();
     }
 
+    public boolean isRequired() {
+        return Via.getAPI().getServerVersion().lowestSupportedProtocolVersion().getVersion() <= 763;
+    }
+
     public double getVersionOffset(Entity Entity) {
         if(!(Entity instanceof Player)) return 0;
         int playerVersion = Via.getAPI().getPlayerVersion(Entity.getUniqueId());

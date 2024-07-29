@@ -266,7 +266,9 @@ public class GSitMain extends JavaPlugin {
 
         if(getPackageUtil() != null && plugin != null && plugin.isEnabled()) {
             viaVersionLink = new ViaVersionLink(getInstance());
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
+            if(viaVersionLink.isRequired()) {
+                getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
+            } else viaVersionLink = null;
         } else viaVersionLink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
