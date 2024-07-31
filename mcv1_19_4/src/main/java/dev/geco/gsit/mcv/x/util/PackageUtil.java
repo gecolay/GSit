@@ -25,8 +25,6 @@ public class PackageUtil implements IPackageUtil {
     private Field addEntityYField;
     private final HashMap<Player, Channel> players = new HashMap<>();
 
-    public int getProtocolVersion() { return SharedConstants.getProtocolVersion(); }
-
     public PackageUtil() {
         Class<?> serverGamePacketListenerClass = ServerGamePacketListenerImpl.class;
         if(serverGamePacketListenerClass.getSuperclass() != Object.class) serverGamePacketListenerClass = serverGamePacketListenerClass.getSuperclass();

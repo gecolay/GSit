@@ -22,8 +22,6 @@ public class PackageUtil implements IPackageUtil {
     private Field addEntityYField;
     private final HashMap<Player, Channel> players = new HashMap<>();
 
-    public int getProtocolVersion() { return SharedConstants.getProtocolVersion(); }
-
     public PackageUtil() {
         int count = 0;
         for(Field declaredField : ClientboundAddEntityPacket.class.getDeclaredFields()) if(declaredField.getType().equals(double.class) && !Modifier.isStatic(declaredField.getModifiers())) {

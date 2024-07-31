@@ -4,21 +4,16 @@ import org.bukkit.entity.*;
 
 import com.viaversion.viaversion.api.*;
 
-import dev.geco.gsit.GSitMain;
-
 public class ViaVersionLink {
-
-    private final GSitMain GPM;
 
     private final int ORIGIN_VERSION;
 
-    public ViaVersionLink(GSitMain GPluginMain) {
-        GPM = GPluginMain;
-        ORIGIN_VERSION = GPM.getPackageUtil().getProtocolVersion();
+    public ViaVersionLink() {
+        ORIGIN_VERSION = Via.getAPI().getServerVersion().lowestSupportedProtocolVersion().getVersion();
     }
 
     public boolean isRequired() {
-        return Via.getAPI().getServerVersion().lowestSupportedProtocolVersion().getVersion() <= 763;
+        return ORIGIN_VERSION <= 763;
     }
 
     public double getVersionOffset(Entity Entity) {

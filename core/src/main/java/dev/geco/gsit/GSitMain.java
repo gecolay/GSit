@@ -265,7 +265,7 @@ public class GSitMain extends JavaPlugin {
         plugin = Bukkit.getPluginManager().getPlugin("ViaVersion");
 
         if(getPackageUtil() != null && plugin != null && plugin.isEnabled()) {
-            viaVersionLink = new ViaVersionLink(getInstance());
+            viaVersionLink = new ViaVersionLink();
             if(viaVersionLink.isRequired()) {
                 getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
             } else viaVersionLink = null;
