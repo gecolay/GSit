@@ -46,6 +46,11 @@ public class PlayerSitManager {
         spawnTimes.clear();
     }
 
+    public boolean isUsingPlayerSit(Player Player) {
+        if(Player.getVehicle() != null && Player.getVehicle().getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) return true;
+        return Player.getPassengers().stream().filter(passenger -> passenger.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")).findFirst().orElse(null) != null;
+    }
+
     public boolean sitOnPlayer(Player Player, Player Target) {
 
         PrePlayerPlayerSitEvent preEvent = new PrePlayerPlayerSitEvent(Player, Target);

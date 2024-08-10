@@ -137,7 +137,7 @@ Options:
   MaterialBlacklist:
   - "lava"
 
-  # Commands that cannot be executed while sitting or posing
+  # Commands that cannot be executed while using a feature
   CommandBlacklist:
   - "skin"
   - "nick"
