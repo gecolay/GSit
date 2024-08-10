@@ -14,7 +14,7 @@
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
-        <spigot.version>1.21-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.21.1-R0.1-SNAPSHOT</spigot.version>
         <mcv.version>v1_21_R1</mcv.version>
     </properties>
 
