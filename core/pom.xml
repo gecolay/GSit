@@ -19,7 +19,6 @@
         <placeholderapi.version>2.11.6</placeholderapi.version>
         <griefprevention.version>16.18.2</griefprevention.version>
         <plotsquared.version>7.3.8</plotsquared.version>
-        <viaversion.version>5.0.2</viaversion.version>
     </properties>
 
     <repositories>
@@ -42,10 +41,6 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
-        </repository>
-        <repository>
-            <id>viaversion-repo</id>
-            <url>https://repo.viaversion.com</url>
         </repository>
     </repositories>
 
@@ -84,12 +79,6 @@
             <groupId>com.intellectualsites.plotsquared</groupId>
             <artifactId>plotsquared-core</artifactId>
             <version>${plotsquared.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.viaversion</groupId>
-            <artifactId>viaversion-api</artifactId>
-            <version>${viaversion.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

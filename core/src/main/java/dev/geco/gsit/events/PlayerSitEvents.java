@@ -4,7 +4,6 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 
 import dev.geco.gsit.GSitMain;

@@ -63,9 +63,6 @@ public class GSitMain extends JavaPlugin {
     private IEntityUtil entityUtil;
     public IEntityUtil getEntityUtil() { return entityUtil; }
 
-    private IPackageUtil packageUtil;
-    public IPackageUtil getPackageUtil() { return packageUtil; }
-
     private GriefPreventionLink griefPreventionLink;
     public GriefPreventionLink getGriefPreventionLink() { return griefPreventionLink; }
 
@@ -74,9 +71,6 @@ public class GSitMain extends JavaPlugin {
 
     private PlotSquaredLink plotSquaredLink;
     public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
-
-    private ViaVersionLink viaVersionLink;
-    public ViaVersionLink getViaVersionLink() { return viaVersionLink; }
 
     private WorldGuardLink worldGuardLink;
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
@@ -100,8 +94,6 @@ public class GSitMain extends JavaPlugin {
         if(!connectDatabase(Sender)) return;
 
         getToggleManager().createTable();
-
-        if(getPackageUtil() != null) getPackageUtil().registerPlayers();
     }
 
     private void linkBStats() {
@@ -153,7 +145,6 @@ public class GSitMain extends JavaPlugin {
         if(!versionCheck()) return;
 
         entityUtil = getSVManager().isNewerOrVersion(17, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil") : new EntityUtil();
-        packageUtil = getSVManager().isNewerOrVersion(17, 0) ? (IPackageUtil) getSVManager().getPackageObject("util.PackageUtil") : null;
 
         loadSettings(Bukkit.getConsoleSender());
 
@@ -182,7 +173,6 @@ public class GSitMain extends JavaPlugin {
         getCrawlManager().clearCrawls();
 
         if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
-        if(getPackageUtil() != null) getPackageUtil().unregisterPlayers();
     }
 
     private void setupCommands() {
@@ -261,15 +251,6 @@ public class GSitMain extends JavaPlugin {
             if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
             else plotSquaredLink = null;
         } else plotSquaredLink = null;
-
-        plugin = Bukkit.getPluginManager().getPlugin("ViaVersion");
-
-        if(getPackageUtil() != null && plugin != null && plugin.isEnabled()) {
-            viaVersionLink = new ViaVersionLink();
-            if(viaVersionLink.isRequired()) {
-                getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
-            } else viaVersionLink = null;
-        } else viaVersionLink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
 

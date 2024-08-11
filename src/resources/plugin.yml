@@ -6,7 +6,7 @@ website: https://www.spigotmc.org/resources/62325
 main: ${project.parent.groupId}.${project.parent.artifactId}Main
 api-version: 1.16
 folia-supported: true
-softdepend: [GriefPrevention, PlaceholderAPI, PlotSquared, ViaBackwards, ViaVersion, WorldGuard]
+softdepend: [GriefPrevention, PlaceholderAPI, PlotSquared, WorldGuard]
 
 commands:
 
