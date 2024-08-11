@@ -171,9 +171,9 @@ public class SitManager {
             } catch (Throwable ignored) { }
         }
 
-        if(seat.getEntity().isValid() && Safe) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
+        if(seat.getEntity().isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
 
-        if(seat.getSeatEntity().isValid()) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
+        if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
 
         GPM.getEntityUtil().removeSeatEntity(seat.getSeatEntity());
 
