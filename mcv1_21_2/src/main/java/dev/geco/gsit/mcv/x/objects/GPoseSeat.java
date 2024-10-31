@@ -159,7 +159,10 @@ public class GPoseSeat implements IGPoseSeat {
         packages.add(createNpcPacket);
         if(pose == Pose.SLEEPING) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
-        if(pose == Pose.SLEEPING) packages.add(teleportNpcPacket);
+        if(pose == Pose.SLEEPING) {
+            packages.add(teleportNpcPacket);
+            packages.add(teleportNpcPacket);
+        }
         if(pose == Pose.SPIN_ATTACK) packages.add(rotateNpcPacket);
 
         bundle = new ClientboundBundlePacket(packages);
