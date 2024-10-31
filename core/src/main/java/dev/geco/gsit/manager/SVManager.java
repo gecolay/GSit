@@ -10,7 +10,7 @@ public class SVManager {
 
     private final GSitMain GPM;
 
-    private final String LATEST_VERSION = "v1_20";
+    private final String LATEST_VERSION = "v1_20_2";
     private final String SERVER_VERSION;
     private String PACKAGE_PATH;
     private boolean AVAILABLE;
@@ -23,6 +23,7 @@ public class SVManager {
         VERSION_MAPPING.put("v1_20_4", "v1_20_3");
         VERSION_MAPPING.put("v1_20_6", "v1_20_5");
         VERSION_MAPPING.put("v1_21_1", "v1_21");
+        VERSION_MAPPING.put("v1_21_3", "v1_21_2");
     }
 
     public SVManager(GSitMain GPluginMain) {

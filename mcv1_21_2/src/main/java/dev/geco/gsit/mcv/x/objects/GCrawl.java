@@ -147,7 +147,7 @@ public class GCrawl implements IGCrawl {
 
                     serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
                     boxEntity.teleportTo(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                    serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), boxEntity.onGround));
+                    serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
                 } else {
 
                     boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
