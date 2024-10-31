@@ -56,6 +56,7 @@ public class GPoseSeat implements IGPoseSeat {
     protected ClientboundRemoveEntitiesPacket removeNpcPacket;
     protected ClientboundAddEntityPacket createNpcPacket;
     protected ClientboundSetEntityDataPacket metaNpcPacket;
+    protected ClientboundUpdateAttributesPacket attributeNpcPacket;
     protected ClientboundTeleportEntityPacket teleportNpcPacket;
     protected ClientboundMoveEntityPacket.PosRot rotateNpcPacket;
     protected ClientboundBundlePacket bundle;
@@ -80,7 +81,11 @@ public class GPoseSeat implements IGPoseSeat {
         renderRange = seatPlayer.getWorld().getSimulationDistance() * 16;
 
         playerNpc = createNPC();
-        playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + GPM.getSitManager().BASE_OFFSET + (pose == org.bukkit.entity.Pose.SLEEPING ? 0.1125d : 0d) + (pose == org.bukkit.entity.Pose.SWIMMING ? -0.19 : 0), seatLocation.getZ(), 0f, 0f);
+        double offset = seatLocation.getY() + GPM.getSitManager().BASE_OFFSET;
+        double scale = serverPlayer.getScale();
+        if(pose == org.bukkit.entity.Pose.SLEEPING) offset += 0.1125d * scale;
+        if(pose == org.bukkit.entity.Pose.SWIMMING) offset += -0.19 * scale;
+        playerNpc.moveTo(seatLocation.getX(), offset, seatLocation.getZ(), 0f, 0f);
 
         blockLocation = seatLocation.clone();
         blockLocation.setY(blockLocation.getWorld().getMinHeight());
@@ -152,6 +157,7 @@ public class GPoseSeat implements IGPoseSeat {
         }
 
         metaNpcPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), playerNpc.getEntityData().isDirty() ? playerNpc.getEntityData().packDirty() : playerNpc.getEntityData().getNonDefaultValues());
+        attributeNpcPacket = new ClientboundUpdateAttributesPacket(playerNpc.getId(), serverPlayer.getAttributes().getSyncableAttributes());
 
         List<Packet<? super ClientGamePacketListener>> packages = new ArrayList<>();
 
@@ -159,6 +165,7 @@ public class GPoseSeat implements IGPoseSeat {
         packages.add(createNpcPacket);
         if(pose == Pose.SLEEPING) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
+        packages.add(attributeNpcPacket);
         if(pose == Pose.SLEEPING) {
             packages.add(teleportNpcPacket);
             packages.add(teleportNpcPacket);
