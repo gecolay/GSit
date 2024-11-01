@@ -1,14 +1,11 @@
 package dev.geco.gsit.mcv.x.objects;
 
-
 import org.bukkit.*;
 import org.bukkit.block.*;
-import org.bukkit.block.data.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
 import org.bukkit.craftbukkit.v1_21_R2.entity.*;
 
 import net.minecraft.network.protocol.game.*;
@@ -29,11 +26,7 @@ public class GCrawl implements IGCrawl {
 
     protected final BoxEntity boxEntity;
 
-    private Location blockLocation;
-
     private boolean boxPresent;
-
-    protected final BlockData blockData = Material.BARRIER.createBlockData();
 
     private final Listener listener;
     private final Listener moveListener;
@@ -53,20 +46,6 @@ public class GCrawl implements IGCrawl {
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void ETogSE(EntityToggleSwimEvent Event) { if(Event.getEntity() == player) Event.setCancelled(true); }
-
-            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void PIntE(PlayerInteractEvent Event) {
-
-                if(!Event.isAsynchronous() && Event.getPlayer() == player && blockLocation != null && Event.getClickedBlock().equals(blockLocation.getBlock()) && Event.getHand() == EquipmentSlot.HAND) {
-
-                    Event.setCancelled(true);
-
-                    GPM.getTManager().run(() -> {
-
-                        buildBlock(blockLocation);
-                    }, false, player);
-                }
-            }
         };
 
         moveListener = new Listener() {
@@ -118,45 +97,38 @@ public class GCrawl implements IGCrawl {
 
         location.setY(location.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
 
-        Block aboveBlock = location.getBlock();
+        Block upBlock = location.getBlock();
 
-        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(location.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
-        boolean canPlaceBlock = isValidArea(locationBlock.getRelative(BlockFace.UP), aboveBlock, blockLocation != null ? blockLocation.getBlock() : null);
-        boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
+        boolean hasSolidBlockUp = upBlock.getBoundingBox().contains(location.toVector()) && !upBlock.getCollisionShape().getBoundingBoxes().isEmpty();
 
-        if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
-
-            destoryBlock();
-
-            if(canSetBarrier && !aboveBlockSolid) buildBlock(location);
+        if(hasSolidBlockUp) {
+            destoryEntity();
+            return;
         }
 
-        if(!canSetBarrier && !aboveBlockSolid) {
+        Location playerLocation = Location.clone();
 
-            Location playerLocation = Location.clone();
+        GPM.getTManager().run(() -> {
 
-            GPM.getTManager().run(() -> {
+            int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
-                int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
+            playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
 
-                playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
+            boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-                boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
+            if(boxPresent) {
 
-                if(boxPresent) {
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
+                boxEntity.teleportTo(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
+            } else {
 
-                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-                    boxEntity.teleportTo(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                    serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
-                } else {
-
-                    boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                    serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
-                    boxPresent = true;
-                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-                }
-            }, true, playerLocation);
-        } else destoryEntity();
+                boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
+                boxPresent = true;
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
+            }
+        }, true, playerLocation);
     }
 
     public void stop() {
@@ -167,23 +139,7 @@ public class GCrawl implements IGCrawl {
 
         player.setSwimming(false);
 
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-
-        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-    }
-
-    private void buildBlock(Location Location) {
-
-        blockLocation = Location;
-
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockData);
-    }
-
-    private void destoryBlock() {
-
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-
-        blockLocation = null;
+        destoryEntity();
     }
 
     private void destoryEntity() {
@@ -202,15 +158,13 @@ public class GCrawl implements IGCrawl {
             GPM.getTManager().run(() -> {
 
                 GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
-            }, true, blockLocation != null ? blockLocation : player.getLocation());
+            }, true, player.getLocation());
 
             return false;
         }
 
         return true;
     }
-
-    private boolean isValidArea(Block BlockUp, Block AboveBlock, Block LocationBlock) { return BlockUp.equals(AboveBlock) || BlockUp.equals(LocationBlock); }
 
     public Player getPlayer() { return player; }
 
