@@ -90,9 +90,9 @@ public class EntityUtil implements IEntityUtil {
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
-            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
+            PlayerSeatEntity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
 
-            playerSeatEntity.startRiding(lastEntity, true);
+            playerSeatEntity.setVehicle(lastEntity);
 
             if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
