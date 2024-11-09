@@ -20,11 +20,13 @@ public class GCrawlTabComplete implements TabCompleter {
 
         List<String> complete = new ArrayList<>(), completeStarted = new ArrayList<>();
 
+        if(!GPM.getCManager().C_DOUBLE_SNEAK) return complete;
+
         if(Sender instanceof Player) {
 
             if(Args.length == 1) {
 
-                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle", "Crawl.*") && GPM.getCManager().C_DOUBLE_SNEAK) complete.add("toggle");
+                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle", "Crawl.*")) complete.add("toggle");
 
                 if(!Args[Args.length - 1].isEmpty()) {
 
@@ -34,7 +36,7 @@ public class GCrawlTabComplete implements TabCompleter {
                 }
             } else if(Args.length == 2) {
 
-                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle", "Crawl.*") && Args[0].equalsIgnoreCase("toggle") && GPM.getCManager().C_DOUBLE_SNEAK) {
+                if(GPM.getPManager().hasPermission(Sender, "CrawlToggle", "Crawl.*") && Args[0].equalsIgnoreCase("toggle")) {
 
                     complete.add("on");
                     complete.add("off");

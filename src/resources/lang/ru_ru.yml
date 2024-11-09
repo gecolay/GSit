@@ -8,7 +8,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Плагин был включен."
   plugin-link: "[P]&a Соединение с &6 %Link%&a Успешно!"
-  plugin-update: "[P]&a Доступна новая версия:&6 %NewVersion%&a!\n[P]&a Ваша версия:&6 %Version%&a!\n[P]&aСкачайте последнюю версию:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Доступна новая версия:&6 %NewVersion%&a!\n[P]&a Ваша версия:&6 %Version%&a!\n[P]&a Скачайте последнюю версию:\n[P]&6 %Path%"
   plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c Плагин не может быть использован с этой версией сервера! (&b%Version%&c)"
   plugin-reload: "[P]&a Плагин был успешно перезагружен."
