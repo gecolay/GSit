@@ -123,6 +123,12 @@ public class GPoseSeat implements IGPoseSeat {
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void ICliE(InventoryClickEvent Event) { if(Event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
+
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+            public void PDroIE(PlayerDropItemEvent Event) { if(Event.getPlayer() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
+
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+            public void EPotEE(EntityPotionEffectEvent Event) { if(Event.getEntity() == seatPlayer) serverPlayer.setInvisible(true); }
         };
     }
 

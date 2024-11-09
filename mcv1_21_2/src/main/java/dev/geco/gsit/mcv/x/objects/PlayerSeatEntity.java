@@ -8,8 +8,6 @@ import com.google.common.collect.*;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_21_R2.*;
 
-import net.minecraft.advancements.*;
-import net.minecraft.server.level.*;
 import net.minecraft.world.entity.*;
 
 public class PlayerSeatEntity extends AreaEffectCloud {
@@ -56,10 +54,6 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         }
 
         Vehicle.gameEvent(net.minecraft.world.level.gameevent.GameEvent.ENTITY_MOUNT, this);
-
-        Vehicle.passengers.stream().flatMap(Entity::getSelfAndPassengers).filter((e) -> e instanceof ServerPlayer).forEach((e) -> {
-            CriteriaTriggers.START_RIDING_TRIGGER.trigger((ServerPlayer) e);
-        });
     }
 
 }

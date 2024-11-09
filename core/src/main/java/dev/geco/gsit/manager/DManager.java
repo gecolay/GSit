@@ -25,6 +25,7 @@ public class DManager {
     public DManager(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public boolean connect() {
+        if(isConnected()) return true;
         File dataFile = new File(GPM.getDataFolder(), "data/data.yml");
         if(!dataFile.exists()) GPM.saveResource("data/data.yml", false);
         FileConfiguration dataConfig = YamlConfiguration.loadConfiguration(dataFile);
@@ -35,6 +36,13 @@ public class DManager {
         user = dataConfig.getString("Database.user", "");
         password = dataConfig.getString("Database.password", "");
         return reconnect();
+    }
+
+    public boolean isConnected() {
+        try {
+            if(connection != null && !connection.isClosed()) return true;
+        } catch (SQLException ignored) { }
+        return false;
     }
 
     private boolean reconnect() {
@@ -67,22 +75,26 @@ public class DManager {
         return null;
     }
 
-    public boolean execute(String Query, Object... Data) throws SQLException {
-        if(connection == null) throw new SQLException("missing " + type + " database connection");
-        if(connection.isClosed() && !reconnect()) return false;
-        PreparedStatement preparedStatement = connection.prepareStatement(Query);
-        for(int i = 1; i <= Data.length; i++) preparedStatement.setObject(i, Data[i - 1]);
-        return preparedStatement.execute();
+    public void execute(String Query, Object... Data) throws SQLException {
+        ensureConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(Query)) {
+            for(int i = 1; i <= Data.length; i++) preparedStatement.setObject(i, Data[i - 1]);
+            preparedStatement.executeUpdate();
+        }
     }
 
     public ResultSet executeAndGet(String Query, Object... Data) throws SQLException {
-        if(connection == null) throw new SQLException("missing " + type + " database connection");
-        if(connection.isClosed() && !reconnect()) return null;
+        ensureConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(Query);
         for(int i = 1; i <= Data.length; i++) preparedStatement.setObject(i, Data[i - 1]);
         return preparedStatement.executeQuery();
     }
 
-    public void close() { try { if(connection != null) connection.close(); } catch (SQLException ignored) { } }
+    private void ensureConnection() throws SQLException {
+        if(isConnected()) return;
+        if(!reconnect()) throw new SQLException("Failed to reconnect to the " + type + " database.");
+    }
+
+    public void close() { try { if(connection != null && !connection.isClosed()) connection.close(); } catch (SQLException ignored) { } }
 
 }
