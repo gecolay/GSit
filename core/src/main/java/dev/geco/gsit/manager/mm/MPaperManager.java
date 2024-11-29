@@ -3,14 +3,13 @@ package dev.geco.gsit.manager.mm;
 import java.util.*;
 import java.util.regex.*;
 
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.*;
 
 import org.bukkit.command.*;
-import org.bukkit.entity.*;
 
 import net.kyori.adventure.text.*;
 import net.kyori.adventure.text.minimessage.*;
-import net.kyori.adventure.text.serializer.json.*;
 import net.kyori.adventure.text.serializer.legacy.*;
 
 import dev.geco.gsit.GSitMain;
@@ -18,15 +17,14 @@ import dev.geco.gsit.manager.*;
 
 public class MPaperManager extends MManager {
 
+    protected final Pattern PARSED_HEX_PATTERN = Pattern.compile("§x(§[0-9a-fA-F]){6}");
     protected final LegacyComponentSerializer legacyComponentSerializer;
-    protected Object jsonComponentSerializer;
     protected final MiniMessage miniMessage;
     protected final Map<String, String> TAGS;
 
     public MPaperManager(GSitMain GPluginMain) {
         super(GPluginMain);
         legacyComponentSerializer = LegacyComponentSerializer.builder().character(AMPERSAND_CHAR).hexColors().build();
-        if(GPluginMain.getSVManager().isNewerOrVersion(20, 0)) jsonComponentSerializer = JSONComponentSerializer.json();
         miniMessage = MiniMessage.miniMessage();
         Map<String, String> tags = new HashMap<>();
         tags.put("0", "<black>");
@@ -54,8 +52,6 @@ public class MPaperManager extends MManager {
         TAGS = Collections.unmodifiableMap(tags);
     }
 
-    public String getAsJSON(String Text, Object... RawReplaceList) { return jsonComponentSerializer != null ? ((JSONComponentSerializer) jsonComponentSerializer).serialize(toFormattedComponent(Text, RawReplaceList)) : super.getAsJSON(Text, RawReplaceList); }
-
     public String toFormattedMessage(String Text, Object... RawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirect(formatText(Text, RawReplaceList))); }
 
     public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
@@ -66,17 +62,15 @@ public class MPaperManager extends MManager {
 
     private @NotNull Component toFormattedComponent(String Text, Object... RawReplaceList) { return miniMessage.deserialize(replaceLegacyColors(replaceText(Text, RawReplaceList))); }
 
-    private String formatText(String Text, Object... RawReplaceList) { return legacyComponentSerializer.serialize( miniMessage.deserialize(replaceText(Text, RawReplaceList))); }
-
-    private String replaceLegacyColors(String text) {
-        Matcher matcher = HEX_PATTERN.matcher(text);
-        StringBuilder result = new StringBuilder(text.length());
+    private String replaceLegacyColors(String Text) {
+        Matcher matcher = HEX_PATTERN.matcher(Text);
+        StringBuilder result = new StringBuilder(Text.length());
         int lastIndex = 0;
         while(matcher.find()) {
-            result.append(text, lastIndex, matcher.start()).append("<color:").append(matcher.group()).append(">");
+            result.append(Text, lastIndex, matcher.start()).append("<color:").append(matcher.group()).append(">");
             lastIndex = matcher.end();
         }
-        result.append(text, lastIndex, text.length());
+        result.append(Text, lastIndex, Text.length());
         for(Map.Entry<String, String> tag : TAGS.entrySet()) {
             String key = tag.getKey();
             String value = tag.getValue();
@@ -84,6 +78,16 @@ public class MPaperManager extends MManager {
             result = new StringBuilder(result.toString().replace(AMPERSAND_CHAR + key, value).replace(AMPERSAND_CHAR + upperKey, value).replace(org.bukkit.ChatColor.COLOR_CHAR + key, value).replace(org.bukkit.ChatColor.COLOR_CHAR + upperKey, value));
         }
         return result.toString();
+    }
+
+    private String formatText(String Text, Object... RawReplaceList) { return legacyComponentSerializer.serialize(miniMessage.deserialize(replaceParsedLegacyColors(replaceText(Text, RawReplaceList)))); }
+
+    private String replaceParsedLegacyColors(String Text) {
+        Matcher matcher = PARSED_HEX_PATTERN.matcher(Text);
+        StringBuilder result = new StringBuilder();
+        while (matcher.find()) matcher.appendReplacement(result, "#" + matcher.group().replaceAll("§x|§", ""));
+        matcher.appendTail(result);
+        return result.toString().replace(String.valueOf(org.bukkit.ChatColor.COLOR_CHAR), String.valueOf(AMPERSAND_CHAR));
     }
 
 }
