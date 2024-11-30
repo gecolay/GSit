@@ -89,7 +89,7 @@ public class MPaperManager extends MManager {
         StringBuilder result = new StringBuilder(Text.length());
         while (matcher.find()) {
             result.append(Text, lastMatchEnd, matcher.start());
-            String hex = Text.substring(matcher.start() + 3, matcher.end()).replace("§", ""); // Remove all §
+            String hex = Text.substring(matcher.start() + 3, matcher.end()).replace("§", "");
             result.append('#').append(hex);
             lastMatchEnd = matcher.end();
         }

@@ -49,11 +49,11 @@ public class UManager {
     }
 
     private void checkVersion() {
+        LocalDate today = LocalDate.now();
+        if(lastCheck != null && lastCheck.equals(today)) return;
+        lastCheck = today;
         try {
-            LocalDate today = LocalDate.now();
-            if(lastCheck != null && lastCheck.equals(today)) return;
             getSpigotVersion(sVersion -> {
-                lastCheck = today;
                 spigotVersion = sVersion;
                 if(spigotVersion == null) {
                     latestVersion = true;
