@@ -22,6 +22,7 @@ abstract public class MManager {
     protected final String PREFIX_PLACEHOLDER = "[P]";
     protected final String PREFIX_REPLACE = "&7[&6" + GSitMain.getInstance().NAME + "&7]";
     protected final char AMPERSAND_CHAR = '&';
+    protected final char COLOR_CHAR = org.bukkit.ChatColor.COLOR_CHAR;
     protected final Pattern HEX_PATTERN = Pattern.compile("#([a-fA-F0-9]{6})");
     protected final HashMap<String, FileConfiguration> messages = new HashMap<>();
     protected String DEFAULT_LANG;
@@ -104,9 +105,9 @@ abstract public class MManager {
         StringBuilder result = new StringBuilder(Text.length());
         int lastIndex = 0;
         while(matcher.find()) {
-            result.append(Text, lastIndex, matcher.start()).append(org.bukkit.ChatColor.COLOR_CHAR).append('x');
+            result.append(Text, lastIndex, matcher.start()).append(COLOR_CHAR).append('x');
             char[] chars = matcher.group().substring(1).toCharArray();
-            for(char c : chars) result.append(org.bukkit.ChatColor.COLOR_CHAR).append(c);
+            for(char c : chars) result.append(COLOR_CHAR).append(c);
             lastIndex = matcher.end();
         }
         result.append(Text.substring(lastIndex));

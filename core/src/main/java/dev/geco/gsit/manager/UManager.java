@@ -38,7 +38,7 @@ public class UManager {
 
     private void getSpigotVersion(final Consumer<String> VersionConsumer) {
         GPM.getTManager().run(() -> {
-            try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + GPM.RESOURCE).openStream();
+            try(InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + GPM.RESOURCE).openStream();
                  Scanner scanner = new Scanner(inputStream)) {
                 if(scanner.hasNext() && VersionConsumer != null) VersionConsumer.accept(scanner.next());
             } catch (IOException e) {

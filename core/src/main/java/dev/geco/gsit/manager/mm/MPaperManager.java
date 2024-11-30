@@ -75,7 +75,7 @@ public class MPaperManager extends MManager {
             String key = tag.getKey();
             String value = tag.getValue();
             String upperKey = key.toUpperCase();
-            result = new StringBuilder(result.toString().replace(AMPERSAND_CHAR + key, value).replace(AMPERSAND_CHAR + upperKey, value).replace(org.bukkit.ChatColor.COLOR_CHAR + key, value).replace(org.bukkit.ChatColor.COLOR_CHAR + upperKey, value));
+            result = new StringBuilder(result.toString().replace(AMPERSAND_CHAR + key, value).replace(AMPERSAND_CHAR + upperKey, value).replace(COLOR_CHAR + key, value).replace(COLOR_CHAR + upperKey, value));
         }
         return result.toString();
     }
@@ -83,11 +83,20 @@ public class MPaperManager extends MManager {
     private String formatText(String Text, Object... RawReplaceList) { return legacyComponentSerializer.serialize(miniMessage.deserialize(replaceParsedLegacyColors(replaceText(Text, RawReplaceList)))); }
 
     private String replaceParsedLegacyColors(String Text) {
+        if (Text.indexOf(COLOR_CHAR) == -1) return Text;
         Matcher matcher = PARSED_HEX_PATTERN.matcher(Text);
-        StringBuilder result = new StringBuilder();
-        while (matcher.find()) matcher.appendReplacement(result, "#" + matcher.group().replaceAll("§x|§", ""));
-        matcher.appendTail(result);
-        return result.toString().replace(String.valueOf(org.bukkit.ChatColor.COLOR_CHAR), String.valueOf(AMPERSAND_CHAR));
+        int lastMatchEnd = 0;
+        StringBuilder result = new StringBuilder(Text.length());
+        while (matcher.find()) {
+            result.append(Text, lastMatchEnd, matcher.start());
+            String hex = Text.substring(matcher.start() + 3, matcher.end()).replace("§", ""); // Remove all §
+            result.append('#').append(hex);
+            lastMatchEnd = matcher.end();
+        }
+        result.append(Text, lastMatchEnd, Text.length());
+        int length = result.length();
+        for (int i = 0; i < length; i++) if (result.charAt(i) == COLOR_CHAR) result.setCharAt(i, AMPERSAND_CHAR);
+        return result.toString();
     }
 
 }
