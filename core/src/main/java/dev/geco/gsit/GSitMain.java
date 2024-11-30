@@ -135,7 +135,7 @@ public class GSitMain extends JavaPlugin {
         passengerUtil = new PassengerUtil();
         environmentUtil = new EnvironmentUtil(getInstance());
 
-        preloadPluginDependencies();
+        loadFeatures();
 
         mManager = supportsPaperFeature() && getSVManager().isNewerOrVersion(18, 2) ? new MPaperManager(getInstance()) : new MSpigotManager(getInstance());
     }
@@ -146,6 +146,7 @@ public class GSitMain extends JavaPlugin {
 
         entityUtil = getSVManager().isNewerOrVersion(17, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil") : new EntityUtil();
 
+        loadPluginDependencies();
         loadSettings(Bukkit.getConsoleSender());
 
         setupCommands();
@@ -154,7 +155,7 @@ public class GSitMain extends JavaPlugin {
 
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
 
-        loadPluginDependencies(Bukkit.getConsoleSender());
+        printPluginLinks(Bukkit.getConsoleSender());
         getUManager().checkForUpdates();
     }
 
@@ -209,7 +210,7 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SpinConfusionEvent(getInstance()), getInstance());
     }
 
-    private void preloadPluginDependencies() {
+    private void loadFeatures() {
 
         try {
             Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
@@ -227,82 +228,66 @@ public class GSitMain extends JavaPlugin {
         }
     }
 
-    private void loadPluginDependencies(CommandSender Sender) {
+    private void loadPluginDependencies() {
 
         Plugin plugin = Bukkit.getPluginManager().getPlugin("GriefPrevention");
-
-        if(plugin != null && plugin.isEnabled()) {
-            griefPreventionLink = new GriefPreventionLink(getInstance());
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
-        } else griefPreventionLink = null;
+        if(plugin != null && plugin.isEnabled()) griefPreventionLink = new GriefPreventionLink(getInstance());
+        else griefPreventionLink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
-
         if(plugin != null && plugin.isEnabled()) {
             placeholderAPILink = new PlaceholderAPILink(getInstance());
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
             getPlaceholderAPILink().register();
         } else placeholderAPILink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("PlotSquared");
-
         if(plugin != null && plugin.isEnabled()) {
             plotSquaredLink = new PlotSquaredLink(getInstance());
-            if(getPlotSquaredLink().isVersionSupported()) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
-            else plotSquaredLink = null;
+            if(!getPlotSquaredLink().isVersionSupported()) plotSquaredLink = null;
         } else plotSquaredLink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
-
         if(plugin != null && plugin.isEnabled()) {
             if(worldGuardLink == null) {
                 worldGuardLink = new WorldGuardLink(getInstance());
                 getWorldGuardLink().registerFlags();
             }
-            getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", plugin.getName());
         } else worldGuardLink = null;
     }
 
+    private void printPluginLinks(CommandSender Sender) {
+        if(griefPreventionLink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("GriefPrevention").getName());
+        if(placeholderAPILink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("PlaceholderAPI").getName());
+        if(plotSquaredLink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("PlotSquared").getName());
+        if(worldGuardLink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("WorldGuard").getName());
+    }
+
     public void reload(CommandSender Sender) {
-
         Bukkit.getPluginManager().callEvent(new GSitReloadEvent(getInstance()));
-
+        unload();
         getCManager().reload();
         getMManager().loadMessages();
-
-        unload();
-
+        loadPluginDependencies();
         loadSettings(Sender);
-        loadPluginDependencies(Sender);
+        printPluginLinks(Sender);
         getUManager().checkForUpdates();
     }
 
     private boolean connectDatabase(CommandSender Sender) {
-
         boolean connect = getDManager().connect();
-
         if(connect) return true;
-
         getMManager().sendMessage(Sender, "Plugin.plugin-data");
-
         Bukkit.getPluginManager().disablePlugin(getInstance());
-
         return false;
     }
 
     private boolean versionCheck() {
-
         if(!getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().isAvailable())) {
-
             getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", getSVManager().getServerVersion());
-
             getUManager().checkForUpdates();
-
             Bukkit.getPluginManager().disablePlugin(getInstance());
-
             return false;
         }
-
         return true;
     }
 
