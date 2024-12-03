@@ -153,6 +153,8 @@ public class GSitMain extends JavaPlugin {
         setupEvents();
         linkBStats();
 
+        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(getInstance()));
+
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
 
         printPluginLinks(Bukkit.getConsoleSender());
@@ -263,7 +265,9 @@ public class GSitMain extends JavaPlugin {
     }
 
     public void reload(CommandSender Sender) {
-        Bukkit.getPluginManager().callEvent(new GSitReloadEvent(getInstance()));
+        GSitReloadEvent reloadEvent = new GSitReloadEvent(getInstance());
+        Bukkit.getPluginManager().callEvent(reloadEvent);
+        if(reloadEvent.isCancelled()) return;
         unload();
         getCManager().reload();
         getMManager().loadMessages();
@@ -271,6 +275,7 @@ public class GSitMain extends JavaPlugin {
         loadSettings(Sender);
         printPluginLinks(Sender);
         getUManager().checkForUpdates();
+        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(getInstance()));
     }
 
     private boolean connectDatabase(CommandSender Sender) {

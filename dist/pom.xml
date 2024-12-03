@@ -121,6 +121,11 @@
             <artifactId>v1_21_2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>dev.geco.gsit</groupId>
+            <artifactId>v1_21_4</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
