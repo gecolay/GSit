@@ -20,26 +20,15 @@ public class GBellyFlopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
 
-        if(!(Sender instanceof Player)) {
+        if(!(Sender instanceof Player player)) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-sender-error");
             return true;
         }
 
-        Player player = (Player) Sender;
-
         if(!GPM.getPManager().hasPermission(Sender, "BellyFlop", "Pose.*")) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
-            return true;
-        }
-
-        if(!GPM.getPoseManager().isAvailable()) {
-
-            String v = Bukkit.getServer().getClass().getPackage().getName();
-            v = v.substring(v.lastIndexOf('.') + 1);
-
-            GPM.getMManager().sendMessage(Sender, "Messages.command-version-error", "%Version%", v);
             return true;
         }
 
@@ -74,11 +63,7 @@ public class GBellyFlopCommand implements CommandExecutor {
         }
 
         boolean overSize = false;
-
-        try {
-
-            for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) overSize = true;
-        } catch (Throwable ignored) { }
+        for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) overSize = true;
 
         if(!GPM.getCManager().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && !overSize && (!block.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
 

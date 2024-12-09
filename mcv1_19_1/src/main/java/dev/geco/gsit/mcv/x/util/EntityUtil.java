@@ -17,23 +17,20 @@ import dev.geco.gsit.objects.*;
 public class EntityUtil implements IEntityUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
-    protected final HashMap<Integer, Entity> playerMap = new HashMap<>();
 
-    public HashMap<Integer, Entity> getSeatMap() { return playerMap; }
-
+    @Override
     public void posEntity(org.bukkit.entity.Entity Entity, Location Location) {
 
         if(Entity instanceof Player) {
-
             ((CraftEntity) Entity).getHandle().setPos(Location.getX(), Location.getY(), Location.getZ());
             ((CraftPlayer) Entity).getHandle().connection.send(new ClientboundPlayerPositionPacket(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch(), ClientboundPlayerPositionPacket.RelativeArgument.unpack(0), 0, true));
-        } else ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch());
+            return;
+        }
+
+        ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch());
     }
 
-    public boolean isLocationValid(Location Location) { return true; }
-
-    public boolean isPlayerSitLocationValid(Entity Holder) { return true; }
-
+    @Override
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
         if(Rider == null || !Rider.isValid()) return null;
@@ -44,23 +41,15 @@ public class EntityUtil implements IEntityUtil {
 
         SeatEntity seatEntity = new SeatEntity(Location);
 
-        playerMap.put(seatEntity.getId(), Rider);
-
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
         boolean spawn = spawnEntity(Location.getWorld(), seatEntity);
-
-        if(!spawn) {
-            playerMap.remove(seatEntity.getId());
-            return null;
-        }
+        if(!spawn) return null;
 
         if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
         if(!riding || !seatEntity.passengers.contains(rider)) {
-
             seatEntity.discard();
-            playerMap.remove(seatEntity.getId());
             return null;
         }
 
@@ -69,11 +58,7 @@ public class EntityUtil implements IEntityUtil {
         return seatEntity.getBukkitEntity();
     }
 
-    public void removeSeatEntity(Entity Entity) {
-        playerMap.remove(Entity.getEntityId());
-        Entity.remove();
-    }
-
+    @Override
     public UUID createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
         if(Rider == null || !Rider.isValid()) return null;
@@ -83,7 +68,6 @@ public class EntityUtil implements IEntityUtil {
         int maxEntities = GPM.getPlayerSitManager().getSeatEntityCount();
 
         if(maxEntities == 0) {
-
             ((CraftEntity) Rider).getHandle().startRiding(lastEntity, true);
             return null;
         }
@@ -91,13 +75,11 @@ public class EntityUtil implements IEntityUtil {
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
             net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
-
             playerSeatEntity.startRiding(lastEntity, true);
 
             if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
             boolean spawn = spawnEntity(Holder.getWorld(), playerSeatEntity);
-
             if(spawn) lastEntity = playerSeatEntity;
         }
 
@@ -107,16 +89,13 @@ public class EntityUtil implements IEntityUtil {
     private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
 
         if(!GPM.supportsPaperFeature()) {
-
             try {
-
                 ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
                 return true;
             } catch (Throwable ignored) { }
         }
 
         try {
-
             net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
             levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
             return true;
@@ -125,8 +104,10 @@ public class EntityUtil implements IEntityUtil {
         return false;
     }
 
+    @Override
     public IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose) { return new GPoseSeat(Seat, Pose); }
 
+    @Override
     public IGCrawl createCrawlObject(Player Player) { return new GCrawl(Player); }
 
 }

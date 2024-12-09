@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c Nemáš oprávnění použít tenhle příkaz!"
   command-sender-error: "[P]&c Nemůžeš spustit tenhle příkaz!"
-  command-version-error: "[P]&c Zastaralá verze serveru! (&b%Version%&c)\n[P]&c Aktualizuj tenhle server k použití téhle funkce!"
 
   command-gsit-toggle-on: "[P]&a Povolil jsi kliknutí pro sednutí."
   command-gsit-toggle-off: "[P]&a Zakázal jsi kliknutí pro sednutí."

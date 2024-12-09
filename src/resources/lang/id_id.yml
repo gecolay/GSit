@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c Kamu tidak punya izin untuk menggunakan perintah ini!"
   command-sender-error: "[P]&c Kamu tidak bisa menjalankan perintah ini!"
-  command-version-error: "[P]&c Versi server usang! (&b%Version%&c)\n[P]&c Perbarui server ini untuk menggunakan fitur ini!"
 
   command-gsit-toggle-on: "[P]&a Duduk dengan mengklik diaktifkan."
   command-gsit-toggle-off: "[P]&a Duduk dengan mengklik dinonaktifkan."

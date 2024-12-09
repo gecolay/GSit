@@ -131,6 +131,7 @@ public class GPoseSeat implements IGPoseSeat {
         };
     }
 
+    @Override
     public void spawn() {
 
         nearPlayers = getNearPlayers();
@@ -184,6 +185,7 @@ public class GPoseSeat implements IGPoseSeat {
         }, seatPlayer, 15);
     }
 
+    @Override
     public void remove() {
 
         stopUpdate();
@@ -404,10 +406,13 @@ public class GPoseSeat implements IGPoseSeat {
 
     private void sendPacket(ServerPlayer Player, Packet<?> Packet) { Player.connection.send(Packet); }
 
+    @Override
     public GSeat getSeat() { return seat; }
 
+    @Override
     public Player getPlayer() { return seatPlayer; }
 
+    @Override
     public Pose getPose() { return pose; }
 
     public String toString() { return seat.toString(); }

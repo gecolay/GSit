@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c Sem permissão para executar esse comando."
   command-sender-error: "[P]&c O console não pode executar esse comando."
-  command-version-error: "[P]&c Versão do servidor desatualizada! (&b%Version%&c)\n[P]&c Atualize o servidor para usar este recurso!"
 
   command-gsit-toggle-on: "[P]&a Você ativou a função de sentar-se."
   command-gsit-toggle-off: "[P]&a Você desativou a função de sentar-se."

@@ -21,10 +21,13 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         addTag("GSit_PlayerSeatEntity");
     }
 
+    @Override
     public void tick() { }
 
+    @Override
     public boolean canChangeDimensions() { return false; }
 
+    @Override
     public boolean rideableUnderWater() { return true; }
 
 }

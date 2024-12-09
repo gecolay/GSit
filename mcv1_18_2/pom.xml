@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>dev.geco.gsit</groupId>
-            <artifactId>mcv1_18</artifactId>
+            <artifactId>core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

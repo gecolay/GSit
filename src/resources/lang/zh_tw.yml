@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c 你沒有權限執行此指令！"
   command-sender-error: "[P]&c 你不能執行此指令！"
-  command-version-error: "[P]&c 伺服器版本太舊！(&b%Version%&c)\n[P]&c 升級伺服器以使用此功能！"
 
   command-gsit-toggle-on: "[P]&a 你可以使用右鍵坐下了。"
   command-gsit-toggle-off: "[P]&a 你不能使用右鍵坐下了。"

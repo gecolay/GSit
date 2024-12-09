@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c Bu komutu kullanma yetkiniz yok!"
   command-sender-error: "[P]&c Bu komutu çalıştıramazsın!"
-  command-version-error: "[P]&c Eski sunucu sürümü! (&b%Version%&c)\n[P]&c Bu özelliği kullanabilmek için sunucunuzu yükseltin!"
 
   command-gsit-toggle-on: "[P]&6 Oturma&a için tıklama etkileşimlerini etkinleştirdiniz."
   command-gsit-toggle-off: "[P]&6 Oturma&a için tıklama etkileşimlerini devre dışı bıraktınız."

@@ -27,16 +27,11 @@ public class WorldGuardLink {
     public StateFlag getFlag(String FlagName) { return FlagName != null ? FLAGS.getOrDefault(FlagName.toLowerCase(), null) : null; }
 
     public void registerFlags() {
-
         FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
-
         for(Map.Entry<String, StateFlag> flag : FLAGS.entrySet()) {
-
             try {
-
                 flagRegistry.register(flag.getValue());
             } catch (FlagConflictException | IllegalStateException e) {
-
                 Flag<?> registeredFlag = flagRegistry.get(flag.getKey());
                 if(registeredFlag instanceof StateFlag) FLAGS.put(flag.getKey(), (StateFlag) registeredFlag);
             }
@@ -44,14 +39,10 @@ public class WorldGuardLink {
     }
 
     public boolean checkFlag(Location Location, StateFlag Flag) {
-
         if(Flag == null) return true;
-
         try {
-
             return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(Location)).testState(null, Flag);
         } catch (Throwable e) { e.printStackTrace(); }
-
         return true;
     }
 

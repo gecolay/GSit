@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c Бу боерыкны куллану өчен Сездә хокук юк!"
   command-sender-error: "[P]&c Сез бу боерыкны кабыза алмыйсыз!"
-  command-version-error: "[P]&c Искергән сервер версиясе! (&b%Version%&c)\n[P]&c Бу функцияне куллану өчен серверны яңартыгыз!"
 
   command-gsit-toggle-on: "[P]&a Сез&6 утыру&a эш итүне кушты."
   command-gsit-toggle-off: "[P]&a Сез&6 утыру&a эш итүне сүндерде."

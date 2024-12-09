@@ -19,18 +19,14 @@ public class EnvironmentUtil {
     public EnvironmentUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public boolean isInAllowedWorld(Entity Entity) {
-
         boolean allowed = !GPM.getCManager().WORLDBLACKLIST.contains(Entity.getWorld().getName());
-
         if(!GPM.getCManager().WORLDWHITELIST.isEmpty() && !GPM.getCManager().WORLDWHITELIST.contains(Entity.getWorld().getName())) allowed = false;
-
         return allowed || GPM.getPManager().hasPermission(Entity, "ByPass.World", "ByPass.*");
     }
 
     public GSeat createSeatForStair(Block Block, LivingEntity Entity) {
 
         Stairs blockData = (Stairs) Block.getBlockData();
-
         if(blockData.getHalf() != Bisected.Half.BOTTOM) return GPM.getSitManager().createSeat(Block, Entity);
 
         BlockFace blockFace = blockData.getFacing().getOppositeFace();

@@ -20,13 +20,11 @@ public class GSitCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
 
-        if(!(Sender instanceof Player)) {
+        if(!(Sender instanceof Player player)) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-sender-error");
             return true;
         }
-
-        Player player = (Player) Sender;
 
         if(Args.length == 0) {
 
@@ -65,11 +63,7 @@ public class GSitCommand implements CommandExecutor {
             }
 
             boolean overSize = false;
-
-            try {
-
-                for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) overSize = true;
-            } catch (Throwable ignored) { }
+            for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) overSize = true;
 
             if(!GPM.getCManager().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && !overSize && (!block.isPassable() || !GPM.getCManager().CENTER_BLOCK))) {
 

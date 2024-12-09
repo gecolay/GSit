@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c У вас нет права для использования этой команды!"
   command-sender-error: "[P]&c Этот отправитель не может выполнить эту команду!"
-  command-version-error: "[P]&c Устаревшая версия сервера! (&b%Version%&c)\n[P]&c Обновите версию для использования!"
 
   command-gsit-toggle-on: "[P]&a Теперь вы можете сесть, нажав."
   command-gsit-toggle-off: "[P]&a Вы больше не можете сесть, нажав."

@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c このコマンドを実行する権限を持っていません！"
   command-sender-error: "[P]&c その人はそのコマンドを実行することができません！"
-  command-version-error: "[P]&c 古いサーバーバージョンです！ (&b%Version%&c)\n[P]&c この機能を使うためにサーバーを更新してください！"
 
   command-gsit-toggle-on: "[P]&a クリックインタラクションによるシットを有効にしました。"
   command-gsit-toggle-off: "[P]&a クリックインタラクションによるシットを無効にしました。"

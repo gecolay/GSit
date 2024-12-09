@@ -29,23 +29,18 @@ public class GCrawlTabComplete implements TabCompleter {
                 if(GPM.getPManager().hasPermission(Sender, "CrawlToggle", "Crawl.*")) complete.add("toggle");
 
                 if(!Args[Args.length - 1].isEmpty()) {
-
                     for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
-
                     complete.clear();
                 }
             } else if(Args.length == 2) {
 
                 if(GPM.getPManager().hasPermission(Sender, "CrawlToggle", "Crawl.*") && Args[0].equalsIgnoreCase("toggle")) {
-
                     complete.add("on");
                     complete.add("off");
                 }
 
                 if(!Args[Args.length - 1].isEmpty()) {
-
                     for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
-
                     complete.clear();
                 }
             }

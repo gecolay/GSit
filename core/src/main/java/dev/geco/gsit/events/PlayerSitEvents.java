@@ -17,11 +17,8 @@ public class PlayerSitEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void PTogSE(PlayerToggleSneakEvent Event) {
-
         Player player = Event.getPlayer();
-
         if(!GPM.getCManager().PS_SNEAK_EJECTS || !Event.isSneaking() || player.isFlying() || player.getVehicle() != null || GPM.getPlayerSitManager().WAIT_EJECT.contains(player) || player.getPassengers().isEmpty()) return;
-
         GPM.getPlayerSitManager().stopPlayerSit(player, GetUpReason.KICKED);
     }
 
@@ -44,15 +41,11 @@ public class PlayerSitEvents implements Listener {
     public void PIntAEE(PlayerInteractAtEntityEvent Event) {
 
         Entity rightClicked = Event.getRightClicked();
-
-        if(!(rightClicked instanceof Player)) return;
-
-        Player player = Event.getPlayer();
-
-        Player target = (Player) rightClicked;
+        if(!(rightClicked instanceof Player target)) return;
 
         if(!GPM.getCManager().PS_ALLOW_SIT && !GPM.getCManager().PS_ALLOW_SIT_NPC) return;
 
+        Player player = Event.getPlayer();
         if(!GPM.getPManager().hasPermission(player, "PlayerSit", "PlayerSit.*")) return;
 
         if(!GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
@@ -66,7 +59,6 @@ public class PlayerSitEvents implements Listener {
         if(GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().PS_MAX_DISTANCE;
-
         if(distance > 0d && target.getLocation().add(0, target.getHeight() / 2, 0).distance(player.getLocation().clone().add(0, player.getHeight() / 2, 0)) > distance) return;
 
         if(GPM.getPlotSquaredLink() != null && !GPM.getPlotSquaredLink().canCreateSeat(target.getLocation(), player)) return;
@@ -78,22 +70,19 @@ public class PlayerSitEvents implements Listener {
         if(GPM.getPassengerUtil().isInPassengerList(target, player) || GPM.getPassengerUtil().isInPassengerList(player, target)) return;
 
         long amount = GPM.getPassengerUtil().getPassengerAmount(target) + 1 + GPM.getPassengerUtil().getVehicleAmount(target) + GPM.getPassengerUtil().getPassengerAmount(player);
-
         if(GPM.getCManager().PS_MAX_STACK > 0 && GPM.getCManager().PS_MAX_STACK <= amount) return;
 
         Entity highestEntity = GPM.getPassengerUtil().getHighestEntity(target);
+        if(!(highestEntity instanceof Player highestPlayer)) return;
 
-        if(!(highestEntity instanceof Player)) return;
-
-        Player highestPlayer = (Player) highestEntity;
-
-        boolean isNPC = GPM.getPassengerUtil().isNPC(highestPlayer);
-
+        boolean isNPC = isNPC(highestPlayer);
         if((isNPC && !GPM.getCManager().PS_ALLOW_SIT_NPC) || (!isNPC && !GPM.getCManager().PS_ALLOW_SIT)) return;
 
         if(!GPM.getToggleManager().canPlayerSit(player.getUniqueId()) || !GPM.getToggleManager().canPlayerSit(highestPlayer.getUniqueId())) return;
 
         GPM.getPlayerSitManager().sitOnPlayer(player, highestPlayer);
     }
+
+    private boolean isNPC(Player P) { return !Bukkit.getOnlinePlayers().contains(P); }
 
 }

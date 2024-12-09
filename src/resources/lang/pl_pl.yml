@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c Nie posiadasz uprawnień, aby użyć tej komendy!"
   command-sender-error: "[P]&c Nie możesz użyć tej komendy!"
-  command-version-error: "[P]&c Nieprawidłowa wersja serwera! (&b%Version%&c)\n[P]&c Zaktualizuj serwer, aby użyć tej funkcji!"
 
   command-gsit-toggle-on: "[P]&a Włączono interakcję na siadanie."
   command-gsit-toggle-off: "[P]&a Wyłączono interakcję na siadanie."

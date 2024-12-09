@@ -21,7 +21,6 @@ Messages:
 
   command-permission-error: "[P]&c You don't have permission to use this command!"
   command-sender-error: "[P]&c You can't run this command!"
-  command-version-error: "[P]&c Outdated server version! (&b%Version%&c)\n[P]&c Upgrade the server to use this feature!"
 
   command-gsit-toggle-on: "[P]&a You have enabled&6 sit&a click-interactions."
   command-gsit-toggle-off: "[P]&a You have disabled&6 sit&a click-interactions."

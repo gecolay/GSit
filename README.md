@@ -21,9 +21,6 @@ git clone https://github.com/Gecolay/GSit.git
 
 Install all the [BuildTools](https://www.spigotmc.org/wiki/buildtools/) versions (with the "--remapped" parameter):
 
-- [1.17](https://www.spigotmc.org/wiki/buildtools/#1-17)
-- [1.17.1](https://www.spigotmc.org/wiki/buildtools/#1-17-1)
-- [1.18.1](https://www.spigotmc.org/wiki/buildtools/#1-18-1)
 - [1.18.2](https://www.spigotmc.org/wiki/buildtools/#1-18-2)
 - [1.19](https://www.spigotmc.org/wiki/buildtools/#1-19)
 - [1.19.2](https://www.spigotmc.org/wiki/buildtools/#1-19-2)
