@@ -54,9 +54,17 @@ public class MPaperManager extends MManager {
 
     public String toFormattedMessage(String Text, Object... RawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirect(formatText(Text, RawReplaceList))); }
 
-    public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) { Target.sendMessage(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
+    public void sendMessage(@NotNull CommandSender Target, String Message, Object... ReplaceList) {
+        Component message = getLanguageComponent(Message, getLanguage(Target), ReplaceList);
+        if(message.equals(Component.empty())) return;
+        Target.sendMessage(message);
+    }
 
-    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) { Target.sendActionBar(getLanguageComponent(Message, getLanguage(Target), ReplaceList)); }
+    public void sendActionBarMessage(@NotNull Player Target, String Message, Object... ReplaceList) {
+        Component message = getLanguageComponent(Message, getLanguage(Target), ReplaceList);
+        if(message.equals(Component.empty())) return;
+        Target.sendActionBar(message);
+    }
 
     private @NotNull Component getLanguageComponent(String Message, String LanguageCode, Object... ReplaceList) { return toFormattedComponent(getRawMessageByLanguage(Message, LanguageCode, ReplaceList)); }
 
