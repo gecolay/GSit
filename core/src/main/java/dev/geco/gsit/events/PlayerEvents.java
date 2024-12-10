@@ -13,22 +13,13 @@ import dev.geco.gsit.objects.*;
 public class PlayerEvents implements Listener {
 
     private final GSitMain GPM;
-
     private final double MAX_DOUBLE_SNEAK_PITCH = 85d;
-
     private final long MAX_DOUBLE_SNEAK_TIME = 400;
-
     private final HashMap<Player, Long> crawl_players = new HashMap<>();
 
     public PlayerEvents(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    @EventHandler
-    public void PJoiE(PlayerJoinEvent Event) {
-
-        Player player = Event.getPlayer();
-
-        GPM.getUManager().loginCheckForUpdates(player);
-    }
+    public void PJoiE(PlayerJoinEvent Event) { GPM.getUManager().loginCheckForUpdates(Event.getPlayer()); }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void PQuiE(PlayerQuitEvent Event) {
@@ -36,11 +27,8 @@ public class PlayerEvents implements Listener {
         Player player = Event.getPlayer();
 
         GPM.getSitManager().removeSeat(player, GetUpReason.QUIT, true);
-
         GPM.getPoseManager().removePose(player, GetUpReason.QUIT, true);
-
         GPM.getCrawlManager().stopCrawl(player, GetUpReason.QUIT);
-
         GPM.getToggleManager().clearToggleCache(player.getUniqueId());
 
         crawl_players.remove(player);
@@ -52,9 +40,7 @@ public class PlayerEvents implements Listener {
         Player player = Event.getPlayer();
 
         if(!GPM.getSitManager().removeSeat(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
-
         if(!GPM.getPoseManager().removePose(player, GetUpReason.TELEPORT, false)) Event.setCancelled(true);
-
         if(!GPM.getCrawlManager().stopCrawl(player, GetUpReason.TELEPORT)) Event.setCancelled(true);
     }
 
@@ -62,15 +48,10 @@ public class PlayerEvents implements Listener {
     public void EDamE(EntityDamageEvent Event) {
 
         Entity entity = Event.getEntity();
-
-        if(!GPM.getCManager().GET_UP_DAMAGE || !(entity instanceof Player) || Event.getDamage() <= 0d) return;
-
-        Player player = (Player) entity;
+        if(!GPM.getCManager().GET_UP_DAMAGE || !(entity instanceof Player player) || Event.getDamage() <= 0d) return;
 
         GPM.getSitManager().removeSeat(player, GetUpReason.DAMAGE, true);
-
         GPM.getPoseManager().removePose(player, GetUpReason.DAMAGE, true);
-
         GPM.getCrawlManager().stopCrawl(player, GetUpReason.DAMAGE);
     }
 
@@ -78,33 +59,25 @@ public class PlayerEvents implements Listener {
     public void PComPE(PlayerCommandPreprocessEvent Event) {
 
         List<String> commands = GPM.getCManager().COMMANDBLACKLIST;
-
         if(commands.isEmpty()) return;
 
-        Player player = Event.getPlayer();
-
         String message = Event.getMessage();
+        Player player = Event.getPlayer();
+        if(message.length() <= 1 || (!GPM.getSitManager().isSitting(player) && !GPM.getPoseManager().isPosing(player) && !GPM.getPlayerSitManager().isUsingPlayerSit(player))) return;
 
-        if(message.length() > 1 && (GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player) || GPM.getPlayerSitManager().isUsingPlayerSit(player))) {
+        message = message.substring(1).split(" ")[0].toLowerCase();
+        if(commands.stream().noneMatch(message::equalsIgnoreCase)) return;
 
-            message = message.substring(1).split(" ")[0].toLowerCase();
-
-            if(commands.stream().anyMatch(message::equalsIgnoreCase)) {
-
-                GPM.getMManager().sendMessage(player, "Messages.action-blocked-error");
-
-                Event.setCancelled(true);
-            }
-        }
+        GPM.getMManager().sendMessage(player, "Messages.action-blocked-error");
+        Event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void PTogSE(PlayerToggleSneakEvent Event) {
 
-        Player player = Event.getPlayer();
-
         if(!GPM.getCManager().C_DOUBLE_SNEAK) return;
 
+        Player player = Event.getPlayer();
         if(!Event.isSneaking() || player.getLocation().getPitch() < MAX_DOUBLE_SNEAK_PITCH || !GPM.getCrawlManager().isAvailable()) return;
 
         if(!player.isValid() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping() || GPM.getCrawlManager().isCrawling(player)) return;
@@ -114,7 +87,6 @@ public class PlayerEvents implements Listener {
         if(!crawl_players.containsKey(player)) {
 
             crawl_players.put(player, System.currentTimeMillis());
-
             return;
         }
 
@@ -122,16 +94,15 @@ public class PlayerEvents implements Listener {
 
         crawl_players.put(player, System.currentTimeMillis());
 
-        if(last >= System.currentTimeMillis() - MAX_DOUBLE_SNEAK_TIME) {
+        if(last < System.currentTimeMillis() - MAX_DOUBLE_SNEAK_TIME) return;
 
-            if(!GPM.getPManager().hasPermission(player, "CrawlSneak", "Crawl.*")) return;
+        if(!GPM.getPManager().hasPermission(player, "CrawlSneak", "Crawl.*")) return;
 
-            if(!GPM.getPManager().hasPermission(player, "ByPass.Region", "ByPass.*") && !GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
+        if(!GPM.getPManager().hasPermission(player, "ByPass.Region", "ByPass.*") && !GPM.getEnvironmentUtil().isInAllowedWorld(player)) return;
 
-            if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) return;
+        if(GPM.getWorldGuardLink() != null && !GPM.getWorldGuardLink().checkFlag(player.getLocation(), GPM.getWorldGuardLink().getFlag("crawl"))) return;
 
-            if(GPM.getCrawlManager().startCrawl(player) == null) crawl_players.remove(player);
-        }
+        if(GPM.getCrawlManager().startCrawl(player) == null) crawl_players.remove(player);
     }
 
 }

@@ -59,7 +59,7 @@ public class DManager {
                     return true;
                 }
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
         if(retries == MAX_RETRIES) return false;
         retries++;
         return reconnect();

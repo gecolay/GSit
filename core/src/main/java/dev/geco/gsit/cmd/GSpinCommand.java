@@ -34,10 +34,7 @@ public class GSpinCommand implements CommandExecutor {
 
         if(!GPM.getPoseManager().isAvailable()) {
 
-            String v = Bukkit.getServer().getClass().getPackage().getName();
-            v = v.substring(v.lastIndexOf('.') + 1);
-
-            GPM.getMManager().sendMessage(Sender, "Messages.command-version-error", "%Version%", v);
+            GPM.getMManager().sendMessage(Sender, "Messages.command-version-error", "%Version%", GPM.getSVManager().getServerVersion());
             return true;
         }
 

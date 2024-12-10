@@ -9,14 +9,11 @@ import dev.geco.gsit.GSitMain;
 public class SVManager {
 
     private final GSitMain GPM;
-
     private final String LATEST_VERSION = "v1_21_4";
     private final String SERVER_VERSION;
     private String PACKAGE_PATH;
     private boolean AVAILABLE;
-
-    protected final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); {
-
+    private final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); {
         VERSION_MAPPING.put("v1_18_1", "v1_18");
         VERSION_MAPPING.put("v1_19_2", "v1_19_1");
         VERSION_MAPPING.put("v1_20_1", "v1_20");

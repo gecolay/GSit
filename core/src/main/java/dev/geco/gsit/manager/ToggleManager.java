@@ -8,14 +8,11 @@ import dev.geco.gsit.GSitMain;
 public class ToggleManager {
 
     private final GSitMain GPM;
+    private final HashMap<UUID, Boolean> sit_cache = new HashMap<>();
+    private final HashMap<UUID, Boolean> playersit_cache = new HashMap<>();
+    private final HashMap<UUID, Boolean> crawl_cache = new HashMap<>();
 
     public ToggleManager(GSitMain GPluginMain) { GPM = GPluginMain; }
-
-    private final HashMap<UUID, Boolean> sit_cache = new HashMap<>();
-
-    private final HashMap<UUID, Boolean> playersit_cache = new HashMap<>();
-
-    private final HashMap<UUID, Boolean> crawl_cache = new HashMap<>();
 
     public void createTable() {
         try {
@@ -41,7 +38,7 @@ public class ToggleManager {
             boolean canSit = GPM.getCManager().S_DEFAULT_SIT_MODE == !resultSet.next();
             sit_cache.put(UUID, canSit);
             return canSit;
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
         return true;
     }
 
@@ -52,7 +49,7 @@ public class ToggleManager {
             boolean canPlayerSit = GPM.getCManager().PS_DEFAULT_SIT_MODE == !resultSet.next();
             playersit_cache.put(UUID, canPlayerSit);
             return canPlayerSit;
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
         return true;
     }
 
@@ -63,7 +60,7 @@ public class ToggleManager {
             boolean canCrawl = GPM.getCManager().C_DEFAULT_CRAWL_MODE == !resultSet.next();
             crawl_cache.put(UUID, canCrawl);
             return canCrawl;
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Throwable e) { e.printStackTrace(); }
         return true;
     }
 

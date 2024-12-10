@@ -14,11 +14,8 @@ public class GriefPreventionLink {
     public GriefPreventionLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public boolean check(Location Location, Player Player) {
-
         try {
-
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(Location, false, null);
-
             return claim == null || (!GPM.getCManager().TRUSTED_REGION_ONLY || claim.canSiege(Player));
         } catch (Throwable e) { e.printStackTrace(); }
 

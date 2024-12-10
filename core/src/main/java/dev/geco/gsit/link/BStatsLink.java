@@ -75,7 +75,7 @@ public class BStatsLink {
         try {
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             return onlinePlayersMethod.getReturnType().equals(Collection.class) ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size() : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
-        } catch (Exception e) { return Bukkit.getOnlinePlayers().size(); }
+        } catch (Throwable e) { return Bukkit.getOnlinePlayers().size(); }
     }
 
     public static class MetricsBase {
@@ -173,7 +173,7 @@ public class BStatsLink {
                     () -> {
                         try {
                             sendData(data);
-                        } catch (Exception e) {
+                        } catch (Throwable e) {
                             if(logErrors) errorLogger.accept("Could not submit bStats metrics data", e);
                         }
                     });

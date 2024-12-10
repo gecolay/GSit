@@ -23,18 +23,15 @@ public class InteractEvents implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void PIntE(PlayerInteractEvent Event) {
 
-        Block clickedBlock = Event.getClickedBlock();
-
         Action action = Event.getAction();
-
-        Player player = Event.getPlayer();
-
         if(Event.getHand() != EquipmentSlot.HAND || action != Action.RIGHT_CLICK_BLOCK) return;
 
         if(Event.getBlockFace() != BlockFace.UP) return;
 
         if(GPM.getCManager().S_EMPTY_HAND_ONLY && Event.getItem() != null) return;
 
+        Player player = Event.getPlayer();
+        Block clickedBlock = Event.getClickedBlock();
         if(clickedBlock == null || !GPM.getPManager().hasPermission(player, "SitClick", "Sit.*")) return;
 
         if(!GPM.getCManager().S_SITMATERIALS.containsKey(clickedBlock.getType()) && !GPM.getCManager().S_SITMATERIALS.containsKey(Material.AIR)) return;
@@ -48,9 +45,7 @@ public class InteractEvents implements Listener {
         if(GPM.getSitManager().isSitting(player) || GPM.getPoseManager().isPosing(player) || GPM.getCrawlManager().isCrawling(player)) return;
 
         double distance = GPM.getCManager().S_MAX_DISTANCE;
-
         Location location = clickedBlock.getLocation();
-
         if(distance > 0d && location.clone().add(0.5, 0.5, 0.5).distance(player.getLocation()) > distance) return;
 
         if(!GPM.getCManager().ALLOW_UNSAFE && !(clickedBlock.getRelative(BlockFace.UP).isPassable())) return;

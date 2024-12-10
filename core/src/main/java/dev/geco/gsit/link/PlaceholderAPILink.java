@@ -40,19 +40,12 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer Player, @NotNull String Params) {
-
         if(Player == null) return null;
-
         if(Params.equalsIgnoreCase("crawling")) return Player.isOnline() ? "" + (GPM.getCrawlManager().isCrawling((Player) Player)) : "" + false;
-
         if(Params.equalsIgnoreCase("playertoggle")) return "" + GPM.getToggleManager().canPlayerSit(Player.getUniqueId());
-
         if(Params.equalsIgnoreCase("posing")) return Player.isOnline() ? "" + (GPM.getPoseManager().isPosing((Player) Player)) : "" + false;
-
         if(Params.equalsIgnoreCase("sitting")) return Player.isOnline() ? "" + GPM.getSitManager().isSitting((Player) Player) : "" + false;
-
         if(Params.equalsIgnoreCase("toggle")) return "" + GPM.getToggleManager().canSit(Player.getUniqueId());
-
         return null;
     }
 

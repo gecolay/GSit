@@ -15,48 +15,39 @@ public class PlotSquaredLink {
 
     public PlotSquaredLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
-    public boolean canCreateSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getEntityUtil().isLocationValid(Location)); }
+    public boolean canCreateSeat(Location Location, Player Player) { return GPM.getEntityUtil().isLocationValid(Location) && canCreate(Location, Player); }
 
-    public boolean canCreatePlayerSeat(Location Location, Player Player) { return canCreate(Location, Player, GPM.getEntityUtil().isPlayerSitLocationValid(Player)); }
+    public boolean canCreatePlayerSeat(Location Location, Player Player) { return GPM.getEntityUtil().isPlayerSitLocationValid(Player) && canCreate(Location, Player); }
 
-    private boolean canCreate(Location Location, Player Player, boolean IsLocationValid) {
-
-        if(!IsLocationValid) return false;
+    private boolean canCreate(Location Location, Player Player) {
 
         try {
 
             PlotAPI plotAPI = new PlotAPI();
 
             PlotPlayer<?> plotPlayer = plotAPI.wrapPlayer(Player.getUniqueId());
-
             if(plotPlayer == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
             com.plotsquared.core.location.Location location = com.plotsquared.core.location.Location.at(plotPlayer.getLocation().getWorld(), Location.getBlockX(), Location.getBlockY(), Location.getBlockZ());
 
             PlotArea plotArea = plotAPI.getPlotSquared().getPlotAreaManager().getApplicablePlotArea(location);
-
             if(plotArea == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
             Plot plot = plotArea.getOwnedPlot(location);
-
             if(plot == null) return !GPM.getCManager().TRUSTED_REGION_ONLY;
 
             return !plot.isDenied(Player.getUniqueId()) && (!GPM.getCManager().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId()));
-
         } catch (Throwable e) { e.printStackTrace(); }
 
         return true;
     }
 
     public boolean isVersionSupported() {
-
         try {
-
             new PlotAPI();
 
             return true;
         } catch (Throwable ignored) { }
-
         return false;
     }
 

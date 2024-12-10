@@ -14,15 +14,14 @@ import dev.geco.gsit.GSitMain;
 public class WorldGuardLink {
 
     private final GSitMain GPM;
-
-    public WorldGuardLink(GSitMain GPluginMain) { GPM = GPluginMain; }
-
     private final HashMap<String, StateFlag> FLAGS = new HashMap<>(); {
         FLAGS.put("sit", new StateFlag("sit", true));
         FLAGS.put("playersit", new StateFlag("playersit", true));
         FLAGS.put("pose", new StateFlag("pose", true));
         FLAGS.put("crawl", new StateFlag("crawl", true));
     }
+
+    public WorldGuardLink(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public StateFlag getFlag(String FlagName) { return FlagName != null ? FLAGS.getOrDefault(FlagName.toLowerCase(), null) : null; }
 
@@ -44,14 +43,10 @@ public class WorldGuardLink {
     }
 
     public boolean checkFlag(Location Location, StateFlag Flag) {
-
         if(Flag == null) return true;
-
         try {
-
             return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(Location)).testState(null, Flag);
         } catch (Throwable e) { e.printStackTrace(); }
-
         return true;
     }
 
