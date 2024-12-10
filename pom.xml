@@ -26,21 +26,21 @@
 
     <modules>
         <module>core</module>
-        <module>mcv1_17</module>
-        <module>mcv1_17_1</module>
-        <module>mcv1_18</module>
-        <module>mcv1_18_2</module>
-        <module>mcv1_19</module>
-        <module>mcv1_19_1</module>
-        <module>mcv1_19_3</module>
-        <module>mcv1_19_4</module>
-        <module>mcv1_20</module>
-        <module>mcv1_20_2</module>
-        <module>mcv1_20_3</module>
-        <module>mcv1_20_5</module>
-        <module>mcv1_21</module>
-        <module>mcv1_21_2</module>
-        <module>mcv1_21_4</module>
+        <module>v1_17</module>
+        <module>v1_17_1</module>
+        <module>v1_18</module>
+        <module>v1_18_2</module>
+        <module>v1_19</module>
+        <module>v1_19_1</module>
+        <module>v1_19_3</module>
+        <module>v1_19_4</module>
+        <module>v1_20</module>
+        <module>v1_20_2</module>
+        <module>v1_20_3</module>
+        <module>v1_20_5</module>
+        <module>v1_21</module>
+        <module>v1_21_2</module>
+        <module>v1_21_4</module>
         <module>dist</module>
     </modules>
 
