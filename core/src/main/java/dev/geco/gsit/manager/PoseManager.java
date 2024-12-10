@@ -110,12 +110,11 @@ public class PoseManager {
 
         poseSeat.remove();
 
-        Location returnLocation = (GPM.getCManager().GET_UP_RETURN ? poseSeat.getSeat().getReturn() : poseSeat.getSeat().getLocation().add(0d, GPM.getSitManager().BASE_OFFSET + (Tag.STAIRS.isTagged(poseSeat.getSeat().getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(poseSeat.getSeat().getBlock().getType(), 0d), 0d));
-        if(!GPM.getCManager().GET_UP_RETURN) {
-            returnLocation.setYaw(poseSeat.getPlayer().getLocation().getYaw());
-            returnLocation.setPitch(poseSeat.getPlayer().getLocation().getPitch());
-        }
-        if(poseSeat.getPlayer().isValid() && Safe) GPM.getEntityUtil().posEntity(poseSeat.getPlayer(), returnLocation);
+        Location returnLocation = GPM.getCManager().GET_UP_RETURN ? poseSeat.getSeat().getReturn() : poseSeat.getSeat().getLocation().add(0d, GPM.getSitManager().BASE_OFFSET + (Tag.STAIRS.isTagged(poseSeat.getSeat().getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(poseSeat.getSeat().getBlock().getType(), 0d), 0d);
+        Location entityLocation = Player.getLocation();
+        returnLocation.setYaw(entityLocation.getYaw());
+        returnLocation.setPitch(entityLocation.getPitch());
+        if(Player.isValid() && Safe) GPM.getEntityUtil().posEntity(Player, returnLocation);
 
         poseSeat.getSeat().getSeatEntity().remove();
 

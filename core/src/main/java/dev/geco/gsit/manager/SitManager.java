@@ -129,15 +129,11 @@ public class SitManager {
 
         seats.remove(seat);
 
-        Location returnLocation = seat.getReturn();
-        if(!GPM.getCManager().GET_UP_RETURN) {
-            try {
-                returnLocation = seat.getLocation().add(0d, BASE_OFFSET + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
-                returnLocation.setYaw(seat.getEntity().getLocation().getYaw());
-                returnLocation.setPitch(seat.getEntity().getLocation().getPitch());
-            } catch (Throwable ignored) { }
-        }
-        if(seat.getEntity().isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getEntity(), returnLocation);
+        Location returnLocation = GPM.getCManager().GET_UP_RETURN ? seat.getReturn() : seat.getLocation().add(0d, BASE_OFFSET + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? EnvironmentUtil.STAIR_Y_OFFSET : 0d) - GPM.getCManager().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
+        Location entityLocation = Entity.getLocation();
+        returnLocation.setYaw(entityLocation.getYaw());
+        returnLocation.setPitch(entityLocation.getPitch());
+        if(Entity.isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Entity, returnLocation);
         if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
 
         seat.getSeatEntity().remove();
