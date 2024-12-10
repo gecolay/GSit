@@ -12,10 +12,8 @@ import dev.geco.gsit.objects.*;
 public class EntityUtil implements IEntityUtil {
 
     private final GSitMain GPM = GSitMain.getInstance();
-    protected final HashMap<Integer, Entity> playerMap = new HashMap<>();
 
-    public HashMap<Integer, Entity> getSeatMap() { return playerMap; }
-
+    @Override
     public void posEntity(Entity Entity, Location Location) {
 
         try {
@@ -27,6 +25,7 @@ public class EntityUtil implements IEntityUtil {
         } catch (Throwable e) { e.printStackTrace(); }
     }
 
+    @Override
     public boolean isLocationValid(Location Location) {
 
         try {
@@ -52,6 +51,7 @@ public class EntityUtil implements IEntityUtil {
         return false;
     }
 
+    @Override
     public boolean isPlayerSitLocationValid(Entity Holder) {
 
         try {
@@ -77,6 +77,7 @@ public class EntityUtil implements IEntityUtil {
         return false;
     }
 
+    @Override
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
 
         final boolean[] riding = { true };
@@ -114,11 +115,7 @@ public class EntityUtil implements IEntityUtil {
         return null;
     }
 
-    public void removeSeatEntity(Entity Entity) {
-        playerMap.remove(Entity.getEntityId());
-        Entity.remove();
-    }
-
+    @Override
     public UUID createPlayerSeatEntity(Entity Holder, Entity Rider) {
 
         if(Rider == null || !Rider.isValid()) return null;
@@ -162,8 +159,10 @@ public class EntityUtil implements IEntityUtil {
         return lastEntity.getUniqueId();
     }
 
+    @Override
     public IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose) { return null; }
 
+    @Override
     public IGCrawl createCrawlObject(Player Player) { return null; }
 
 }

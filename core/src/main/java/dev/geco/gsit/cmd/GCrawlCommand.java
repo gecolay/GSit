@@ -18,13 +18,11 @@ public class GCrawlCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
 
-        if(!(Sender instanceof Player)) {
+        if(!(Sender instanceof Player player)) {
 
             GPM.getMManager().sendMessage(Sender, "Messages.command-sender-error");
             return true;
         }
-
-        Player player = (Player) Sender;
 
         if(Args.length == 0) {
 

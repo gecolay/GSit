@@ -54,6 +54,9 @@ public class GSitMain extends JavaPlugin {
     private MManager mManager;
     public MManager getMManager() { return mManager; }
 
+    private EntityEventsHandler entityEventsHandler;
+    public EntityEventsHandler getEntityEventsHandler() { return entityEventsHandler; }
+
     private PassengerUtil passengerUtil;
     public PassengerUtil getPassengerUtil() { return passengerUtil; }
 
@@ -131,6 +134,8 @@ public class GSitMain extends JavaPlugin {
         poseManager = new PoseManager(getInstance());
         crawlManager = new CrawlManager(getInstance());
         toggleManager = new ToggleManager(getInstance());
+
+        entityEventsHandler = new EntityEventsHandler(getInstance());
 
         passengerUtil = new PassengerUtil();
         environmentUtil = new EnvironmentUtil(getInstance());

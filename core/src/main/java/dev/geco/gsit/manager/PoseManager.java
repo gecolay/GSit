@@ -140,7 +140,7 @@ public class PoseManager {
 
         if(poseSeat.getPlayer().isValid() && Safe) GPM.getEntityUtil().posEntity(poseSeat.getPlayer(), returnLocation);
 
-        GPM.getEntityUtil().removeSeatEntity(poseSeat.getSeat().getSeatEntity());
+        poseSeat.getSeat().getSeatEntity().remove();
 
         Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseSeat, Reason));
 
