@@ -397,7 +397,11 @@ public class GPoseSeat implements IGPoseSeat {
 
         gameProfile.getProperties().putAll(serverPlayer.getGameProfile().getProperties());
 
-        return new ServerPlayer(minecraftServer, serverLevel, gameProfile);
+        ServerPlayer sPlayer = new ServerPlayer(minecraftServer, serverLevel, gameProfile);
+
+        sPlayer.connection = serverPlayer.connection;
+
+        return sPlayer;
     }
 
     private void sendPacket(Player Player, Packet<?> Packet) { sendPacket(((CraftPlayer) Player).getHandle(), Packet); }

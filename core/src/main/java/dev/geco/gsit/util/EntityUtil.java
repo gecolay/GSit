@@ -62,7 +62,6 @@ public class EntityUtil implements IEntityUtil {
             org.bukkit.util.Consumer<AreaEffectCloud> consumer = (areaEffectCloud) -> {
 
                 try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
-                try { areaEffectCloud.setWaitTime(0); } catch (Throwable ignored) { }
             };
 
             Entity playerSeatEntity = (Entity) spawn.invoke(world, Holder.getLocation(), AreaEffectCloud.class, consumer);
@@ -145,8 +144,6 @@ public class EntityUtil implements IEntityUtil {
                     try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
                     try { areaEffectCloud.setGravity(false); } catch (Throwable ignored) { }
                     try { areaEffectCloud.setInvulnerable(true); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setWaitTime(0); } catch (Throwable ignored) { }
                     areaEffectCloud.addScoreboardTag(GPM.NAME + "_PlayerSeatEntity");
                     finalLastEntity.addPassenger(areaEffectCloud);
                     if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(Rider);

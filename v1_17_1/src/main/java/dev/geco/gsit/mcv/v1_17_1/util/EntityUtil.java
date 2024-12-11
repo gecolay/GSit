@@ -1,6 +1,5 @@
 package dev.geco.gsit.mcv.v1_17_1.util;
 
-import java.lang.reflect.*;
 import java.util.*;
 
 import org.bukkit.*;
@@ -24,30 +23,7 @@ public class EntityUtil implements IEntityUtil {
     public boolean isLocationValid(Location Location) { return true; }
 
     @Override
-    public boolean isPlayerSitLocationValid(Entity Holder) {
-
-        try {
-
-            World world = Holder.getWorld();
-            Method spawn = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
-
-            org.bukkit.util.Consumer<AreaEffectCloud> consumer = (areaEffectCloud) -> {
-
-                try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
-                try { areaEffectCloud.setWaitTime(0); } catch (Throwable ignored) { }
-            };
-
-            Entity playerSeatEntity = (Entity) spawn.invoke(world, Holder.getLocation(), AreaEffectCloud.class, consumer);
-
-            boolean valid = playerSeatEntity.isValid();
-
-            playerSeatEntity.remove();
-
-            return valid;
-        } catch (Throwable e) { e.printStackTrace(); }
-
-        return false;
-    }
+    public boolean isPlayerSitLocationValid(Entity Holder) { return true; }
 
     @Override
     public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
@@ -82,43 +58,30 @@ public class EntityUtil implements IEntityUtil {
 
         if(Rider == null || !Rider.isValid()) return null;
 
-        Entity lastEntity = Holder;
+        net.minecraft.world.entity.Entity lastEntity = ((CraftEntity) Holder).getHandle();
 
         int maxEntities = GPM.getPlayerSitManager().getSeatEntityCount();
 
         if(maxEntities == 0) {
 
-            lastEntity.addPassenger(Rider);
+            ((CraftEntity) Rider).getHandle().startRiding(lastEntity, true);
             return null;
         }
 
-        try {
+        for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
 
-            World world = Holder.getWorld();
-            Method spawn = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
+            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
 
-            for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
+            playerSeatEntity.startRiding(lastEntity, true);
 
-                Entity finalLastEntity = lastEntity;
-                int finalEntityCount = entityCount;
+            if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
-                org.bukkit.util.Consumer<AreaEffectCloud> consumer = (areaEffectCloud) -> {
+            ((CraftWorld) Holder.getWorld()).getHandle().entityManager.addNewEntity(playerSeatEntity);
 
-                    try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setGravity(false); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setInvulnerable(true); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setWaitTime(0); } catch (Throwable ignored) { }
-                    areaEffectCloud.addScoreboardTag(GPM.NAME + "_PlayerSeatEntity");
-                    finalLastEntity.addPassenger(areaEffectCloud);
-                    if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(Rider);
-                };
+            lastEntity = playerSeatEntity;
+        }
 
-                lastEntity = (Entity) spawn.invoke(world, finalLastEntity.getLocation(), AreaEffectCloud.class, consumer);
-            }
-        } catch (Throwable e) { e.printStackTrace(); }
-
-        return lastEntity.getUniqueId();
+        return lastEntity.getUUID();
     }
 
     @Override

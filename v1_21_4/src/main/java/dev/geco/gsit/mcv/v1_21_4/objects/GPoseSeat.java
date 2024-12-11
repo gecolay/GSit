@@ -183,6 +183,14 @@ public class GPoseSeat implements IGPoseSeat {
 
         for(Player nearPlayer : nearPlayers) spawnToPlayer(nearPlayer);
 
+        PlayerSeatEntity placeholderEntity = new PlayerSeatEntity(seatPlayer.getLocation());
+        placeholderEntity.setVehicle(playerNpc);
+        List<Packet<? super ClientGamePacketListener>> playerPackages = new ArrayList<>();
+        playerPackages.add(new ClientboundAddEntityPacket(placeholderEntity.getId(), placeholderEntity.getUUID(), placeholderEntity.getX(), placeholderEntity.getY(), placeholderEntity.getZ(), placeholderEntity.getXRot(), placeholderEntity.getYRot(), placeholderEntity.getType(), 0, placeholderEntity.getDeltaMovement(), placeholderEntity.getYHeadRot()));
+        playerPackages.add(new ClientboundSetEntityDataPacket(placeholderEntity.getId(), placeholderEntity.getEntityData().getNonDefaultValues()));
+        playerPackages.add(new ClientboundSetPassengersPacket(playerNpc));
+        sendPacket(serverPlayer, new ClientboundBundlePacket(playerPackages));
+
         Bukkit.getPluginManager().registerEvents(listener, GPM);
 
         ((SeatEntity) ((CraftEntity) seat.getSeatEntity()).getHandle()).setCallback(() -> {

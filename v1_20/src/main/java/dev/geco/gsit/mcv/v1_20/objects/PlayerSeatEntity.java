@@ -16,8 +16,6 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         setRadius(0);
         setNoGravity(true);
         setInvulnerable(true);
-        setDuration(Integer.MAX_VALUE);
-        setWaitTime(0);
         addTag("GSit_PlayerSeatEntity");
     }
 
