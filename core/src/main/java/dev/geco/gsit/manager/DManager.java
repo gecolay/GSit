@@ -10,9 +10,7 @@ import dev.geco.gsit.GSitMain;
 public class DManager {
 
     private final GSitMain GPM;
-
     protected final int MAX_RETRIES = 3;
-
     private Connection connection;
     private String type = null;
     private String host = null;
