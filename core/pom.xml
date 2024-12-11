@@ -13,12 +13,12 @@
     </parent>
 
     <properties>
-        <paper.version>1.21.3-R0.1-SNAPSHOT</paper.version>
+        <paper.version>1.21.4-R0.1-SNAPSHOT</paper.version>
         <spigot.version>1.21.4-R0.1-SNAPSHOT</spigot.version>
         <worldguard.version>7.0.12</worldguard.version>
         <placeholderapi.version>2.11.6</placeholderapi.version>
         <griefprevention.version>16.18.4</griefprevention.version>
-        <plotsquared.version>7.3.12</plotsquared.version>
+        <plotsquared.version>7.4.0</plotsquared.version>
     </properties>
 
     <repositories>
@@ -70,7 +70,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.TechFortress</groupId>
+            <groupId>com.github.GriefPrevention</groupId>
             <artifactId>GriefPrevention</artifactId>
             <version>${griefprevention.version}</version>
             <scope>provided</scope>
