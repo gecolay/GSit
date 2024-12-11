@@ -7,8 +7,6 @@ import org.bukkit.craftbukkit.v1_19_R1.*;
 import org.bukkit.craftbukkit.v1_19_R1.entity.*;
 import org.bukkit.entity.*;
 
-import net.minecraft.network.protocol.game.*;
-
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.mcv.v1_19.objects.*;
 import dev.geco.gsit.objects.*;
@@ -19,14 +17,7 @@ public class EntityUtil implements IEntityUtil {
     private final GSitMain GPM = GSitMain.getInstance();
 
     @Override
-    public void posEntity(Entity Entity, Location Location) {
-
-        if(Entity instanceof Player) {
-
-            ((CraftEntity) Entity).getHandle().setPos(Location.getX(), Location.getY(), Location.getZ());
-            ((CraftPlayer) Entity).getHandle().connection.send(new ClientboundPlayerPositionPacket(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch(), ClientboundPlayerPositionPacket.RelativeArgument.unpack(0), 0, true));
-        } else ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch());
-    }
+    public void setEntityLocation(Entity Entity, Location Location) { ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch()); }
 
     @Override
     public boolean isLocationValid(Location Location) { return true; }

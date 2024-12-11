@@ -9,7 +9,7 @@ import dev.geco.gsit.objects.*;
 
 public interface IEntityUtil {
 
-    void posEntity(Entity Entity, Location Location);
+    void setEntityLocation(Entity Entity, Location Location);
 
     boolean isLocationValid(Location Location);
 

@@ -114,7 +114,7 @@ public class PoseManager {
         Location entityLocation = Player.getLocation();
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
-        if(Player.isValid() && Safe) GPM.getEntityUtil().posEntity(Player, returnLocation);
+        if(Player.isValid() && Safe) GPM.getEntityUtil().setEntityLocation(Player, returnLocation);
 
         poseSeat.getSeat().getSeatEntity().remove();
 

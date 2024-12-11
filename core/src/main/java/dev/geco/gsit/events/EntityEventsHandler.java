@@ -53,7 +53,7 @@ public class EntityEventsHandler {
 
         Entity bottom = GPM.getPassengerUtil().getBottomEntity(Dismounted);
 
-        if(GPM.getCManager().PS_BOTTOM_RETURN && Entity.isValid() && Entity instanceof Player) GPM.getEntityUtil().posEntity(Entity, bottom.getLocation());
+        if(GPM.getCManager().PS_BOTTOM_RETURN && Entity.isValid() && Entity instanceof Player) GPM.getEntityUtil().setEntityLocation(Entity, bottom.getLocation());
 
         GPM.getPlayerSitManager().stopPlayerSit(Dismounted, GetUpReason.GET_UP);
 

@@ -113,7 +113,7 @@ public class SitManager {
 
         seat.setBlock(seat.getBlock().getRelative(BlockFace));
         seat.setLocation(seat.getLocation().add(BlockFace.getModX(), BlockFace.getModY(), BlockFace.getModZ()));
-        GPM.getEntityUtil().posEntity(seat.getSeatEntity(), seat.getLocation());
+        GPM.getEntityUtil().setEntityLocation(seat.getSeatEntity(), seat.getLocation());
     }
 
     public boolean removeSeat(LivingEntity Entity, GetUpReason Reason) { return removeSeat(Entity, Reason, true); }
@@ -133,8 +133,8 @@ public class SitManager {
         Location entityLocation = Entity.getLocation();
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
-        if(Entity.isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(Entity, returnLocation);
-        if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().posEntity(seat.getSeatEntity(), returnLocation);
+        if(Entity.isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().setEntityLocation(Entity, returnLocation);
+        if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
 
         seat.getSeatEntity().remove();
 

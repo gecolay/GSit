@@ -7,8 +7,6 @@ import org.bukkit.craftbukkit.v1_20_R2.*;
 import org.bukkit.craftbukkit.v1_20_R2.entity.*;
 import org.bukkit.entity.*;
 
-import net.minecraft.network.protocol.game.*;
-
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.mcv.v1_20_2.objects.*;
 import dev.geco.gsit.objects.*;
@@ -19,14 +17,7 @@ public class EntityUtil implements IEntityUtil {
     private final GSitMain GPM = GSitMain.getInstance();
 
     @Override
-    public void posEntity(Entity Entity, Location Location) {
-
-        if(Entity instanceof Player) {
-
-            ((CraftEntity) Entity).getHandle().setPos(Location.getX(), Location.getY(), Location.getZ());
-            ((CraftPlayer) Entity).getHandle().connection.send(new ClientboundPlayerPositionPacket(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch(), net.minecraft.world.entity.RelativeMovement.unpack(0), 0));
-        } else ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch());
-    }
+    public void setEntityLocation(Entity Entity, Location Location) { ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch()); }
 
     @Override
     public boolean isLocationValid(Location Location) { return true; }
@@ -87,7 +78,6 @@ public class EntityUtil implements IEntityUtil {
             if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
             boolean spawn = spawnEntity(Holder.getWorld(), playerSeatEntity);
-
             if(spawn) lastEntity = playerSeatEntity;
         }
 
@@ -97,16 +87,13 @@ public class EntityUtil implements IEntityUtil {
     private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
 
         if(!GPM.supportsPaperFeature()) {
-
             try {
-
                 ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
                 return true;
             } catch (Throwable ignored) { }
         }
 
         try {
-
             net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
             levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
             return true;

@@ -14,7 +14,7 @@ public class EntityUtil implements IEntityUtil {
     private final GSitMain GPM = GSitMain.getInstance();
 
     @Override
-    public void posEntity(Entity Entity, Location Location) {
+    public void setEntityLocation(Entity Entity, Location Location) {
 
         try {
 
