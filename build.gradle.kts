@@ -1,15 +1,10 @@
-description = "Relax with other players on nice seats!"
-
 plugins {
     `java-library`
-    id("io.papermc.paperweight.userdev") version "1.7.7" apply false
     id("com.gradleup.shadow") version "8.3.5"
+    id("io.papermc.paperweight.userdev") version "1.7.7" apply false
 }
 
 allprojects {
-    group = "dev.geco.gsit"
-    version = "1.12.1"
-
     apply(plugin = "java-library")
 
     repositories {
@@ -58,5 +53,19 @@ tasks {
 
     build {
         dependsOn(shadowJar)
+    }
+
+    compileJava {
+        options.release.set(16)
+    }
+
+    processResources {
+        from("src/resources")
+        expand(
+            "name" to rootProject.name,
+            "version" to rootProject.version,
+            "description" to rootProject.description,
+            "main" to "${rootProject.group}.${rootProject.name}Main"
+        )
     }
 }
