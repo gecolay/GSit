@@ -23,29 +23,40 @@ allprojects {
         maven(url = "https://jitpack.io/")
     }
 
-    tasks.withType<JavaCompile> {
+    tasks.compileJava {
         options.encoding = "UTF-8"
     }
 
-    tasks.withType<Javadoc> {
+    tasks.javadoc {
         options.encoding = "UTF-8"
     }
 }
 
 dependencies {
     api(project(":core"))
-    implementation(project(":v1_17_1"))
-    implementation(project(":v1_18"))
-    implementation(project(":v1_18_2"))
-    implementation(project(":v1_19"))
-    implementation(project(":v1_19_1"))
-    implementation(project(":v1_19_3"))
-    implementation(project(":v1_19_4"))
-    implementation(project(":v1_20"))
-    implementation(project(":v1_20_2"))
-    implementation(project(":v1_20_3"))
-    implementation(project(":v1_20_5", configuration = "reobf"))
-    implementation(project(":v1_21", configuration = "reobf"))
-    implementation(project(":v1_21_2", configuration = "reobf"))
-    implementation(project(":v1_21_4", configuration = "reobf"))
+    api(project(":v1_17_1"))
+    api(project(":v1_18"))
+    api(project(":v1_18_2"))
+    api(project(":v1_19"))
+    api(project(":v1_19_1"))
+    api(project(":v1_19_3"))
+    api(project(":v1_19_4"))
+    api(project(":v1_20"))
+    api(project(":v1_20_2"))
+    api(project(":v1_20_3"))
+    api(project(":v1_20_5", configuration = "reobf"))
+    api(project(":v1_21", configuration = "reobf"))
+    api(project(":v1_21_2", configuration = "reobf"))
+    api(project(":v1_21_4", configuration = "reobf"))
+}
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+        minimize()
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
 }

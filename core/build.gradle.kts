@@ -14,4 +14,13 @@ tasks {
     compileJava {
         options.release.set(16)
     }
+
+    processResources {
+        expand(
+            "name" to rootProject.name,
+            "version" to rootProject.version,
+            "description" to rootProject.description,
+            "group" to rootProject.group
+        )
+    }
 }

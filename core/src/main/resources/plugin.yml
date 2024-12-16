@@ -1,9 +1,9 @@
-name: ${project.parent.name}
-version: ${project.parent.version}
-description: ${project.description}
+name: ${name}
+version: ${version}
+description: ${description}
 authors: [Gecolay]
 website: https://www.spigotmc.org/resources/62325
-main: ${project.parent.groupId}.${project.parent.artifactId}Main
+main: ${group}.${name}Main
 api-version: 1.16
 folia-supported: true
 softdepend: [GriefPrevention, PlaceholderAPI, PlotSquared, WorldGuard]

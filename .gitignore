@@ -6,7 +6,6 @@
 ## environment <--
 
 ## build -->
-target
 *.iml
 build
 .gradle
