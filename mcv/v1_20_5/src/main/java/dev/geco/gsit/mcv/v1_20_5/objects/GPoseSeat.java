@@ -12,8 +12,8 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
-import org.bukkit.craftbukkit.v1_20_R4.*;
-import org.bukkit.craftbukkit.v1_20_R4.entity.*;
+import org.bukkit.craftbukkit.*;
+import org.bukkit.craftbukkit.entity.*;
 
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;

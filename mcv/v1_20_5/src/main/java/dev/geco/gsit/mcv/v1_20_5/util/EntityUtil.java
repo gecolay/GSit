@@ -3,8 +3,8 @@ package dev.geco.gsit.mcv.v1_20_5.util;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_20_R4.*;
-import org.bukkit.craftbukkit.v1_20_R4.entity.*;
+import org.bukkit.craftbukkit.*;
+import org.bukkit.craftbukkit.entity.*;
 import org.bukkit.entity.*;
 
 import dev.geco.gsit.GSitMain;
@@ -86,12 +86,12 @@ public class EntityUtil implements IEntityUtil {
 
     private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
 
-        if(!GPM.supportsPaperFeature()) {
+        /*if(!GPM.supportsPaperFeature()) {
             try {
                 ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
                 return true;
             } catch (Throwable ignored) { }
-        }
+        }*/
 
         try {
             net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();

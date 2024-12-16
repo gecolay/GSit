@@ -59,9 +59,6 @@ public class SeatEntity extends ArmorStand {
     public void move(MoverType MoverType, Vec3 Vec3) { }
 
     @Override
-    public boolean damageEntity0(DamageSource DamageSource, float Damage) { return false; }
-
-    @Override
     public boolean hurt(DamageSource DamageSource, float Damage) { return false; }
 
     @Override

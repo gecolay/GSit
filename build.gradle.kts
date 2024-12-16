@@ -3,11 +3,14 @@ description = "Relax with other players on nice seats!"
 plugins {
     `java-library`
     id("io.papermc.paperweight.userdev") version "1.7.7" apply false
+    id("com.gradleup.shadow") version "8.3.5"
 }
 
 allprojects {
     group = "dev.geco.gsit"
     version = "1.12.1"
+
+    apply(plugin = "java-library")
 
     repositories {
         mavenLocal()
@@ -20,18 +23,17 @@ allprojects {
         maven(url = "https://jitpack.io/")
     }
 
-    tasks.withType<JavaCompile>() {
+    tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
 
-    tasks.withType<Javadoc>() {
+    tasks.withType<Javadoc> {
         options.encoding = "UTF-8"
     }
 }
 
 dependencies {
     api(project(":core"))
-    implementation(project(":v1_17"))
     implementation(project(":v1_17_1"))
     implementation(project(":v1_18"))
     implementation(project(":v1_18_2"))
@@ -42,8 +44,8 @@ dependencies {
     implementation(project(":v1_20"))
     implementation(project(":v1_20_2"))
     implementation(project(":v1_20_3"))
-    implementation(project(":v1_20_5"))
-    implementation(project(":v1_21"))
-    implementation(project(":v1_21_2"))
-    implementation(project(":v1_21_4"))
+    implementation(project(":v1_20_5", configuration = "reobf"))
+    implementation(project(":v1_21", configuration = "reobf"))
+    implementation(project(":v1_21_2", configuration = "reobf"))
+    implementation(project(":v1_21_4", configuration = "reobf"))
 }

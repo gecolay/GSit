@@ -6,7 +6,7 @@ import java.util.*;
 import com.google.common.collect.*;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_21_R2.*;
+import org.bukkit.craftbukkit.*;
 
 import net.minecraft.world.entity.*;
 

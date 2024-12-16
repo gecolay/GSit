@@ -1,8 +1,6 @@
 rootProject.name = "GSit"
 
 include(":core")
-include(":v1_17")
-project(":v1_17").projectDir = file("mcv/v1_17")
 include(":v1_17_1")
 project(":v1_17_1").projectDir = file("mcv/v1_17_1")
 include(":v1_18")

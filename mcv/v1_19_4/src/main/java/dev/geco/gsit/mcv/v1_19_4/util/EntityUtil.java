@@ -86,12 +86,12 @@ public class EntityUtil implements IEntityUtil {
 
     private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
 
-        if(!GPM.supportsPaperFeature()) {
+        /*if(!GPM.supportsPaperFeature()) {
             try {
                 ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
                 return true;
             } catch (Throwable ignored) { }
-        }
+        }*/
 
         try {
             net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();

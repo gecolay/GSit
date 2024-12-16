@@ -1,7 +1,7 @@
 package dev.geco.gsit.mcv.v1_20_5.objects;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_20_R4.*;
+import org.bukkit.craftbukkit.*;
 
 import net.minecraft.core.*;
 import net.minecraft.world.entity.*;
