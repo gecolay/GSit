@@ -1,3 +1,7 @@
+plugins {
+    `maven-publish`
+}
+
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
@@ -13,5 +17,20 @@ java {
 tasks {
     compileJava {
         options.release.set(16)
+    }
+
+    publishToMavenLocal {
+        dependsOn(build)
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = project.group.toString()
+                artifactId = project.name
+                version = project.version.toString()
+                from(project.components["java"])
+            }
+        }
     }
 }

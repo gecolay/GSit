@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    `maven-publish`
     id("com.gradleup.shadow") version "8.3.5"
     id("io.papermc.paperweight.userdev") version "1.7.7" apply false
 }
@@ -12,7 +13,6 @@ allprojects {
         mavenCentral()
 
         maven(url = "https://repo.papermc.io/repository/maven-public/")
-        maven(url = "https://hub.spigotmc.org/nexus/content/groups/public/")
         maven(url = "https://maven.enginehub.org/repo/")
         maven(url = "https://repo.extendedclip.com/content/repositories/placeholderapi/")
         maven(url = "https://jitpack.io/")
@@ -62,10 +62,25 @@ tasks {
     processResources {
         from("src/resources")
         expand(
-            "name" to rootProject.name,
-            "version" to rootProject.version,
-            "description" to rootProject.description,
-            "main" to "${rootProject.group}.${rootProject.name}Main"
+            "name" to project.name,
+            "version" to project.version,
+            "description" to project.description,
+            "main" to "${project.group}.${project.name}Main"
         )
+    }
+
+    publishToMavenLocal {
+        dependsOn(build)
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = project.group.toString()
+                artifactId = project.name
+                version = project.version.toString()
+                from(project.components["java"])
+            }
+        }
     }
 }
