@@ -15,7 +15,7 @@ public class EntityEventsHandler {
     public EntityEventsHandler(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     public void handleEntityMountEvent(Cancellable Event, Entity Mount) {
-        if(Event.isCancelled() && (Mount.getScoreboardTags().contains(GPM.NAME + "_SeatEntity") || Mount.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity"))) Event.setCancelled(false);
+        if(Event.isCancelled() && (Mount.getScoreboardTags().contains(GSitMain.NAME + "_SeatEntity") || Mount.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity"))) Event.setCancelled(false);
     }
 
     public void handleEntityDismountEvent(Cancellable Event, Entity Entity, Entity Dismounted) {
@@ -33,7 +33,7 @@ public class EntityEventsHandler {
             }
         }
 
-        if(!Dismounted.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity") && !(Dismounted instanceof Player)) return;
+        if(!Dismounted.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity") && !(Dismounted instanceof Player)) return;
 
         if(Entity instanceof Player player) {
 

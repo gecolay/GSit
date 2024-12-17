@@ -50,7 +50,6 @@ public class CManager {
     public boolean C_DOUBLE_SNEAK;
     public boolean C_DEFAULT_CRAWL_MODE;
 
-
     public boolean TRUSTED_REGION_ONLY;
     public List<String> WORLDBLACKLIST = new ArrayList<>();
     public List<String> WORLDWHITELIST = new ArrayList<>();

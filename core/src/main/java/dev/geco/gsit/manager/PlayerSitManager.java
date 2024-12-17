@@ -38,15 +38,15 @@ public class PlayerSitManager {
     public void clearSeats() {
         for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) {
             try {
-                if(entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) entity.remove();
+                if(entity.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) entity.remove();
             } catch (Throwable ignored) { }
         }
         spawnTimes.clear();
     }
 
     public boolean isUsingPlayerSit(Player Player) {
-        if(Player.getVehicle() != null && Player.getVehicle().getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) return true;
-        return Player.getPassengers().stream().filter(passenger -> passenger.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")).findFirst().orElse(null) != null;
+        if(Player.getVehicle() != null && Player.getVehicle().getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) return true;
+        return Player.getPassengers().stream().filter(passenger -> passenger.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")).findFirst().orElse(null) != null;
     }
 
     public boolean sitOnPlayer(Player Player, Player Target) {
@@ -83,7 +83,7 @@ public class PlayerSitManager {
 
         removeVehicles(Entity);
 
-        if(Entity.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) {
+        if(Entity.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) {
             long spawnTime = spawnTimes.getOrDefault(Entity.getUniqueId(), -1L);
             if(spawnTime != -1) {
                 playersit_used_nano += System.nanoTime() - spawnTime;
@@ -101,7 +101,7 @@ public class PlayerSitManager {
 
         for(Entity passenger : Entity.getPassengers()) {
 
-            if(!passenger.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) continue;
+            if(!passenger.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) continue;
 
             removePassengers(passenger);
 
@@ -120,7 +120,7 @@ public class PlayerSitManager {
         Entity vehicle = Entity.getVehicle();
         if(vehicle == null) return;
 
-        if(!vehicle.getScoreboardTags().contains(GPM.NAME + "_PlayerSeatEntity")) return;
+        if(!vehicle.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) return;
 
         removeVehicles(vehicle);
 

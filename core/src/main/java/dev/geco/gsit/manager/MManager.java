@@ -19,7 +19,7 @@ abstract public class MManager {
 
     protected final GSitMain GPM;
     protected final String PREFIX_PLACEHOLDER = "[P]";
-    protected final String PREFIX_REPLACE = "&7[&6" + GSitMain.getInstance().NAME + "&7]";
+    protected final String PREFIX_REPLACE = "&7[&6" + GSitMain.NAME + "&7]";
     protected final char AMPERSAND_CHAR = '&';
     protected final char COLOR_CHAR = org.bukkit.ChatColor.COLOR_CHAR;
     protected final Pattern HEX_PATTERN = Pattern.compile("#([a-fA-F0-9]{6})");

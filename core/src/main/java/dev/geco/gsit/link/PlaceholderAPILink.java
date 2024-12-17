@@ -24,7 +24,7 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
     public @NotNull String getName() { return GPM.getDescription().getName(); }
 
     @Override
-    public @NotNull String getIdentifier() { return GPM.NAME.toLowerCase(); }
+    public @NotNull String getIdentifier() { return GSitMain.NAME.toLowerCase(); }
 
     @Override
     public @NotNull String getAuthor() { return GPM.getDescription().getAuthors().toString(); }

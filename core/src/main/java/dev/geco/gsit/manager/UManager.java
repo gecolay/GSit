@@ -24,8 +24,8 @@ public class UManager {
         if(!GPM.getCManager().CHECK_FOR_UPDATE) return;
         checkVersion();
         if(latestVersion) return;
-        for(Player player : Bukkit.getOnlinePlayers()) if(GPM.getPManager().hasPermission(player, "Update")) GPM.getMManager().sendMessage(player, "Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
-        GPM.getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
+        for(Player player : Bukkit.getOnlinePlayers()) if(GPM.getPManager().hasPermission(player, "Update")) GPM.getMManager().sendMessage(player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
+        GPM.getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
     }
 
     public void loginCheckForUpdates(Player Player) {
@@ -33,7 +33,7 @@ public class UManager {
         if(!GPM.getPManager().hasPermission(Player, "Update")) return;
         checkVersion();
         if(latestVersion) return;
-        GPM.getMManager().sendMessage(Player, "Plugin.plugin-update", "%Name%", GPM.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
+        GPM.getMManager().sendMessage(Player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", spigotVersion, "%Version%", GPM.getDescription().getVersion(), "%Path%", GPM.getDescription().getWebsite());
     }
 
     private void getSpigotVersion(final Consumer<String> VersionConsumer) {

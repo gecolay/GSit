@@ -13,7 +13,7 @@ import dev.geco.gsit.util.*;
 
 public class PoseManager {
 
-    public static final String POSE_TAG = GSitMain.getInstance().NAME + "_POSE";
+    public static final String POSE_TAG = GSitMain.NAME + "_POSE";
 
     private final GSitMain GPM;
     private final boolean available;

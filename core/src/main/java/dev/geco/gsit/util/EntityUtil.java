@@ -94,7 +94,7 @@ public class EntityUtil implements IEntityUtil {
                 try { armorStand.setInvulnerable(true); } catch (Throwable ignored) { }
                 try { armorStand.setSmall(true); } catch (Throwable ignored) { }
                 try { armorStand.setBasePlate(false); } catch (Throwable ignored) { }
-                armorStand.addScoreboardTag(GPM.NAME + "_SeatEntity");
+                armorStand.addScoreboardTag(GSitMain.NAME + "_SeatEntity");
                 if(!GPM.getCManager().ENHANCED_COMPATIBILITY && Rider != null && Rider.isValid()) riding[0] = armorStand.addPassenger(Rider);
             };
 
@@ -144,7 +144,7 @@ public class EntityUtil implements IEntityUtil {
                     try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
                     try { areaEffectCloud.setGravity(false); } catch (Throwable ignored) { }
                     try { areaEffectCloud.setInvulnerable(true); } catch (Throwable ignored) { }
-                    areaEffectCloud.addScoreboardTag(GPM.NAME + "_PlayerSeatEntity");
+                    areaEffectCloud.addScoreboardTag(GSitMain.NAME + "_PlayerSeatEntity");
                     finalLastEntity.addPassenger(areaEffectCloud);
                     if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(Rider);
                 };

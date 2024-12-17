@@ -1,5 +1,7 @@
 package dev.geco.gsit;
 
+import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.event.*;
@@ -18,106 +20,78 @@ import dev.geco.gsit.util.*;
 
 public class GSitMain extends JavaPlugin {
 
-    private SVManager svManager;
-    public SVManager getSVManager() { return svManager; }
-
-    private CManager cManager;
-    public CManager getCManager() { return cManager; }
-
-    private DManager dManager;
-    public DManager getDManager() { return dManager; }
-
-    private SitManager sitManager;
-    public SitManager getSitManager() { return sitManager; }
-
-    private PlayerSitManager playerSitManager;
-    public PlayerSitManager getPlayerSitManager() { return playerSitManager; }
-
-    private PoseManager poseManager;
-    public PoseManager getPoseManager() { return poseManager; }
-
-    private CrawlManager crawlManager;
-    public CrawlManager getCrawlManager() { return crawlManager; }
-
-    private ToggleManager toggleManager;
-    public ToggleManager getToggleManager() { return toggleManager; }
-
-    private UManager uManager;
-    public UManager getUManager() { return uManager; }
-
-    private PManager pManager;
-    public PManager getPManager() { return pManager; }
-
-    private TManager tManager;
-    public TManager getTManager() { return tManager; }
-
-    private MManager mManager;
-    public MManager getMManager() { return mManager; }
-
-    private EntityEventsHandler entityEventsHandler;
-    public EntityEventsHandler getEntityEventsHandler() { return entityEventsHandler; }
-
-    private PassengerUtil passengerUtil;
-    public PassengerUtil getPassengerUtil() { return passengerUtil; }
-
-    private EnvironmentUtil environmentUtil;
-    public EnvironmentUtil getEnvironmentUtil() { return environmentUtil; }
-
-    private IEntityUtil entityUtil;
-    public IEntityUtil getEntityUtil() { return entityUtil; }
-
-    private GriefPreventionLink griefPreventionLink;
-    public GriefPreventionLink getGriefPreventionLink() { return griefPreventionLink; }
-
-    private PlaceholderAPILink placeholderAPILink;
-    public PlaceholderAPILink getPlaceholderAPILink() { return placeholderAPILink; }
-
-    private PlotSquaredLink plotSquaredLink;
-    public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
-
-    private WorldGuardLink worldGuardLink;
-    public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
-
-    private boolean supportsPaperFeature = false;
-    public boolean supportsPaperFeature() { return supportsPaperFeature; }
-
-    private boolean supportsTaskFeature = false;
-    public boolean supportsTaskFeature() { return supportsTaskFeature; }
-
-    public final String NAME = "GSit";
-
-    public final String RESOURCE = "62325";
+    public static final String NAME = "GSit";
+    public static final String RESOURCE = "62325";
 
     private static GSitMain GPM;
+    private CManager cManager;
+    private MManager mManager;
+    private UManager uManager;
+    private PManager pManager;
+    private TManager tManager;
+    private DManager dManager;
+    private SVManager svManager;
+    private SitManager sitManager;
+    private PlayerSitManager playerSitManager;
+    private PoseManager poseManager;
+    private CrawlManager crawlManager;
+    private ToggleManager toggleManager;
+    private EntityEventsHandler entityEventsHandler;
+    private PassengerUtil passengerUtil;
+    private EnvironmentUtil environmentUtil;
+    private IEntityUtil entityUtil;
+    private GriefPreventionLink griefPreventionLink;
+    private PlaceholderAPILink placeholderAPILink;
+    private PlotSquaredLink plotSquaredLink;
+    private WorldGuardLink worldGuardLink;
+    private boolean supportsPaperFeature = false;
+    private boolean supportsTaskFeature = false;
 
     public static GSitMain getInstance() { return GPM; }
 
-    private void loadSettings(CommandSender Sender) {
+    public CManager getCManager() { return cManager; }
 
-        if(!connectDatabase(Sender)) return;
+    public MManager getMManager() { return mManager; }
 
-        getToggleManager().createTable();
-    }
+    public UManager getUManager() { return uManager; }
 
-    private void linkBStats() {
+    public PManager getPManager() { return pManager; }
 
-        BStatsLink bstats = new BStatsLink(getInstance(), 4914);
+    public TManager getTManager() { return tManager; }
 
-        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getCManager().L_LANG));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> getSitManager().getSitUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> (int) getSitManager().getSitUsedSeconds()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> getPlayerSitManager().getPlayerSitUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_psit_feature", () -> (int) getPlayerSitManager().getPlayerSitUsedSeconds()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> getPoseManager().getPoseUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> (int) getPoseManager().getPoseUsedSeconds()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> getCrawlManager().getCrawlUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> (int) getCrawlManager().getCrawlUsedSeconds()));
+    public DManager getDManager() { return dManager; }
 
-        getSitManager().resetFeatureUsedCount();
-        getPlayerSitManager().resetFeatureUsedCount();
-        getPoseManager().resetFeatureUsedCount();
-        getCrawlManager().resetFeatureUsedCount();
-    }
+    public SVManager getSVManager() { return svManager; }
+
+    public SitManager getSitManager() { return sitManager; }
+
+    public PlayerSitManager getPlayerSitManager() { return playerSitManager; }
+
+    public PoseManager getPoseManager() { return poseManager; }
+
+    public CrawlManager getCrawlManager() { return crawlManager; }
+
+    public ToggleManager getToggleManager() { return toggleManager; }
+
+    public EntityEventsHandler getEntityEventsHandler() { return entityEventsHandler; }
+
+    public PassengerUtil getPassengerUtil() { return passengerUtil; }
+
+    public EnvironmentUtil getEnvironmentUtil() { return environmentUtil; }
+
+    public IEntityUtil getEntityUtil() { return entityUtil; }
+
+    public GriefPreventionLink getGriefPreventionLink() { return griefPreventionLink; }
+
+    public PlaceholderAPILink getPlaceholderAPILink() { return placeholderAPILink; }
+
+    public PlotSquaredLink getPlotSquaredLink() { return plotSquaredLink; }
+
+    public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
+
+    public boolean supportsPaperFeature() { return supportsPaperFeature; }
+
+    public boolean supportsTaskFeature() { return supportsTaskFeature; }
 
     public void onLoad() {
 
@@ -172,6 +146,27 @@ public class GSitMain extends JavaPlugin {
         getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
 
+    private void loadSettings(CommandSender Sender) {
+
+        if(!connectDatabase(Sender)) return;
+
+        getToggleManager().createTable();
+    }
+
+    public void reload(CommandSender Sender) {
+        GSitReloadEvent reloadEvent = new GSitReloadEvent(getInstance());
+        Bukkit.getPluginManager().callEvent(reloadEvent);
+        if(reloadEvent.isCancelled()) return;
+        unload();
+        getCManager().reload();
+        getMManager().loadMessages();
+        loadPluginDependencies();
+        loadSettings(Sender);
+        printPluginLinks(Sender);
+        getUManager().checkForUpdates();
+        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(getInstance()));
+    }
+
     private void unload() {
 
         getDManager().close();
@@ -215,6 +210,24 @@ public class GSitMain extends JavaPlugin {
         if(entityEvents != null) getServer().getPluginManager().registerEvents(entityEvents, getInstance());
 
         getServer().getPluginManager().registerEvents(new SpinConfusionEvent(getInstance()), getInstance());
+    }
+
+    private boolean versionCheck() {
+        if(!getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().isAvailable())) {
+            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", getSVManager().getServerVersion());
+            getUManager().checkForUpdates();
+            Bukkit.getPluginManager().disablePlugin(getInstance());
+            return false;
+        }
+        return true;
+    }
+
+    private boolean connectDatabase(CommandSender Sender) {
+        boolean connect = getDManager().connect();
+        if(connect) return true;
+        getMManager().sendMessage(Sender, "Plugin.plugin-data");
+        Bukkit.getPluginManager().disablePlugin(getInstance());
+        return false;
     }
 
     private void loadFeatures() {
@@ -269,36 +282,25 @@ public class GSitMain extends JavaPlugin {
         if(worldGuardLink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("WorldGuard").getName());
     }
 
-    public void reload(CommandSender Sender) {
-        GSitReloadEvent reloadEvent = new GSitReloadEvent(getInstance());
-        Bukkit.getPluginManager().callEvent(reloadEvent);
-        if(reloadEvent.isCancelled()) return;
-        unload();
-        getCManager().reload();
-        getMManager().loadMessages();
-        loadPluginDependencies();
-        loadSettings(Sender);
-        printPluginLinks(Sender);
-        getUManager().checkForUpdates();
-        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(getInstance()));
-    }
+    private void linkBStats() {
 
-    private boolean connectDatabase(CommandSender Sender) {
-        boolean connect = getDManager().connect();
-        if(connect) return true;
-        getMManager().sendMessage(Sender, "Plugin.plugin-data");
-        Bukkit.getPluginManager().disablePlugin(getInstance());
-        return false;
-    }
+        BStatsLink bstats = new BStatsLink(getInstance(), 4914);
 
-    private boolean versionCheck() {
-        if(!getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(17, 0) && !getSVManager().isAvailable())) {
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", getSVManager().getServerVersion());
-            getUManager().checkForUpdates();
-            Bukkit.getPluginManager().disablePlugin(getInstance());
-            return false;
-        }
-        return true;
+        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getCManager().L_LANG));
+        bstats.addCustomChart(new BStatsLink.AdvancedPie("minecraft_version_player", () -> Map.of(GPM.getSVManager().getServerVersion(), Bukkit.getOnlinePlayers().size())));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> getSitManager().getSitUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> (int) getSitManager().getSitUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> getPlayerSitManager().getPlayerSitUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_psit_feature", () -> (int) getPlayerSitManager().getPlayerSitUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> getPoseManager().getPoseUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> (int) getPoseManager().getPoseUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> getCrawlManager().getCrawlUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> (int) getCrawlManager().getCrawlUsedSeconds()));
+
+        getSitManager().resetFeatureUsedCount();
+        getPlayerSitManager().resetFeatureUsedCount();
+        getPoseManager().resetFeatureUsedCount();
+        getCrawlManager().resetFeatureUsedCount();
     }
 
 }
