@@ -20,8 +20,8 @@ public class EntityUtil implements IEntityUtil {
     private final GSitMain GPM;
     private Field entityManager = null;
 
-    public EntityUtil() {
-        GPM = GSitMain.getInstance();
+    public EntityUtil(GSitMain GPluginMain) {
+        GPM = GPluginMain;
 
         if(GPM.supportsPaperFeature()) return;
         List<Field> entityManagerFieldList = new ArrayList<>();

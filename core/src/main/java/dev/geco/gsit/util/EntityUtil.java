@@ -11,7 +11,9 @@ import dev.geco.gsit.objects.*;
 
 public class EntityUtil implements IEntityUtil {
 
-    private final GSitMain GPM = GSitMain.getInstance();
+    private final GSitMain GPM;
+
+    public EntityUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
 
     @Override
     public void setEntityLocation(Entity Entity, Location Location) {

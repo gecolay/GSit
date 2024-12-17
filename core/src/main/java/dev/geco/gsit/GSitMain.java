@@ -123,7 +123,7 @@ public class GSitMain extends JavaPlugin {
 
         if(!versionCheck()) return;
 
-        entityUtil = getSVManager().isNewerOrVersion(17, 1) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil") : new EntityUtil();
+        entityUtil = getSVManager().isNewerOrVersion(17, 1) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil", getInstance()) : new EntityUtil(getInstance());
 
         loadPluginDependencies();
         loadSettings(Bukkit.getConsoleSender());
