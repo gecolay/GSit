@@ -133,8 +133,8 @@ public class SitManager {
         Location entityLocation = Entity.getLocation();
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
-        if(Entity.isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().setEntityLocation(Entity, returnLocation);
-        if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 0)) GPM.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        if(Entity.isValid() && Safe && GPM.getSVManager().isNewerOrVersion(17, 1)) GPM.getEntityUtil().setEntityLocation(Entity, returnLocation);
+        if(seat.getSeatEntity().isValid() && !GPM.getSVManager().isNewerOrVersion(17, 1)) GPM.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
 
         seat.getSeatEntity().remove();
 
