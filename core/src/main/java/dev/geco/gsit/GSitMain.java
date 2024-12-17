@@ -287,7 +287,7 @@ public class GSitMain extends JavaPlugin {
         BStatsLink bstats = new BStatsLink(getInstance(), 4914);
 
         bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getCManager().L_LANG));
-        bstats.addCustomChart(new BStatsLink.AdvancedPie("minecraft_version_player", () -> Map.of(GPM.getSVManager().getServerVersion(), Bukkit.getOnlinePlayers().size())));
+        bstats.addCustomChart(new BStatsLink.AdvancedPie("minecraft_version_player_amount", () -> Map.of(GPM.getSVManager().getServerVersion(), Bukkit.getOnlinePlayers().size())));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> getSitManager().getSitUsedCount()));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> (int) getSitManager().getSitUsedSeconds()));
         bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> getPlayerSitManager().getPlayerSitUsedCount()));
