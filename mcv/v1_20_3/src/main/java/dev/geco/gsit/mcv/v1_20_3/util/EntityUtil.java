@@ -1,11 +1,14 @@
 package dev.geco.gsit.mcv.v1_20_3.util;
 
+import java.lang.reflect.*;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_20_R3.*;
 import org.bukkit.craftbukkit.v1_20_R3.entity.*;
 import org.bukkit.entity.*;
+
+import net.minecraft.server.level.*;
+import net.minecraft.world.level.entity.*;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.mcv.v1_20_3.objects.*;
@@ -14,7 +17,18 @@ import dev.geco.gsit.util.*;
 
 public class EntityUtil implements IEntityUtil {
 
-    private final GSitMain GPM = GSitMain.getInstance();
+    private final GSitMain GPM;
+    private Field entityManager = null;
+
+    public EntityUtil() {
+        GPM = GSitMain.getInstance();
+
+        if(GPM.supportsPaperFeature()) return;
+        List<Field> entityManagerFieldList = new ArrayList<>();
+        for(Field field : ServerLevel.class.getDeclaredFields()) if(field.getType().equals(PersistentEntitySectionManager.class)) entityManagerFieldList.add(field);
+        entityManager = entityManagerFieldList.get(0);
+        entityManager.setAccessible(true);
+    }
 
     @Override
     public void setEntityLocation(Entity Entity, Location Location) { ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch()); }
@@ -38,8 +52,7 @@ public class EntityUtil implements IEntityUtil {
 
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
-        boolean spawn = spawnEntity(Location.getWorld(), seatEntity);
-        if(!spawn) return null;
+        if(!spawnEntity(seatEntity)) return null;
 
         if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
@@ -77,29 +90,27 @@ public class EntityUtil implements IEntityUtil {
 
             if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
-            boolean spawn = spawnEntity(Holder.getWorld(), playerSeatEntity);
-            if(spawn) lastEntity = playerSeatEntity;
+            if(!spawnEntity(playerSeatEntity)) return null;
+
+            lastEntity = playerSeatEntity;
         }
 
         return lastEntity.getUUID();
     }
 
-    private boolean spawnEntity(World Level, net.minecraft.world.entity.Entity Entity) {
+    private boolean spawnEntity(net.minecraft.world.entity.Entity Entity) {
 
-        /*if(!GPM.supportsPaperFeature()) {
+        if(!GPM.supportsPaperFeature()) {
             try {
-                ((CraftWorld) Level).getHandle().entityManager.addNewEntity(Entity);
-                return true;
-            } catch (Throwable ignored) { }
-        }*/
+                PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(Entity.level().getWorld().getHandle());
+                return entityLookup.addNewEntity(Entity);
+            } catch (Throwable e) { e.printStackTrace(); }
+            return false;
+        }
 
-        try {
-            net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = ((CraftWorld) Level).getHandle().getEntities();
-            levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
-            return true;
-        } catch (Throwable ignored) { }
-
-        return false;
+        LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = Entity.level().getEntities();
+        if(!(levelEntityGetter instanceof io.papermc.paper.chunk.system.entity.EntityLookup entityLookup)) return false;
+        return entityLookup.addNewEntity(Entity);
     }
 
     @Override

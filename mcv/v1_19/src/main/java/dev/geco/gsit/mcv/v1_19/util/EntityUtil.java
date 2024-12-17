@@ -3,7 +3,6 @@ package dev.geco.gsit.mcv.v1_19.util;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_19_R1.*;
 import org.bukkit.craftbukkit.v1_19_R1.entity.*;
 import org.bukkit.entity.*;
 
@@ -38,7 +37,7 @@ public class EntityUtil implements IEntityUtil {
 
         if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
-        ((CraftWorld) Location.getWorld()).getHandle().entityManager.addNewEntity(seatEntity);
+        if(!seatEntity.level.getWorld().getHandle().entityManager.addNewEntity(seatEntity)) return null;
 
         if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
 
@@ -76,7 +75,7 @@ public class EntityUtil implements IEntityUtil {
 
             if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
 
-            ((CraftWorld) Holder.getWorld()).getHandle().entityManager.addNewEntity(playerSeatEntity);
+            if(!playerSeatEntity.level.getWorld().getHandle().entityManager.addNewEntity(playerSeatEntity)) return null;
 
             lastEntity = playerSeatEntity;
         }
