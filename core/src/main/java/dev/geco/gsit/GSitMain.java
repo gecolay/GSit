@@ -123,7 +123,7 @@ public class GSitMain extends JavaPlugin {
 
         if(!versionCheck()) return;
 
-        entityUtil = getSVManager().isNewerOrVersion(17, 1) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil", getInstance()) : new EntityUtil(getInstance());
+        entityUtil = getSVManager().isNewerOrVersion(18, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil", getInstance()) : new EntityUtil(getInstance());
 
         loadPluginDependencies();
         loadSettings(Bukkit.getConsoleSender());
@@ -205,7 +205,7 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
         getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
 
-        Listener entityEvents = getSVManager().isNewerOrVersion(17, 1) ? (Listener) getSVManager().getPackageObject("events.EntityEvents", getInstance()) : null;
+        Listener entityEvents = getSVManager().isNewerOrVersion(18, 0) ? (Listener) getSVManager().getPackageObject("events.EntityEvents", getInstance()) : null;
         if(entityEvents == null) entityEvents = (Listener) getSVManager().getLegacyPackageObject("events.EntityEvents", getInstance());
         if(entityEvents != null) getServer().getPluginManager().registerEvents(entityEvents, getInstance());
 
@@ -213,7 +213,7 @@ public class GSitMain extends JavaPlugin {
     }
 
     private boolean versionCheck() {
-        if(!getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(17, 1) && !getSVManager().isAvailable())) {
+        if(!getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(18, 0) && !getSVManager().isAvailable())) {
             getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", getSVManager().getServerVersion());
             getUManager().checkForUpdates();
             Bukkit.getPluginManager().disablePlugin(getInstance());

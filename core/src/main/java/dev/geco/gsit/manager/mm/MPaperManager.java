@@ -91,11 +91,11 @@ public class MPaperManager extends MManager {
     private String formatText(String Text, Object... RawReplaceList) { return legacyComponentSerializer.serialize(miniMessage.deserialize(replaceParsedLegacyColors(replaceText(Text, RawReplaceList)))); }
 
     private String replaceParsedLegacyColors(String Text) {
-        if (Text.indexOf(COLOR_CHAR) == -1) return Text;
+        if(Text.indexOf(COLOR_CHAR) == -1) return Text;
         Matcher matcher = PARSED_HEX_PATTERN.matcher(Text);
         int lastMatchEnd = 0;
         StringBuilder result = new StringBuilder(Text.length());
-        while (matcher.find()) {
+        while(matcher.find()) {
             result.append(Text, lastMatchEnd, matcher.start());
             String hex = Text.substring(matcher.start() + 3, matcher.end()).replace("§", "");
             result.append('#').append(hex);
@@ -103,7 +103,7 @@ public class MPaperManager extends MManager {
         }
         result.append(Text, lastMatchEnd, Text.length());
         int length = result.length();
-        for (int i = 0; i < length; i++) if (result.charAt(i) == COLOR_CHAR) result.setCharAt(i, AMPERSAND_CHAR);
+        for(int i = 0; i < length; i++) if(result.charAt(i) == COLOR_CHAR) result.setCharAt(i, AMPERSAND_CHAR);
         return result.toString();
     }
 

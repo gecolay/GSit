@@ -29,7 +29,6 @@ allprojects {
 
 dependencies {
     api(project(":core"))
-    api(project(":v1_17_1"))
     api(project(":v1_18"))
     api(project(":v1_18_2"))
     api(project(":v1_19"))
@@ -49,6 +48,9 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         minimize()
+        manifest {
+            attributes["paperweight-mappings-namespace"] = "spigot"
+        }
     }
 
     build {
@@ -56,7 +58,7 @@ tasks {
     }
 
     compileJava {
-        options.release.set(16)
+        options.release = 17
     }
 
     processResources {
@@ -68,19 +70,15 @@ tasks {
             "main" to "${project.group}.${project.name}Main"
         )
     }
+}
 
-    publishToMavenLocal {
-        dependsOn(build)
-    }
-
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = project.group.toString()
-                artifactId = project.name
-                version = project.version.toString()
-                from(project.components["java"])
-            }
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+            from(project.components["java"])
         }
     }
 }
