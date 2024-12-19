@@ -59,7 +59,7 @@ tasks {
     }
 
     compileJava {
-        options.release.set(16)
+        options.release = 16
     }
 
     processResources {
