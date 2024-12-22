@@ -14,23 +14,17 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
-tasks {
-    compileJava {
-        options.release.set(16)
-    }
+tasks.compileJava {
+    options.release = 17
+}
 
-    publishToMavenLocal {
-        dependsOn(build)
-    }
-
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = project.group.toString()
-                artifactId = project.name
-                version = project.version.toString()
-                from(project.components["java"])
-            }
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+            from(project.components["java"])
         }
     }
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":core"))
+    compileOnly(project(":core"))
     paperweight.paperDevBundle("1.18.2-R0.1-SNAPSHOT")
 }
 

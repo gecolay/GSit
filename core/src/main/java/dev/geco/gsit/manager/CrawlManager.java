@@ -19,7 +19,7 @@ public class CrawlManager {
 
     public CrawlManager(GSitMain GPluginMain) {
         GPM = GPluginMain;
-        available = GPM.getSVManager().isNewerOrVersion(17, 1);
+        available = GPM.getSVManager().isNewerOrVersion(18, 0);
     }
 
     public boolean isAvailable() { return available; }
