@@ -46,7 +46,7 @@ dependencies {
 
 tasks {
     shadowJar {
-        archiveClassifier.set("")
+        archiveClassifier = ""
         minimize()
         manifest {
             attributes["paperweight-mappings-namespace"] = "spigot"
