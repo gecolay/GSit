@@ -4,18 +4,13 @@ plugins {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12") {
+        isTransitive = false
+    }
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.4")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.4.0")
-}
-
-configurations.all {
-    resolutionStrategy {
-        // worldguard-bukkit & plotsquared-core require outdated versions compared to paper-api, so we force the new version
-        force("com.google.guava:guava:33.3.1-jre")
-        force("com.google.code.gson:gson:2.11.0")
-        force("it.unimi.dsi:fastutil:8.5.15")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.4.0") {
+        isTransitive = false
     }
 }
 
