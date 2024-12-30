@@ -146,8 +146,6 @@ public class GCrawl implements IGCrawl {
 
     private void destoryEntity() {
 
-        if(!boxPresent) return;
-
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
 
         boxPresent = false;
@@ -157,11 +155,7 @@ public class GCrawl implements IGCrawl {
 
         if(serverPlayer.isInWater() || player.isFlying()) {
 
-            GPM.getTManager().run(() -> {
-
-                GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
-            }, true, player.getLocation());
-
+            GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
             return false;
         }
 

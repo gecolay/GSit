@@ -164,11 +164,13 @@ public class GCrawl implements IGCrawl {
         HandlerList.unregisterAll(moveListener);
         HandlerList.unregisterAll(stopListener);
 
-        player.setSwimming(false);
+        GPM.getTManager().run(() -> {
+            player.setSwimming(false);
 
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+            if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
 
-        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
+            serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
+        }, true, player);
     }
 
     private void buildBlock(Location Location) {
@@ -187,8 +189,6 @@ public class GCrawl implements IGCrawl {
 
     private void destoryEntity() {
 
-        if(!boxPresent) return;
-
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
 
         boxPresent = false;
@@ -198,11 +198,7 @@ public class GCrawl implements IGCrawl {
 
         if(serverPlayer.isInWater() || player.isFlying()) {
 
-            GPM.getTManager().run(() -> {
-
-                GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
-            }, true, blockLocation != null ? blockLocation : player.getLocation());
-
+            GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
             return false;
         }
 
