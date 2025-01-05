@@ -2,7 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.gradleup.shadow") version "9.0.0-beta4"
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.8" apply false
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.11" apply false
 }
 
 allprojects {
