@@ -2,8 +2,6 @@
 # Language-File created by: 	Christian Scaduto
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Il plugin è stato abilitato con successo."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a Il plugin è stato ricaricato correttamente."
   plugin-disabled: "[P]&a Il plugin è stato disabilitato con successo."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

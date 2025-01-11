@@ -6,8 +6,6 @@ Lang:
   # Send messages to clients in their own language, if available
   client-lang: true
 
-
-
 Options:
 
   # Plugin sends update notifications
@@ -61,8 +59,6 @@ Options:
     # Allow sitting by default without using 'sit toggle'
     default-sit-mode: true
 
-
-
   PlayerSit:
 
     # Allow players to sit on other players by clicking
@@ -89,8 +85,6 @@ Options:
     # Allow sitting on other players by default without using 'sit playertoggle'
     default-sit-mode: true
 
-
-
   Pose:
 
     # Allow interactions with the environment or other players while posing
@@ -108,8 +102,6 @@ Options:
     # Count lying players for skipping the night (at least one player must sleep in a bed)
     lay-night-skip: true
 
-
-
   Crawl:
 
     # Allow standing up from crawling by sneaking
@@ -120,8 +112,6 @@ Options:
 
     # Allow crawling by default without using 'crawl toggle'
     default-crawl-mode: true
-
-
 
   # Restrict all features to trusted regions only (for region plugins)
   trusted-region-only: false

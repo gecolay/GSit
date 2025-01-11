@@ -2,8 +2,6 @@
 # Language-File created by:		RobiNN
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Plugin bol úspešne povolený."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a Plugin bol úspešne znovu načítaný."
   plugin-disabled: "[P]&a Plugin bol úspešne vypnutý."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

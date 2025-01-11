@@ -2,8 +2,6 @@
 # Language-File created by:		stiltezh
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Плагін був успішно включений."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a Плагін був успішно відключений."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

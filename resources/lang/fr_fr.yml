@@ -2,8 +2,6 @@
 # Language-File created by:		ishi_sama
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Le plugin a été activé avec succès."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a Le plugin a été rechargé avec succès."
   plugin-disabled: "[P]&a Le plugin a été désactivé avec succès."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

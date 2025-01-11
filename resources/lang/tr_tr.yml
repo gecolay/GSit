@@ -2,8 +2,6 @@
 # Language-File created by:		hhhhh-ckr
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Eklenti başarıyla etkinleştirildi."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a Eklenti başarıyla yeniden yüklendi."
   plugin-disabled: "[P]&a Eklenti başarıyla devre dışı bırakıldı."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

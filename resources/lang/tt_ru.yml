@@ -2,8 +2,6 @@
 # Language-File created by:		Cybereggs1337
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Кушылма кушылды."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a Кушылма яңадан йөкләнде."
   plugin-disabled: "[P]&a Кушылма сүндерелде."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

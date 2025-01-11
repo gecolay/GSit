@@ -2,8 +2,6 @@
 # Language-File created by:		DustyGanteng
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Plugin berhasil diaktifkan."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a Plugin berhasil dimuat ulang."
   plugin-disabled: "[P]&a Plugin berhasil dinonaktifkan."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

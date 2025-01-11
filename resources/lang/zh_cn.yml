@@ -2,8 +2,6 @@
 # Language-File created by:		Thaumiel9 & jhqwqmc
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a 插件已成功启用"
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a 插件已成功重载."
   plugin-disabled: "[P]&a 插件已成功禁用"
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

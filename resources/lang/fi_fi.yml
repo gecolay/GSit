@@ -2,8 +2,6 @@
 # Language-File created by:		FabianAdrian
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Laajennus käynnistyi onnistuneesti."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a Laajennus sammui onnistuneesti."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

@@ -97,33 +97,33 @@ public class GSitMain extends JavaPlugin {
 
         GPM = this;
 
-        svManager = new SVManager(getInstance());
-        cManager = new CManager(getInstance());
-        dManager = new DManager(getInstance());
-        uManager = new UManager(getInstance());
-        pManager = new PManager(getInstance());
-        tManager = new TManager(getInstance());
-        sitManager = new SitManager(getInstance());
-        playerSitManager = new PlayerSitManager(getInstance());
-        poseManager = new PoseManager(getInstance());
-        crawlManager = new CrawlManager(getInstance());
-        toggleManager = new ToggleManager(getInstance());
+        svManager = new SVManager(this);
+        cManager = new CManager(this);
+        dManager = new DManager(this);
+        uManager = new UManager(this);
+        pManager = new PManager(this);
+        tManager = new TManager(this);
+        sitManager = new SitManager(this);
+        playerSitManager = new PlayerSitManager(this);
+        poseManager = new PoseManager(this);
+        crawlManager = new CrawlManager(this);
+        toggleManager = new ToggleManager(this);
 
-        entityEventsHandler = new EntityEventsHandler(getInstance());
+        entityEventsHandler = new EntityEventsHandler(this);
 
         passengerUtil = new PassengerUtil();
-        environmentUtil = new EnvironmentUtil(getInstance());
+        environmentUtil = new EnvironmentUtil(this);
 
         loadFeatures();
 
-        mManager = supportsPaperFeature() && getSVManager().isNewerOrVersion(18, 2) ? new MPaperManager(getInstance()) : new MSpigotManager(getInstance());
+        mManager = supportsPaperFeature && svManager.isNewerOrVersion(18, 2) ? new MPaperManager(this) : new MSpigotManager(this);
     }
 
     public void onEnable() {
 
         if(!versionCheck()) return;
 
-        entityUtil = getSVManager().isNewerOrVersion(18, 0) ? (IEntityUtil) getSVManager().getPackageObject("util.EntityUtil", getInstance()) : new EntityUtil(getInstance());
+        entityUtil = svManager.isNewerOrVersion(18, 0) ? (IEntityUtil) svManager.getPackageObject("util.EntityUtil", this) : new EntityUtil(this);
 
         loadPluginDependencies();
         loadSettings(Bukkit.getConsoleSender());
@@ -132,101 +132,101 @@ public class GSitMain extends JavaPlugin {
         setupEvents();
         linkBStats();
 
-        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(getInstance()));
+        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(this));
 
-        getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
+        mManager.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-enabled");
 
         printPluginLinks(Bukkit.getConsoleSender());
-        getUManager().checkForUpdates();
+        uManager.checkForUpdates();
     }
 
     public void onDisable() {
 
         unload();
-        getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
+        mManager.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
 
     private void loadSettings(CommandSender Sender) {
 
         if(!connectDatabase(Sender)) return;
 
-        getToggleManager().createTable();
+        toggleManager.createTable();
     }
 
     public void reload(CommandSender Sender) {
-        GSitReloadEvent reloadEvent = new GSitReloadEvent(getInstance());
+        GSitReloadEvent reloadEvent = new GSitReloadEvent(this);
         Bukkit.getPluginManager().callEvent(reloadEvent);
         if(reloadEvent.isCancelled()) return;
         unload();
-        getCManager().reload();
-        getMManager().loadMessages();
+        cManager.reload();
+        mManager.loadMessages();
         loadPluginDependencies();
         loadSettings(Sender);
         printPluginLinks(Sender);
-        getUManager().checkForUpdates();
-        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(getInstance()));
+        uManager.checkForUpdates();
+        Bukkit.getPluginManager().callEvent(new GSitLoadedEvent(this));
     }
 
     private void unload() {
 
-        getDManager().close();
-        getSitManager().clearSeats();
-        getPlayerSitManager().clearSeats();
-        getPoseManager().clearPoses();
-        getCrawlManager().clearCrawls();
+        dManager.close();
+        sitManager.clearSeats();
+        playerSitManager.clearSeats();
+        poseManager.clearPoses();
+        crawlManager.clearCrawls();
 
-        if(getPlaceholderAPILink() != null) getPlaceholderAPILink().unregister();
+        if(placeholderAPILink != null) placeholderAPILink.unregister();
     }
 
     private void setupCommands() {
 
-        getCommand("gsit").setExecutor(new GSitCommand(getInstance()));
-        getCommand("gsit").setTabCompleter(new GSitTabComplete(getInstance()));
-        getCommand("glay").setExecutor(new GLayCommand(getInstance()));
+        getCommand("gsit").setExecutor(new GSitCommand(this));
+        getCommand("gsit").setTabCompleter(new GSitTabComplete(this));
+        getCommand("glay").setExecutor(new GLayCommand(this));
         getCommand("glay").setTabCompleter(new EmptyTabComplete());
-        getCommand("glay").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
-        getCommand("gbellyflop").setExecutor(new GBellyFlopCommand(getInstance()));
+        getCommand("glay").setPermissionMessage(mManager.getMessage("Messages.command-permission-error"));
+        getCommand("gbellyflop").setExecutor(new GBellyFlopCommand(this));
         getCommand("gbellyflop").setTabCompleter(new EmptyTabComplete());
-        getCommand("gbellyflop").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
-        getCommand("gspin").setExecutor(new GSpinCommand(getInstance()));
+        getCommand("gbellyflop").setPermissionMessage(mManager.getMessage("Messages.command-permission-error"));
+        getCommand("gspin").setExecutor(new GSpinCommand(this));
         getCommand("gspin").setTabCompleter(new EmptyTabComplete());
-        getCommand("gspin").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
-        getCommand("gcrawl").setExecutor(new GCrawlCommand(getInstance()));
-        getCommand("gcrawl").setTabCompleter(new GCrawlTabComplete(getInstance()));
-        getCommand("gsitreload").setExecutor(new GSitReloadCommand(getInstance()));
+        getCommand("gspin").setPermissionMessage(mManager.getMessage("Messages.command-permission-error"));
+        getCommand("gcrawl").setExecutor(new GCrawlCommand(this));
+        getCommand("gcrawl").setTabCompleter(new GCrawlTabComplete(this));
+        getCommand("gsitreload").setExecutor(new GSitReloadCommand(this));
         getCommand("gsitreload").setTabCompleter(new EmptyTabComplete());
-        getCommand("gsitreload").setPermissionMessage(getMManager().getMessage("Messages.command-permission-error"));
+        getCommand("gsitreload").setPermissionMessage(mManager.getMessage("Messages.command-permission-error"));
     }
 
     private void setupEvents() {
 
-        getServer().getPluginManager().registerEvents(new PlayerEvents(getInstance()), getInstance());
-        getServer().getPluginManager().registerEvents(new PlayerSitEvents(getInstance()), getInstance());
-        getServer().getPluginManager().registerEvents(new BlockEvents(getInstance()), getInstance());
-        getServer().getPluginManager().registerEvents(new InteractEvents(getInstance()), getInstance());
+        getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerSitEvents(this), this);
+        getServer().getPluginManager().registerEvents(new BlockEvents(this), this);
+        getServer().getPluginManager().registerEvents(new InteractEvents(this), this);
 
-        Listener entityEvents = getSVManager().isNewerOrVersion(18, 0) ? (Listener) getSVManager().getPackageObject("events.EntityEvents", getInstance()) : null;
-        if(entityEvents == null) entityEvents = (Listener) getSVManager().getLegacyPackageObject("events.EntityEvents", getInstance());
-        if(entityEvents != null) getServer().getPluginManager().registerEvents(entityEvents, getInstance());
+        Listener entityEvents = svManager.isNewerOrVersion(18, 0) ? (Listener) svManager.getPackageObject("events.EntityEvents", this) : null;
+        if(entityEvents == null) entityEvents = (Listener) svManager.getLegacyPackageObject("events.EntityEvents", this);
+        if(entityEvents != null) getServer().getPluginManager().registerEvents(entityEvents, this);
 
-        getServer().getPluginManager().registerEvents(new SpinConfusionEvent(getInstance()), getInstance());
+        getServer().getPluginManager().registerEvents(new SpinConfusionEvent(this), this);
     }
 
     private boolean versionCheck() {
-        if(!getSVManager().isNewerOrVersion(16, 0) || (getSVManager().isNewerOrVersion(18, 0) && !getSVManager().isAvailable())) {
-            getMManager().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", getSVManager().getServerVersion());
-            getUManager().checkForUpdates();
-            Bukkit.getPluginManager().disablePlugin(getInstance());
+        if(!svManager.isNewerOrVersion(16, 0) || (svManager.isNewerOrVersion(18, 0) && !svManager.isAvailable())) {
+            mManager.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", svManager.getServerVersion());
+            uManager.checkForUpdates();
+            Bukkit.getPluginManager().disablePlugin(this);
             return false;
         }
         return true;
     }
 
     private boolean connectDatabase(CommandSender Sender) {
-        boolean connect = getDManager().connect();
+        boolean connect = dManager.connect();
         if(connect) return true;
-        getMManager().sendMessage(Sender, "Plugin.plugin-data");
-        Bukkit.getPluginManager().disablePlugin(getInstance());
+        mManager.sendMessage(Sender, "Plugin.plugin-data");
+        Bukkit.getPluginManager().disablePlugin(this);
         return false;
     }
 
@@ -243,64 +243,64 @@ public class GSitMain extends JavaPlugin {
         } catch (ClassNotFoundException ignored) { supportsTaskFeature = false; }
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-            worldGuardLink = new WorldGuardLink(getInstance());
-            getWorldGuardLink().registerFlags();
+            worldGuardLink = new WorldGuardLink(this);
+            worldGuardLink.registerFlags();
         }
     }
 
     private void loadPluginDependencies() {
 
         Plugin plugin = Bukkit.getPluginManager().getPlugin("GriefPrevention");
-        if(plugin != null && plugin.isEnabled()) griefPreventionLink = new GriefPreventionLink(getInstance());
+        if(plugin != null && plugin.isEnabled()) griefPreventionLink = new GriefPreventionLink(this);
         else griefPreventionLink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
         if(plugin != null && plugin.isEnabled()) {
-            placeholderAPILink = new PlaceholderAPILink(getInstance());
-            getPlaceholderAPILink().register();
+            placeholderAPILink = new PlaceholderAPILink(this);
+            placeholderAPILink.register();
         } else placeholderAPILink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("PlotSquared");
         if(plugin != null && plugin.isEnabled()) {
-            plotSquaredLink = new PlotSquaredLink(getInstance());
-            if(!getPlotSquaredLink().isVersionSupported()) plotSquaredLink = null;
+            plotSquaredLink = new PlotSquaredLink(this);
+            if(!plotSquaredLink.isVersionSupported()) plotSquaredLink = null;
         } else plotSquaredLink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
         if(plugin != null && plugin.isEnabled()) {
             if(worldGuardLink == null) {
-                worldGuardLink = new WorldGuardLink(getInstance());
-                getWorldGuardLink().registerFlags();
+                worldGuardLink = new WorldGuardLink(this);
+                worldGuardLink.registerFlags();
             }
         } else worldGuardLink = null;
     }
 
     private void printPluginLinks(CommandSender Sender) {
-        if(griefPreventionLink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("GriefPrevention").getName());
-        if(placeholderAPILink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("PlaceholderAPI").getName());
-        if(plotSquaredLink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("PlotSquared").getName());
-        if(worldGuardLink != null) getMManager().sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("WorldGuard").getName());
+        if(griefPreventionLink != null) mManager.sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("GriefPrevention").getName());
+        if(placeholderAPILink != null) mManager.sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("PlaceholderAPI").getName());
+        if(plotSquaredLink != null) mManager.sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("PlotSquared").getName());
+        if(worldGuardLink != null) mManager.sendMessage(Sender, "Plugin.plugin-link", "%Link%", Bukkit.getPluginManager().getPlugin("WorldGuard").getName());
     }
 
     private void linkBStats() {
 
-        BStatsLink bstats = new BStatsLink(getInstance(), 4914);
+        BStatsLink bstats = new BStatsLink(this, 4914);
 
-        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> getCManager().L_LANG));
-        bstats.addCustomChart(new BStatsLink.AdvancedPie("minecraft_version_player_amount", () -> Map.of(GPM.getSVManager().getServerVersion(), Bukkit.getOnlinePlayers().size())));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> getSitManager().getSitUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> (int) getSitManager().getSitUsedSeconds()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> getPlayerSitManager().getPlayerSitUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_psit_feature", () -> (int) getPlayerSitManager().getPlayerSitUsedSeconds()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> getPoseManager().getPoseUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> (int) getPoseManager().getPoseUsedSeconds()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> getCrawlManager().getCrawlUsedCount()));
-        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> (int) getCrawlManager().getCrawlUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SimplePie("plugin_language", () -> cManager.L_LANG));
+        bstats.addCustomChart(new BStatsLink.AdvancedPie("minecraft_version_player_amount", () -> Map.of(svManager.getServerVersion(), Bukkit.getOnlinePlayers().size())));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_sit_feature", () -> sitManager.getSitUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_sit_feature", () -> (int) sitManager.getSitUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_psit_feature", () -> playerSitManager.getPlayerSitUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_psit_feature", () -> (int) playerSitManager.getPlayerSitUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_pose_feature", () -> poseManager.getPoseUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_pose_feature", () -> (int) poseManager.getPoseUsedSeconds()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("use_crawl_feature", () -> crawlManager.getCrawlUsedCount()));
+        bstats.addCustomChart(new BStatsLink.SingleLineChart("seconds_crawl_feature", () -> (int) crawlManager.getCrawlUsedSeconds()));
 
-        getSitManager().resetFeatureUsedCount();
-        getPlayerSitManager().resetFeatureUsedCount();
-        getPoseManager().resetFeatureUsedCount();
-        getCrawlManager().resetFeatureUsedCount();
+        sitManager.resetFeatureUsedCount();
+        playerSitManager.resetFeatureUsedCount();
+        poseManager.resetFeatureUsedCount();
+        crawlManager.resetFeatureUsedCount();
     }
 
 }

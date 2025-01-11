@@ -2,8 +2,6 @@
 # Language-File created by:		TioLopew & bottleofench
 #
 
-
-
 Plugin:
 
   plugin-enabled: "[P]&a Плагин был включен."
@@ -14,8 +12,6 @@ Plugin:
   plugin-reload: "[P]&a Плагин был успешно перезагружен."
   plugin-disabled: "[P]&a Плагин был успешно отключен."
   plugin-prefix: "&7[&6GSit&7]"
-
-
 
 Messages:
 

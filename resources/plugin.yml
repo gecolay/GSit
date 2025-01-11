@@ -50,8 +50,6 @@ commands:
     description: Plugin reload command
     permission: GSit.Reload
 
-
-
 permissions:
 
   GSit.*:
