@@ -9,8 +9,8 @@ dependencies {
 
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
 
-tasks.compileJava {
-    options.release = 17
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
 tasks.assemble {
