@@ -27,6 +27,7 @@ public class CManager {
 
     public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
     public boolean S_BOTTOM_PART_ONLY;
+    public boolean S_UP_FACE_ONLY;
     public boolean S_EMPTY_HAND_ONLY;
     public double S_MAX_DISTANCE;
     public boolean S_DEFAULT_SIT_MODE;
@@ -116,6 +117,7 @@ public class CManager {
             } catch (Throwable ignored) { }
         }
         S_BOTTOM_PART_ONLY = GPM.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
+        S_UP_FACE_ONLY = GPM.getConfig().getBoolean("Options.Sit.up-face-only", true);
         S_EMPTY_HAND_ONLY = GPM.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = GPM.getConfig().getDouble("Options.Sit.max-distance", 0d);
         S_DEFAULT_SIT_MODE = GPM.getConfig().getBoolean("Options.Sit.default-sit-mode", true);

@@ -26,7 +26,7 @@ public class InteractEvents implements Listener {
         Action action = Event.getAction();
         if(Event.getHand() != EquipmentSlot.HAND || action != Action.RIGHT_CLICK_BLOCK) return;
 
-        if(Event.getBlockFace() != BlockFace.UP) return;
+        if(GPM.getCManager().S_UP_FACE_ONLY && Event.getBlockFace() != BlockFace.UP) return;
 
         if(GPM.getCManager().S_EMPTY_HAND_ONLY && Event.getItem() != null) return;
 

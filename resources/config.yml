@@ -50,6 +50,9 @@ Options:
     # Allow sitting only on the bottom part of stairs and slabs
     bottom-part-only: true
 
+    # Allow sitting only when clicking on the top face of a block
+    up-face-only: true
+
     # Require an empty main hand to sit by clicking
     empty-hand-only: true
 
