@@ -82,7 +82,7 @@ public class EntityUtil implements IEntityUtil {
         try {
             net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = Entity.level.getEntities();
             return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
-        } catch (Throwable ignored) { }
+        } catch(Throwable ignored) { }
         return false;
     }
 

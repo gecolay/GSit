@@ -30,15 +30,15 @@ public class EntityUtil implements IEntityUtil {
             Object serverEntity = getHandle.invoke(entity);
             Method setPositionRotationMethod = serverEntity.getClass().getMethod("setPositionRotation", double.class, double.class, double.class, float.class, float.class);
             setPositionRotationMethod.invoke(serverEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
     }
 
     @Override
     public boolean isSitLocationValid(Location location) {
         try {
             org.bukkit.util.Consumer<ArmorStand> armorStandConsumer = (armorStand) -> {
-                try { armorStand.setInvisible(true); } catch (Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
-                try { armorStand.setMarker(true); } catch (Throwable ignored) { }
+                try { armorStand.setInvisible(true); } catch(Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch(Throwable ignored) { } }
+                try { armorStand.setMarker(true); } catch(Throwable ignored) { }
             };
 
             World world = location.getWorld();
@@ -48,7 +48,7 @@ public class EntityUtil implements IEntityUtil {
             seatEntity.remove();
 
             return valid;
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return false;
     }
 
@@ -56,7 +56,7 @@ public class EntityUtil implements IEntityUtil {
     public boolean isPlayerSitLocationValid(Location location) {
         try {
             org.bukkit.util.Consumer<AreaEffectCloud> areaEffectCloudConsumer = (areaEffectCloud) -> {
-                try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
+                try { areaEffectCloud.setRadius(0); } catch(Throwable ignored) { }
             };
 
             World world = location.getWorld();
@@ -66,7 +66,7 @@ public class EntityUtil implements IEntityUtil {
             playerSeatEntity.remove();
 
             return valid;
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return false;
     }
 
@@ -76,12 +76,12 @@ public class EntityUtil implements IEntityUtil {
             final boolean[] riding = { true };
             org.bukkit.util.Consumer<ArmorStand> consumer = (armorStand) -> {
 
-                try { armorStand.setInvisible(true); } catch (Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch (Throwable ignored) { } }
-                try { armorStand.setGravity(false); } catch (Throwable ignored) { }
-                try { armorStand.setMarker(true); } catch (Throwable ignored) { }
-                try { armorStand.setInvulnerable(true); } catch (Throwable ignored) { }
-                try { armorStand.setSmall(true); } catch (Throwable ignored) { }
-                try { armorStand.setBasePlate(false); } catch (Throwable ignored) { }
+                try { armorStand.setInvisible(true); } catch(Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch(Throwable ignored) { } }
+                try { armorStand.setGravity(false); } catch(Throwable ignored) { }
+                try { armorStand.setMarker(true); } catch(Throwable ignored) { }
+                try { armorStand.setInvulnerable(true); } catch(Throwable ignored) { }
+                try { armorStand.setSmall(true); } catch(Throwable ignored) { }
+                try { armorStand.setBasePlate(false); } catch(Throwable ignored) { }
                 armorStand.addScoreboardTag(GSitMain.NAME + "_SeatEntity");
                 if(!gSitMain.getConfigService().ENHANCED_COMPATIBILITY && entity != null && entity.isValid()) riding[0] = armorStand.addPassenger(entity);
             };
@@ -96,7 +96,7 @@ public class EntityUtil implements IEntityUtil {
             }
 
             return seatEntity;
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return null;
     }
 
@@ -116,9 +116,9 @@ public class EntityUtil implements IEntityUtil {
 
                 org.bukkit.util.Consumer<AreaEffectCloud> areaEffectCloudConsumer = (areaEffectCloud) -> {
 
-                    try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setGravity(false); } catch (Throwable ignored) { }
-                    try { areaEffectCloud.setInvulnerable(true); } catch (Throwable ignored) { }
+                    try { areaEffectCloud.setRadius(0); } catch(Throwable ignored) { }
+                    try { areaEffectCloud.setGravity(false); } catch(Throwable ignored) { }
+                    try { areaEffectCloud.setInvulnerable(true); } catch(Throwable ignored) { }
                     areaEffectCloud.addScoreboardTag(PlayerSitService.PLAYERSIT_ENTITY_TAG);
                     finalLastEntity.addPassenger(areaEffectCloud);
                     if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(player);
@@ -126,7 +126,7 @@ public class EntityUtil implements IEntityUtil {
 
                 lastEntity = (Entity) spawnMethod.invoke(world, finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloudConsumer);
             }
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return true;
     }
 

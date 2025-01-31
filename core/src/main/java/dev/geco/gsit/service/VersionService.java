@@ -47,11 +47,11 @@ public class VersionService {
 
     public Object getLegacyPackageObjectInstance(String className, Object... parameters) {
         try {
-            Class<?> mcvPackageClass = Class.forName(gSitMain.getClass().getPackage().getName() + ".mcv.v1_17_1." + className);
+            Class<?> mcvPackageClass = Class.forName(gSitMain.getClass().getPackage().getName() + ".mcv.v1_18." + className);
             if(parameters.length == 0) return mcvPackageClass.getConstructor().newInstance();
             Class<?>[] parameterTypes = Arrays.stream(parameters).map(Object::getClass).toArray(Class<?>[]::new);
             return mcvPackageClass.getConstructor(parameterTypes).newInstance(parameters);
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return null;
     }
 
@@ -61,7 +61,7 @@ public class VersionService {
             if(parameters.length == 0) return mcvPackageClass.getConstructor().newInstance();
             Class<?>[] parameterTypes = Arrays.stream(parameters).map(Object::getClass).toArray(Class<?>[]::new);
             return mcvPackageClass.getConstructor(parameterTypes).newInstance(parameters);
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return null;
     }
 
@@ -69,7 +69,7 @@ public class VersionService {
         try {
             Class.forName(packagePath + "." + className);
             return true;
-        } catch (Throwable ignored) { }
+        } catch(Throwable ignored) { }
         return false;
     }
 

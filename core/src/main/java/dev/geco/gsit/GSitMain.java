@@ -260,12 +260,12 @@ public class GSitMain extends JavaPlugin {
         try {
             Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
             supportsPaperFeature = true;
-        } catch (ClassNotFoundException ignored) { supportsPaperFeature = false; }
+        } catch(ClassNotFoundException ignored) { supportsPaperFeature = false; }
 
         try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
             supportsTaskFeature = true;
-        } catch (ClassNotFoundException ignored) { supportsTaskFeature = false; }
+        } catch(ClassNotFoundException ignored) { supportsTaskFeature = false; }
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
             worldGuardLink = new WorldGuardLink();

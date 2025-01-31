@@ -18,7 +18,7 @@ public class GriefPreventionLink {
         try {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
             return claim == null || (!gSitMain.getConfigService().TRUSTED_REGION_ONLY || claim.canSiege(player));
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return true;
     }
 

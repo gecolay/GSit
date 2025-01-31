@@ -95,7 +95,7 @@ public class EntityUtil implements IEntityUtil {
             try {
                 PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(Entity.level().getWorld().getHandle());
                 return entityLookup.addNewEntity(Entity);
-            } catch (Throwable e) { e.printStackTrace(); }
+            } catch(Throwable e) { e.printStackTrace(); }
             return false;
         }
         LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = Entity.level().getEntities();

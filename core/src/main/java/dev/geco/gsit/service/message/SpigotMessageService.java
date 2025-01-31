@@ -13,7 +13,7 @@ public class SpigotMessageService extends MessageService {
 
     public SpigotMessageService(GSitMain gSitMain) {
         super(gSitMain);
-        try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch (Throwable e) { allowBungeeMessages = false; }
+        try { Class.forName("net.md_5.bungee.api.ChatMessageType"); } catch(Throwable e) { allowBungeeMessages = false; }
     }
 
     public String toFormattedMessage(String text, Object... rawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirectly(replaceText(text, rawReplaceList).replace("<lang:key.sneak>", "Sneak"))); }

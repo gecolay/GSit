@@ -32,7 +32,7 @@ public class WorldGuardLink {
         for(Map.Entry<String, StateFlag> flag : FLAGS.entrySet()) {
             try {
                 flagRegistry.register(flag.getValue());
-            } catch (FlagConflictException | IllegalStateException e) {
+            } catch(FlagConflictException | IllegalStateException e) {
                 Flag<?> registeredFlag = flagRegistry.get(flag.getKey());
                 if(registeredFlag instanceof StateFlag) FLAGS.put(flag.getKey(), (StateFlag) registeredFlag);
             }
@@ -51,7 +51,7 @@ public class WorldGuardLink {
         if(flag == null) return true;
         try {
             return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location)).testState(null, flag);
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         return true;
     }
 

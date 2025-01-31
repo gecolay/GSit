@@ -89,7 +89,7 @@ public class InteractEventHandler implements Listener {
                     xoffset += interactionPointVector.getX() - interactionPointVector.getBlockX();
                     zoffset += interactionPointVector.getZ() - interactionPointVector.getBlockZ();
                 }
-            } catch (Throwable ignored) { }
+            } catch(Throwable ignored) { }
         }
 
         if(!interactionPointAvailable) {
@@ -100,7 +100,7 @@ public class InteractEventHandler implements Listener {
                     xoffset += interactionPoint.getX() - interactionPoint.getBlockX();
                     zoffset += interactionPoint.getZ() - interactionPoint.getBlockZ();
                 }
-            } catch (Throwable ignored) { }
+            } catch(Throwable ignored) { }
         }
 
         if(gSitMain.getSitService().createSeat(clickedBlock, player, true, interactionPointAvailable ? xoffset : 0d, 0d, interactionPointAvailable ? zoffset : 0, player.getLocation().getYaw(), true) != null) event.setCancelled(true);

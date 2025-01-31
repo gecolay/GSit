@@ -46,7 +46,7 @@ public class DataService {
     public boolean isConnected() {
         try {
             if(connection != null && !connection.isClosed()) return true;
-        } catch (SQLException ignored) { }
+        } catch(SQLException ignored) { }
         return false;
     }
 
@@ -64,7 +64,7 @@ public class DataService {
                     return true;
                 }
             }
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         if(retries == MAX_RETRIES) return false;
         retries++;
         return reconnect();
@@ -100,6 +100,6 @@ public class DataService {
         if(!reconnect()) throw new SQLException("Failed to reconnect to the " + type + " database.");
     }
 
-    public void close() { try { if(connection != null && !connection.isClosed()) connection.close(); } catch (SQLException ignored) { } }
+    public void close() { try { if(connection != null && !connection.isClosed()) connection.close(); } catch(SQLException ignored) { } }
 
 }

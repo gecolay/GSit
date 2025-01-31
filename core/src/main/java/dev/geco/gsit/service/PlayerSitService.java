@@ -37,7 +37,7 @@ public class PlayerSitService {
         for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) {
             try {
                 if(entity.getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)) entity.remove();
-            } catch (Throwable ignored) { }
+            } catch(Throwable ignored) { }
         }
         spawnTimes.clear();
     }

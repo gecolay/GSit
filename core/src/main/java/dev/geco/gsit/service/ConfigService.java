@@ -87,7 +87,7 @@ public class ConfigService {
                         config.save(configFile);
                     }
                 } else gSitMain.saveDefaultConfig();
-            } catch (Throwable e) { gSitMain.saveDefaultConfig(); }
+            } catch(Throwable e) { gSitMain.saveDefaultConfig(); }
         } else gSitMain.saveDefaultConfig();
 
         reload();
@@ -119,7 +119,7 @@ public class ConfigService {
                     continue;
                 }
                 S_SITMATERIALS.put(materialAndOffset[0].equalsIgnoreCase("*") ? Material.AIR : Material.valueOf(materialAndOffset[0].toUpperCase()), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
-            } catch (Throwable ignored) { }
+            } catch(Throwable ignored) { }
         }
         S_BOTTOM_PART_ONLY = gSitMain.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
         S_EMPTY_HAND_ONLY = gSitMain.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
@@ -153,7 +153,7 @@ public class ConfigService {
             try {
                 if(material.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(material.substring(1).toLowerCase()), Material.class).getValues());
                 else MATERIALBLACKLIST.add(Material.valueOf(material.toUpperCase()));
-            } catch (Throwable ignored) { }
+            } catch(Throwable ignored) { }
         }
         COMMANDBLACKLIST = gSitMain.getConfig().getStringList("Options.CommandBlacklist");
         ENHANCED_COMPATIBILITY = gSitMain.getConfig().getBoolean("Options.enhanced-compatibility", false);

@@ -39,7 +39,7 @@ public class PlayerSeatEntity extends AreaEffectCloud {
     public boolean dismountsUnderwater() { return false; }
 
     public void setVehicle(Entity vehicle) {
-        try { this.vehicle.set(this, vehicle); } catch (Throwable ignored) { }
+        try { this.vehicle.set(this, vehicle); } catch(Throwable ignored) { }
         if(vehicle.passengers.isEmpty()) vehicle.passengers = ImmutableList.of(this);
         else {
             List<Entity> list = Lists.newArrayList(vehicle.passengers);

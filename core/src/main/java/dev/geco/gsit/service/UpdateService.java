@@ -48,7 +48,7 @@ public class UpdateService {
             try(InputStream inputStream = new URL(REMOTE_URL + GSitMain.RESOURCE).openStream();
                 Scanner scanner = new Scanner(inputStream)) {
                 if(scanner.hasNext() && versionConsumer != null) versionConsumer.accept(scanner.next());
-            } catch (IOException e) {
+            } catch(IOException e) {
                 if(e.getMessage().contains("50")) return;
                 e.printStackTrace();
             }
@@ -83,7 +83,7 @@ public class UpdateService {
                 }
                 isLatestVersion = pluginVersionParts.length >= spigotVersionParts.length;
             });
-        } catch (Throwable e) { isLatestVersion = true; }
+        } catch(Throwable e) { isLatestVersion = true; }
     }
 
     private String shortVersion(String Version) { return Version.replaceAll("[\\[\\] ]", ""); }

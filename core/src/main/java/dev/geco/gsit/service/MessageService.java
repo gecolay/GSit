@@ -69,7 +69,7 @@ abstract public class MessageService {
                     lang.save(langFile);
                 } else if(!langFile.exists()) gSitMain.saveResource(jarEntry.getName(), false);
             }
-        } catch (Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { e.printStackTrace(); }
         File langFolder = new File(gSitMain.getDataFolder(), "lang");
         for(File langFile : Objects.requireNonNull(langFolder.listFiles())) messages.put(langFile.getName().replaceFirst("lang/", "").replaceFirst(".yml", ""), YamlConfiguration.loadConfiguration(langFile));
         defaultLanguage = messages.containsKey(gSitMain.getConfigService().L_LANG) ? gSitMain.getConfigService().L_LANG : "en_us";
