@@ -72,7 +72,7 @@ public class GSpinCommand implements CommandExecutor {
         }
 
         if(!gSitMain.getEnvironmentUtil().canUseInLocation(block.getLocation(), player, "pose")) {
-            gSitMain.getMessageService().sendMessage(sender, "Messages.action-sit-region-error");
+            gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-region-error");
             return true;
         }
 

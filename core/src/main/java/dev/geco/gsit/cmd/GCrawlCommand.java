@@ -51,7 +51,7 @@ public class GCrawlCommand implements CommandExecutor {
             }
 
             if(!gSitMain.getEnvironmentUtil().canUseInLocation(player.getLocation(), player, "crawl")) {
-                gSitMain.getMessageService().sendMessage(sender, "Messages.action-sit-region-error");
+                gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-region-error");
                 return true;
             }
 
