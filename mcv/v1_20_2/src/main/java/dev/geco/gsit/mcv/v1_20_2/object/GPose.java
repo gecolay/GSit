@@ -216,7 +216,7 @@ public class GPose implements IGPose {
 
         if(pose == Pose.SLEEPING && gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
 
-        serverPlayer.setInvisible(false);
+        if(!serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY)) serverPlayer.setInvisible(false);
 
         setEquipmentVisibility(true);
 
