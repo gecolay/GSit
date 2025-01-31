@@ -138,7 +138,7 @@ public class GCrawl implements IGCrawl {
         player.setSwimming(false);
 
         if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-        destoryEntity(0);
+        destoryEntity(-1);
     }
 
     private void buildBlock(Location location) {
