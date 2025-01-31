@@ -65,10 +65,9 @@ public class GCrawl implements IGCrawl {
         moveListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void playerMoveEvent(PlayerMoveEvent event) {
-                if(!event.isAsynchronous() && event.getPlayer() == player) {
-                    Location locationFrom = event.getFrom(), locationTo = event.getTo();
-                    if(locationFrom.getX() != locationTo.getX() || locationFrom.getZ() != locationTo.getZ() || locationFrom.getY() != locationTo.getY()) tick(locationFrom);
-                }
+                if(event.isAsynchronous() || event.getPlayer() != player) return;
+                Location fromLocation = event.getFrom(), toLocation = event.getTo();
+                if(fromLocation.getX() != toLocation.getX() || fromLocation.getZ() != toLocation.getZ() || fromLocation.getY() != toLocation.getY()) tick(toLocation);
             }
         };
 
@@ -96,16 +95,12 @@ public class GCrawl implements IGCrawl {
 
         Location tickLocation = location.clone();
         Block locationBlock = tickLocation.getBlock();
-
         int blockSize = (int) ((tickLocation.getY() - tickLocation.getBlockY()) * 100);
         tickLocation.setY(tickLocation.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
-
         Block aboveBlock = tickLocation.getBlock();
-
         boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
         boolean canPlaceBlock = isValidArea(locationBlock.getRelative(BlockFace.UP), aboveBlock, blockLocation != null ? blockLocation.getBlock() : null);
         boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
-
         if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
             destoryBlock();
             if(canSetBarrier && !aboveBlockSolid) buildBlock(tickLocation);
