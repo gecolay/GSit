@@ -1,10 +1,10 @@
 package dev.geco.gsit.api;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.GSeat;
-import dev.geco.gsit.objects.GetUpReason;
-import dev.geco.gsit.objects.IGCrawl;
-import dev.geco.gsit.objects.IGPose;
+import dev.geco.gsit.object.GSeat;
+import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.IGCrawl;
+import dev.geco.gsit.object.IGPose;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;

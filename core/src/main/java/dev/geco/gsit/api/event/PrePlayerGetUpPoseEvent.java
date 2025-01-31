@@ -1,7 +1,7 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.objects.GetUpReason;
-import dev.geco.gsit.objects.IGPose;
+import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.IGPose;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;

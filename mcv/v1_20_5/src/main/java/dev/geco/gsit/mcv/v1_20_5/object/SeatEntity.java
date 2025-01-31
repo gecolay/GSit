@@ -1,0 +1,66 @@
+package dev.geco.gsit.mcv.v1_20_5.object;
+
+import dev.geco.gsit.GSitMain;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.phys.Vec3;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.jetbrains.annotations.NotNull;
+
+public class SeatEntity extends ArmorStand {
+
+    private boolean rotate = false;
+    private Callback callback = null;
+
+    public SeatEntity(Location location) {
+        super(((CraftWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
+        persist = false;
+        setInvisible(true);
+        setNoGravity(true);
+        setMarker(true);
+        setInvulnerable(true);
+        setSmall(true);
+        setNoBasePlate(true);
+        setRot(location.getYaw(), location.getPitch());
+        yRotO = getYRot();
+        setYBodyRot(yRotO);
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(1f);
+        addTag(GSitMain.NAME + "_" + getClass().getSimpleName());
+    }
+
+    public void startRotate() { rotate = true; }
+
+    @Override
+    public void tick() {
+        if(callback != null) callback.call();
+        if(!isAlive() || !valid || !rotate) return;
+        Entity rider = getFirstPassenger();
+        if(rider == null) return;
+        setYRot(rider.getYRot());
+        yRotO = getYRot();
+    }
+
+    public void setCallback(Callback Callback) { callback = Callback; }
+
+    @Override
+    public void move(@NotNull MoverType moverType, @NotNull Vec3 movement) { }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource damageSource, float damage) { return false; }
+
+    @Override
+    public boolean canChangeDimensions() { return false; }
+
+    @Override
+    public boolean isAffectedByFluids() { return false; }
+
+    @Override
+    public boolean dismountsUnderwater() { return false; }
+
+    public interface Callback { void call(); }
+
+}

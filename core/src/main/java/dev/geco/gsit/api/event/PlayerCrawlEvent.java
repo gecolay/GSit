@@ -1,6 +1,6 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.objects.IGCrawl;
+import dev.geco.gsit.object.IGCrawl;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;

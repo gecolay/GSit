@@ -1,9 +1,9 @@
 package dev.geco.gsit.util;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.GSeat;
-import dev.geco.gsit.objects.IGCrawl;
-import dev.geco.gsit.objects.IGPose;
+import dev.geco.gsit.object.GSeat;
+import dev.geco.gsit.object.IGCrawl;
+import dev.geco.gsit.object.IGPose;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.AreaEffectCloud;

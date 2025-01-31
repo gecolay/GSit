@@ -11,12 +11,12 @@ import dev.geco.gsit.cmd.GSpinCommand;
 import dev.geco.gsit.cmd.tab.EmptyTabComplete;
 import dev.geco.gsit.cmd.tab.GCrawlTabComplete;
 import dev.geco.gsit.cmd.tab.GSitTabComplete;
-import dev.geco.gsit.event.BlockEvents;
-import dev.geco.gsit.event.EntityEventsHandler;
-import dev.geco.gsit.event.InteractEvents;
-import dev.geco.gsit.event.PlayerEvents;
-import dev.geco.gsit.event.PlayerSitEvents;
-import dev.geco.gsit.event.features.SpinConfusionEvent;
+import dev.geco.gsit.event.BlockEventHandler;
+import dev.geco.gsit.event.EntityEventHandler;
+import dev.geco.gsit.event.InteractEventHandler;
+import dev.geco.gsit.event.PlayerEventHandler;
+import dev.geco.gsit.event.PlayerSitEventHandler;
+import dev.geco.gsit.event.feature.SpinConfusionEventHandler;
 import dev.geco.gsit.metric.BStatsMetric;
 import dev.geco.gsit.link.GriefPreventionLink;
 import dev.geco.gsit.link.PlaceholderAPILink;
@@ -66,7 +66,7 @@ public class GSitMain extends JavaPlugin {
     private PoseService poseService;
     private CrawlService crawlService;
     private ToggleService toggleService;
-    private EntityEventsHandler entityEventsHandler;
+    private EntityEventHandler entityEventHandler;
     private PassengerUtil passengerUtil;
     private EnvironmentUtil environmentUtil;
     private IEntityUtil entityUtil;
@@ -103,7 +103,7 @@ public class GSitMain extends JavaPlugin {
 
     public ToggleService getToggleService() { return toggleService; }
 
-    public EntityEventsHandler getEntityEventsHandler() { return entityEventsHandler; }
+    public EntityEventHandler getEntityEventHandler() { return entityEventHandler; }
 
     public PassengerUtil getPassengerUtil() { return passengerUtil; }
 
@@ -138,7 +138,7 @@ public class GSitMain extends JavaPlugin {
         crawlService = new CrawlService(this);
         toggleService = new ToggleService(this);
 
-        entityEventsHandler = new EntityEventsHandler(this);
+        entityEventHandler = new EntityEventHandler(this);
 
         passengerUtil = new PassengerUtil();
         environmentUtil = new EnvironmentUtil(this);
@@ -225,16 +225,16 @@ public class GSitMain extends JavaPlugin {
 
     private void setupEvents() {
 
-        getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerSitEvents(this), this);
-        getServer().getPluginManager().registerEvents(new BlockEvents(this), this);
-        getServer().getPluginManager().registerEvents(new InteractEvents(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerEventHandler(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerSitEventHandler(this), this);
+        getServer().getPluginManager().registerEvents(new BlockEventHandler(this), this);
+        getServer().getPluginManager().registerEvents(new InteractEventHandler(this), this);
 
-        Listener entityEvents = versionService.isNewerOrVersion(18, 0) ? (Listener) versionService.getPackageObjectInstance("events.EntityEvents", this) : null;
-        if(entityEvents == null) entityEvents = (Listener) versionService.getLegacyPackageObjectInstance("events.EntityEvents", this);
-        if(entityEvents != null) getServer().getPluginManager().registerEvents(entityEvents, this);
+        Listener mcvEntityEventHandler = versionService.isNewerOrVersion(18, 0) ? (Listener) versionService.getPackageObjectInstance("event.EntityEventHandler", this) : null;
+        if(mcvEntityEventHandler == null) mcvEntityEventHandler = (Listener) versionService.getLegacyPackageObjectInstance("event.EntityEventHandler", this);
+        if(mcvEntityEventHandler != null) getServer().getPluginManager().registerEvents(mcvEntityEventHandler, this);
 
-        getServer().getPluginManager().registerEvents(new SpinConfusionEvent(this), this);
+        getServer().getPluginManager().registerEvents(new SpinConfusionEventHandler(this), this);
     }
 
     private boolean versionCheck() {

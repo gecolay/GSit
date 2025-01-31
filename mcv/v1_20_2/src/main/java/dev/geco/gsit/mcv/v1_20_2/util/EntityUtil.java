@@ -1,13 +1,13 @@
 package dev.geco.gsit.mcv.v1_20_2.util;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_20_2.objects.GCrawl;
-import dev.geco.gsit.mcv.v1_20_2.objects.GPose;
-import dev.geco.gsit.mcv.v1_20_2.objects.PlayerSeatEntity;
-import dev.geco.gsit.mcv.v1_20_2.objects.SeatEntity;
-import dev.geco.gsit.objects.GSeat;
-import dev.geco.gsit.objects.IGCrawl;
-import dev.geco.gsit.objects.IGPose;
+import dev.geco.gsit.mcv.v1_20_2.object.GCrawl;
+import dev.geco.gsit.mcv.v1_20_2.object.GPose;
+import dev.geco.gsit.mcv.v1_20_2.object.PlayerSeatEntity;
+import dev.geco.gsit.mcv.v1_20_2.object.SeatEntity;
+import dev.geco.gsit.object.GSeat;
+import dev.geco.gsit.object.IGCrawl;
+import dev.geco.gsit.object.IGPose;
 import dev.geco.gsit.util.IEntityUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.entity.LevelEntityGetter;

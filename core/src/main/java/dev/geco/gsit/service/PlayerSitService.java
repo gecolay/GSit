@@ -5,7 +5,7 @@ import dev.geco.gsit.api.event.PlayerGetUpPlayerSitEvent;
 import dev.geco.gsit.api.event.PlayerPlayerSitEvent;
 import dev.geco.gsit.api.event.PrePlayerGetUpPlayerSitEvent;
 import dev.geco.gsit.api.event.PrePlayerPlayerSitEvent;
-import dev.geco.gsit.objects.GetUpReason;
+import dev.geco.gsit.object.GetUpReason;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;

@@ -1,6 +1,6 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.objects.GetUpReason;
+import dev.geco.gsit.object.GetUpReason;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;

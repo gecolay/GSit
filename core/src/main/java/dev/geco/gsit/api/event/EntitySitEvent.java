@@ -1,6 +1,6 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.objects.GSeat;
+import dev.geco.gsit.object.GSeat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityEvent;

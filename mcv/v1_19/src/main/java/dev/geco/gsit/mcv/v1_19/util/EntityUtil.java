@@ -1,13 +1,13 @@
 package dev.geco.gsit.mcv.v1_19.util;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_19.objects.GCrawl;
-import dev.geco.gsit.mcv.v1_19.objects.GPose;
-import dev.geco.gsit.mcv.v1_19.objects.PlayerSeatEntity;
-import dev.geco.gsit.mcv.v1_19.objects.SeatEntity;
-import dev.geco.gsit.objects.GSeat;
-import dev.geco.gsit.objects.IGCrawl;
-import dev.geco.gsit.objects.IGPose;
+import dev.geco.gsit.mcv.v1_19.object.GCrawl;
+import dev.geco.gsit.mcv.v1_19.object.GPose;
+import dev.geco.gsit.mcv.v1_19.object.PlayerSeatEntity;
+import dev.geco.gsit.mcv.v1_19.object.SeatEntity;
+import dev.geco.gsit.object.GSeat;
+import dev.geco.gsit.object.IGCrawl;
+import dev.geco.gsit.object.IGPose;
 import dev.geco.gsit.util.IEntityUtil;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;

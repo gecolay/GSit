@@ -5,8 +5,8 @@ import dev.geco.gsit.api.event.PlayerCrawlEvent;
 import dev.geco.gsit.api.event.PlayerGetUpCrawlEvent;
 import dev.geco.gsit.api.event.PrePlayerCrawlEvent;
 import dev.geco.gsit.api.event.PrePlayerGetUpCrawlEvent;
-import dev.geco.gsit.objects.GetUpReason;
-import dev.geco.gsit.objects.IGCrawl;
+import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.IGCrawl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

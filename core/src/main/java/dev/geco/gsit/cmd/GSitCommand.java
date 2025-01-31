@@ -1,7 +1,7 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.GetUpReason;
+import dev.geco.gsit.object.GetUpReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Tag;
