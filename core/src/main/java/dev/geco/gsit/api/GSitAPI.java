@@ -231,11 +231,10 @@ public class GSitAPI {
      * @since 2.0.0
      * @param player Player
      * @param stopReason The reason why the player sit action is stopped
-     * @param removePassengers Should the player eject his passenger stack
      * @return <code>true</code> or <code>false</code> if the action was cancelled by event
      */
-    public static boolean stopPlayerSit(@NotNull Player player, @NotNull GStopReason stopReason, boolean removePassengers) {
-        return getInstance().getPlayerSitService().stopPlayerSit(player, stopReason, removePassengers);
+    public static boolean stopPlayerSit(@NotNull Player player, @NotNull GStopReason stopReason) {
+        return getInstance().getPlayerSitService().stopPlayerSit(player, stopReason);
     }
 
     /**

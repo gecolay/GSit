@@ -32,20 +32,20 @@ public class PlayerSitEventHandler implements Listener {
     public void playerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         if(!gSitMain.getConfigService().PS_SNEAK_EJECTS || !event.isSneaking() || player.isFlying() || player.getVehicle() != null || gSitMain.getPlayerSitService().getPreventDismountStackPlayers().contains(player) || player.getPassengers().isEmpty()) return;
-        gSitMain.getPlayerSitService().stopPlayerSit(player, GStopReason.KICKED, true);
+        gSitMain.getPlayerSitService().stopPlayerSit(player, GStopReason.KICKED);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerGameModeChangeEvent(PlayerGameModeChangeEvent event) { if(event.getNewGameMode() == GameMode.SPECTATOR) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.GAMEMODE_CHANGE, true); }
+    public void playerGameModeChangeEvent(PlayerGameModeChangeEvent event) { if(event.getNewGameMode() == GameMode.SPECTATOR) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.GAMEMODE_CHANGE); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void playerDeathEvent(PlayerDeathEvent event) { if(event.getEntity().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getEntity(), GStopReason.DEATH, true); }
+    public void playerDeathEvent(PlayerDeathEvent event) { if(event.getEntity().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getEntity(), GStopReason.DEATH); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void playerQuitEvent(PlayerQuitEvent event) { if(event.getPlayer().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.DISCONNECT, true); }
+    public void playerQuitEvent(PlayerQuitEvent event) { if(event.getPlayer().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.DISCONNECT); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerTeleportEvent(PlayerTeleportEvent event) { gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.TELEPORT, true); }
+    public void playerTeleportEvent(PlayerTeleportEvent event) { gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.TELEPORT); }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void entityDamageEvent(EntityDamageEvent event) { if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof LivingEntity && event.getEntity().getVehicle() != null && event.getEntity().getVehicle().getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) event.setCancelled(true); }

@@ -64,9 +64,10 @@ public class PlayerSitService {
 
         return true;
     }
-    public boolean stopPlayerSit(Player player, GStopReason stopReason, boolean removePassengers) { return stopPlayerSit(player, stopReason, removePassengers, true); }
 
-    public boolean stopPlayerSit(Player player, GStopReason stopReason, boolean removePassengers, boolean callPreEvent) {
+    public boolean stopPlayerSit(Player player, GStopReason stopReason) { return stopPlayerSit(player, stopReason, true, true, true); }
+
+    public boolean stopPlayerSit(Player player, GStopReason stopReason, boolean removePassengers, boolean removeVehicle, boolean callPreEvent) {
         if(player.getPassengers().isEmpty() && player.getVehicle() == null) return true;
 
         if(callPreEvent) {
@@ -76,7 +77,7 @@ public class PlayerSitService {
         }
 
         if(removePassengers) removePassengers(player, player);
-        removeVehicles(player, player);
+        if(removeVehicle) removeVehicles(player, player);
 
         Bukkit.getPluginManager().callEvent(new PlayerStopPlayerSitEvent(player, stopReason, removePassengers));
 
