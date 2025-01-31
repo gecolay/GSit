@@ -202,6 +202,7 @@ public class GSitMain extends JavaPlugin {
         crawlService.removeAllCrawls();
 
         if(placeholderAPILink != null) placeholderAPILink.unregister();
+        if(worldGuardLink != null) worldGuardLink.unregisterFlagHandlers();
     }
 
     private void setupCommands() {
@@ -295,6 +296,7 @@ public class GSitMain extends JavaPlugin {
                 worldGuardLink = new WorldGuardLink();
                 worldGuardLink.registerFlags();
             }
+            worldGuardLink.registerFlagHandlers();
         } else worldGuardLink = null;
     }
 

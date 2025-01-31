@@ -6,6 +6,7 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import dev.geco.gsit.link.worldguard.RegionFlagHandler;
 import org.bukkit.Location;
 
 import java.util.HashMap;
@@ -13,11 +14,15 @@ import java.util.Map;
 
 public class WorldGuardLink {
 
-    private static final HashMap<String, StateFlag> FLAGS = new HashMap<>(); {
-        FLAGS.put("sit", new StateFlag("sit", true));
-        FLAGS.put("playersit", new StateFlag("playersit", true));
-        FLAGS.put("pose", new StateFlag("pose", true));
-        FLAGS.put("crawl", new StateFlag("crawl", true));
+    public static final StateFlag SIT_FLAG = new StateFlag("sit", true);
+    public static final StateFlag PLAYERSIT_FLAG = new StateFlag("playersit", true);
+    public static final StateFlag POSE_FLAG = new StateFlag("pose", true);
+    public static final StateFlag CRAWL_FLAG = new StateFlag("crawl", true);
+    private static final HashMap<String, StateFlag> FLAGS = new HashMap<>(); static {
+        FLAGS.put(SIT_FLAG.getName(), SIT_FLAG);
+        FLAGS.put(PLAYERSIT_FLAG.getName(), PLAYERSIT_FLAG);
+        FLAGS.put(POSE_FLAG.getName(), POSE_FLAG);
+        FLAGS.put(CRAWL_FLAG.getName(), CRAWL_FLAG);
     }
 
     public StateFlag getFlag(String flagName) { return flagName != null ? FLAGS.getOrDefault(flagName.toLowerCase(), null) : null; }
@@ -32,6 +37,14 @@ public class WorldGuardLink {
                 if(registeredFlag instanceof StateFlag) FLAGS.put(flag.getKey(), (StateFlag) registeredFlag);
             }
         }
+    }
+
+    public void registerFlagHandlers() {
+        WorldGuard.getInstance().getPlatform().getSessionManager().registerHandler(RegionFlagHandler.FACTORY, null);
+    }
+
+    public void unregisterFlagHandlers() {
+        WorldGuard.getInstance().getPlatform().getSessionManager().unregisterHandler(RegionFlagHandler.FACTORY);
     }
 
     public boolean canUseInLocation(Location location, StateFlag flag) {

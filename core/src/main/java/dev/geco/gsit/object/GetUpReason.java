@@ -8,6 +8,7 @@ public enum GetUpReason {
     GET_UP,
     KICKED,
     PLUGIN,
+    REGION,
     TELEPORT,
     QUIT
 }
