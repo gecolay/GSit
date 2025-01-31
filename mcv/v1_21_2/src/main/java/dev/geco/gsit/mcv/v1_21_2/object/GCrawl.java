@@ -29,10 +29,11 @@ public class GCrawl implements IGCrawl {
     private final Player player;
     private final ServerPlayer serverPlayer;
     protected final BoxEntity boxEntity;
-    private int boxEntityState = 0;
+    private boolean boxEntityExist = false;
     private final Listener listener;
     private final Listener moveListener;
     private final Listener stopListener;
+    private boolean finished = false;
     private final long spawnTime = System.nanoTime();
 
     public GCrawl(Player player) {
@@ -76,16 +77,16 @@ public class GCrawl implements IGCrawl {
     }
 
     private void tick(Location location) {
-        if(!checkCrawlValid()) return;
+        if(finished || !checkCrawlValid()) return;
 
         Location tickLocation = location.clone();
         Block locationBlock = tickLocation.getBlock();
         int blockSize = (int) ((tickLocation.getY() - tickLocation.getBlockY()) * 100);
         tickLocation.setY(tickLocation.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
         Block aboveBlock = tickLocation.getBlock();
-        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
-        if(aboveBlockSolid) {
-            destoryEntity(0);
+        boolean hasSolidBlackAbove = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
+        if(hasSolidBlackAbove) {
+            destoryEntity();
             return;
         }
 
@@ -97,33 +98,36 @@ public class GCrawl implements IGCrawl {
 
             boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-            if(boxEntityState == 0) {
-            boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+            if(!boxEntityExist) {
+                boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                 serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
-                boxEntityState = 1;
+                boxEntityExist = true;
                 serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-            } else if(boxEntityState == 1) {
+            } else {
                 serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
                 boxEntity.teleportTo(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                 serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
-            } else destoryEntity(boxEntityState);
+            }
         }, true, playerLocation);
     }
 
     @Override
     public void stop() {
+        finished = true;
+
         HandlerList.unregisterAll(listener);
         HandlerList.unregisterAll(moveListener);
         HandlerList.unregisterAll(stopListener);
 
         player.setSwimming(false);
 
-        destoryEntity(-1);
+        destoryEntity();
     }
 
-    private void destoryEntity(int newBoxEntityState) {
+    private void destoryEntity() {
+        if(!boxEntityExist) return;
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-        boxEntityState = newBoxEntityState;
+        boxEntityExist = false;
     }
 
     private boolean checkCrawlValid() {

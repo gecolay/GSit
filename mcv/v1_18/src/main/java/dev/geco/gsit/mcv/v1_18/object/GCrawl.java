@@ -33,11 +33,12 @@ public class GCrawl implements IGCrawl {
     private final ServerPlayer serverPlayer;
     protected final BoxEntity boxEntity;
     private Location blockLocation;
-    private int boxEntityState = 0;
+    private boolean boxEntityExist = false;
     protected final BlockData blockData = Material.BARRIER.createBlockData();
     private final Listener listener;
     private final Listener moveListener;
     private final Listener stopListener;
+    private boolean finished = false;
     private final long spawnTime = System.nanoTime();
 
     public GCrawl(Player player) {
@@ -90,55 +91,62 @@ public class GCrawl implements IGCrawl {
     }
 
     private void tick(Location location) {
-        if(!checkCrawlValid()) return;
+        if(finished || !checkCrawlValid()) return;
 
         Location tickLocation = location.clone();
         Block locationBlock = tickLocation.getBlock();
         int blockSize = (int) ((tickLocation.getY() - tickLocation.getBlockY()) * 100);
         tickLocation.setY(tickLocation.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
         Block aboveBlock = tickLocation.getBlock();
-        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
+        boolean hasSolidBlackAbove = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
         boolean canPlaceBlock = isValidArea(locationBlock.getRelative(BlockFace.UP), aboveBlock, blockLocation != null ? blockLocation.getBlock() : null);
-        boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
+        boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || hasSolidBlackAbove);
         if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
             destoryBlock();
-            if(boxEntityState != -1 && canSetBarrier && !aboveBlockSolid) buildBlock(tickLocation);
+            if(canSetBarrier && !hasSolidBlackAbove) {
+                buildBlock(tickLocation);
+                return;
+            }
         }
 
-        if(!canSetBarrier && !aboveBlockSolid) {
-            Location playerLocation = location.clone();
+        if(canSetBarrier || hasSolidBlackAbove) {
+            destoryEntity();
+            return;
+        }
 
-            gSitMain.getTaskService().run(() -> {
-                int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
+        Location playerLocation = location.clone();
+        gSitMain.getTaskService().run(() -> {
+            int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
-                playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
+            playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
 
-                boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
+            boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-                if(boxEntityState == 0) {
-                    boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                    serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
-                    boxEntityState = 1;
-                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
-                } else if(boxEntityState == 1) {
-                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
-                    boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                    serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
-                } else destoryEntity(boxEntityState);
-            }, true, playerLocation);
-        } else destoryEntity(0);
+            if(boxEntityExist) {
+                boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
+                boxEntityExist = true;
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
+            } else {
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
+                boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
+            }
+        }, true, playerLocation);
     }
 
     @Override
     public void stop() {
+        finished = true;
+
         HandlerList.unregisterAll(listener);
         HandlerList.unregisterAll(moveListener);
         HandlerList.unregisterAll(stopListener);
 
         player.setSwimming(false);
 
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-        destoryEntity(-1);
+        destoryBlock();
+        destoryEntity();
     }
 
     private void buildBlock(Location location) {
@@ -147,13 +155,15 @@ public class GCrawl implements IGCrawl {
     }
 
     private void destoryBlock() {
-        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+        if(blockLocation == null) return;
+        player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
         blockLocation = null;
     }
 
-    private void destoryEntity(int newBoxEntityState) {
+    private void destoryEntity() {
+        if(!boxEntityExist) return;
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-        boxEntityState = newBoxEntityState;
+        boxEntityExist = false;
     }
 
     private boolean checkCrawlValid() {
