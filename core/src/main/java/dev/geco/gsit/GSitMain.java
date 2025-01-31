@@ -51,8 +51,9 @@ import java.util.Map;
 public class GSitMain extends JavaPlugin {
 
     public static final String NAME = "GSit";
-    public static final String RESOURCE = "62325";
+    public static final String RESOURCE_ID = "62325";
 
+    private final int BSTATS_RESOURCE_ID = 4914;
     private static GSitMain gSitMain;
     private ConfigService configService;
     private MessageService messageService;
@@ -308,7 +309,7 @@ public class GSitMain extends JavaPlugin {
     }
 
     private void setupBStatsMetric() {
-        BStatsMetric bStatsMetric = new BStatsMetric(this, 4914);
+        BStatsMetric bStatsMetric = new BStatsMetric(this, BSTATS_RESOURCE_ID);
 
         bStatsMetric.addCustomChart(new BStatsMetric.SimplePie("plugin_language", () -> configService.L_LANG));
         bStatsMetric.addCustomChart(new BStatsMetric.AdvancedPie("minecraft_version_player_amount", () -> Map.of(versionService.getServerVersion(), Bukkit.getOnlinePlayers().size())));

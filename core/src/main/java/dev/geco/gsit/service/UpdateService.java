@@ -44,7 +44,7 @@ public class UpdateService {
 
     private void getSpigotVersion(Consumer<String> versionConsumer) {
         gSitMain.getTaskService().run(() -> {
-            try(InputStream inputStream = new URL(REMOTE_URL + GSitMain.RESOURCE).openStream();
+            try(InputStream inputStream = new URL(REMOTE_URL + GSitMain.RESOURCE_ID).openStream();
                 Scanner scanner = new Scanner(inputStream)) {
                 if(scanner.hasNext() && versionConsumer != null) versionConsumer.accept(scanner.next());
             } catch(IOException e) {

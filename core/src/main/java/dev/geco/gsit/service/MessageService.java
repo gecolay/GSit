@@ -122,7 +122,7 @@ abstract public class MessageService {
 
     private String replaceWithLanguageCode(String message, String languageCode, Object ... replaceList) {
         message = replaceText(message, replaceList);
-        return message.replace(PREFIX_PLACEHOLDER, getMessages(languageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE).replace("%Plugin%", GSitMain.NAME));
+        return message.replace(PREFIX_PLACEHOLDER, getMessages(languageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE));
     }
 
 }

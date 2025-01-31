@@ -11,7 +11,7 @@ Plugin:
   plugin-version: "[P]&c Плагин не может быть использован с этой версией сервера! (&b%Version%&c)"
   plugin-reload: "[P]&a Плагин был успешно перезагружен."
   plugin-disabled: "[P]&a Плагин был успешно отключен."
-  plugin-prefix: "&7[&6%Plugin%&7]"
+  plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
 

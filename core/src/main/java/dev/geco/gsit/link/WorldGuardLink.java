@@ -19,7 +19,7 @@ public class WorldGuardLink {
     public static final StateFlag POSE_FLAG = new StateFlag("pose", true);
     public static final StateFlag CRAWL_FLAG = new StateFlag("crawl", true);
 
-    private static final HashMap<String, StateFlag> FLAGS = new HashMap<>(); static {
+    private final HashMap<String, StateFlag> FLAGS = new HashMap<>(); {
         FLAGS.put(SIT_FLAG.getName(), SIT_FLAG);
         FLAGS.put(PLAYERSIT_FLAG.getName(), PLAYERSIT_FLAG);
         FLAGS.put(POSE_FLAG.getName(), POSE_FLAG);

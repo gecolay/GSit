@@ -11,7 +11,7 @@ Plugin:
   plugin-version: "[P]&c The plugin can't be used with this server version! (&b%Version%&c)"
   plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a The plugin was successfully disabled."
-  plugin-prefix: "&7[&6%Plugin%&7]"
+  plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
 

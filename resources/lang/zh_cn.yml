@@ -11,7 +11,7 @@ Plugin:
   plugin-version: "[P]&c 插件与当前服务器版本不兼容! (&b%Version%&c)"
   plugin-reload: "[P]&a 插件已成功重载."
   plugin-disabled: "[P]&a 插件已成功禁用"
-  plugin-prefix: "&7[&6%Plugin%&7]"
+  plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
 
