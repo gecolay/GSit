@@ -29,7 +29,7 @@ public class GCrawl implements IGCrawl {
     private final Player player;
     private final ServerPlayer serverPlayer;
     protected final BoxEntity boxEntity;
-    private boolean boxPresent;
+    private int boxEntityState = 0;
     private final Listener listener;
     private final Listener moveListener;
     private final Listener stopListener;
@@ -85,7 +85,7 @@ public class GCrawl implements IGCrawl {
         Block aboveBlock = tickLocation.getBlock();
         boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
         if(aboveBlockSolid) {
-            destoryEntity();
+            destoryEntity(0);
             return;
         }
 
@@ -97,16 +97,16 @@ public class GCrawl implements IGCrawl {
 
             boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-            if(boxPresent) {
+            if(boxEntityState == 0) {
+                boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
+                boxEntityState = 1;
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
+            } else if(boxEntityState == 1) {
                 serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
                 boxEntity.teleportTo(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                 serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
-            } else {
-                boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
-                boxPresent = true;
-                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-            }
+            } else destoryEntity(boxEntityState);
         }, true, playerLocation);
     }
 
@@ -118,12 +118,12 @@ public class GCrawl implements IGCrawl {
 
         player.setSwimming(false);
 
-        destoryEntity();
+        destoryEntity(-1);
     }
 
-    private void destoryEntity() {
+    private void destoryEntity(int newBoxEntityState) {
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-        boxPresent = false;
+        boxEntityState = newBoxEntityState;
     }
 
     private boolean checkCrawlValid() {

@@ -33,7 +33,7 @@ public class GCrawl implements IGCrawl {
     private final ServerPlayer serverPlayer;
     protected final BoxEntity boxEntity;
     private Location blockLocation;
-    private boolean boxPresent;
+    private int boxEntityState = 0;
     protected final BlockData blockData = Material.BARRIER.createBlockData();
     private final Listener listener;
     private final Listener moveListener;
@@ -53,12 +53,11 @@ public class GCrawl implements IGCrawl {
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void playerInteractEvent(PlayerInteractEvent event) {
-                if(!event.isAsynchronous() && event.getPlayer() == player && blockLocation != null && blockLocation.getBlock().equals(event.getClickedBlock()) && event.getHand() == EquipmentSlot.HAND) {
-                    event.setCancelled(true);
-                    gSitMain.getTaskService().run(() -> {
-                        buildBlock(blockLocation);
-                    }, false, player);
-                }
+                if(event.isAsynchronous() || event.getPlayer() != player || blockLocation == null || !blockLocation.getBlock().equals(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND) return;
+                event.setCancelled(true);
+                gSitMain.getTaskService().run(() -> {
+                    buildBlock(blockLocation);
+                }, false, player);
             }
         };
 
@@ -103,7 +102,7 @@ public class GCrawl implements IGCrawl {
         boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
         if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
             destoryBlock();
-            if(canSetBarrier && !aboveBlockSolid) buildBlock(tickLocation);
+            if(boxEntityState != -1 && canSetBarrier && !aboveBlockSolid) buildBlock(tickLocation);
         }
 
         if(!canSetBarrier && !aboveBlockSolid) {
@@ -116,18 +115,18 @@ public class GCrawl implements IGCrawl {
 
                 boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-                if(boxPresent) {
+                if(boxEntityState == 0) {
+                    boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                    serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
+                    boxEntityState = 1;
+                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
+                } else if(boxEntityState == 1) {
                     serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
                     boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                     serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
-                } else {
-                    boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                    serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
-                    boxPresent = true;
-                    serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData(), true));
-                }
+                } else destoryEntity(boxEntityState);
             }, true, playerLocation);
-        } else destoryEntity();
+        } else destoryEntity(0);
     }
 
     @Override
@@ -136,11 +135,10 @@ public class GCrawl implements IGCrawl {
         HandlerList.unregisterAll(moveListener);
         HandlerList.unregisterAll(stopListener);
 
-        gSitMain.getTaskService().run(() -> {
-            player.setSwimming(false);
-            if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-            serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-        }, true, player);
+        player.setSwimming(false);
+
+        if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
+        destoryEntity(0);
     }
 
     private void buildBlock(Location location) {
@@ -153,9 +151,9 @@ public class GCrawl implements IGCrawl {
         blockLocation = null;
     }
 
-    private void destoryEntity() {
+    private void destoryEntity(int newBoxEntityState) {
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-        boxPresent = false;
+        boxEntityState = newBoxEntityState;
     }
 
     private boolean checkCrawlValid() {
