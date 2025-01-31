@@ -94,21 +94,21 @@ public class GCrawl implements IGCrawl {
     private void tick(Location location) {
         if(!checkCrawlValid()) return;
 
-        location = location.clone();
-        Block locationBlock = location.getBlock();
+        Location tickLocation = location.clone();
+        Block locationBlock = tickLocation.getBlock();
 
-        int blockSize = (int) ((location.getY() - location.getBlockY()) * 100);
-        location.setY(location.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
+        int blockSize = (int) ((tickLocation.getY() - tickLocation.getBlockY()) * 100);
+        tickLocation.setY(tickLocation.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
 
-        Block aboveBlock = location.getBlock();
+        Block aboveBlock = tickLocation.getBlock();
 
-        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(location.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
+        boolean aboveBlockSolid = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
         boolean canPlaceBlock = isValidArea(locationBlock.getRelative(BlockFace.UP), aboveBlock, blockLocation != null ? blockLocation.getBlock() : null);
         boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
 
         if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
             destoryBlock();
-            if(canSetBarrier && !aboveBlockSolid) buildBlock(location);
+            if(canSetBarrier && !aboveBlockSolid) buildBlock(tickLocation);
         }
 
         if(!canSetBarrier && !aboveBlockSolid) {

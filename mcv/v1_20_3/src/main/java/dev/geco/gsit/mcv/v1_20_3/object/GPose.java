@@ -116,7 +116,7 @@ public class GPose implements IGPose {
         bedPos = new BlockPos(blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
 
         playerNpc = createNPC();
-        playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + (pose == org.bukkit.entity.Pose.SLEEPING ? 0.3125d : pose == org.bukkit.entity.Pose.SPIN_ATTACK ? 0.2d : 0d), seatLocation.getZ(), 0f, 0f);
+        playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + gSitMain.getSitService().getBaseOffset() + (pose == org.bukkit.entity.Pose.SLEEPING ? 0.1125d : 0d), seatLocation.getZ(), 0f, 0f);
 
         direction = getDirection();
         if(pose == org.bukkit.entity.Pose.SLEEPING) setBedPacket = new ClientboundBlockUpdatePacket(bedPos, Blocks.WHITE_BED.defaultBlockState().setValue(BedBlock.FACING, direction.getOpposite()).setValue(BedBlock.PART, BedPart.HEAD));

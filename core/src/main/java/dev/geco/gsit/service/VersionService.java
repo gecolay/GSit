@@ -29,10 +29,10 @@ public class VersionService {
         String rawServerVersion = Bukkit.getServer().getBukkitVersion();
         serverVersion = rawServerVersion.substring(0, rawServerVersion.indexOf('-'));
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
-        available = hasPackageClass("objects.SeatEntity");
+        available = hasPackageClass("object.SeatEntity");
         if(available) return;
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + LATEST_VERSION;
-        available = hasPackageClass("objects.SeatEntity");
+        available = hasPackageClass("object.SeatEntity");
     }
 
     public String getServerVersion() { return serverVersion; }

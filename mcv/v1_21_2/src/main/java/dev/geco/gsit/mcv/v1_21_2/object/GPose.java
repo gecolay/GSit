@@ -23,6 +23,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
+import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateAttributesPacket;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -122,6 +123,7 @@ public class GPose implements IGPose {
         double offset = seatLocation.getY() + gSitMain.getSitService().getBaseOffset();
         double scale = serverPlayer.getScale();
         if(pose == org.bukkit.entity.Pose.SLEEPING) offset += 0.1125d * scale;
+        if(pose == org.bukkit.entity.Pose.SWIMMING) offset += -0.19 * scale;
         playerNpc.moveTo(seatLocation.getX(), offset, seatLocation.getZ(), 0f, 0f);
 
         direction = getDirection();
@@ -199,12 +201,23 @@ public class GPose implements IGPose {
         if(pose == Pose.SLEEPING) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
         packages.add(attributeNpcPacket);
-        if(pose == Pose.SLEEPING) packages.add(teleportNpcPacket);
+        if(pose == Pose.SLEEPING) {
+            packages.add(teleportNpcPacket);
+            packages.add(teleportNpcPacket);
+        }
         if(pose == Pose.SPIN_ATTACK) packages.add(rotateNpcPacket);
 
         bundle = new ClientboundBundlePacket(packages);
 
         for(Player nearbyPlayer : nearbyPlayers) addViewerPlayer(nearbyPlayer);
+
+        PlayerSeatEntity placeholderEntity = new PlayerSeatEntity(seatPlayer.getLocation());
+        placeholderEntity.setVehicle(playerNpc);
+        List<Packet<? super ClientGamePacketListener>> playerPackages = new ArrayList<>();
+        playerPackages.add(new ClientboundAddEntityPacket(placeholderEntity.getId(), placeholderEntity.getUUID(), placeholderEntity.getX(), placeholderEntity.getY(), placeholderEntity.getZ(), placeholderEntity.getXRot(), placeholderEntity.getYRot(), placeholderEntity.getType(), 0, placeholderEntity.getDeltaMovement(), placeholderEntity.getYHeadRot()));
+        playerPackages.add(new ClientboundSetEntityDataPacket(placeholderEntity.getId(), placeholderEntity.getEntityData().getNonDefaultValues()));
+        playerPackages.add(new ClientboundSetPassengersPacket(playerNpc));
+        sendPacket(serverPlayer, new ClientboundBundlePacket(playerPackages));
 
         Bukkit.getPluginManager().registerEvents(listener, gSitMain);
 
