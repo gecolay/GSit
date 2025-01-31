@@ -45,16 +45,16 @@ public class GCrawlCommand implements CommandExecutor {
                 return true;
             }
 
-            if(!gSitMain.getPermissionService().hasPermission(sender, "ByPass.Region", "ByPass.*")) {
-                if(!gSitMain.getEnvironmentUtil().isEntityInAllowedWorld(player)) {
-                    gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-world-error");
-                    return true;
-                }
+            if(!gSitMain.getEnvironmentUtil().isEntityInAllowedWorld(player)) {
+                gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-world-error");
+                return true;
             }
 
-            if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(player.getLocation(), gSitMain.getWorldGuardLink().getFlag("crawl"))) {
-                gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-region-error");
-                return true;
+            if(!gSitMain.getPermissionService().hasPermission(sender, "ByPass.Region", "ByPass.*")) {
+                if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(player.getLocation(), gSitMain.getWorldGuardLink().getFlag("crawl"))) {
+                    gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-region-error");
+                    return true;
+                }
             }
 
             if(gSitMain.getCrawlService().startCrawl(player) == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-region-error");
