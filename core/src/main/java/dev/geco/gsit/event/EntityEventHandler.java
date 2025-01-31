@@ -1,7 +1,7 @@
 package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.api.event.PrePlayerGetUpPlayerSitEvent;
+import dev.geco.gsit.api.event.PrePlayerStopPlayerSitEvent;
 import dev.geco.gsit.object.GetUpReason;
 import dev.geco.gsit.service.PlayerSitService;
 import org.bukkit.Bukkit;
@@ -35,7 +35,7 @@ public class EntityEventHandler {
 
         if(!dismounted.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) return;
 
-        PrePlayerGetUpPlayerSitEvent preEvent = new PrePlayerGetUpPlayerSitEvent(player, GetUpReason.GET_UP);
+        PrePlayerStopPlayerSitEvent preEvent = new PrePlayerStopPlayerSitEvent(player, GetUpReason.GET_UP, false);
         Bukkit.getPluginManager().callEvent(preEvent);
         if(preEvent.isCancelled()) {
             event.setCancelled(true);

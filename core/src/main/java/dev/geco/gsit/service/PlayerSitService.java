@@ -1,10 +1,10 @@
 package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.api.event.PlayerGetUpPlayerSitEvent;
 import dev.geco.gsit.api.event.PlayerPlayerSitEvent;
-import dev.geco.gsit.api.event.PrePlayerGetUpPlayerSitEvent;
+import dev.geco.gsit.api.event.PlayerStopPlayerSitEvent;
 import dev.geco.gsit.api.event.PrePlayerPlayerSitEvent;
+import dev.geco.gsit.api.event.PrePlayerStopPlayerSitEvent;
 import dev.geco.gsit.object.GetUpReason;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -69,10 +69,8 @@ public class PlayerSitService {
     public boolean stopPlayerSit(Player player, GetUpReason getUpReason, boolean removePassengers, boolean callPreEvent) {
         if(player.getPassengers().isEmpty() && player.getVehicle() == null) return true;
 
-        // TODO: Refactor the `stopPlayerSit` to create better pre and post events with more data about the players
-
         if(callPreEvent) {
-            PrePlayerGetUpPlayerSitEvent prePlayerGetUpPlayerSitEvent = new PrePlayerGetUpPlayerSitEvent(player, getUpReason);
+            PrePlayerStopPlayerSitEvent prePlayerGetUpPlayerSitEvent = new PrePlayerStopPlayerSitEvent(player, getUpReason, removePassengers);
             Bukkit.getPluginManager().callEvent(prePlayerGetUpPlayerSitEvent);
             if(prePlayerGetUpPlayerSitEvent.isCancelled()) return false;
         }
@@ -80,7 +78,7 @@ public class PlayerSitService {
         if(removePassengers) removePassengers(player, player);
         removeVehicles(player, player);
 
-        Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent(player, getUpReason));
+        Bukkit.getPluginManager().callEvent(new PlayerStopPlayerSitEvent(player, getUpReason, removePassengers));
 
         return true;
     }
