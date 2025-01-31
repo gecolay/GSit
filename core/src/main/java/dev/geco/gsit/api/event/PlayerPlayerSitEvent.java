@@ -1,28 +1,24 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerPlayerSitEvent extends PlayerEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
     private final Player target;
+    private static final HandlerList handlers = new HandlerList();
 
-    public PlayerPlayerSitEvent(Player Player, Player Target) {
-
-        super(Player);
-
-        target = Target;
+    public PlayerPlayerSitEvent(@NotNull Player player, @NotNull Player target) {
+        super(player);
+        this.target = target;
     }
 
-    public Player getTarget() { return target; }
+    public @NotNull Player getTarget() { return target; }
 
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public static HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

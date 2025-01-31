@@ -1,55 +1,48 @@
 package dev.geco.gsit.cmd.tab;
 
-import java.util.*;
-
-import org.jetbrains.annotations.*;
-
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
-
 import dev.geco.gsit.GSitMain;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GSitTabComplete implements TabCompleter {
 
-    private final GSitMain GPM;
+    private final GSitMain gSitMain;
 
-    public GSitTabComplete(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public GSitTabComplete(GSitMain gSitMain) {
+        this.gSitMain = gSitMain;
+    }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
-
-        if(!(Sender instanceof Player)) return new ArrayList<>();
-
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if(!(sender instanceof Player)) return new ArrayList<>();
         List<String> complete = new ArrayList<>(), completeStarted = new ArrayList<>();
-
-        if(Args.length == 1) {
-
-            if(GPM.getPManager().hasPermission(Sender, "SitToggle", "Sit.*") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) complete.add("toggle");
-
-            if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle", "PlayerSit.*") && GPM.getCManager().PS_ALLOW_SIT) complete.add("playertoggle");
-
-            if(!Args[Args.length - 1].isEmpty()) {
-                for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
+        if(args.length == 1) {
+            if(gSitMain.getPermissionService().hasPermission(sender, "SitToggle", "Sit.*") && !gSitMain.getConfigService().S_SITMATERIALS.isEmpty()) complete.add("toggle");
+            if(gSitMain.getPermissionService().hasPermission(sender, "PlayerSitToggle", "PlayerSit.*") && gSitMain.getConfigService().PS_ALLOW_SIT) complete.add("playertoggle");
+            if(!args[args.length - 1].isEmpty()) {
+                for(String entry : complete) if(entry.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) completeStarted.add(entry);
                 complete.clear();
             }
-        } else if(Args.length == 2) {
-
-            if(GPM.getPManager().hasPermission(Sender, "SitToggle", "Sit.*") && Args[0].equalsIgnoreCase("toggle") && !GPM.getCManager().S_SITMATERIALS.isEmpty()) {
+        } else if(args.length == 2) {
+            if(gSitMain.getPermissionService().hasPermission(sender, "SitToggle", "Sit.*") && args[0].equalsIgnoreCase("toggle") && !gSitMain.getConfigService().S_SITMATERIALS.isEmpty()) {
                 complete.add("on");
                 complete.add("off");
             }
-
-            if(GPM.getPManager().hasPermission(Sender, "PlayerSitToggle", "PlayerSit.*") && Args[0].equalsIgnoreCase("playertoggle") && GPM.getCManager().PS_ALLOW_SIT) {
+            if(gSitMain.getPermissionService().hasPermission(sender, "PlayerSitToggle", "PlayerSit.*") && args[0].equalsIgnoreCase("playertoggle") && gSitMain.getConfigService().PS_ALLOW_SIT) {
                 complete.add("on");
                 complete.add("off");
             }
-
-            if(!Args[Args.length - 1].isEmpty()) {
-                for(String entry : complete) if(entry.toLowerCase().startsWith(Args[Args.length - 1].toLowerCase())) completeStarted.add(entry);
+            if(!args[args.length - 1].isEmpty()) {
+                for(String entry : complete) if(entry.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) completeStarted.add(entry);
                 complete.clear();
             }
         }
-
         return complete.isEmpty() ? completeStarted : complete;
     }
 

@@ -1,14 +1,16 @@
 package dev.geco.gsit.cmd.tab;
 
-import java.util.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.command.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmptyTabComplete implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) { return new ArrayList<>(); }
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) { return new ArrayList<>(); }
 
 }

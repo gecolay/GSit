@@ -1,36 +1,37 @@
 package dev.geco.gsit.cmd;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
-
 import dev.geco.gsit.GSitMain;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class GSitReloadCommand implements CommandExecutor {
 
-    private final GSitMain GPM;
+    private final GSitMain gSitMain;
 
-    public GSitReloadCommand(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public GSitReloadCommand(GSitMain gSitMain) {
+        this.gSitMain = gSitMain;
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender Sender, @NotNull Command Command, @NotNull String Label, String[] Args) {
-
-        if(!(Sender instanceof Player || Sender instanceof ConsoleCommandSender || Sender instanceof RemoteConsoleCommandSender)) {
-
-            GPM.getMManager().sendMessage(Sender, "Messages.command-sender-error");
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if(!(sender instanceof Player || sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender)) {
+            gSitMain.getMessageService().sendMessage(sender, "Messages.command-sender-error");
             return true;
         }
 
-        if(!GPM.getPManager().hasPermission(Sender, "Reload")) {
-
-            GPM.getMManager().sendMessage(Sender, "Messages.command-permission-error");
+        if(!gSitMain.getPermissionService().hasPermission(sender, "Reload")) {
+            gSitMain.getMessageService().sendMessage(sender, "Messages.command-permission-error");
             return true;
         }
 
-        GPM.reload(Sender);
+        gSitMain.reload(sender);
 
-        GPM.getMManager().sendMessage(Sender, "Plugin.plugin-reload");
+        gSitMain.getMessageService().sendMessage(sender, "Plugin.plugin-reload");
         return true;
     }
 

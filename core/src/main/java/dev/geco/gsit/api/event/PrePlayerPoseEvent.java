@@ -1,35 +1,31 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.block.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PrePlayerPoseEvent extends PlayerEvent implements Cancellable {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
-    private boolean cancel = false;
-
     private final Block block;
+    private boolean cancel = false;
+    private static final HandlerList handlers = new HandlerList();
 
-    public PrePlayerPoseEvent(Player Player, Block Block) {
-
-        super(Player);
-
-        block = Block;
+    public PrePlayerPoseEvent(@NotNull Player player, @NotNull Block block) {
+        super(player);
+        this.block = block;
     }
+
+    public @NotNull Block getBlock() { return block; }
 
     public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean Cancel) { cancel = Cancel; }
+    public void setCancelled(boolean cancelled) { cancel = cancelled; }
 
-    public Block getBlock() { return block; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
-
-    public static HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

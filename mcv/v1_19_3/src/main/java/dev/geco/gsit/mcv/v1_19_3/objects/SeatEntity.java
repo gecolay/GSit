@@ -1,63 +1,55 @@
 package dev.geco.gsit.mcv.v1_19_3.objects;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_19_R2.*;
-
-import net.minecraft.world.damagesource.*;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.decoration.*;
-import net.minecraft.world.phys.*;
+import dev.geco.gsit.GSitMain;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.phys.Vec3;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
+import org.jetbrains.annotations.NotNull;
 
 public class SeatEntity extends ArmorStand {
 
     private boolean rotate = false;
 
-    public SeatEntity(Location Location) {
-
-        super(((CraftWorld) Location.getWorld()).getHandle(), Location.getX(), Location.getY(), Location.getZ());
-
+    public SeatEntity(Location location) {
+        super(((CraftWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
         persist = false;
-
         setInvisible(true);
         setNoGravity(true);
         setMarker(true);
         setInvulnerable(true);
         setSmall(true);
         setNoBasePlate(true);
-        setRot(Location.getYaw(), Location.getPitch());
+        setRot(location.getYaw(), location.getPitch());
         yRotO = getYRot();
         setYBodyRot(yRotO);
-        Objects.requireNonNull(getAttribute(Attributes.MAX_HEALTH)).setBaseValue(1f);
-        addTag("GSit_SeatEntity");
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(1f);
+        addTag(GSitMain.NAME + "_" + getClass().getSimpleName());
     }
 
     public void startRotate() { rotate = true; }
 
     @Override
     public void tick() {
-
-        if(isAlive() && valid && rotate) {
-
-            Entity rider = getFirstPassenger();
-
-            if(rider == null) return;
-
-            setYRot(rider.getYRot());
-            yRotO = getYRot();
-        }
+        if(!isAlive() || !valid || !rotate) return;
+        Entity rider = getFirstPassenger();
+        if(rider == null) return;
+        setYRot(rider.getYRot());
+        yRotO = getYRot();
     }
 
     @Override
-    public void move(MoverType MoverType, Vec3 Vec3) { }
+    public void move(@NotNull MoverType moverType, @NotNull Vec3 movement) { }
 
     @Override
-    public boolean damageEntity0(DamageSource DamageSource, float Damage) { return false; }
+    public boolean damageEntity0(@NotNull DamageSource damageSource, float damage) { return false; }
 
     @Override
-    public boolean hurt(DamageSource DamageSource, float Damage) { return false; }
+    public boolean hurt(@NotNull DamageSource damageSource, float damage) { return false; }
 
     @Override
     public boolean canChangeDimensions() { return false; }

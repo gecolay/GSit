@@ -1,32 +1,27 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.event.entity.*;
-
-import dev.geco.gsit.objects.*;
+import dev.geco.gsit.objects.GSeat;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.entity.EntityEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class EntitySitEvent extends EntityEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
     private final GSeat seat;
+    private static final HandlerList handlers = new HandlerList();
 
-    public EntitySitEvent(GSeat Seat) {
-
-        super(Seat.getEntity());
-
-        seat = Seat;
+    public EntitySitEvent(@NotNull GSeat seat) {
+        super(seat.getEntity());
+        this.seat = seat;
     }
 
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
-    public GSeat getSeat() { return seat; }
+    public @NotNull GSeat getSeat() { return seat; }
 
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public static HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

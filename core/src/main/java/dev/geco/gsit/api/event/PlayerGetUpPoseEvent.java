@@ -1,34 +1,29 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
-
-import dev.geco.gsit.objects.*;
+import dev.geco.gsit.objects.GetUpReason;
+import dev.geco.gsit.objects.IGPose;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerGetUpPoseEvent extends PlayerEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
-    private final IGPoseSeat poseSeat;
-
+    private final IGPose pose;
     private final GetUpReason reason;
+    private static final HandlerList handlers = new HandlerList();
 
-    public PlayerGetUpPoseEvent(IGPoseSeat PoseSeat, GetUpReason Reason) {
-
-        super(PoseSeat.getPlayer());
-
-        poseSeat = PoseSeat;
-        reason = Reason;
+    public PlayerGetUpPoseEvent(@NotNull IGPose pose, @NotNull GetUpReason reason) {
+        super(pose.getPlayer());
+        this.pose = pose;
+        this.reason = reason;
     }
 
-    public IGPoseSeat getPoseSeat() { return poseSeat; }
+    public @NotNull IGPose getPose() { return pose; }
 
-    public GetUpReason getReason() { return reason; }
+    public @NotNull GetUpReason getReason() { return reason; }
 
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public static HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

@@ -1,81 +1,78 @@
 package dev.geco.gsit.mcv.v1_18.util;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_18_R1.entity.*;
-import org.bukkit.entity.*;
-
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_18.objects.*;
-import dev.geco.gsit.objects.*;
-import dev.geco.gsit.util.*;
+import dev.geco.gsit.mcv.v1_18.objects.GCrawl;
+import dev.geco.gsit.mcv.v1_18.objects.GPose;
+import dev.geco.gsit.mcv.v1_18.objects.PlayerSeatEntity;
+import dev.geco.gsit.mcv.v1_18.objects.SeatEntity;
+import dev.geco.gsit.objects.GSeat;
+import dev.geco.gsit.objects.IGCrawl;
+import dev.geco.gsit.objects.IGPose;
+import dev.geco.gsit.util.IEntityUtil;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Pose;
+
+import java.util.UUID;
 
 public class EntityUtil implements IEntityUtil {
 
-    private final GSitMain GPM;
+    private final GSitMain gSitMain;
 
-    public EntityUtil(GSitMain GPluginMain) { GPM = GPluginMain; }
-
-    @Override
-    public void setEntityLocation(Entity Entity, Location Location) { ((CraftEntity) Entity).getHandle().moveTo(Location.getX(), Location.getY(), Location.getZ(), Location.getYaw(), Location.getPitch()); }
-
-    @Override
-    public boolean isLocationValid(Location Location) { return true; }
+    public EntityUtil(GSitMain gSitMain) {
+        this.gSitMain = gSitMain;
+    }
 
     @Override
-    public boolean isPlayerSitLocationValid(Entity Holder) { return true; }
+    public void setEntityLocation(Entity entity, Location location) { ((CraftEntity) entity).getHandle().moveTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()); }
 
     @Override
-    public Entity createSeatEntity(Location Location, Entity Rider, boolean Rotate) {
+    public boolean isSitLocationValid(Location location) { return true; }
 
-        if(Rider == null || !Rider.isValid()) return null;
+    @Override
+    public boolean isPlayerSitLocationValid(Location location) { return true; }
+
+    @Override
+    public Entity createSeatEntity(Location location, Entity entity, boolean canRotate) {
+        if(entity == null || !entity.isValid()) return null;
+
+        net.minecraft.world.entity.Entity rider = ((CraftEntity) entity).getHandle();
+
+        SeatEntity seatEntity = new SeatEntity(location);
 
         boolean riding = true;
-
-        net.minecraft.world.entity.Entity rider = ((CraftEntity) Rider).getHandle();
-
-        SeatEntity seatEntity = new SeatEntity(Location);
-
-        if(!GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
-
+        if(!gSitMain.getConfigService().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
         if(!seatEntity.level.getWorld().getHandle().entityManager.addNewEntity(seatEntity)) return null;
-
-        if(GPM.getCManager().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
-
+        if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
         if(!riding || !seatEntity.passengers.contains(rider)) {
-
             seatEntity.discard();
             return null;
         }
 
-        if(Rotate) seatEntity.startRotate();
+        if(canRotate) seatEntity.startRotate();
 
         return seatEntity.getBukkitEntity();
     }
 
     @Override
-    public UUID createPlayerSeatEntity(Entity Holder, Entity Rider) {
+    public UUID createPlayerSeatEntity(Entity holder, Entity entity) {
+        if(entity == null || !entity.isValid()) return null;
 
-        if(Rider == null || !Rider.isValid()) return null;
+        net.minecraft.world.entity.Entity lastEntity = ((CraftEntity) holder).getHandle();
 
-        net.minecraft.world.entity.Entity lastEntity = ((CraftEntity) Holder).getHandle();
-
-        int maxEntities = GPM.getPlayerSitManager().getSeatEntityCount();
-
+        int maxEntities = gSitMain.getPlayerSitService().getSeatEntityStackCount();
         if(maxEntities == 0) {
-
-            ((CraftEntity) Rider).getHandle().startRiding(lastEntity, true);
+            ((CraftEntity) entity).getHandle().startRiding(lastEntity, true);
             return null;
         }
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
-
-            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(Holder.getLocation());
-
+            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(holder.getLocation());
             playerSeatEntity.startRiding(lastEntity, true);
 
-            if(entityCount == maxEntities) ((CraftEntity) Rider).getHandle().startRiding(playerSeatEntity, true);
+            if(entityCount == maxEntities) ((CraftEntity) entity).getHandle().startRiding(playerSeatEntity, true);
 
             if(!playerSeatEntity.level.getWorld().getHandle().entityManager.addNewEntity(playerSeatEntity)) return null;
 
@@ -86,9 +83,9 @@ public class EntityUtil implements IEntityUtil {
     }
 
     @Override
-    public IGPoseSeat createPoseSeatObject(GSeat Seat, Pose Pose) { return new GPoseSeat(Seat, Pose); }
+    public IGPose createPose(GSeat seat, Pose pose) { return new GPose(seat, pose); }
 
     @Override
-    public IGCrawl createCrawlObject(Player Player) { return new GCrawl(Player); }
+    public IGCrawl createCrawl(Player player) { return new GCrawl(player); }
 
 }

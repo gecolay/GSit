@@ -1,65 +1,61 @@
 package dev.geco.gsit.mcv.v1_19_3.objects;
 
-import org.bukkit.*;
-import org.bukkit.block.*;
-import org.bukkit.block.data.*;
-import org.bukkit.event.*;
-import org.bukkit.event.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
-import org.bukkit.craftbukkit.v1_19_R2.entity.*;
-
-import net.minecraft.network.protocol.game.*;
-import net.minecraft.server.level.*;
-
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.objects.*;
+import dev.geco.gsit.objects.GetUpReason;
+import dev.geco.gsit.objects.IGCrawl;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.server.level.ServerPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityToggleSwimEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class GCrawl implements IGCrawl {
 
-    private final GSitMain GPM = GSitMain.getInstance();
-
+    private final GSitMain gSitMain = GSitMain.getInstance();
     private final Player player;
-
     private final ServerPlayer serverPlayer;
-
     protected final BoxEntity boxEntity;
-
     private Location blockLocation;
-
     private boolean boxPresent;
-
     protected final BlockData blockData = Material.BARRIER.createBlockData();
-
     private final Listener listener;
     private final Listener moveListener;
     private final Listener stopListener;
-
     private final long spawnTime = System.nanoTime();
 
-    public GCrawl(Player Player) {
-
-        player = Player;
+    public GCrawl(Player player) {
+        this.player = player;
 
         serverPlayer = ((CraftPlayer) player).getHandle();
 
         boxEntity = new BoxEntity(player.getLocation());
 
         listener = new Listener() {
+            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+            public void entityToggleSwimEvent(EntityToggleSwimEvent event) { if(event.getEntity() == player) event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void ETogSE(EntityToggleSwimEvent Event) { if(Event.getEntity() == player) Event.setCancelled(true); }
-
-            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void PIntE(PlayerInteractEvent Event) {
-
-                if(!Event.isAsynchronous() && Event.getPlayer() == player && blockLocation != null && Event.getClickedBlock().equals(blockLocation.getBlock()) && Event.getHand() == EquipmentSlot.HAND) {
-
-                    Event.setCancelled(true);
-
-                    GPM.getTManager().run(() -> {
-
+            public void playerInteractEvent(PlayerInteractEvent event) {
+                if(!event.isAsynchronous() && event.getPlayer() == player && blockLocation != null && blockLocation.getBlock().equals(event.getClickedBlock()) && event.getHand() == EquipmentSlot.HAND) {
+                    event.setCancelled(true);
+                    gSitMain.getTaskService().run(() -> {
                         buildBlock(blockLocation);
                     }, false, player);
                 }
@@ -67,53 +63,41 @@ public class GCrawl implements IGCrawl {
         };
 
         moveListener = new Listener() {
-
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PMovE(PlayerMoveEvent Event) {
-
-                if(!Event.isAsynchronous() && Event.getPlayer() == player) {
-
-                    Location locationFrom = Event.getFrom(), locationTo = Event.getTo();
-
+            public void playerMoveEvent(PlayerMoveEvent event) {
+                if(!event.isAsynchronous() && event.getPlayer() == player) {
+                    Location locationFrom = event.getFrom(), locationTo = event.getTo();
                     if(locationFrom.getX() != locationTo.getX() || locationFrom.getZ() != locationTo.getZ() || locationFrom.getY() != locationTo.getY()) tick(locationFrom);
                 }
             }
         };
 
         stopListener = new Listener() {
-
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void PTogSE(PlayerToggleSneakEvent Event) { if(!Event.isAsynchronous() && Event.getPlayer() == player && Event.isSneaking()) GPM.getCrawlManager().stopCrawl(player, GetUpReason.GET_UP); }
+            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) { if(!event.isAsynchronous() && event.getPlayer() == player && event.isSneaking()) gSitMain.getCrawlService().stopCrawl(player, GetUpReason.GET_UP); }
         };
     }
 
     @Override
     public void start() {
-
         player.setSwimming(true);
 
-        Bukkit.getPluginManager().registerEvents(listener, GPM);
+        Bukkit.getPluginManager().registerEvents(listener, gSitMain);
 
-        GPM.getTManager().runDelayed(() -> {
-
-            Bukkit.getPluginManager().registerEvents(moveListener, GPM);
-
-            if(GPM.getCManager().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(stopListener, GPM);
-
+        gSitMain.getTaskService().runDelayed(() -> {
+            Bukkit.getPluginManager().registerEvents(moveListener, gSitMain);
+            if(gSitMain.getConfigService().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(stopListener, gSitMain);
             tick(player.getLocation());
         }, false, player, 1);
     }
 
-    private void tick(Location Location) {
-
+    private void tick(Location location) {
         if(!checkCrawlValid()) return;
 
-        Location location = Location.clone();
-
+        location = location.clone();
         Block locationBlock = location.getBlock();
 
         int blockSize = (int) ((location.getY() - location.getBlockY()) * 100);
-
         location.setY(location.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
 
         Block aboveBlock = location.getBlock();
@@ -123,18 +107,14 @@ public class GCrawl implements IGCrawl {
         boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || aboveBlockSolid);
 
         if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
-
             destoryBlock();
-
             if(canSetBarrier && !aboveBlockSolid) buildBlock(location);
         }
 
         if(!canSetBarrier && !aboveBlockSolid) {
+            Location playerLocation = location.clone();
 
-            Location playerLocation = Location.clone();
-
-            GPM.getTManager().run(() -> {
-
+            gSitMain.getTaskService().run(() -> {
                 int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
                 playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
@@ -142,12 +122,10 @@ public class GCrawl implements IGCrawl {
                 boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
                 if(boxPresent) {
-
                     serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
                     boxEntity.teleportToWithTicket(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                     serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
                 } else {
-
                     boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                     serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
                     boxPresent = true;
@@ -159,53 +137,41 @@ public class GCrawl implements IGCrawl {
 
     @Override
     public void stop() {
-
         HandlerList.unregisterAll(listener);
         HandlerList.unregisterAll(moveListener);
         HandlerList.unregisterAll(stopListener);
 
-        GPM.getTManager().run(() -> {
+        gSitMain.getTaskService().run(() -> {
             player.setSwimming(false);
-
             if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-
             serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
         }, true, player);
     }
 
-    private void buildBlock(Location Location) {
-
-        blockLocation = Location;
-
+    private void buildBlock(Location location) {
+        blockLocation = location;
         if(blockLocation != null) player.sendBlockChange(blockLocation, blockData);
     }
 
     private void destoryBlock() {
-
         if(blockLocation != null) player.sendBlockChange(blockLocation, blockLocation.getBlock().getBlockData());
-
         blockLocation = null;
     }
 
     private void destoryEntity() {
-
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-
         boxPresent = false;
     }
 
     private boolean checkCrawlValid() {
-
         if(serverPlayer.isInWater() || player.isFlying()) {
-
-            GPM.getCrawlManager().stopCrawl(player, GetUpReason.ACTION);
+            gSitMain.getCrawlService().stopCrawl(player, GetUpReason.ACTION);
             return false;
         }
-
         return true;
     }
 
-    private boolean isValidArea(Block BlockUp, Block AboveBlock, Block LocationBlock) { return BlockUp.equals(AboveBlock) || BlockUp.equals(LocationBlock); }
+    private boolean isValidArea(Block blockUp, Block aboveBlock, Block locationBlock) { return blockUp.equals(aboveBlock) || blockUp.equals(locationBlock); }
 
     @Override
     public Player getPlayer() { return player; }

@@ -1,40 +1,35 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
-
-import dev.geco.gsit.objects.*;
+import dev.geco.gsit.objects.GetUpReason;
+import dev.geco.gsit.objects.IGCrawl;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PrePlayerGetUpCrawlEvent extends PlayerEvent implements Cancellable {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
-    private boolean cancel = false;
-
     private final IGCrawl crawl;
-
     private final GetUpReason reason;
+    private boolean cancel = false;
+    private static final HandlerList handlers = new HandlerList();
 
-    public PrePlayerGetUpCrawlEvent(IGCrawl Crawl, GetUpReason Reason) {
-
-        super(Crawl.getPlayer());
-
-        crawl = Crawl;
-        reason = Reason;
+    public PrePlayerGetUpCrawlEvent(@NotNull IGCrawl crawl, @NotNull GetUpReason reason) {
+        super(crawl.getPlayer());
+        this.crawl = crawl;
+        this.reason = reason;
     }
+
+    public @NotNull IGCrawl getCrawl() { return crawl; }
+
+    public @NotNull GetUpReason getReason() { return reason; }
 
     public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean Cancel) { cancel = Cancel; }
+    public void setCancelled(boolean cancelled) { cancel = cancelled; }
 
-    public IGCrawl getCrawl() { return crawl; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public GetUpReason getReason() { return reason; }
-
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
-
-    public static HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

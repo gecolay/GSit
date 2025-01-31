@@ -1,7 +1,6 @@
 package dev.geco.gsit.objects;
 
 public enum GetUpReason {
-
     ACTION,
     BREAK,
     DAMAGE,
@@ -11,5 +10,4 @@ public enum GetUpReason {
     PLUGIN,
     TELEPORT,
     QUIT
-
 }

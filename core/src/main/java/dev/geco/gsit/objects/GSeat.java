@@ -1,8 +1,10 @@
 package dev.geco.gsit.objects;
 
-import org.bukkit.*;
-import org.bukkit.block.*;
-import org.bukkit.entity.*;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class GSeat {
 
@@ -13,41 +15,41 @@ public class GSeat {
     protected Location returnLocation;
     private final long spawnTime = System.nanoTime();
 
-    public GSeat(Block Block, Location Location, LivingEntity Entity, Entity SeatEntity, Location ReturnLocation) {
+    public GSeat(@NotNull Block block, @NotNull Location location, @NotNull LivingEntity entity, @NotNull Entity seatEntity, @NotNull Location returnLocation) {
+        this.block = block;
+        this.location = location;
+        this.entity = entity;
+        this.seatEntity = seatEntity;
+        this.returnLocation = returnLocation;
+    }
+
+    public @NotNull Block getBlock() { return block; }
+
+    public @NotNull GSeat setBlock(@NotNull Block Block) {
         block = Block;
-        location = Location;
-        entity = Entity;
-        seatEntity = SeatEntity;
-        returnLocation = ReturnLocation;
-    }
-
-    public Block getBlock() { return block; }
-
-    public GSeat setBlock(Block Block) {
-        block = Block;
         return this;
     }
 
-    public Location getLocation() { return location.clone(); }
+    public @NotNull Location getLocation() { return location.clone(); }
 
-    public GSeat setLocation(Location Location) {
+    public @NotNull GSeat setLocation(@NotNull Location Location) {
         location = Location;
         return this;
     }
 
-    public LivingEntity getEntity() { return entity; }
+    public @NotNull LivingEntity getEntity() { return entity; }
 
-    public Entity getSeatEntity() { return seatEntity; }
+    public @NotNull Entity getSeatEntity() { return seatEntity; }
 
-    public Location getReturn() { return returnLocation.clone(); }
+    public @NotNull Location getReturnLocation() { return returnLocation.clone(); }
 
-    public GSeat setReturn(Location ReturnLocation) {
+    public @NotNull GSeat setReturnLocation(@NotNull Location ReturnLocation) {
         returnLocation = ReturnLocation;
         return this;
     }
 
-    public long getNano() { return System.nanoTime() - spawnTime; }
+    public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }
 
-    public String toString() { return seatEntity.getUniqueId().toString(); }
+    public @NotNull String toString() { return seatEntity.getUniqueId().toString(); }
 
 }

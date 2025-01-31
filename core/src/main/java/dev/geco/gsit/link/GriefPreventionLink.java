@@ -1,24 +1,24 @@
 package dev.geco.gsit.link;
 
-import org.bukkit.*;
-import org.bukkit.entity.*;
-
-import me.ryanhamshire.GriefPrevention.*;
-
 import dev.geco.gsit.GSitMain;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class GriefPreventionLink {
 
-    private final GSitMain GPM;
+    private final GSitMain gSitMain;
 
-    public GriefPreventionLink(GSitMain GPluginMain) { GPM = GPluginMain; }
+    public GriefPreventionLink(GSitMain gSitMain) {
+        this.gSitMain = gSitMain;
+    }
 
-    public boolean check(Location Location, Player Player) {
+    public boolean canUseInLocation(Location location, Player player) {
         try {
-            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(Location, false, null);
-            return claim == null || (!GPM.getCManager().TRUSTED_REGION_ONLY || claim.canSiege(Player));
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
+            return claim == null || (!gSitMain.getConfigService().TRUSTED_REGION_ONLY || claim.canSiege(player));
         } catch (Throwable e) { e.printStackTrace(); }
-
         return true;
     }
 

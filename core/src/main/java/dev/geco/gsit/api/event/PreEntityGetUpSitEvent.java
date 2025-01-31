@@ -1,43 +1,38 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.event.entity.*;
-
-import dev.geco.gsit.objects.*;
+import dev.geco.gsit.objects.GSeat;
+import dev.geco.gsit.objects.GetUpReason;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.entity.EntityEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PreEntityGetUpSitEvent extends EntityEvent implements Cancellable {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
-    private boolean cancel = false;
-
     private final GSeat seat;
-
     private final GetUpReason reason;
+    private boolean cancel = false;
+    private static final HandlerList handlers = new HandlerList();
 
-    public PreEntityGetUpSitEvent(GSeat Seat, GetUpReason Reason) {
-
-        super(Seat.getEntity());
-
-        seat = Seat;
-        reason = Reason;
+    public PreEntityGetUpSitEvent(@NotNull GSeat seat, @NotNull GetUpReason reason) {
+        super(seat.getEntity());
+        this.seat = seat;
+        this.reason = reason;
     }
 
     public boolean isCancelled() { return cancel; }
 
-    public void setCancelled(boolean Cancel) { cancel = Cancel; }
+    public void setCancelled(boolean cancelled) { cancel = cancelled; }
 
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
-    public GSeat getSeat() { return seat; }
+    public @NotNull GSeat getSeat() { return seat; }
 
-    public GetUpReason getReason() { return reason; }
+    public @NotNull GetUpReason getReason() { return reason; }
 
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public static HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

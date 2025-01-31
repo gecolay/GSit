@@ -1,37 +1,44 @@
 package dev.geco.gsit.util;
 
-import java.util.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-import org.bukkit.entity.*;
+import java.util.List;
 
 public class PassengerUtil {
 
-    public long getVehicleAmount(Entity Entity) {
-        long amount = 0;
-        Entity vehicle = Entity.getVehicle();
-        if(vehicle == null) return amount;
-        if(vehicle instanceof Player) amount++;
-        return amount + getVehicleAmount(vehicle);
+    public long getEntityVehicleCount(Entity entity) {
+        long vehicleCount = 0;
+        Entity currentVehicle = entity.getVehicle();
+        if(currentVehicle == null) return vehicleCount;
+        if(currentVehicle instanceof Player) vehicleCount++;
+        return vehicleCount + getEntityVehicleCount(currentVehicle);
     }
 
-    public long getPassengerAmount(Entity Entity) {
-        long amount = 0;
-        for(Entity passenger : Entity.getPassengers()) {
-            if(passenger instanceof Player) amount++;
-            amount += getPassengerAmount(passenger);
+    public long getEntityPassengerCount(Entity entity) {
+        long passengerCount = 0;
+        for(Entity currentPassenger : entity.getPassengers()) {
+            if(currentPassenger instanceof Player) passengerCount++;
+            passengerCount += getEntityPassengerCount(currentPassenger);
         }
-        return amount;
+        return passengerCount;
     }
 
-    public boolean isInPassengerList(Entity Entity, Entity Passenger) {
-        List<Entity> passengers = Entity.getPassengers();
-        if(passengers.contains(Passenger)) return true;
-        for(Entity passenger : passengers) if(isInPassengerList(passenger, Passenger)) return true;
+    public boolean isEntityInEntityPassengerList(Entity entity, Entity passenger) {
+        List<Entity> currentPassengers = entity.getPassengers();
+        if(currentPassengers.contains(passenger)) return true;
+        for(Entity currentPassenger : currentPassengers) if(isEntityInEntityPassengerList(currentPassenger, passenger)) return true;
         return false;
     }
 
-    public Entity getHighestEntity(Entity Entity) { return Entity == null || Entity.getPassengers().isEmpty() ? Entity : getHighestEntity(Entity.getPassengers().get(0)); }
+    public Entity getTopEntityPassenger(Entity entity) {
+        if(entity == null || entity.getPassengers().isEmpty()) return entity;
+        return getTopEntityPassenger(entity.getPassengers().get(0));
+    }
 
-    public Entity getBottomEntity(Entity Entity) { return Entity == null || Entity.getVehicle() == null ? Entity : getBottomEntity(Entity.getVehicle()); }
+    public Entity getBottomEntityVehicle(Entity entity) {
+        if(entity == null || entity.getVehicle() == null) return entity;
+        return getBottomEntityVehicle(entity.getVehicle());
+    }
 
 }

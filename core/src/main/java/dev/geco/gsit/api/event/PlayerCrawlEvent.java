@@ -1,29 +1,24 @@
 package dev.geco.gsit.api.event;
 
-import org.jetbrains.annotations.*;
-
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
-
-import dev.geco.gsit.objects.*;
+import dev.geco.gsit.objects.IGCrawl;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerCrawlEvent extends PlayerEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-
     private final IGCrawl crawl;
+    private static final HandlerList handlers = new HandlerList();
 
-    public PlayerCrawlEvent(IGCrawl Crawl) {
-
-        super(Crawl.getPlayer());
-
-        crawl = Crawl;
+    public PlayerCrawlEvent(@NotNull IGCrawl crawl) {
+        super(crawl.getPlayer());
+        this.crawl = crawl;
     }
 
-    public IGCrawl getCrawl() { return crawl; }
+    public @NotNull IGCrawl getCrawl() { return crawl; }
 
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public static HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

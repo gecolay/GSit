@@ -1,6 +1,6 @@
 package dev.geco.gsit.objects;
 
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 
 public interface IGCrawl {
 
