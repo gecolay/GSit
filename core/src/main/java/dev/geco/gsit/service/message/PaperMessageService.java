@@ -43,7 +43,7 @@ public class PaperMessageService extends MessageService {
         formatTags.put("n", "<underlined>");
         formatTags.put("o", "<italic>");
         formatTags.put("r", "<reset>");
-    };
+    }
 
     public PaperMessageService(GSitMain gSitMain) {
         super(gSitMain);

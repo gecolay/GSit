@@ -1,5 +1,5 @@
 #
-# Language-File created by:		Dann_Crafter
+# Language-File created by: Dann_Crafter
 #
 
 Plugin:
@@ -11,7 +11,7 @@ Plugin:
   plugin-version: "[P]&c ¡Éste plugin no puede ser utilizado con la versión (&b%Version%&c) actual del servidor!"
   plugin-reload: "[P]&a The plugin was successfully reloaded."
   plugin-disabled: "[P]&a El plugin ha sido deshabilitado con éxito."
-  plugin-prefix: "&7[&6GSit&7]"
+  plugin-prefix: "&7[&6%Plugin%&7]"
 
 Messages:
 

@@ -1,18 +1,18 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerGetUpPoseEvent extends PlayerEvent {
+public class PlayerStopPoseEvent extends PlayerEvent {
 
     private final IGPose pose;
-    private final GetUpReason reason;
+    private final GStopReason reason;
     private static final HandlerList handlers = new HandlerList();
 
-    public PlayerGetUpPoseEvent(@NotNull IGPose pose, @NotNull GetUpReason reason) {
+    public PlayerStopPoseEvent(@NotNull IGPose pose, @NotNull GStopReason reason) {
         super(pose.getPlayer());
         this.pose = pose;
         this.reason = reason;
@@ -20,7 +20,7 @@ public class PlayerGetUpPoseEvent extends PlayerEvent {
 
     public @NotNull IGPose getPose() { return pose; }
 
-    public @NotNull GetUpReason getReason() { return reason; }
+    public @NotNull GStopReason getReason() { return reason; }
 
     public @NotNull HandlerList getHandlers() { return handlers; }
 

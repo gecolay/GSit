@@ -1,12 +1,12 @@
 package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.api.event.PlayerGetUpPoseEvent;
+import dev.geco.gsit.api.event.PlayerStopPoseEvent;
 import dev.geco.gsit.api.event.PlayerPoseEvent;
-import dev.geco.gsit.api.event.PrePlayerGetUpPoseEvent;
+import dev.geco.gsit.api.event.PrePlayerStopPoseEvent;
 import dev.geco.gsit.api.event.PrePlayerPoseEvent;
 import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,7 +42,7 @@ public class PoseService {
 
     public IGPose getPoseByPlayer(Player player) { return poses.stream().filter(pose -> player.equals(pose.getPlayer())).findFirst().orElse(null); }
 
-    public void removeAllPoses() { for(IGPose pose : getAllPoses()) removePose(pose.getPlayer(), GetUpReason.PLUGIN); }
+    public void removeAllPoses() { for(IGPose pose : getAllPoses()) removePose(pose.getPlayer(), GStopReason.PLUGIN); }
 
     public boolean isBlockWithPose(Block block) { return poses.stream().anyMatch(pose -> block.equals(pose.getSeat().getBlock())); }
 
@@ -53,7 +53,7 @@ public class PoseService {
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
         if(!gSitMain.getPermissionService().hasPermission(player, "Kick.Pose", "Kick.*")) return false;
-        for(IGPose p : getPosesByBlock(block)) if(!removePose(p.getPlayer(), GetUpReason.KICKED)) return false;
+        for(IGPose p : getPosesByBlock(block)) if(!removePose(p.getPlayer(), GStopReason.KICKED)) return false;
         return true;
     }
 
@@ -90,15 +90,15 @@ public class PoseService {
         return poseObject;
     }
 
-    public boolean removePose(Player player, GetUpReason getUpReason) { return removePose(player, getUpReason, true); }
+    public boolean removePose(Player player, GStopReason stopReason) { return removePose(player, stopReason, true); }
 
-    public boolean removePose(Player player, GetUpReason getUpReason, boolean useReturnLocation) {
+    public boolean removePose(Player player, GStopReason stopReason, boolean useReturnLocation) {
         IGPose poseObject = getPoseByPlayer(player);
         if(poseObject == null) return true;
 
-        PrePlayerGetUpPoseEvent prePlayerGetUpPoseEvent = new PrePlayerGetUpPoseEvent(poseObject, getUpReason);
-        Bukkit.getPluginManager().callEvent(prePlayerGetUpPoseEvent);
-        if(prePlayerGetUpPoseEvent.isCancelled()) return false;
+        PrePlayerStopPoseEvent prePlayerStopPoseEvent = new PrePlayerStopPoseEvent(poseObject, stopReason);
+        Bukkit.getPluginManager().callEvent(prePlayerStopPoseEvent);
+        if(prePlayerStopPoseEvent.isCancelled()) return false;
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? poseObject.getSeat().getReturnLocation() : poseObject.getSeat().getLocation().add(0d, gSitMain.getSitService().getBaseOffset() + (Tag.STAIRS.isTagged(poseObject.getSeat().getBlock().getType()) ? SitService.STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(poseObject.getSeat().getBlock().getType(), 0d), 0d);
         Location entityLocation = player.getLocation();
@@ -109,7 +109,7 @@ public class PoseService {
         poses.remove(poseObject);
         poseObject.remove();
         poseObject.getSeat().getSeatEntity().remove();
-        Bukkit.getPluginManager().callEvent(new PlayerGetUpPoseEvent(poseObject, getUpReason));
+        Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(poseObject, stopReason));
         poseUsageNanoTime += poseObject.getSeat().getLifetimeInNanoSeconds();
 
         return true;

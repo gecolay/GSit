@@ -18,7 +18,6 @@ public class VersionService {
         VERSION_MAPPING.put("v1_21_1", "v1_21");
         VERSION_MAPPING.put("v1_21_3", "v1_21_2");
     }
-
     private final GSitMain gSitMain;
     private final String serverVersion;
     private String packagePath;

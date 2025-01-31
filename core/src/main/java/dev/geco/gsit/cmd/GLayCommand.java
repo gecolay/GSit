@@ -1,7 +1,7 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -41,7 +41,7 @@ public class GLayCommand implements CommandExecutor {
 
         IGPose poseObject = gSitMain.getPoseService().getPoseByPlayer(player);
         if(poseObject != null && poseObject.getPose() == Pose.SLEEPING) {
-            gSitMain.getPoseService().removePose(player, GetUpReason.GET_UP);
+            gSitMain.getPoseService().removePose(player, GStopReason.GET_UP);
             return true;
         }
 

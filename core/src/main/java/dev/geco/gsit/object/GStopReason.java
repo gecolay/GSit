@@ -1,14 +1,15 @@
 package dev.geco.gsit.object;
 
-public enum GetUpReason {
-    ACTION,
-    BREAK,
+public enum GStopReason {
+    BLOCK_BREAK,
     DAMAGE,
     DEATH,
+    ENVIRONMENT,
+    GAMEMODE_CHANGE,
     GET_UP,
     KICKED,
     PLUGIN,
     REGION,
     TELEPORT,
-    QUIT
+    DISCONNECT
 }

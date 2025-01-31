@@ -1,5 +1,5 @@
 #
-# Language-File created by:		ishi_sama
+# Language-File created by: ishi_sama
 #
 
 Plugin:
@@ -11,7 +11,7 @@ Plugin:
   plugin-version: "[P]&c Ce plugin ne peut pas être utilisé avec cette version de serveur ! (&b%Version%&c)"
   plugin-reload: "[P]&a Le plugin a été rechargé avec succès."
   plugin-disabled: "[P]&a Le plugin a été désactivé avec succès."
-  plugin-prefix: "&7[&6GSit&7]"
+  plugin-prefix: "&7[&6%Plugin%&7]"
 
 Messages:
 

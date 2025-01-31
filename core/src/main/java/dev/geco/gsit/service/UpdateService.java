@@ -14,7 +14,6 @@ import java.util.function.Consumer;
 public class UpdateService {
 
     private final String REMOTE_URL = "https://api.spigotmc.org/legacy/update.php?resource=";
-
     private final GSitMain gSitMain;
     private LocalDate lastCheckDate = null;
     private String latestVersion = null;

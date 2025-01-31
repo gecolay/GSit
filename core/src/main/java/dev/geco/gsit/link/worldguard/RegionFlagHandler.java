@@ -11,7 +11,7 @@ import com.sk89q.worldguard.session.Session;
 import com.sk89q.worldguard.session.handler.Handler;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.link.WorldGuardLink;
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.GStopReason;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -53,13 +53,13 @@ public class RegionFlagHandler extends Handler {
     private void handlePlayerSitFlagChange(LocalPlayer localPlayer) {
         if(currentPlayerSitFlagState != StateFlag.State.DENY) return;
         Player player = BukkitAdapter.adapt(localPlayer);
-        gSitMain.getPlayerSitService().stopPlayerSit(player, GetUpReason.REGION, true);
+        gSitMain.getPlayerSitService().stopPlayerSit(player, GStopReason.REGION, true);
     }
 
     private void handleCrawlFlagChange(LocalPlayer localPlayer) {
         if(currentCrawlFlagState != StateFlag.State.DENY) return;
         Player player = BukkitAdapter.adapt(localPlayer);
-        gSitMain.getCrawlService().stopCrawl(player, GetUpReason.REGION);
+        gSitMain.getCrawlService().stopCrawl(player, GStopReason.REGION);
     }
 
 }

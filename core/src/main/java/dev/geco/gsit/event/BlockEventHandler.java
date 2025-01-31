@@ -2,7 +2,7 @@ package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
 import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
@@ -48,7 +48,7 @@ public class BlockEventHandler implements Listener {
                 }
             }
             if(!gSitMain.getConfigService().GET_UP_BREAK || !gSitMain.getPoseService().isBlockWithPose(block)) continue;
-            for(IGPose poseSeat : gSitMain.getPoseService().getPosesByBlock(block)) gSitMain.getPoseService().removePose(poseSeat.getPlayer(), GetUpReason.BREAK);
+            for(IGPose poseSeat : gSitMain.getPoseService().getPosesByBlock(block)) gSitMain.getPoseService().removePose(poseSeat.getPlayer(), GStopReason.BLOCK_BREAK);
         }
     }
 
@@ -61,8 +61,8 @@ public class BlockEventHandler implements Listener {
     private void handleExplodeEvent(List<Block> blocks) {
         if(!gSitMain.getConfigService().GET_UP_BREAK) return;
         for(Block block : new ArrayList<>(blocks)) {
-            if(gSitMain.getSitService().isBlockWithSeat(block)) for(GSeat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat.getEntity(), GetUpReason.BREAK)) blocks.remove(block);
-            if(gSitMain.getPoseService().isBlockWithPose(block)) for(IGPose poseSeat : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) blocks.remove(block);
+            if(gSitMain.getSitService().isBlockWithSeat(block)) for(GSeat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat.getEntity(), GStopReason.BLOCK_BREAK)) blocks.remove(block);
+            if(gSitMain.getPoseService().isBlockWithPose(block)) for(IGPose poseSeat : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(poseSeat.getPlayer(), GStopReason.BLOCK_BREAK)) blocks.remove(block);
         }
     }
 
@@ -83,8 +83,8 @@ public class BlockEventHandler implements Listener {
 
     private void handleBlockEvent(Cancellable event, Block block) {
         if(!gSitMain.getConfigService().GET_UP_BREAK) return;
-        if(gSitMain.getSitService().isBlockWithSeat(block)) for(GSeat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat.getEntity(), GetUpReason.BREAK)) event.setCancelled(true);
-        if(gSitMain.getPoseService().isBlockWithPose(block) && !event.isCancelled()) for(IGPose poseSeat : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(poseSeat.getPlayer(), GetUpReason.BREAK)) event.setCancelled(true);
+        if(gSitMain.getSitService().isBlockWithSeat(block)) for(GSeat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat.getEntity(), GStopReason.BLOCK_BREAK)) event.setCancelled(true);
+        if(gSitMain.getPoseService().isBlockWithPose(block) && !event.isCancelled()) for(IGPose poseSeat : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(poseSeat.getPlayer(), GStopReason.BLOCK_BREAK)) event.setCancelled(true);
     }
 
 }

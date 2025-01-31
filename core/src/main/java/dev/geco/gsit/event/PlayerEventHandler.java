@@ -1,7 +1,7 @@
 package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.GStopReason;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,9 +35,9 @@ public class PlayerEventHandler implements Listener {
     public void playerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        gSitMain.getSitService().removeSeat(player, GetUpReason.QUIT, true);
-        gSitMain.getPoseService().removePose(player, GetUpReason.QUIT, true);
-        gSitMain.getCrawlService().stopCrawl(player, GetUpReason.QUIT);
+        gSitMain.getSitService().removeSeat(player, GStopReason.DISCONNECT, true);
+        gSitMain.getPoseService().removePose(player, GStopReason.DISCONNECT, true);
+        gSitMain.getCrawlService().stopCrawl(player, GStopReason.DISCONNECT);
         gSitMain.getToggleService().clearEntitySitToggleCache(player.getUniqueId());
 
         doubleSneakCrawlPlayers.remove(player);
@@ -47,9 +47,9 @@ public class PlayerEventHandler implements Listener {
     public void playerTeleportEvent(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
 
-        if(!gSitMain.getSitService().removeSeat(player, GetUpReason.TELEPORT, false)) event.setCancelled(true);
-        if(!gSitMain.getPoseService().removePose(player, GetUpReason.TELEPORT, false)) event.setCancelled(true);
-        if(!gSitMain.getCrawlService().stopCrawl(player, GetUpReason.TELEPORT)) event.setCancelled(true);
+        if(!gSitMain.getSitService().removeSeat(player, GStopReason.TELEPORT, false)) event.setCancelled(true);
+        if(!gSitMain.getPoseService().removePose(player, GStopReason.TELEPORT, false)) event.setCancelled(true);
+        if(!gSitMain.getCrawlService().stopCrawl(player, GStopReason.TELEPORT)) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -57,9 +57,9 @@ public class PlayerEventHandler implements Listener {
         Entity entity = event.getEntity();
         if(!gSitMain.getConfigService().GET_UP_DAMAGE || !(entity instanceof Player player) || event.getDamage() <= 0d) return;
 
-        gSitMain.getSitService().removeSeat(player, GetUpReason.DAMAGE, true);
-        gSitMain.getPoseService().removePose(player, GetUpReason.DAMAGE, true);
-        gSitMain.getCrawlService().stopCrawl(player, GetUpReason.DAMAGE);
+        gSitMain.getSitService().removeSeat(player, GStopReason.DAMAGE, true);
+        gSitMain.getPoseService().removePose(player, GStopReason.DAMAGE, true);
+        gSitMain.getCrawlService().stopCrawl(player, GStopReason.DAMAGE);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

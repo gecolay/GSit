@@ -21,7 +21,6 @@ public class ConfigService {
 
     public String L_LANG;
     public boolean L_CLIENT_LANG;
-
     public boolean CHECK_FOR_UPDATE;
     public boolean DEBUG;
     public boolean GET_UP_DAMAGE;
@@ -32,13 +31,11 @@ public class ConfigService {
     public boolean SAME_BLOCK_REST;
     public boolean CENTER_BLOCK;
     public boolean CUSTOM_MESSAGE;
-
     public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
     public boolean S_BOTTOM_PART_ONLY;
     public boolean S_EMPTY_HAND_ONLY;
     public double S_MAX_DISTANCE;
     public boolean S_DEFAULT_SIT_MODE;
-
     public boolean PS_ALLOW_SIT;
     public boolean PS_ALLOW_SIT_NPC;
     public long PS_MAX_STACK;
@@ -47,17 +44,14 @@ public class ConfigService {
     public boolean PS_EMPTY_HAND_ONLY;
     public double PS_MAX_DISTANCE;
     public boolean PS_DEFAULT_SIT_MODE;
-
     public boolean P_INTERACT;
     public boolean P_LAY_REST;
     public boolean P_LAY_SNORING_SOUNDS;
     public boolean P_LAY_SNORING_NIGHT_ONLY;
     public boolean P_LAY_NIGHT_SKIP;
-
     public boolean C_GET_UP_SNEAK;
     public boolean C_DOUBLE_SNEAK;
     public boolean C_DEFAULT_CRAWL_MODE;
-
     public boolean TRUSTED_REGION_ONLY;
     public List<String> WORLDBLACKLIST = new ArrayList<>();
     public List<String> WORLDWHITELIST = new ArrayList<>();

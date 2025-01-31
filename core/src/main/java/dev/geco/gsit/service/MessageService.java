@@ -29,7 +29,6 @@ abstract public class MessageService {
     protected final char AMPERSAND_CHAR = '&';
     protected final char COLOR_CHAR = org.bukkit.ChatColor.COLOR_CHAR;
     protected final Pattern HEX_PATTERN = Pattern.compile("#([a-fA-F0-9]{6})");
-
     protected final GSitMain gSitMain;
     protected final HashMap<String, FileConfiguration> messages = new HashMap<>();
     protected String defaultLanguage;
@@ -123,7 +122,7 @@ abstract public class MessageService {
 
     private String replaceWithLanguageCode(String message, String languageCode, Object ... replaceList) {
         message = replaceText(message, replaceList);
-        return message.replace(PREFIX_PLACEHOLDER, getMessages(languageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE));
+        return message.replace(PREFIX_PLACEHOLDER, getMessages(languageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE).replace("%Plugin%", GSitMain.NAME));
     }
 
 }

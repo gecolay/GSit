@@ -5,7 +5,7 @@ import dev.geco.gsit.api.event.PlayerPlayerSitEvent;
 import dev.geco.gsit.api.event.PlayerStopPlayerSitEvent;
 import dev.geco.gsit.api.event.PrePlayerPlayerSitEvent;
 import dev.geco.gsit.api.event.PrePlayerStopPlayerSitEvent;
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.object.GStopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -64,21 +64,21 @@ public class PlayerSitService {
 
         return true;
     }
-    public boolean stopPlayerSit(Player player, GetUpReason getUpReason, boolean removePassengers) { return stopPlayerSit(player, getUpReason, removePassengers, true); }
+    public boolean stopPlayerSit(Player player, GStopReason stopReason, boolean removePassengers) { return stopPlayerSit(player, stopReason, removePassengers, true); }
 
-    public boolean stopPlayerSit(Player player, GetUpReason getUpReason, boolean removePassengers, boolean callPreEvent) {
+    public boolean stopPlayerSit(Player player, GStopReason stopReason, boolean removePassengers, boolean callPreEvent) {
         if(player.getPassengers().isEmpty() && player.getVehicle() == null) return true;
 
         if(callPreEvent) {
-            PrePlayerStopPlayerSitEvent prePlayerGetUpPlayerSitEvent = new PrePlayerStopPlayerSitEvent(player, getUpReason, removePassengers);
-            Bukkit.getPluginManager().callEvent(prePlayerGetUpPlayerSitEvent);
-            if(prePlayerGetUpPlayerSitEvent.isCancelled()) return false;
+            PrePlayerStopPlayerSitEvent prePlayerStopPlayerSitEvent = new PrePlayerStopPlayerSitEvent(player, stopReason, removePassengers);
+            Bukkit.getPluginManager().callEvent(prePlayerStopPlayerSitEvent);
+            if(prePlayerStopPlayerSitEvent.isCancelled()) return false;
         }
 
         if(removePassengers) removePassengers(player, player);
         removeVehicles(player, player);
 
-        Bukkit.getPluginManager().callEvent(new PlayerStopPlayerSitEvent(player, getUpReason, removePassengers));
+        Bukkit.getPluginManager().callEvent(new PlayerStopPlayerSitEvent(player, stopReason, removePassengers));
 
         return true;
     }

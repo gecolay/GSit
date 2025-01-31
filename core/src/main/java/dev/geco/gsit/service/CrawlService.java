@@ -2,10 +2,10 @@ package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.PlayerCrawlEvent;
-import dev.geco.gsit.api.event.PlayerGetUpCrawlEvent;
+import dev.geco.gsit.api.event.PlayerStopCrawlEvent;
 import dev.geco.gsit.api.event.PrePlayerCrawlEvent;
-import dev.geco.gsit.api.event.PrePlayerGetUpCrawlEvent;
-import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.api.event.PrePlayerStopCrawlEvent;
+import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGCrawl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ public class CrawlService {
 
     public IGCrawl getCrawlByPlayer(Player player) { return crawls.stream().filter(crawl -> player.equals(crawl.getPlayer())).findFirst().orElse(null); }
 
-    public void removeAllCrawls() { for(IGCrawl crawl : getAllCrawls()) stopCrawl(crawl.getPlayer(), GetUpReason.PLUGIN); }
+    public void removeAllCrawls() { for(IGCrawl crawl : getAllCrawls()) stopCrawl(crawl.getPlayer(), GStopReason.PLUGIN); }
 
     public IGCrawl startCrawl(Player player) {
         PrePlayerCrawlEvent prePlayerCrawlEvent = new PrePlayerCrawlEvent(player);
@@ -52,17 +52,17 @@ public class CrawlService {
         return crawl;
     }
 
-    public boolean stopCrawl(Player player, GetUpReason getUpReason) {
+    public boolean stopCrawl(Player player, GStopReason stopReason) {
         IGCrawl crawl = getCrawlByPlayer(player);
         if(crawl == null) return true;
 
-        PrePlayerGetUpCrawlEvent prePlayerGetUpCrawlEvent = new PrePlayerGetUpCrawlEvent(crawl, getUpReason);
-        Bukkit.getPluginManager().callEvent(prePlayerGetUpCrawlEvent);
-        if(prePlayerGetUpCrawlEvent.isCancelled()) return false;
+        PrePlayerStopCrawlEvent prePlayerStopCrawlEvent = new PrePlayerStopCrawlEvent(crawl, stopReason);
+        Bukkit.getPluginManager().callEvent(prePlayerStopCrawlEvent);
+        if(prePlayerStopCrawlEvent.isCancelled()) return false;
 
         crawls.remove(crawl);
         crawl.stop();
-        Bukkit.getPluginManager().callEvent(new PlayerGetUpCrawlEvent(crawl, getUpReason));
+        Bukkit.getPluginManager().callEvent(new PlayerStopCrawlEvent(crawl, stopReason));
         crawlUsageNanoTime += crawl.getNano();
 
         return true;
