@@ -71,21 +71,9 @@ public class GLayCommand implements CommandExecutor {
             return true;
         }
 
-        if(!gSitMain.getPermissionService().hasPermission(sender, "ByPass.Region", "ByPass.*")) {
-            if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(block.getLocation(), gSitMain.getWorldGuardLink().getFlag("pose"))) {
-                gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-region-error");
-                return true;
-            }
-
-            if(gSitMain.getGriefPreventionLink() != null && !gSitMain.getGriefPreventionLink().canUseInLocation(block.getLocation(), player)) {
-                gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-region-error");
-                return true;
-            }
-
-            if(gSitMain.getPlotSquaredLink() != null && !gSitMain.getPlotSquaredLink().canUseSitInLocation(block.getLocation(), player)) {
-                gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-region-error");
-                return true;
-            }
+        if(!gSitMain.getEnvironmentUtil().canUseInLocation(block.getLocation(), player, "pose")) {
+            gSitMain.getMessageService().sendMessage(sender, "Messages.action-sit-region-error");
+            return true;
         }
 
         if(!gSitMain.getConfigService().SAME_BLOCK_REST && !gSitMain.getPoseService().kickPoseEntitiesFromBlock(block, player)) {

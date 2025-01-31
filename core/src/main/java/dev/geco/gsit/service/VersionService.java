@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class VersionService {
 
-    private final String LATEST_VERSION = "v1_21_4";
-    private final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); {
+    private static final String LATEST_VERSION = "v1_21_4";
+    private static final HashMap<String, String> VERSION_MAPPING = new HashMap<>(); static {
         VERSION_MAPPING.put("v1_18_1", "v1_18");
         VERSION_MAPPING.put("v1_19_2", "v1_19_1");
         VERSION_MAPPING.put("v1_20_1", "v1_20");

@@ -15,8 +15,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 
-import java.util.UUID;
-
 public class EntityUtil implements IEntityUtil {
 
     private final GSitMain gSitMain;
@@ -57,29 +55,26 @@ public class EntityUtil implements IEntityUtil {
     }
 
     @Override
-    public UUID createPlayerSeatEntity(Entity holder, Entity entity) {
-        if(entity == null || !entity.isValid()) return null;
+    public boolean createPlayerSeatEntities(Player player, Player target) {
+        if(player == null || !player.isValid()) return false;
 
-        net.minecraft.world.entity.Entity lastEntity = ((CraftEntity) holder).getHandle();
+        net.minecraft.world.entity.Entity topEntity = ((CraftEntity) target).getHandle();
 
         int maxEntities = gSitMain.getPlayerSitService().getSeatEntityStackCount();
-        if(maxEntities == 0) {
-            ((CraftEntity) entity).getHandle().startRiding(lastEntity, true);
-            return null;
+        if(maxEntities <= 0) {
+            ((CraftEntity) player).getHandle().startRiding(topEntity, true);
+            return true;
         }
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
-            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(holder.getLocation());
-            playerSeatEntity.startRiding(lastEntity, true);
-
-            if(entityCount == maxEntities) ((CraftEntity) entity).getHandle().startRiding(playerSeatEntity, true);
-
-            if(!spawnEntity(playerSeatEntity)) return null;
-
-            lastEntity = playerSeatEntity;
+            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(target.getLocation());
+            playerSeatEntity.startRiding(topEntity, true);
+            if(entityCount == maxEntities) ((CraftEntity) player).getHandle().startRiding(playerSeatEntity, true);
+            if(!spawnEntity(playerSeatEntity)) return false;
+            topEntity = playerSeatEntity;
         }
 
-        return lastEntity.getUUID();
+        return true;
     }
 
     private boolean spawnEntity(net.minecraft.world.entity.Entity Entity) {

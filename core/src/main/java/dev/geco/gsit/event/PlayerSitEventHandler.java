@@ -2,6 +2,7 @@ package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.object.GetUpReason;
+import dev.geco.gsit.service.PlayerSitService;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -30,24 +31,24 @@ public class PlayerSitEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
-        if(!gSitMain.getConfigService().PS_SNEAK_EJECTS || !event.isSneaking() || player.isFlying() || player.getVehicle() != null || gSitMain.getPlayerSitService().getWaitEjectPlayers().contains(player) || player.getPassengers().isEmpty()) return;
-        gSitMain.getPlayerSitService().stopPlayerSit(player, GetUpReason.KICKED);
+        if(!gSitMain.getConfigService().PS_SNEAK_EJECTS || !event.isSneaking() || player.isFlying() || player.getVehicle() != null || gSitMain.getPlayerSitService().getPreventDismountStackPlayers().contains(player) || player.getPassengers().isEmpty()) return;
+        gSitMain.getPlayerSitService().stopPlayerSit(player, GetUpReason.KICKED, true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerGameModeChangeEvent(PlayerGameModeChangeEvent event) { if(event.getNewGameMode() == GameMode.SPECTATOR) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GetUpReason.ACTION); }
+    public void playerGameModeChangeEvent(PlayerGameModeChangeEvent event) { if(event.getNewGameMode() == GameMode.SPECTATOR) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GetUpReason.ACTION, true); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void playerDeathEvent(PlayerDeathEvent event) { if(event.getEntity().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getEntity(), GetUpReason.DEATH); }
+    public void playerDeathEvent(PlayerDeathEvent event) { if(event.getEntity().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getEntity(), GetUpReason.DEATH, true); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void playerQuitEvent(PlayerQuitEvent event) { if(event.getPlayer().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GetUpReason.QUIT); }
+    public void playerQuitEvent(PlayerQuitEvent event) { if(event.getPlayer().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GetUpReason.QUIT, true); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerTeleportEvent(PlayerTeleportEvent event) { gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GetUpReason.TELEPORT); }
+    public void playerTeleportEvent(PlayerTeleportEvent event) { gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GetUpReason.TELEPORT, true); }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void entityDamageEvent(EntityDamageEvent event) { if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof LivingEntity && event.getEntity().getVehicle() != null && event.getEntity().getVehicle().getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) event.setCancelled(true); }
+    public void entityDamageEvent(EntityDamageEvent event) { if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof LivingEntity && event.getEntity().getVehicle() != null && event.getEntity().getVehicle().getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) event.setCancelled(true); }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) {
@@ -73,11 +74,7 @@ public class PlayerSitEventHandler implements Listener {
         double distance = gSitMain.getConfigService().PS_MAX_DISTANCE;
         if(distance > 0d && target.getLocation().add(0, target.getHeight() / 2, 0).distance(player.getLocation().clone().add(0, player.getHeight() / 2, 0)) > distance) return;
 
-        if(gSitMain.getPlotSquaredLink() != null && !gSitMain.getPlotSquaredLink().canUseSitInLocation(target.getLocation(), player)) return;
-
-        if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(target.getLocation(), gSitMain.getWorldGuardLink().getFlag("playersit"))) return;
-
-        if(gSitMain.getGriefPreventionLink() != null && !gSitMain.getGriefPreventionLink().canUseInLocation(target.getLocation(), player)) return;
+        if(!gSitMain.getEnvironmentUtil().canUseInLocation(target.getLocation(), player, "playersit")) return;
 
         if(gSitMain.getPassengerUtil().isEntityInEntityPassengerList(target, player) || gSitMain.getPassengerUtil().isEntityInEntityPassengerList(player, target)) return;
 

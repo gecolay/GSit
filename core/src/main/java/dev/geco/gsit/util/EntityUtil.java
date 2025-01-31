@@ -4,6 +4,7 @@ import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.IGCrawl;
 import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.service.PlayerSitService;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.AreaEffectCloud;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 
 import java.lang.reflect.Method;
-import java.util.UUID;
 
 public class EntityUtil implements IEntityUtil {
 
@@ -101,18 +101,13 @@ public class EntityUtil implements IEntityUtil {
     }
 
     @Override
-    public UUID createPlayerSeatEntity(Entity holder, Entity entity) {
-        if(entity == null || !entity.isValid()) return null;
+    public boolean createPlayerSeatEntities(Player player, Player target) {
+        if(player == null || !player.isValid()) return false;
 
         int maxEntities = gSitMain.getPlayerSitService().getSeatEntityStackCount();
-        if(maxEntities == 0) {
-            holder.addPassenger(entity);
-            return null;
-        }
-
-        Entity lastEntity = holder;
+        Entity lastEntity = target;
         try {
-            World world = holder.getWorld();
+            World world = target.getWorld();
             Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
 
             for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
@@ -124,15 +119,15 @@ public class EntityUtil implements IEntityUtil {
                     try { areaEffectCloud.setRadius(0); } catch (Throwable ignored) { }
                     try { areaEffectCloud.setGravity(false); } catch (Throwable ignored) { }
                     try { areaEffectCloud.setInvulnerable(true); } catch (Throwable ignored) { }
-                    areaEffectCloud.addScoreboardTag(GSitMain.NAME + "_PlayerSeatEntity");
+                    areaEffectCloud.addScoreboardTag(PlayerSitService.PLAYERSIT_ENTITY_TAG);
                     finalLastEntity.addPassenger(areaEffectCloud);
-                    if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(entity);
+                    if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(player);
                 };
 
                 lastEntity = (Entity) spawnMethod.invoke(world, finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloudConsumer);
             }
         } catch (Throwable e) { e.printStackTrace(); }
-        return lastEntity.getUniqueId();
+        return true;
     }
 
     @Override

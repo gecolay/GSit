@@ -2,7 +2,7 @@ package dev.geco.gsit.mcv.v1_21_2.object;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.service.PlayerSitService;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Location;
@@ -22,7 +22,7 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         setRadius(0);
         setNoGravity(true);
         setInvulnerable(true);
-        addTag(GSitMain.NAME + "_" + getClass().getSimpleName());
+        addTag(PlayerSitService.PLAYERSIT_ENTITY_TAG);
         List<Field> vehicleList = new ArrayList<>();
         for(Field field : Entity.class.getDeclaredFields()) if(field.getType().equals(Entity.class)) vehicleList.add(field);
         vehicle = vehicleList.getFirst();

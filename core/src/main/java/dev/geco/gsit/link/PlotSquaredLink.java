@@ -20,7 +20,7 @@ public class PlotSquaredLink {
 
     public boolean canUsePlayerSitInLocation(Location Location, Player Player) { return gSitMain.getEntityUtil().isPlayerSitLocationValid(Location) && canUseInLocation(Location, Player); }
 
-    private boolean canUseInLocation(Location Location, Player Player) {
+    public boolean canUseInLocation(Location Location, Player Player) {
         try {
             PlotAPI plotAPI = new PlotAPI();
 

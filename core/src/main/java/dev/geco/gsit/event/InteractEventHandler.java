@@ -55,11 +55,7 @@ public class InteractEventHandler implements Listener {
 
         if(!gSitMain.getConfigService().ALLOW_UNSAFE && !(clickedBlock.getRelative(BlockFace.UP).isPassable())) return;
 
-        if(gSitMain.getPlotSquaredLink() != null && !gSitMain.getPlotSquaredLink().canUsePlayerSitInLocation(location, player)) return;
-
-        if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(location, gSitMain.getWorldGuardLink().getFlag("sit"))) return;
-
-        if(gSitMain.getGriefPreventionLink() != null && !gSitMain.getGriefPreventionLink().canUseInLocation(location, player)) return;
+        if(!gSitMain.getEnvironmentUtil().canUseInLocation(location, player, "sit")) return;
 
         if(!gSitMain.getConfigService().SAME_BLOCK_REST && !gSitMain.getSitService().kickSeatEntitiesFromBlock(clickedBlock, player)) return;
 

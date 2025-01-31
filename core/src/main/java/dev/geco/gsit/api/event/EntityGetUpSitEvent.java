@@ -11,7 +11,7 @@ public class EntityGetUpSitEvent extends EntityEvent {
 
     private final GSeat seat;
     private final GetUpReason reason;
-    private static final HandlerList HANDLERS = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
 
     public EntityGetUpSitEvent(@NotNull GSeat seat, @NotNull GetUpReason reason) {
         super(seat.getEntity());
@@ -25,8 +25,8 @@ public class EntityGetUpSitEvent extends EntityEvent {
 
     public @NotNull GetUpReason getReason() { return reason; }
 
-    public @NotNull HandlerList getHandlers() { return HANDLERS; }
+    public @NotNull HandlerList getHandlers() { return handlers; }
 
-    public static @NotNull HandlerList getHandlerList() { return HANDLERS; }
+    public static @NotNull HandlerList getHandlerList() { return handlers; }
 
 }

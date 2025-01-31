@@ -113,7 +113,7 @@ Options:
     # Allow crawling by default without using 'crawl toggle'
     default-crawl-mode: true
 
-  # Restrict all features to trusted regions only (for region plugins)
+  # Restrict all features to be only available to trusted players in a region (supported: PlotSquared & GriefPrevention)
   trusted-region-only: false
 
   # List of worlds where all features are disabled

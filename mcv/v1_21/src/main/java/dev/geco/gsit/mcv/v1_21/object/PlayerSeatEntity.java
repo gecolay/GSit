@@ -1,6 +1,6 @@
 package dev.geco.gsit.mcv.v1_21.object;
 
-import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.service.PlayerSitService;
 import net.minecraft.world.entity.AreaEffectCloud;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -13,7 +13,7 @@ public class PlayerSeatEntity extends AreaEffectCloud {
         setRadius(0);
         setNoGravity(true);
         setInvulnerable(true);
-        addTag(GSitMain.NAME + "_" + getClass().getSimpleName());
+        addTag(PlayerSitService.PLAYERSIT_ENTITY_TAG);
     }
 
     @Override

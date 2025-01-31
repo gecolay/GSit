@@ -14,14 +14,15 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class PlayerSitService {
 
+    public static final String PLAYERSIT_ENTITY_TAG = GSitMain.NAME + "_PlayerSeatEntity";
+
     private final GSitMain gSitMain;
     private final int seatEntityStackCount;
-    private final HashMap<UUID, Long> spawnTimes = new HashMap<>();
-    private final List<Player> waitEject = new ArrayList<>();
+    private final HashMap<String, Long> spawnTimes = new HashMap<>();
+    private final List<Player> preventDismountStackPlayers = new ArrayList<>();
     private int playerSitUsageCount = 0;
     private long playerSitUsageNanoTime = 0;
 
@@ -35,17 +36,17 @@ public class PlayerSitService {
     public void removePlayerSitEntities() {
         for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) {
             try {
-                if(entity.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) entity.remove();
+                if(entity.getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)) entity.remove();
             } catch (Throwable ignored) { }
         }
         spawnTimes.clear();
     }
 
-    public List<Player> getWaitEjectPlayers() { return waitEject; }
+    public List<Player> getPreventDismountStackPlayers() { return preventDismountStackPlayers; }
 
     public boolean isPlayerInPlayerSitStack(Player player) {
-        if(player.getVehicle() != null && player.getVehicle().getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) return true;
-        return player.getPassengers().stream().filter(passenger -> passenger.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")).findFirst().orElse(null) != null;
+        if(player.getVehicle() != null && player.getVehicle().getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)) return true;
+        return player.getPassengers().stream().filter(passenger -> passenger.getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)).findFirst().orElse(null) != null;
     }
 
     public boolean sitOnPlayer(Player player, Player target) {
@@ -55,70 +56,72 @@ public class PlayerSitService {
         Bukkit.getPluginManager().callEvent(prePlayerPlayerSitEvent);
         if(prePlayerPlayerSitEvent.isCancelled()) return false;
 
-        UUID topEntityUuid = gSitMain.getEntityUtil().createPlayerSeatEntity(target, player);
+        if(!gSitMain.getEntityUtil().createPlayerSeatEntities(player, target)) return false;
         if(gSitMain.getConfigService().CUSTOM_MESSAGE) gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-playersit-info");
         playerSitUsageCount++;
         Bukkit.getPluginManager().callEvent(new PlayerPlayerSitEvent(player, target));
-        if(topEntityUuid != null) spawnTimes.put(topEntityUuid, System.nanoTime());
+        spawnTimes.put(player.getUniqueId().toString() + target.getUniqueId(), System.nanoTime());
 
         return true;
     }
+    public boolean stopPlayerSit(Player player, GetUpReason getUpReason, boolean removePassengers) { return stopPlayerSit(player, getUpReason, removePassengers, true); }
 
-    public boolean stopPlayerSit(Entity entity, GetUpReason getUpReason) {
-        if(entity instanceof Player) {
-            PrePlayerGetUpPlayerSitEvent prePlayerGetUpPlayerSitEvent = new PrePlayerGetUpPlayerSitEvent((Player) entity, getUpReason);
+    public boolean stopPlayerSit(Player player, GetUpReason getUpReason, boolean removePassengers, boolean callPreEvent) {
+        if(player.getPassengers().isEmpty() && player.getVehicle() == null) return true;
+
+        // TODO: Refactor the `stopPlayerSit` to create better pre and post events with more data about the players
+
+        if(callPreEvent) {
+            PrePlayerGetUpPlayerSitEvent prePlayerGetUpPlayerSitEvent = new PrePlayerGetUpPlayerSitEvent(player, getUpReason);
             Bukkit.getPluginManager().callEvent(prePlayerGetUpPlayerSitEvent);
             if(prePlayerGetUpPlayerSitEvent.isCancelled()) return false;
         }
 
-        removePassengers(entity);
-        removeVehicles(entity);
+        if(removePassengers) removePassengers(player, player);
+        removeVehicles(player, player);
 
-        if(entity.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) {
-            long spawnTime = spawnTimes.getOrDefault(entity.getUniqueId(), -1L);
-            if(spawnTime != -1) {
-                playerSitUsageNanoTime += System.nanoTime() - spawnTime;
-                spawnTimes.remove(entity.getUniqueId());
-            }
-            entity.remove();
-        }
-
-        if(entity instanceof Player) Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent((Player) entity, getUpReason));
+        Bukkit.getPluginManager().callEvent(new PlayerGetUpPlayerSitEvent(player, getUpReason));
 
         return true;
     }
 
-    private void removePassengers(Entity entity) {
+    private void removePassengers(Entity entity, Player source) {
         for(Entity passenger : entity.getPassengers()) {
-            if(!passenger.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) continue;
-
-            removePassengers(passenger);
-
-            long spawnTime = spawnTimes.getOrDefault(entity.getUniqueId(), -1L);
-            if(spawnTime != -1) {
-                playerSitUsageNanoTime += System.nanoTime() - spawnTime;
-                spawnTimes.remove(entity.getUniqueId());
+            if(passenger instanceof Player player) {
+                finishStats(player, source);
+                continue;
             }
-
+            if(!passenger.getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)) continue;
+            removePassengers(passenger, source);
             passenger.remove();
         }
     }
 
-    private void removeVehicles(Entity entity) {
+    private void removeVehicles(Entity entity, Player source) {
         Entity vehicle = entity.getVehicle();
         if(vehicle == null) return;
-
-        if(!vehicle.getScoreboardTags().contains(GSitMain.NAME + "_PlayerSeatEntity")) return;
-
-        removeVehicles(vehicle);
-
-        long spawnTime = spawnTimes.getOrDefault(entity.getUniqueId(), -1L);
-        if(spawnTime != -1) {
-            playerSitUsageNanoTime += System.nanoTime() - spawnTime;
-            spawnTimes.remove(entity.getUniqueId());
+        if(vehicle instanceof Player player) {
+            finishStats(player, source);
+            return;
         }
-
+        if(!vehicle.getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)) return;
+        removeVehicles(vehicle, source);
         vehicle.remove();
+    }
+
+    private void finishStats(Player target, Player player) {
+        String key = target.getUniqueId().toString() + player.getUniqueId();
+        Long value = spawnTimes.get(key);
+        if(value != null) {
+            playerSitUsageNanoTime += System.nanoTime() - value;
+            spawnTimes.remove(key);
+            return;
+        }
+        key = player.getUniqueId().toString() + target.getUniqueId();
+        value = spawnTimes.get(key);
+        if(value == null) return;
+        playerSitUsageNanoTime += System.nanoTime() - value;
+        spawnTimes.remove(key);
     }
 
     public int getPlayerSitUsageCount() { return playerSitUsageCount; }

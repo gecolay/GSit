@@ -53,7 +53,7 @@ public class RegionFlagHandler extends Handler {
     private void handlePlayerSitFlagChange(LocalPlayer localPlayer) {
         if(currentPlayerSitFlagState != StateFlag.State.DENY) return;
         Player player = BukkitAdapter.adapt(localPlayer);
-        gSitMain.getPlayerSitService().stopPlayerSit(player, GetUpReason.REGION);
+        gSitMain.getPlayerSitService().stopPlayerSit(player, GetUpReason.REGION, true);
     }
 
     private void handleCrawlFlagChange(LocalPlayer localPlayer) {

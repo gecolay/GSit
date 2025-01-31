@@ -23,7 +23,7 @@ public class PlayerEventHandler implements Listener {
     private final long MAX_DOUBLE_SNEAK_TIME = 400;
 
     private final GSitMain gSitMain;
-    private final HashMap<Player, Long> crawlPlayers = new HashMap<>();
+    private final HashMap<Player, Long> doubleSneakCrawlPlayers = new HashMap<>();
 
     public PlayerEventHandler(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -40,7 +40,7 @@ public class PlayerEventHandler implements Listener {
         gSitMain.getCrawlService().stopCrawl(player, GetUpReason.QUIT);
         gSitMain.getToggleService().clearEntitySitToggleCache(player.getUniqueId());
 
-        crawlPlayers.remove(player);
+        doubleSneakCrawlPlayers.remove(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -89,21 +89,24 @@ public class PlayerEventHandler implements Listener {
 
         if(!gSitMain.getToggleService().canPlayerUseCrawl(player.getUniqueId())) return;
 
-        if(!crawlPlayers.containsKey(player)) {
-            crawlPlayers.put(player, System.currentTimeMillis());
+        if(!doubleSneakCrawlPlayers.containsKey(player)) {
+            doubleSneakCrawlPlayers.put(player, System.currentTimeMillis());
             return;
         }
 
-        long last = crawlPlayers.get(player);
-        crawlPlayers.put(player, System.currentTimeMillis());
+        long last = doubleSneakCrawlPlayers.get(player);
+        doubleSneakCrawlPlayers.put(player, System.currentTimeMillis());
         if(last < System.currentTimeMillis() - MAX_DOUBLE_SNEAK_TIME) return;
 
         if(!gSitMain.getPermissionService().hasPermission(player, "CrawlSneak", "Crawl.*")) return;
-        if(!gSitMain.getPermissionService().hasPermission(player, "ByPass.Region", "ByPass.*") && !gSitMain.getEnvironmentUtil().isEntityInAllowedWorld(player)) return;
 
-        if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(player.getLocation(), gSitMain.getWorldGuardLink().getFlag("crawl"))) return;
+        if(!gSitMain.getEnvironmentUtil().isEntityInAllowedWorld(player)) return;
 
-        if(gSitMain.getCrawlService().startCrawl(player) == null) crawlPlayers.remove(player);
+        if(!gSitMain.getEnvironmentUtil().canUseInLocation(player.getLocation(), player, "crawl")) return;
+
+        doubleSneakCrawlPlayers.remove(player);
+
+        gSitMain.getCrawlService().startCrawl(player);
     }
 
 }
