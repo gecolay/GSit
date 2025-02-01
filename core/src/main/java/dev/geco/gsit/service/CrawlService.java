@@ -63,7 +63,7 @@ public class CrawlService {
         crawls.remove(crawl);
         crawl.stop();
         Bukkit.getPluginManager().callEvent(new PlayerStopCrawlEvent(crawl, stopReason));
-        crawlUsageNanoTime += crawl.getNano();
+        crawlUsageNanoTime += crawl.getLifetimeInNanoSeconds();
 
         return true;
     }

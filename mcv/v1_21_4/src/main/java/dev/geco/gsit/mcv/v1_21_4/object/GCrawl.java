@@ -142,7 +142,7 @@ public class GCrawl implements IGCrawl {
     public Player getPlayer() { return player; }
 
     @Override
-    public long getNano() { return System.nanoTime() - spawnTime; }
+    public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }
 
     @Override
     public String toString() { return boxEntity.getUUID().toString(); }
