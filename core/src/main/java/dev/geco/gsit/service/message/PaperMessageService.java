@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -16,39 +17,39 @@ import java.util.regex.Pattern;
 
 public class PaperMessageService extends MessageService {
 
-    public final Pattern PARSED_HEX_PATTERN = Pattern.compile("§x(§[0-9a-fA-F]){6}");
-
+    protected final Pattern PARSED_HEX_PATTERN = Pattern.compile("§x(§[0-9a-fA-F]){6}");
     protected final LegacyComponentSerializer legacyComponentSerializer;
     protected final MiniMessage miniMessage;
-    protected final Map<String, String> formatTags = new HashMap<>(); {
-        formatTags.put("0", "<black>");
-        formatTags.put("1", "<dark_blue>");
-        formatTags.put("2", "<dark_green>");
-        formatTags.put("3", "<dark_aqua>");
-        formatTags.put("4", "<dark_red>");
-        formatTags.put("5", "<dark_purple>");
-        formatTags.put("6", "<gold>");
-        formatTags.put("7", "<gray>");
-        formatTags.put("8", "<dark_gray>");
-        formatTags.put("9", "<blue>");
-        formatTags.put("a", "<green>");
-        formatTags.put("b", "<aqua>");
-        formatTags.put("c", "<red>");
-        formatTags.put("d", "<light_purple>");
-        formatTags.put("e", "<yellow>");
-        formatTags.put("f", "<white>");
-        formatTags.put("k", "<obfuscated>");
-        formatTags.put("l", "<bold>");
-        formatTags.put("m", "<strikethrough>");
-        formatTags.put("n", "<underlined>");
-        formatTags.put("o", "<italic>");
-        formatTags.put("r", "<reset>");
-    }
+    protected final Map<String, String> tags;
 
     public PaperMessageService(GSitMain gSitMain) {
         super(gSitMain);
         legacyComponentSerializer = LegacyComponentSerializer.builder().character(AMPERSAND_CHAR).hexColors().build();
         miniMessage = MiniMessage.miniMessage();
+        Map<String, String> tags = new HashMap<>();
+        tags.put("0", "<black>");
+        tags.put("1", "<dark_blue>");
+        tags.put("2", "<dark_green>");
+        tags.put("3", "<dark_aqua>");
+        tags.put("4", "<dark_red>");
+        tags.put("5", "<dark_purple>");
+        tags.put("6", "<gold>");
+        tags.put("7", "<gray>");
+        tags.put("8", "<dark_gray>");
+        tags.put("9", "<blue>");
+        tags.put("a", "<green>");
+        tags.put("b", "<aqua>");
+        tags.put("c", "<red>");
+        tags.put("d", "<light_purple>");
+        tags.put("e", "<yellow>");
+        tags.put("f", "<white>");
+        tags.put("k", "<obfuscated>");
+        tags.put("l", "<bold>");
+        tags.put("m", "<strikethrough>");
+        tags.put("n", "<underlined>");
+        tags.put("o", "<italic>");
+        tags.put("r", "<reset>");
+        this.tags = Collections.unmodifiableMap(tags);
     }
 
     public String toFormattedMessage(String text, Object... rawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirectly(formatText(text, rawReplaceList))); }
@@ -78,7 +79,7 @@ public class PaperMessageService extends MessageService {
             lastIndex = matcher.end();
         }
         result.append(text, lastIndex, text.length());
-        for(Map.Entry<String, String> tag : formatTags.entrySet()) {
+        for(Map.Entry<String, String> tag : tags.entrySet()) {
             String key = tag.getKey();
             String value = tag.getValue();
             String upperKey = key.toUpperCase();

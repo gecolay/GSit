@@ -127,12 +127,12 @@ public class GSitMain extends JavaPlugin {
     public void onLoad() {
         gSitMain = this;
 
-        versionService = new VersionService(this);
         configService = new ConfigService(this);
-        dataService = new DataService(this);
         updateService = new UpdateService(this);
         permissionService = new PermissionService();
         taskService = new TaskService(this);
+        dataService = new DataService(this);
+        versionService = new VersionService(this);
         sitService = new SitService(this);
         playerSitService = new PlayerSitService(this);
         poseService = new PoseService(this);
@@ -226,7 +226,6 @@ public class GSitMain extends JavaPlugin {
     }
 
     private void setupEvents() {
-
         getServer().getPluginManager().registerEvents(new PlayerEventHandler(this), this);
         getServer().getPluginManager().registerEvents(new PlayerSitEventHandler(this), this);
         getServer().getPluginManager().registerEvents(new BlockEventHandler(this), this);
@@ -250,8 +249,8 @@ public class GSitMain extends JavaPlugin {
     }
 
     private boolean connectDatabase(CommandSender sender) {
-        boolean connect = dataService.connect();
-        if(connect) return true;
+        boolean connected = dataService.connect();
+        if(connected) return true;
         messageService.sendMessage(sender, "Plugin.plugin-data");
         Bukkit.getPluginManager().disablePlugin(this);
         return false;
