@@ -34,12 +34,12 @@ public class UpdateService {
         gSitMain.getMessageService().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
     }
 
-    public void loginCheckForUpdates(Player Player) {
+    public void checkForUpdates(Player player) {
         if(!gSitMain.getConfigService().CHECK_FOR_UPDATE) return;
-        if(!gSitMain.getPermissionService().hasPermission(Player, "Update")) return;
+        if(!gSitMain.getPermissionService().hasPermission(player, "Update")) return;
         checkVersion();
         if(isLatestVersion) return;
-        gSitMain.getMessageService().sendMessage(Player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
+        gSitMain.getMessageService().sendMessage(player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
     }
 
     private void getSpigotVersion(Consumer<String> versionConsumer) {
@@ -59,15 +59,15 @@ public class UpdateService {
         if(lastCheckDate != null && lastCheckDate.equals(today)) return;
         lastCheckDate = today;
         try {
-            getSpigotVersion(sVersion -> {
-                latestVersion = sVersion;
+            getSpigotVersion(spigotVersion -> {
+                latestVersion = spigotVersion;
                 if(latestVersion == null) {
                     isLatestVersion = true;
                     return;
                 }
                 String pluginVersion = gSitMain.getDescription().getVersion();
-                String[] pluginVersionParts = shortVersion(pluginVersion).split("\\.");
-                String[] spigotVersionParts = shortVersion(latestVersion).split("\\.");
+                String[] pluginVersionParts = getShortVersion(pluginVersion).split("\\.");
+                String[] spigotVersionParts = getShortVersion(latestVersion).split("\\.");
                 int minLength = Math.min(pluginVersionParts.length, spigotVersionParts.length);
                 for(int i = 0; i < minLength; i++) {
                     int pluginPart = Integer.parseInt(pluginVersionParts[i]);
@@ -85,6 +85,6 @@ public class UpdateService {
         } catch(Throwable e) { isLatestVersion = true; }
     }
 
-    private String shortVersion(String Version) { return Version.replaceAll("[\\[\\] ]", ""); }
+    private String getShortVersion(String version) { return version.replaceAll("[\\[\\] ]", ""); }
 
 }

@@ -23,7 +23,7 @@ public class GSitAPI {
      * Returns the plugin instance for GSit
      * @author Gecolay
      * @since 2.0.0
-     * @return plugin instance
+     * @return Plugin instance
      */
     public static @NotNull GSitMain getInstance() {
         return GSitMain.getInstance();
@@ -63,83 +63,83 @@ public class GSitAPI {
     }
 
     /**
-     * Gets all seat objects
+     * Gets all seats
      * @author Gecolay
      * @since 2.0.0
-     * @return List of all seat objects
+     * @return List of all seats
      */
     public static @NotNull List<GSeat> getAllSeats() {
         return getInstance().getSitService().getAllSeats();
     }
 
     /**
-     * Gets the seat object of an entity
+     * Gets the seat of an entity
      * @author Gecolay
      * @since 2.0.0
      * @param entity Entity
-     * @return Seat object or <code>null</code> if there was no seat object
+     * @return Seat or <code>null</code> if there was no seat
      */
     public static @Nullable GSeat getSeatByEntity(@NotNull LivingEntity entity) {
         return getInstance().getSitService().getSeatByEntity(entity);
     }
 
     /**
-     * Gets all seat objects by a block
+     * Gets all seats by a block
      * @author Gecolay
      * @since 2.0.0
      * @param block Block
-     * @return List of seat objects
+     * @return List of seats
      */
     public static @NotNull List<GSeat> getSeatsByBlock(@NotNull Block block) {
         return getInstance().getSitService().getSeatsByBlock(block);
     }
 
     /**
-     * Gets all seat objects by a list of blocks
+     * Gets all seats by a list of blocks
      * @author Gecolay
      * @since 2.0.0
      * @param blocks Blocks
-     * @return List of seat objects
+     * @return List of seats
      */
     public static @NotNull List<GSeat> getSeatsByBlocks(@NotNull List<Block> blocks) {
         return getInstance().getSitService().getSeatsByBlocks(blocks);
     }
 
     /**
-     * Creates a new seat object on a block for an entity
+     * Creates a new seat on a block for an entity
      * @author Gecolay
      * @since 2.0.0
-     * @param block Block which should be connected to the returned seat object
+     * @param block Block which should be connected to the returned seat
      * @param entity Entity
-     * @return Seat object or <code>null</code> if the creation failed or was cancelled by event
+     * @return Seat or <code>null</code> if the creation failed or was cancelled by event
      */
     public static @Nullable GSeat createSeat(@NotNull Block block, @NotNull LivingEntity entity) {
         return getInstance().getSitService().createSeat(block, entity);
     }
 
     /**
-     * Creates a new seat object on a block for an entity
+     * Creates a new seat on a block for an entity
      * The seat can be static or rotating
      * @author Gecolay
      * @since 2.0.0
-     * @param block Block which should be connected to the returned seat object
+     * @param block Block which should be connected to the returned seat
      * @param entity Entity
      * @param canRotate Can the seat rotate
      * @param seatRotation The default rotation of the seat
      * @param sitInBlockCenter Should the seat location be centered on the block
-     * @return Seat object or <code>null</code> if the creation failed or was cancelled by event
+     * @return Seat or <code>null</code> if the creation failed or was cancelled by event
      */
     public static @Nullable GSeat createSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean canRotate, float seatRotation, boolean sitInBlockCenter) {
         return getInstance().getSitService().createSeat(block, entity, canRotate, 0d, 0d, 0d, seatRotation, sitInBlockCenter);
     }
 
     /**
-     * Creates a new seat object on a block for an entity
+     * Creates a new seat on a block for an entity
      * The seat can be static or rotating
      * The seat can be moved to with an offset
      * @author Gecolay
      * @since 2.0.0
-     * @param block Block which should be connected to the returned seat object
+     * @param block Block which should be connected to the returned seat
      * @param entity Entity
      * @param canRotate Can the seat rotate
      * @param xOffset The x coordinate offset for the seat
@@ -147,29 +147,29 @@ public class GSitAPI {
      * @param zOffset The z coordinate offset for the seat
      * @param seatRotation The default rotation of the seat
      * @param sitInBlockCenter Should the seat location be centered on the block
-     * @return Seat object or <code>null</code> if the creation failed or was cancelled by event
+     * @return Seat or <code>null</code> if the creation failed or was cancelled by event
      */
     public static @Nullable GSeat createSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
         return getInstance().getSitService().createSeat(block, entity, canRotate, xOffset, yOffset, zOffset, seatRotation, sitInBlockCenter);
     }
 
     /**
-     * Moves an entity on a seat object in a block direction
+     * Moves an entity on a seat in a block direction
      * @author Gecolay
      * @since 1.0.4
      * @param entity Entity
-     * @param blockDirection The direction in which the seat object should get moved
+     * @param blockDirection The direction in which the seat should get moved
      */
     public static void moveSeat(@NotNull LivingEntity entity, @NotNull BlockFace blockDirection) {
         getInstance().getSitService().moveSeat(entity, blockDirection);
     }
 
     /**
-     * Removes a seat object for an entity
+     * Removes a seat for an entity
      * @author Gecolay
      * @since 2.0.0
      * @param entity Entity
-     * @param stopReason The reason why the seat object gets removed
+     * @param stopReason The reason why the seat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
     public static boolean removeSeat(@NotNull LivingEntity entity, @NotNull GStopReason stopReason) {
@@ -177,12 +177,12 @@ public class GSitAPI {
     }
 
     /**
-     * Removes a seat object for an entity
+     * Removes a seat for an entity
      * The return teleport can be disabled, if for example the entity already teleports somewhere else
      * @author Gecolay
      * @since 2.0.0
      * @param entity Entity
-     * @param stopReason The reason why the seat object gets removed
+     * @param stopReason The reason why the seat gets removed
      * @param useReturnLocation Should the entity get teleported to the return location
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */

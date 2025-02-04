@@ -29,7 +29,7 @@ public class PlayerEventHandler implements Listener {
         this.gSitMain = gSitMain;
     }
 
-    public void playerJoinEvent(PlayerJoinEvent event) { gSitMain.getUpdateService().loginCheckForUpdates(event.getPlayer()); }
+    public void playerJoinEvent(PlayerJoinEvent event) { gSitMain.getUpdateService().checkForUpdates(event.getPlayer()); }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void playerQuitEvent(PlayerQuitEvent event) {
