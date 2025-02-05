@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class SeatEntity extends ArmorStand {
 
     private boolean rotate = false;
-    private Callback callback = null;
+    private Runnable runnable = null;
 
     public SeatEntity(Location location) {
         super(((CraftWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
@@ -37,7 +37,7 @@ public class SeatEntity extends ArmorStand {
 
     @Override
     public void tick() {
-        if(callback != null) callback.call();
+        if(runnable != null) runnable.run();
         if(!isAlive() || !valid || !rotate) return;
         Entity rider = getFirstPassenger();
         if(rider == null) return;
@@ -45,7 +45,7 @@ public class SeatEntity extends ArmorStand {
         yRotO = getYRot();
     }
 
-    public void setCallback(Callback Callback) { callback = Callback; }
+    public void setRunnable(Runnable runnable) { this.runnable = runnable; }
 
     @Override
     public void move(@NotNull MoverType moverType, @NotNull Vec3 movement) { }
@@ -61,7 +61,5 @@ public class SeatEntity extends ArmorStand {
 
     @Override
     public boolean dismountsUnderwater() { return false; }
-
-    public interface Callback { void call(); }
 
 }

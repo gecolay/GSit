@@ -207,7 +207,7 @@ public class GPose implements IGPose {
 
         Bukkit.getPluginManager().registerEvents(listener, gSitMain);
 
-        ((SeatEntity) ((CraftEntity) seat.getSeatEntity()).getHandle()).setCallback(() -> {
+        ((SeatEntity) ((CraftEntity) seat.getSeatEntity()).getHandle()).setRunnable(() -> {
             List<Player> newNearbyPlayers = getNearbyPlayers();
 
             for(Player nearbyPlayer : newNearbyPlayers) {
@@ -246,7 +246,7 @@ public class GPose implements IGPose {
 
     @Override
     public void remove() {
-        ((SeatEntity) ((CraftEntity) seat.getSeatEntity()).getHandle()).setCallback(null);
+        ((SeatEntity) ((CraftEntity) seat.getSeatEntity()).getHandle()).setRunnable(null);
 
         HandlerList.unregisterAll(listener);
         seatPlayer.removeScoreboardTag(PoseService.POSE_TAG);
