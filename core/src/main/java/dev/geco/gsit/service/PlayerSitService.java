@@ -34,11 +34,9 @@ public class PlayerSitService {
     public int getSeatEntityStackCount() { return seatEntityStackCount; }
 
     public void removePlayerSitEntities() {
-        for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) {
-            try {
-                if(entity.getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)) entity.remove();
-            } catch(Throwable ignored) { }
-        }
+        try {
+            for(World world : Bukkit.getWorlds()) for(Entity entity : world.getEntities()) if(entity.getScoreboardTags().contains(PLAYERSIT_ENTITY_TAG)) entity.remove();
+        } catch(Throwable ignored) { }
         spawnTimes.clear();
     }
 
