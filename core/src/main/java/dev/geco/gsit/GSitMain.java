@@ -55,13 +55,13 @@ public class GSitMain extends JavaPlugin {
 
     private final int BSTATS_RESOURCE_ID = 4914;
     private static GSitMain gSitMain;
+    private VersionService versionService;
     private ConfigService configService;
     private MessageService messageService;
     private UpdateService updateService;
     private PermissionService permissionService;
     private TaskService taskService;
     private DataService dataService;
-    private VersionService versionService;
     private SitService sitService;
     private PlayerSitService playerSitService;
     private PoseService poseService;
@@ -80,6 +80,8 @@ public class GSitMain extends JavaPlugin {
 
     public static GSitMain getInstance() { return gSitMain; }
 
+    public VersionService getVersionManager() { return versionService; }
+
     public ConfigService getConfigService() { return configService; }
 
     public MessageService getMessageService() { return messageService; }
@@ -91,8 +93,6 @@ public class GSitMain extends JavaPlugin {
     public TaskService getTaskService() { return taskService; }
 
     public DataService getDataService() { return dataService; }
-
-    public VersionService getVersionManager() { return versionService; }
 
     public SitService getSitService() { return sitService; }
 
@@ -127,12 +127,13 @@ public class GSitMain extends JavaPlugin {
     public void onLoad() {
         gSitMain = this;
 
+        versionService = new VersionService(this);
         configService = new ConfigService(this);
+
         updateService = new UpdateService(this);
         permissionService = new PermissionService();
         taskService = new TaskService(this);
         dataService = new DataService(this);
-        versionService = new VersionService(this);
         sitService = new SitService(this);
         playerSitService = new PlayerSitService(this);
         poseService = new PoseService(this);
