@@ -39,10 +39,10 @@ public class PlayerSitEventHandler implements Listener {
     public void playerGameModeChangeEvent(PlayerGameModeChangeEvent event) { if(event.getNewGameMode() == GameMode.SPECTATOR) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.GAMEMODE_CHANGE); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void playerDeathEvent(PlayerDeathEvent event) { if(event.getEntity().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getEntity(), GStopReason.DEATH); }
+    public void playerDeathEvent(PlayerDeathEvent event) { gSitMain.getPlayerSitService().stopPlayerSit(event.getEntity(), GStopReason.DEATH); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void playerQuitEvent(PlayerQuitEvent event) { if(event.getPlayer().getVehicle() != null) gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.DISCONNECT); }
+    public void playerQuitEvent(PlayerQuitEvent event) { gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.DISCONNECT); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerTeleportEvent(PlayerTeleportEvent event) { gSitMain.getPlayerSitService().stopPlayerSit(event.getPlayer(), GStopReason.TELEPORT); }
