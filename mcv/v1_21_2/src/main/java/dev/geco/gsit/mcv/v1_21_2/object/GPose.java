@@ -85,6 +85,7 @@ public class GPose implements IGPose {
     private Set<Player> nearbyPlayers = new HashSet<>();
     private final ServerPlayer serverPlayer;
     protected final ServerPlayer playerNpc;
+    private final PlayerSeatEntity hideNameEntity;
     private final Location blockLocation;
     private final Block bedBlock;
     private final BlockPos bedPos;
@@ -135,6 +136,8 @@ public class GPose implements IGPose {
         createNpcPacket = new ClientboundAddEntityPacket(playerNpc.getId(), playerNpc.getUUID(), playerNpc.getX(), playerNpc.getY(), playerNpc.getZ(), playerNpc.getXRot(), playerNpc.getYRot(), playerNpc.getType(), 0, playerNpc.getDeltaMovement(), playerNpc.getYHeadRot());
         if(pose == org.bukkit.entity.Pose.SLEEPING) teleportNpcPacket = new ClientboundTeleportEntityPacket(playerNpc.getId(), net.minecraft.world.entity.PositionMoveRotation.of(playerNpc), Set.of(), false);
         if(pose == org.bukkit.entity.Pose.SPIN_ATTACK) rotateNpcPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90f), true);
+
+        hideNameEntity = new PlayerSeatEntity(seatPlayer.getLocation());
 
         listener = new Listener() {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -212,11 +215,10 @@ public class GPose implements IGPose {
 
         for(Player nearbyPlayer : nearbyPlayers) addViewerPlayer(nearbyPlayer);
 
-        PlayerSeatEntity placeholderEntity = new PlayerSeatEntity(seatPlayer.getLocation());
-        placeholderEntity.setVehicle(playerNpc);
+        hideNameEntity.setVehicle(playerNpc);
         List<Packet<? super ClientGamePacketListener>> playerPackages = new ArrayList<>();
-        playerPackages.add(new ClientboundAddEntityPacket(placeholderEntity.getId(), placeholderEntity.getUUID(), placeholderEntity.getX(), placeholderEntity.getY(), placeholderEntity.getZ(), placeholderEntity.getXRot(), placeholderEntity.getYRot(), placeholderEntity.getType(), 0, placeholderEntity.getDeltaMovement(), placeholderEntity.getYHeadRot()));
-        playerPackages.add(new ClientboundSetEntityDataPacket(placeholderEntity.getId(), placeholderEntity.getEntityData().getNonDefaultValues()));
+        playerPackages.add(new ClientboundAddEntityPacket(hideNameEntity.getId(), hideNameEntity.getUUID(), hideNameEntity.getX(), hideNameEntity.getY(), hideNameEntity.getZ(), hideNameEntity.getXRot(), hideNameEntity.getYRot(), hideNameEntity.getType(), 0, hideNameEntity.getDeltaMovement(), hideNameEntity.getYHeadRot()));
+        playerPackages.add(new ClientboundSetEntityDataPacket(hideNameEntity.getId(), hideNameEntity.getEntityData().getNonDefaultValues()));
         playerPackages.add(new ClientboundSetPassengersPacket(playerNpc));
         sendPacket(serverPlayer, new ClientboundBundlePacket(playerPackages));
 
@@ -267,6 +269,7 @@ public class GPose implements IGPose {
         seatPlayer.removeScoreboardTag(PoseService.POSE_TAG);
 
         for(Player nearbyPlayer : nearbyPlayers) removeViewerPlayer(nearbyPlayer);
+        sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(hideNameEntity.getId()));
 
         if(pose == Pose.SLEEPING && gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
 
