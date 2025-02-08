@@ -64,8 +64,10 @@ import org.bukkit.inventory.MainHand;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public class GPose implements IGPose {
@@ -74,7 +76,7 @@ public class GPose implements IGPose {
     private final GSeat seat;
     private final Player seatPlayer;
     private final Pose pose;
-    private List<Player> nearbyPlayers = new ArrayList<>();
+    private Set<Player> nearbyPlayers = new HashSet<>();
     private final ServerPlayer serverPlayer;
     protected final ServerPlayer playerNpc;
     private final Location blockLocation;
@@ -232,24 +234,24 @@ public class GPose implements IGPose {
         player.sendBlockChange(blockLocation, bedBlock.getBlockData());
     }
 
-    private List<Player> getNearbyPlayers() {
-        List<Player> playerList = new ArrayList<>();
-        seatPlayer.getWorld().getPlayers().stream().filter(player -> seat.getLocation().distance(player.getLocation()) <= renderRange && player.canSee(seatPlayer)).forEach(playerList::add);
-        return playerList;
+    private Set<Player> getNearbyPlayers() {
+        Set<Player> currentNearbyPlayers = new HashSet<>();
+        seatPlayer.getWorld().getPlayers().stream().filter(player -> seat.getLocation().distance(player.getLocation()) <= renderRange && player.canSee(seatPlayer)).forEach(currentNearbyPlayers::add);
+        return currentNearbyPlayers;
     }
 
     private void startUpdate() {
         taskId = gSitMain.getTaskService().runAtFixedRate(() -> {
-            List<Player> newNearbyPlayers = getNearbyPlayers();
+            Set<Player> currentNearbyPlayers = getNearbyPlayers();
 
-            for(Player nearbyPlayer : newNearbyPlayers) {
+            for(Player nearbyPlayer : currentNearbyPlayers) {
                 if(nearbyPlayers.contains(nearbyPlayer)) continue;
                 nearbyPlayers.add(nearbyPlayer);
                 addViewerPlayer(nearbyPlayer);
             }
 
             for(Player nearbyPlayer : new ArrayList<>(nearbyPlayers)) {
-                if(newNearbyPlayers.contains(nearbyPlayer)) continue;
+                if(currentNearbyPlayers.contains(nearbyPlayer)) continue;
                 nearbyPlayers.remove(nearbyPlayer);
                 removeViewerPlayer(nearbyPlayer);
             }

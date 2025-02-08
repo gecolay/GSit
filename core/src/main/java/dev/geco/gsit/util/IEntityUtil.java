@@ -8,6 +8,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 
+import java.util.Set;
+import java.util.UUID;
+
 public interface IEntityUtil {
 
     void setEntityLocation(Entity entity, Location location);
@@ -18,7 +21,7 @@ public interface IEntityUtil {
 
     Entity createSeatEntity(Location location, Entity entity, boolean canRotate);
 
-    boolean createPlayerSeatEntities(Player player, Player target);
+    Set<UUID> createPlayerSeatEntities(Player player, Player target);
 
     IGPose createPose(GSeat seat, Pose pose);
 

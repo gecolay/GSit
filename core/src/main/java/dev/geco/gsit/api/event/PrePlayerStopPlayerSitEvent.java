@@ -10,19 +10,15 @@ import org.jetbrains.annotations.NotNull;
 public class PrePlayerStopPlayerSitEvent extends PlayerEvent implements Cancellable {
 
     private final GStopReason reason;
-    private final boolean removePassengers;
     private boolean cancel = false;
     private static final HandlerList handlers = new HandlerList();
 
-    public PrePlayerStopPlayerSitEvent(@NotNull Player player, @NotNull GStopReason reason, boolean removePassengers) {
+    public PrePlayerStopPlayerSitEvent(@NotNull Player player, @NotNull GStopReason reason) {
         super(player);
         this.reason = reason;
-        this.removePassengers = removePassengers;
     }
 
     public @NotNull GStopReason getReason() { return reason; }
-
-    public boolean shouldRemovePassengers() { return removePassengers; }
 
     public boolean isCancelled() { return cancel; }
 

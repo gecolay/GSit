@@ -17,7 +17,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class PoseService {
 
@@ -25,7 +29,8 @@ public class PoseService {
 
     private final GSitMain gSitMain;
     private final boolean available;
-    private final List<IGPose> poses = new ArrayList<>();
+    private final HashMap<UUID, IGPose> poses = new HashMap<>();
+    private final HashMap<Block, Set<IGPose>> blockPoses = new HashMap<>();
     private int poseUsageCount = 0;
     private long poseUsageNanoTime = 0;
 
@@ -36,19 +41,17 @@ public class PoseService {
 
     public boolean isAvailable() { return available; }
 
-    public List<IGPose> getAllPoses() { return new ArrayList<>(poses); }
+    public HashMap<UUID, IGPose> getAllPoses() { return poses; }
 
-    public boolean isPlayerPosing(Player player) { return getPoseByPlayer(player) != null; }
+    public boolean isPlayerPosing(Player player) { return poses.containsKey(player.getUniqueId()); }
 
-    public IGPose getPoseByPlayer(Player player) { return poses.stream().filter(pose -> player.equals(pose.getPlayer())).findFirst().orElse(null); }
+    public IGPose getPoseByPlayer(Player player) { return poses.get(player.getUniqueId()); }
 
-    public void removeAllPoses() { for(IGPose pose : getAllPoses()) removePose(pose.getPlayer(), GStopReason.PLUGIN); }
+    public void removeAllPoses() { for(IGPose pose : new ArrayList<>(poses.values())) removePose(pose.getPlayer(), GStopReason.PLUGIN); }
 
-    public boolean isBlockWithPose(Block block) { return poses.stream().anyMatch(pose -> block.equals(pose.getSeat().getBlock())); }
+    public boolean isBlockWithPose(Block block) { return blockPoses.containsKey(block); }
 
-    public List<IGPose> getPosesByBlock(Block block) { return poses.stream().filter(pose -> block.equals(pose.getSeat().getBlock())).toList(); }
-
-    public List<IGPose> getPosesByBlocks(List<Block> blocks) { return poses.stream().filter(pose -> blocks.contains(pose.getSeat().getBlock())).toList(); }
+    public Set<IGPose> getPosesByBlock(Block block) { return blockPoses.getOrDefault(block, Collections.emptySet()); }
 
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
@@ -83,7 +86,8 @@ public class PoseService {
 
         IGPose poseObject = gSitMain.getEntityUtil().createPose(new GSeat(block, seatLocation, player, seatEntity, returnLocation), pose);
         poseObject.spawn();
-        poses.add(poseObject);
+        poses.put(player.getUniqueId(), poseObject);
+        blockPoses.computeIfAbsent(block, k -> new HashSet<>()).add(poseObject);
         poseUsageCount++;
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseObject));
 
@@ -98,7 +102,7 @@ public class PoseService {
 
         PrePlayerStopPoseEvent prePlayerStopPoseEvent = new PrePlayerStopPoseEvent(poseObject, stopReason);
         Bukkit.getPluginManager().callEvent(prePlayerStopPoseEvent);
-        if(prePlayerStopPoseEvent.isCancelled()) return false;
+        if(prePlayerStopPoseEvent.isCancelled() && stopReason.isCancellable()) return false;
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? poseObject.getSeat().getReturnLocation() : poseObject.getSeat().getLocation().add(0d, gSitMain.getSitService().getBaseOffset() + (Tag.STAIRS.isTagged(poseObject.getSeat().getBlock().getType()) ? SitService.STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(poseObject.getSeat().getBlock().getType(), 0d), 0d);
         Location entityLocation = player.getLocation();
@@ -106,7 +110,8 @@ public class PoseService {
         returnLocation.setPitch(entityLocation.getPitch());
         if(player.isValid() && useReturnLocation) gSitMain.getEntityUtil().setEntityLocation(player, returnLocation);
 
-        poses.remove(poseObject);
+        blockPoses.remove(poseObject.getSeat().getBlock());
+        poses.remove(player.getUniqueId());
         poseObject.remove();
         poseObject.getSeat().getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(poseObject, stopReason));

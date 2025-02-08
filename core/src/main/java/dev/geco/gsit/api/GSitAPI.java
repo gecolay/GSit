@@ -14,7 +14,8 @@ import org.bukkit.entity.Pose;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 public class GSitAPI {
@@ -66,9 +67,9 @@ public class GSitAPI {
      * Gets all seats
      * @author Gecolay
      * @since 2.0.0
-     * @return List of all seats
+     * @return Map of all seats
      */
-    public static @NotNull List<GSeat> getAllSeats() {
+    public static @NotNull HashMap<UUID, GSeat> getAllSeats() {
         return getInstance().getSitService().getAllSeats();
     }
 
@@ -88,21 +89,10 @@ public class GSitAPI {
      * @author Gecolay
      * @since 2.0.0
      * @param block Block
-     * @return List of seats
+     * @return Set of seats
      */
-    public static @NotNull List<GSeat> getSeatsByBlock(@NotNull Block block) {
+    public static @NotNull Set<GSeat> getSeatsByBlock(@NotNull Block block) {
         return getInstance().getSitService().getSeatsByBlock(block);
-    }
-
-    /**
-     * Gets all seats by a list of blocks
-     * @author Gecolay
-     * @since 2.0.0
-     * @param blocks Blocks
-     * @return List of seats
-     */
-    public static @NotNull List<GSeat> getSeatsByBlocks(@NotNull List<Block> blocks) {
-        return getInstance().getSitService().getSeatsByBlocks(blocks);
     }
 
     /**
@@ -252,9 +242,9 @@ public class GSitAPI {
      * Gets all pose objects
      * @author Gecolay
      * @since 2.0.0
-     * @return List of all pose objects
+     * @return Map of all pose objects
      */
-    public static @NotNull List<IGPose> getAllPoses() {
+    public static @NotNull HashMap<UUID, IGPose> getAllPoses() {
         return getInstance().getPoseService().getAllPoses();
     }
 
@@ -274,21 +264,10 @@ public class GSitAPI {
      * @author Gecolay
      * @since 2.0.0
      * @param block Block
-     * @return List of pose objects
+     * @return Set of pose objects
      */
-    public static @NotNull List<IGPose> getPosesByBlock(@NotNull Block block) {
+    public static @NotNull Set<IGPose> getPosesByBlock(@NotNull Block block) {
         return getInstance().getPoseService().getPosesByBlock(block);
-    }
-
-    /**
-     * Gets all pose objects by a list of blocks
-     * @author Gecolay
-     * @since 2.0.0
-     * @param blocks Blocks
-     * @return List of pose objects
-     */
-    public static @NotNull List<IGPose> getPosesByBlocks(@NotNull List<Block> blocks) {
-        return getInstance().getPoseService().getPosesByBlocks(blocks);
     }
 
     /**
@@ -381,9 +360,9 @@ public class GSitAPI {
      * Gets all crawl objects
      * @author Gecolay
      * @since 2.0.0
-     * @return List of all crawl objects
+     * @return Map of all crawl objects
      */
-    public static @NotNull List<IGCrawl> getAllCrawls() {
+    public static @NotNull HashMap<UUID, IGCrawl> getAllCrawls() {
         return getInstance().getCrawlService().getAllCrawls();
     }
 

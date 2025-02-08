@@ -199,7 +199,7 @@ public class GSitMain extends JavaPlugin {
     private void unload() {
         dataService.close();
         sitService.removeAllSeats();
-        playerSitService.removePlayerSitEntities();
+        playerSitService.removeAllPlayerSitStacks();
         poseService.removeAllPoses();
         crawlService.removeAllCrawls();
 

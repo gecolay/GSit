@@ -32,7 +32,7 @@ public class PlayerSitEventHandler implements Listener {
     public void playerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         if(!gSitMain.getConfigService().PS_SNEAK_EJECTS || !event.isSneaking() || player.isFlying() || player.getVehicle() != null || gSitMain.getPlayerSitService().getPreventDismountStackPlayers().contains(player) || player.getPassengers().isEmpty()) return;
-        gSitMain.getPlayerSitService().stopPlayerSit(player, GStopReason.KICKED);
+        gSitMain.getPlayerSitService().stopPlayerSit(player, GStopReason.KICKED, true, false, true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

@@ -20,7 +20,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class SitService {
 
@@ -29,7 +33,8 @@ public class SitService {
 
     private final GSitMain gSitMain;
     private final double baseOffset;
-    private final List<GSeat> seats = new ArrayList<>();
+    private final HashMap<UUID, GSeat> seats = new HashMap<>();
+    private final HashMap<Block, Set<GSeat>> blockSeats = new HashMap<>();
     private int sitUsageCount = 0;
     private long sitUsageNanoTime = 0;
 
@@ -40,19 +45,17 @@ public class SitService {
 
     public double getBaseOffset() { return baseOffset; }
 
-    public List<GSeat> getAllSeats() { return new ArrayList<>(seats); }
+    public HashMap<UUID, GSeat> getAllSeats() { return seats; }
 
-    public boolean isEntitySitting(LivingEntity entity) { return getSeatByEntity(entity) != null; }
+    public boolean isEntitySitting(LivingEntity entity) { return seats.containsKey(entity.getUniqueId()); }
 
-    public GSeat getSeatByEntity(LivingEntity entity) { return seats.stream().filter(seat -> entity.equals(seat.getEntity())).findFirst().orElse(null); }
+    public GSeat getSeatByEntity(LivingEntity entity) { return seats.get(entity.getUniqueId()); }
 
-    public void removeAllSeats() { for(GSeat seat : getAllSeats()) removeSeat(seat.getEntity(), GStopReason.PLUGIN); }
+    public void removeAllSeats() { for(GSeat seat : new ArrayList<>(seats.values())) removeSeat(seat.getEntity(), GStopReason.PLUGIN); }
 
-    public boolean isBlockWithSeat(Block block) { return seats.stream().anyMatch(seat -> block.equals(seat.getBlock())); }
+    public boolean isBlockWithSeat(Block block) { return blockSeats.containsKey(block); }
 
-    public List<GSeat> getSeatsByBlock(Block block) { return seats.stream().filter(seat -> block.equals(seat.getBlock())).toList(); }
-
-    public List<GSeat> getSeatsByBlocks(List<Block> blocks) { return seats.stream().filter(seat -> blocks.contains(seat.getBlock())).toList(); }
+    public Set<GSeat> getSeatsByBlock(Block block) { return blockSeats.getOrDefault(block, Collections.emptySet()); }
 
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
         if(!isBlockWithSeat(block)) return true;
@@ -86,7 +89,8 @@ public class SitService {
         }
 
         GSeat seat = new GSeat(block, seatLocation, entity, seatEntity, returnLocation);
-        seats.add(seat);
+        seats.put(entity.getUniqueId(), seat);
+        blockSeats.computeIfAbsent(block, k -> new HashSet<>()).add(seat);
         sitUsageCount++;
         Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
@@ -123,7 +127,7 @@ public class SitService {
 
         PreEntityStopSitEvent preEntityStopSitEvent = new PreEntityStopSitEvent(seat, stopReason);
         Bukkit.getPluginManager().callEvent(preEntityStopSitEvent);
-        if(preEntityStopSitEvent.isCancelled()) return false;
+        if(preEntityStopSitEvent.isCancelled() && stopReason.isCancellable()) return false;
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
         Location entityLocation = entity.getLocation();
@@ -132,7 +136,8 @@ public class SitService {
         if(entity.isValid() && useReturnLocation && gSitMain.getVersionManager().isNewerOrVersion(18, 0)) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
         if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(18, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
 
-        seats.remove(seat);
+        blockSeats.remove(seat.getBlock());
+        seats.remove(entity.getUniqueId());
         seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
         sitUsageNanoTime += seat.getLifetimeInNanoSeconds();

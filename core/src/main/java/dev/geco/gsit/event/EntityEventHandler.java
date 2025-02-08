@@ -33,9 +33,9 @@ public class EntityEventHandler {
             return;
         }
 
-        if(!dismounted.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) return;
+        if(!dismounted.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG) || !gSitMain.getPlayerSitService().isPlayerInPlayerSitStack(player)) return;
 
-        PrePlayerStopPlayerSitEvent preEvent = new PrePlayerStopPlayerSitEvent(player, GStopReason.GET_UP, false);
+        PrePlayerStopPlayerSitEvent preEvent = new PrePlayerStopPlayerSitEvent(player, GStopReason.GET_UP);
         Bukkit.getPluginManager().callEvent(preEvent);
         if(preEvent.isCancelled()) {
             event.setCancelled(true);
@@ -51,8 +51,7 @@ public class EntityEventHandler {
         Entity bottom = gSitMain.getPassengerUtil().getBottomEntityVehicle(dismounted);
         if(gSitMain.getConfigService().PS_BOTTOM_RETURN && player.isValid()) gSitMain.getEntityUtil().setEntityLocation(player, bottom.getLocation());
 
-        Player nextPlayerVehicle = gSitMain.getPassengerUtil().getNextPlayerVehicle(dismounted);
-        if(nextPlayerVehicle != null) gSitMain.getPlayerSitService().stopPlayerSit(nextPlayerVehicle, GStopReason.GET_UP, true, false, false);
+        gSitMain.getPlayerSitService().stopPlayerSit(player, GStopReason.GET_UP, false, true, false);
     }
 
 }

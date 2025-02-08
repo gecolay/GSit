@@ -41,10 +41,4 @@ public class PassengerUtil {
         return getBottomEntityVehicle(entity.getVehicle());
     }
 
-    public Player getNextPlayerVehicle(Entity entity) {
-        if(entity instanceof Player player) return player;
-        if(entity == null || entity.getVehicle() == null) return null;
-        return getNextPlayerVehicle(entity.getVehicle());
-    }
-
 }

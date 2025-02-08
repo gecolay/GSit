@@ -14,6 +14,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class EntityUtil implements IEntityUtil {
 
@@ -101,11 +105,12 @@ public class EntityUtil implements IEntityUtil {
     }
 
     @Override
-    public boolean createPlayerSeatEntities(Player player, Player target) {
-        if(player == null || !player.isValid()) return false;
+    public Set<UUID> createPlayerSeatEntities(Player player, Player target) {
+        if(player == null || !player.isValid()) return Collections.emptySet();
 
         int maxEntities = gSitMain.getPlayerSitService().getSeatEntityStackCount();
         Entity lastEntity = target;
+        Set<UUID> playerSeatEntityIds = new HashSet<>();
         try {
             World world = target.getWorld();
             Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
@@ -125,9 +130,10 @@ public class EntityUtil implements IEntityUtil {
                 };
 
                 lastEntity = (Entity) spawnMethod.invoke(world, finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloudConsumer);
+                playerSeatEntityIds.add(lastEntity.getUniqueId());
             }
         } catch(Throwable e) { e.printStackTrace(); }
-        return true;
+        return playerSeatEntityIds;
     }
 
     @Override

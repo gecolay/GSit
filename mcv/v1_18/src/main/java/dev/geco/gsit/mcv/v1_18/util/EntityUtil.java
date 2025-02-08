@@ -15,6 +15,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 public class EntityUtil implements IEntityUtil {
 
     private final GSitMain gSitMain;
@@ -55,26 +60,32 @@ public class EntityUtil implements IEntityUtil {
     }
 
     @Override
-    public boolean createPlayerSeatEntities(Player player, Player target) {
-        if(player == null || !player.isValid()) return false;
+    public Set<UUID> createPlayerSeatEntities(Player player, Player target) {
+        if(player == null || !player.isValid()) return Collections.emptySet();
 
         net.minecraft.world.entity.Entity topEntity = ((CraftEntity) target).getHandle();
 
         int maxEntities = gSitMain.getPlayerSitService().getSeatEntityStackCount();
         if(maxEntities <= 0) {
             ((CraftEntity) player).getHandle().startRiding(topEntity, true);
-            return true;
+            return Collections.emptySet();
         }
+
+        Set<UUID> playerSeatEntityIds = new HashSet<>();
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
             net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(target.getLocation());
             playerSeatEntity.startRiding(topEntity, true);
             if(entityCount == maxEntities) ((CraftEntity) player).getHandle().startRiding(playerSeatEntity, true);
-            if(!spawnEntity(playerSeatEntity)) return false;
+            if(!spawnEntity(playerSeatEntity)) {
+                ((CraftEntity) player).getHandle().startRiding(topEntity, true);
+                return playerSeatEntityIds;
+            }
+            playerSeatEntityIds.add(playerSeatEntity.getUUID());
             topEntity = playerSeatEntity;
         }
 
-        return true;
+        return playerSeatEntityIds;
     }
 
     private boolean spawnEntity(net.minecraft.world.entity.Entity Entity) { return Entity.level.getWorld().getHandle().entityManager.addNewEntity(Entity); }
