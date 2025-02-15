@@ -18,6 +18,7 @@ public class PlayerStopPlayerSitEvent extends PlayerEvent {
 
     public @NotNull GStopReason getReason() { return reason; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

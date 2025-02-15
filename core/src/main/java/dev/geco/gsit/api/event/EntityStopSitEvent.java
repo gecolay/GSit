@@ -19,12 +19,14 @@ public class EntityStopSitEvent extends EntityEvent {
         this.reason = reason;
     }
 
+    @Override
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
     public @NotNull GSeat getSeat() { return seat; }
 
     public @NotNull GStopReason getReason() { return reason; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

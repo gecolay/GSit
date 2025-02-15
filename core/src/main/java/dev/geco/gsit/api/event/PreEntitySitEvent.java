@@ -18,14 +18,18 @@ public class PreEntitySitEvent extends EntityEvent implements Cancellable {
         this.block = block;
     }
 
+    @Override
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
     public @NotNull Block getBlock() { return block; }
 
+    @Override
     public boolean isCancelled() { return cancel; }
 
+    @Override
     public void setCancelled(boolean cancelled) { cancel = cancelled; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

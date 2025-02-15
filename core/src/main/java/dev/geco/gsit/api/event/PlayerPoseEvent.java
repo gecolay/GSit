@@ -17,6 +17,7 @@ public class PlayerPoseEvent extends PlayerEvent {
 
     public @NotNull IGPose getPose() { return pose; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

@@ -17,6 +17,7 @@ public class PlayerPlayerSitEvent extends PlayerEvent {
 
     public @NotNull Player getTarget() { return target; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

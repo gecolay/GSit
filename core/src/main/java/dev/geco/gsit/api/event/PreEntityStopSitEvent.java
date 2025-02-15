@@ -21,16 +21,20 @@ public class PreEntityStopSitEvent extends EntityEvent implements Cancellable {
         this.reason = reason;
     }
 
+    @Override
     public boolean isCancelled() { return cancel; }
 
+    @Override
     public void setCancelled(boolean cancelled) { cancel = cancelled; }
 
+    @Override
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
     public @NotNull GSeat getSeat() { return seat; }
 
     public @NotNull GStopReason getReason() { return reason; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

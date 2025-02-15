@@ -16,10 +16,12 @@ public class EntitySitEvent extends EntityEvent {
         this.seat = seat;
     }
 
+    @Override
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
     public @NotNull GSeat getSeat() { return seat; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

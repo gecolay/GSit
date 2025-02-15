@@ -19,10 +19,13 @@ public class PrePlayerPlayerSitEvent extends PlayerEvent implements Cancellable 
 
     public @NotNull Player getTarget() { return target; }
 
+    @Override
     public boolean isCancelled() { return cancel; }
 
+    @Override
     public void setCancelled(boolean cancelled) { cancel = cancelled; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }

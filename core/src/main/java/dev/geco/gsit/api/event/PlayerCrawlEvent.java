@@ -17,6 +17,7 @@ public class PlayerCrawlEvent extends PlayerEvent {
 
     public @NotNull IGCrawl getCrawl() { return crawl; }
 
+    @Override
     public @NotNull HandlerList getHandlers() { return handlers; }
 
     public static @NotNull HandlerList getHandlerList() { return handlers; }
