@@ -122,6 +122,7 @@ public class EntityUtil implements IEntityUtil {
                 org.bukkit.util.Consumer<AreaEffectCloud> areaEffectCloudConsumer = (areaEffectCloud) -> {
 
                     try { areaEffectCloud.setRadius(0); } catch(Throwable ignored) { }
+                    try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch(Throwable ignored) { }
                     try { areaEffectCloud.setGravity(false); } catch(Throwable ignored) { }
                     try { areaEffectCloud.setInvulnerable(true); } catch(Throwable ignored) { }
                     areaEffectCloud.addScoreboardTag(PlayerSitService.PLAYERSIT_ENTITY_TAG);
