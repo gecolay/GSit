@@ -27,6 +27,7 @@ public class VersionService {
         this.gSitMain = gSitMain;
         String rawServerVersion = Bukkit.getServer().getBukkitVersion();
         serverVersion = rawServerVersion.substring(0, rawServerVersion.indexOf('-'));
+        if(!isNewerOrVersion(18, 0)) return;
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
         available = hasPackageClass("object.SeatEntity");
         if(available) return;
@@ -46,7 +47,7 @@ public class VersionService {
 
     public Object getLegacyPackageObjectInstance(String className, Object... parameters) {
         try {
-            Class<?> mcvPackageClass = Class.forName(gSitMain.getClass().getPackage().getName() + ".mcv.v1_18." + className);
+            Class<?> mcvPackageClass = Class.forName(gSitMain.getClass().getPackage().getName() + ".mcv.v1_17_1." + className);
             if(parameters.length == 0) return mcvPackageClass.getConstructor().newInstance();
             Class<?>[] parameterTypes = Arrays.stream(parameters).map(Object::getClass).toArray(Class<?>[]::new);
             return mcvPackageClass.getConstructor(parameterTypes).newInstance(parameters);
