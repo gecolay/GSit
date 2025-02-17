@@ -67,7 +67,7 @@ public class SitEventHandler implements Listener {
         BlockFace targetBlockFace = targetRayTrack != null ? targetRayTrack.getHitBlockFace() : null;
         if(targetBlockFace != null && targetBlockFace != BlockFace.UP) return;
         Block targetBlock = targetRayTrack != null ? targetRayTrack.getHitBlock() : null;
-        if(clickedBlock != targetBlock) return;
+        if(targetBlock != null && !clickedBlock.equals(targetBlock)) return;
 
         if(!gSitMain.getToggleService().canEntityUseSit(player.getUniqueId())) return;
 
