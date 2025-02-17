@@ -13,7 +13,7 @@ import dev.geco.gsit.cmd.tab.GCrawlTabComplete;
 import dev.geco.gsit.cmd.tab.GSitTabComplete;
 import dev.geco.gsit.event.BlockEventHandler;
 import dev.geco.gsit.event.EntityEventHandler;
-import dev.geco.gsit.event.InteractEventHandler;
+import dev.geco.gsit.event.SitEventHandler;
 import dev.geco.gsit.event.PlayerEventHandler;
 import dev.geco.gsit.event.PlayerSitEventHandler;
 import dev.geco.gsit.event.feature.SpinConfusionEventHandler;
@@ -230,7 +230,7 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerEventHandler(this), this);
         getServer().getPluginManager().registerEvents(new PlayerSitEventHandler(this), this);
         getServer().getPluginManager().registerEvents(new BlockEventHandler(this), this);
-        getServer().getPluginManager().registerEvents(new InteractEventHandler(this), this);
+        getServer().getPluginManager().registerEvents(new SitEventHandler(this), this);
 
         Listener mcvEntityEventHandler = versionService.isNewerOrVersion(18, 0) ? (Listener) versionService.getPackageObjectInstance("event.EntityEventHandler", this) : null;
         if(mcvEntityEventHandler == null) mcvEntityEventHandler = (Listener) versionService.getLegacyPackageObjectInstance("event.EntityEventHandler", this);

@@ -18,11 +18,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;
 
-public class InteractEventHandler implements Listener {
+public class SitEventHandler implements Listener {
 
     private final GSitMain gSitMain;
 
-    public InteractEventHandler(GSitMain gSitMain) {
+    public SitEventHandler(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
     }
 
