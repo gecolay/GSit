@@ -9,6 +9,7 @@ import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.GStopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -35,6 +36,7 @@ public class SitService {
     private final double baseOffset;
     private final HashMap<UUID, GSeat> seats = new HashMap<>();
     private final HashMap<Block, Set<GSeat>> blockSeats = new HashMap<>();
+    private final HashMap<Block, Material> blockTypes = new HashMap<>();
     private int sitUsageCount = 0;
     private long sitUsageNanoTime = 0;
 
@@ -56,6 +58,8 @@ public class SitService {
     public boolean isBlockWithSeat(Block block) { return blockSeats.containsKey(block); }
 
     public Set<GSeat> getSeatsByBlock(Block block) { return blockSeats.getOrDefault(block, Collections.emptySet()); }
+
+    public Material getSeatBlockMaterial(Block block) { return blockTypes.get(block); }
 
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
         if(!isBlockWithSeat(block)) return true;
@@ -91,6 +95,7 @@ public class SitService {
         GSeat seat = new GSeat(block, seatLocation, entity, seatEntity, returnLocation);
         seats.put(entity.getUniqueId(), seat);
         blockSeats.computeIfAbsent(block, k -> new HashSet<>()).add(seat);
+        blockTypes.put(block, block.getType());
         sitUsageCount++;
         Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
@@ -137,6 +142,7 @@ public class SitService {
         if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(18, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
 
         blockSeats.remove(seat.getBlock());
+        blockTypes.remove(seat.getBlock());
         seats.remove(entity.getUniqueId());
         seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));

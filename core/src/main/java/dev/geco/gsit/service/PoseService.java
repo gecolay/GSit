@@ -10,6 +10,7 @@ import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -31,6 +32,7 @@ public class PoseService {
     private final boolean available;
     private final HashMap<UUID, IGPose> poses = new HashMap<>();
     private final HashMap<Block, Set<IGPose>> blockPoses = new HashMap<>();
+    private final HashMap<Block, Material> blockTypes = new HashMap<>();
     private int poseUsageCount = 0;
     private long poseUsageNanoTime = 0;
 
@@ -52,6 +54,8 @@ public class PoseService {
     public boolean isBlockWithPose(Block block) { return blockPoses.containsKey(block); }
 
     public Set<IGPose> getPosesByBlock(Block block) { return blockPoses.getOrDefault(block, Collections.emptySet()); }
+
+    public Material getPoseBlockMaterial(Block block) { return blockTypes.get(block); }
 
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
@@ -88,6 +92,7 @@ public class PoseService {
         poseObject.spawn();
         poses.put(player.getUniqueId(), poseObject);
         blockPoses.computeIfAbsent(block, k -> new HashSet<>()).add(poseObject);
+        blockTypes.put(block, block.getType());
         poseUsageCount++;
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseObject));
 
@@ -111,6 +116,7 @@ public class PoseService {
         if(player.isValid() && useReturnLocation) gSitMain.getEntityUtil().setEntityLocation(player, returnLocation);
 
         blockPoses.remove(poseObject.getSeat().getBlock());
+        blockTypes.remove(poseObject.getSeat().getBlock());
         poses.remove(player.getUniqueId());
         poseObject.remove();
         poseObject.getSeat().getSeatEntity().remove();

@@ -35,6 +35,10 @@ Options:
   # Show a custom message when a player begins sitting or posing
   custom-message: true
 
+  # Force players to stand up when the block beneath is destroyed by physics
+  # Enabling this option may be server resource intensive, so use it with caution
+  check-physics: false
+
   Sit:
 
     # Blocks where a player can sit by clicking (materials & tags) ('*' for every block)
@@ -45,6 +49,7 @@ Options:
     - "#carpets"
     - "#wool_carpets"
     - "moss_carpet"
+    - "page_moss_carpet"
     - "snow"
 
     # Allow sitting only on the bottom part of stairs and slabs

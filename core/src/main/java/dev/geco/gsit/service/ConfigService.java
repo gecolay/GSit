@@ -31,6 +31,7 @@ public class ConfigService {
     public boolean SAME_BLOCK_REST;
     public boolean CENTER_BLOCK;
     public boolean CUSTOM_MESSAGE;
+    public boolean CHECK_PHYSICS;
     public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
     public boolean S_BOTTOM_PART_ONLY;
     public boolean S_EMPTY_HAND_ONLY;
@@ -103,6 +104,7 @@ public class ConfigService {
         SAME_BLOCK_REST = gSitMain.getConfig().getBoolean("Options.same-block-rest", false);
         CENTER_BLOCK = gSitMain.getConfig().getBoolean("Options.center-block", true);
         CUSTOM_MESSAGE = gSitMain.getConfig().getBoolean("Options.custom-message", true);
+        CHECK_PHYSICS = gSitMain.getConfig().getBoolean("Options.check-physics", false);
 
         S_SITMATERIALS.clear();
         for(String material : gSitMain.getConfig().getStringList("Options.Sit.SitMaterials")) {
