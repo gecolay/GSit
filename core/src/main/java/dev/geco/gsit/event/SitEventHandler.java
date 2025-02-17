@@ -3,7 +3,10 @@ package dev.geco.gsit.event;
 import dev.geco.gsit.GSitMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.Tag;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
@@ -16,14 +19,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 public class SitEventHandler implements Listener {
 
     private final GSitMain gSitMain;
+    private final Attribute blockInteractionRangeAttribute;
 
     public SitEventHandler(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
+        blockInteractionRangeAttribute = Registry.ATTRIBUTE.get(NamespacedKey.minecraft("block_interaction_range"));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -57,9 +63,15 @@ public class SitEventHandler implements Listener {
 
         if(!gSitMain.getEnvironmentUtil().canUseInLocation(location, player, "sit")) return;
 
-        if(!gSitMain.getConfigService().SAME_BLOCK_REST && !gSitMain.getSitService().kickSeatEntitiesFromBlock(clickedBlock, player)) return;
+        RayTraceResult targetRayTrack = player.rayTraceBlocks(blockInteractionRangeAttribute != null ? player.getAttribute(blockInteractionRangeAttribute).getValue() : 4.5);
+        BlockFace targetBlockFace = targetRayTrack != null ? targetRayTrack.getHitBlockFace() : null;
+        if(targetBlockFace != null && targetBlockFace != BlockFace.UP) return;
+        Block targetBlock = targetRayTrack != null ? targetRayTrack.getHitBlock() : null;
+        if(clickedBlock != targetBlock) return;
 
         if(!gSitMain.getToggleService().canEntityUseSit(player.getUniqueId())) return;
+
+        if(!gSitMain.getConfigService().SAME_BLOCK_REST && !gSitMain.getSitService().kickSeatEntitiesFromBlock(clickedBlock, player)) return;
 
         if(Tag.STAIRS.isTagged(clickedBlock.getType())) {
 
