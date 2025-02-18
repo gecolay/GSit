@@ -59,7 +59,7 @@ public class GCrawl implements IGCrawl {
 
         stopListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) { if(!event.isAsynchronous() && event.getPlayer() == player && event.isSneaking()) gSitMain.getCrawlService().stopCrawl(player, GStopReason.GET_UP); }
+            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) { if(!event.isAsynchronous() && event.getPlayer() == player && event.isSneaking()) gSitMain.getCrawlService().stopCrawl(GCrawl.this, GStopReason.GET_UP); }
         };
     }
 
@@ -132,7 +132,7 @@ public class GCrawl implements IGCrawl {
 
     private boolean checkCrawlValid() {
         if(serverPlayer.isInWater() || player.isFlying()) {
-            gSitMain.getCrawlService().stopCrawl(player, GStopReason.ENVIRONMENT);
+            gSitMain.getCrawlService().stopCrawl(this, GStopReason.ENVIRONMENT);
             return false;
         }
         return true;
