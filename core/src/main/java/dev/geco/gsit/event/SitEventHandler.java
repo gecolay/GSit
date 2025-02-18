@@ -63,7 +63,7 @@ public class SitEventHandler implements Listener {
 
         if(!gSitMain.getEnvironmentUtil().canUseInLocation(location, player, "sit")) return;
 
-        RayTraceResult targetRayTrack = player.rayTraceBlocks(blockInteractionRangeAttribute != null ? player.getAttribute(blockInteractionRangeAttribute).getValue() : 4.5);
+        RayTraceResult targetRayTrack = player.rayTraceBlocks(blockInteractionRangeAttribute != null ? player.getAttribute(blockInteractionRangeAttribute).getValue() : 5);
         BlockFace targetBlockFace = targetRayTrack != null ? targetRayTrack.getHitBlockFace() : null;
         if(targetBlockFace != null && targetBlockFace != BlockFace.UP) return;
         Block targetBlock = targetRayTrack != null ? targetRayTrack.getHitBlock() : null;
