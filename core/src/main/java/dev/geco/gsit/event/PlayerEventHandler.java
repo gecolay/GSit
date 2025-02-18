@@ -59,7 +59,7 @@ public class PlayerEventHandler implements Listener {
         IGPose pose = gSitMain.getPoseService().getPoseByPlayer(player);
         if(pose != null) gSitMain.getPoseService().removePose(pose, stopReason, true);
         IGCrawl crawl = gSitMain.getCrawlService().getCrawlByPlayer(player);
-        gSitMain.getCrawlService().stopCrawl(crawl, stopReason);
+        if(crawl != null) gSitMain.getCrawlService().stopCrawl(crawl, stopReason);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
