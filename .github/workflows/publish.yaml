@@ -37,7 +37,12 @@ jobs:
           name: ${{ github.event.release.name == github.event.release.tag_name && format('GSit {0}', github.event.release.name) || github.event.release.name }}
           version: ${{ github.event.release.tag_name }}
           changelog: ${{ github.event.release.body }}
-          loaders: paper
+          loaders: |-
+            paper
+            folia
+            purpur
+            spigot
+            bukkit
           game-versions: |-
             1.16.x
             1.17.x
