@@ -35,7 +35,7 @@ public class CrawlService {
 
     public IGCrawl getCrawlByPlayer(Player player) { return crawls.get(player.getUniqueId()); }
 
-    public void removeAllCrawls() { for(IGCrawl crawl : new ArrayList<>(crawls.values())) stopCrawl(crawl.getPlayer(), GStopReason.PLUGIN); }
+    public void removeAllCrawls() { for(IGCrawl crawl : new ArrayList<>(crawls.values())) stopCrawl(crawl, GStopReason.PLUGIN); }
 
     public IGCrawl startCrawl(Player player) {
         PrePlayerCrawlEvent prePlayerCrawlEvent = new PrePlayerCrawlEvent(player);
@@ -53,15 +53,12 @@ public class CrawlService {
         return crawl;
     }
 
-    public boolean stopCrawl(Player player, GStopReason stopReason) {
-        IGCrawl crawl = getCrawlByPlayer(player);
-        if(crawl == null) return true;
-
+    public boolean stopCrawl(IGCrawl crawl, GStopReason stopReason) {
         PrePlayerStopCrawlEvent prePlayerStopCrawlEvent = new PrePlayerStopCrawlEvent(crawl, stopReason);
         Bukkit.getPluginManager().callEvent(prePlayerStopCrawlEvent);
         if(prePlayerStopCrawlEvent.isCancelled() && stopReason.isCancellable()) return false;
 
-        crawls.remove(player.getUniqueId());
+        crawls.remove(crawl.getPlayer().getUniqueId());
         crawl.stop();
         Bukkit.getPluginManager().callEvent(new PlayerStopCrawlEvent(crawl, stopReason));
         crawlUsageNanoTime += crawl.getLifetimeInNanoSeconds();

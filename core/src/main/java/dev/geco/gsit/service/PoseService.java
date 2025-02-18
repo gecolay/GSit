@@ -49,7 +49,7 @@ public class PoseService {
 
     public IGPose getPoseByPlayer(Player player) { return poses.get(player.getUniqueId()); }
 
-    public void removeAllPoses() { for(IGPose pose : new ArrayList<>(poses.values())) removePose(pose.getPlayer(), GStopReason.PLUGIN); }
+    public void removeAllPoses() { for(IGPose pose : new ArrayList<>(poses.values())) removePose(pose, GStopReason.PLUGIN); }
 
     public boolean isBlockWithPose(Block block) { return blockPoses.containsKey(block); }
 
@@ -60,7 +60,7 @@ public class PoseService {
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
         if(!gSitMain.getPermissionService().hasPermission(player, "Kick.Pose", "Kick.*")) return false;
-        for(IGPose p : getPosesByBlock(block)) if(!removePose(p.getPlayer(), GStopReason.KICKED)) return false;
+        for(IGPose pose : getPosesByBlock(block)) if(!removePose(pose, GStopReason.KICKED)) return false;
         return true;
     }
 
@@ -99,29 +99,28 @@ public class PoseService {
         return poseObject;
     }
 
-    public boolean removePose(Player player, GStopReason stopReason) { return removePose(player, stopReason, true); }
+    public boolean removePose(IGPose pose, GStopReason stopReason) { return removePose(pose, stopReason, true); }
 
-    public boolean removePose(Player player, GStopReason stopReason, boolean useReturnLocation) {
-        IGPose poseObject = getPoseByPlayer(player);
-        if(poseObject == null) return true;
-
-        PrePlayerStopPoseEvent prePlayerStopPoseEvent = new PrePlayerStopPoseEvent(poseObject, stopReason);
+    public boolean removePose(IGPose pose, GStopReason stopReason, boolean useReturnLocation) {
+        PrePlayerStopPoseEvent prePlayerStopPoseEvent = new PrePlayerStopPoseEvent(pose, stopReason);
         Bukkit.getPluginManager().callEvent(prePlayerStopPoseEvent);
         if(prePlayerStopPoseEvent.isCancelled() && stopReason.isCancellable()) return false;
 
-        Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? poseObject.getSeat().getReturnLocation() : poseObject.getSeat().getLocation().add(0d, gSitMain.getSitService().getBaseOffset() + (Tag.STAIRS.isTagged(poseObject.getSeat().getBlock().getType()) ? SitService.STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(poseObject.getSeat().getBlock().getType(), 0d), 0d);
+        Player player = pose.getPlayer();
+
+        Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? pose.getSeat().getReturnLocation() : pose.getSeat().getLocation().add(0d, gSitMain.getSitService().getBaseOffset() + (Tag.STAIRS.isTagged(pose.getSeat().getBlock().getType()) ? SitService.STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(pose.getSeat().getBlock().getType(), 0d), 0d);
         Location entityLocation = player.getLocation();
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
         if(player.isValid() && useReturnLocation) gSitMain.getEntityUtil().setEntityLocation(player, returnLocation);
 
-        blockPoses.remove(poseObject.getSeat().getBlock());
-        blockTypes.remove(poseObject.getSeat().getBlock());
+        blockPoses.remove(pose.getSeat().getBlock());
+        blockTypes.remove(pose.getSeat().getBlock());
         poses.remove(player.getUniqueId());
-        poseObject.remove();
-        poseObject.getSeat().getSeatEntity().remove();
-        Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(poseObject, stopReason));
-        poseUsageNanoTime += poseObject.getSeat().getLifetimeInNanoSeconds();
+        pose.remove();
+        pose.getSeat().getSeatEntity().remove();
+        Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(pose, stopReason));
+        poseUsageNanoTime += pose.getSeat().getLifetimeInNanoSeconds();
 
         return true;
     }

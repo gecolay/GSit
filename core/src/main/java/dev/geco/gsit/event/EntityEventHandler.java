@@ -2,7 +2,9 @@ package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.PrePlayerStopPlayerSitEvent;
+import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.GStopReason;
+import dev.geco.gsit.object.IGPose;
 import dev.geco.gsit.service.PlayerSitService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -24,11 +26,14 @@ public class EntityEventHandler {
     public void handleEntityDismountEvent(Cancellable event, Entity entity, Entity dismounted) {
         if(!(entity instanceof Player player)) return;
 
-        if(gSitMain.getSitService().isEntitySitting(player) && (!gSitMain.getConfigService().GET_UP_SNEAK || (!gSitMain.getSitService().removeSeat(player, GStopReason.GET_UP, true)))) {
+        GSeat seat = gSitMain.getSitService().getSeatByEntity(player);
+        if(seat != null && (!gSitMain.getConfigService().GET_UP_SNEAK || (!gSitMain.getSitService().removeSeat(seat, GStopReason.GET_UP, true)))) {
             event.setCancelled(true);
             return;
         }
-        if(gSitMain.getPoseService().isPlayerPosing(player) && (!gSitMain.getConfigService().GET_UP_SNEAK || !gSitMain.getPoseService().removePose(player, GStopReason.GET_UP, true))) {
+
+        IGPose pose = gSitMain.getPoseService().getPoseByPlayer(player);
+        if(pose != null && (!gSitMain.getConfigService().GET_UP_SNEAK || !gSitMain.getPoseService().removePose(pose, GStopReason.GET_UP, true))) {
             event.setCancelled(true);
             return;
         }

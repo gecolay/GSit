@@ -41,7 +41,7 @@ public class GSpinCommand implements CommandExecutor {
 
         IGPose poseObject = gSitMain.getPoseService().getPoseByPlayer(player);
         if(poseObject != null && poseObject.getPose() == Pose.SPIN_ATTACK) {
-            gSitMain.getPoseService().removePose(player, GStopReason.GET_UP);
+            gSitMain.getPoseService().removePose(poseObject, GStopReason.GET_UP);
             return true;
         }
 

@@ -144,40 +144,40 @@ public class GSitAPI {
     }
 
     /**
-     * Moves an entity on a seat in a block direction
+     * Moves a seat in a block direction
      * @author Gecolay
-     * @since 1.0.4
-     * @param entity Entity
+     * @since 2.0.0
+     * @param seat Seat
      * @param blockDirection The direction in which the seat should get moved
      */
-    public static void moveSeat(@NotNull LivingEntity entity, @NotNull BlockFace blockDirection) {
-        getInstance().getSitService().moveSeat(entity, blockDirection);
+    public static void moveSeat(@NotNull GSeat seat, @NotNull BlockFace blockDirection) {
+        getInstance().getSitService().moveSeat(seat, blockDirection);
     }
 
     /**
-     * Removes a seat for an entity
+     * Removes a seat
      * @author Gecolay
      * @since 2.0.0
-     * @param entity Entity
+     * @param seat Seat
      * @param stopReason The reason why the seat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removeSeat(@NotNull LivingEntity entity, @NotNull GStopReason stopReason) {
-        return getInstance().getSitService().removeSeat(entity, stopReason);
+    public static boolean removeSeat(@NotNull GSeat seat, @NotNull GStopReason stopReason) {
+        return getInstance().getSitService().removeSeat(seat, stopReason);
     }
 
     /**
-     * Removes a seat for an entity
+     * Removes a seat
      * The return teleport can be disabled, if for example the entity already teleports somewhere else
      * @author Gecolay
      * @since 2.0.0
-     * @param entity Entity
+     * @param seat Seat
      * @param stopReason The reason why the seat gets removed
      * @param useReturnLocation Should the entity get teleported to the return location
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removeSeat(@NotNull LivingEntity entity, @NotNull GStopReason stopReason, boolean useReturnLocation) {
-        return getInstance().getSitService().removeSeat(entity, stopReason, useReturnLocation);
+    public static boolean removeSeat(@NotNull GSeat seat, @NotNull GStopReason stopReason, boolean useReturnLocation) {
+        return getInstance().getSitService().removeSeat(seat, stopReason, useReturnLocation);
     }
 
     /**
@@ -320,29 +320,29 @@ public class GSitAPI {
     }
 
     /**
-     * Removes a pose object for a player
+     * Removes a pose object
      * @author Gecolay
      * @since 2.0.0
-     * @param player Player
+     * @param pose Pose object
      * @param stopReason The reason why the pose object gets removed
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removePose(@NotNull Player player, @NotNull GStopReason stopReason) {
-        return getInstance().getPoseService().removePose(player, stopReason);
+    public static boolean removePose(@NotNull IGPose pose, @NotNull GStopReason stopReason) {
+        return getInstance().getPoseService().removePose(pose, stopReason);
     }
 
     /**
-     * Removes a pose object for a player
+     * Removes a pose object
      * The return teleport can be disabled, if for example the entity already teleports somewhere else
      * @author Gecolay
      * @since 2.0.0
-     * @param player Player
+     * @param pose Pose object
      * @param stopReason The reason why the pose object gets removed
      * @param useReturnLocation Should the entity get teleported to the return location
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removePose(@NotNull Player player, @NotNull GStopReason stopReason, boolean useReturnLocation) {
-        return getInstance().getPoseService().removePose(player, stopReason, useReturnLocation);
+    public static boolean removePose(@NotNull IGPose pose, @NotNull GStopReason stopReason, boolean useReturnLocation) {
+        return getInstance().getPoseService().removePose(pose, stopReason, useReturnLocation);
     }
 
     /**
@@ -392,12 +392,12 @@ public class GSitAPI {
      * Stops a crawl session for a player
      * @author Gecolay
      * @since 2.0.0
-     * @param player Player
+     * @param crawl Crawl object
      * @param stopReason  The reason why the crawl session stops
      * @return <code>true</code> or <code>false</code> if the stop failed or was cancelled by event
      */
-    public static boolean stopCrawl(@NotNull Player player, @NotNull GStopReason stopReason) {
-        return getInstance().getCrawlService().stopCrawl(player, stopReason);
+    public static boolean stopCrawl(@NotNull IGCrawl crawl, @NotNull GStopReason stopReason) {
+        return getInstance().getCrawlService().stopCrawl(crawl, stopReason);
     }
 
 }

@@ -9,7 +9,6 @@ import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.GStopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -36,7 +35,6 @@ public class SitService {
     private final double baseOffset;
     private final HashMap<UUID, GSeat> seats = new HashMap<>();
     private final HashMap<Block, Set<GSeat>> blockSeats = new HashMap<>();
-    private final HashMap<Block, Material> blockTypes = new HashMap<>();
     private int sitUsageCount = 0;
     private long sitUsageNanoTime = 0;
 
@@ -53,18 +51,16 @@ public class SitService {
 
     public GSeat getSeatByEntity(LivingEntity entity) { return seats.get(entity.getUniqueId()); }
 
-    public void removeAllSeats() { for(GSeat seat : new ArrayList<>(seats.values())) removeSeat(seat.getEntity(), GStopReason.PLUGIN); }
+    public void removeAllSeats() { for(GSeat seat : new ArrayList<>(seats.values())) removeSeat(seat, GStopReason.PLUGIN); }
 
     public boolean isBlockWithSeat(Block block) { return blockSeats.containsKey(block); }
 
     public Set<GSeat> getSeatsByBlock(Block block) { return blockSeats.getOrDefault(block, Collections.emptySet()); }
 
-    public Material getSeatBlockMaterial(Block block) { return blockTypes.get(block); }
-
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
         if(!isBlockWithSeat(block)) return true;
         if(!gSitMain.getPermissionService().hasPermission(entity, "Kick.Sit")) return false;
-        for(GSeat seat : getSeatsByBlock(block)) if(!removeSeat(seat.getEntity(), GStopReason.KICKED)) return false;
+        for(GSeat seat : getSeatsByBlock(block)) if(!removeSeat(seat, GStopReason.KICKED)) return false;
         return true;
     }
 
@@ -95,7 +91,6 @@ public class SitService {
         GSeat seat = new GSeat(block, seatLocation, entity, seatEntity, returnLocation);
         seats.put(entity.getUniqueId(), seat);
         blockSeats.computeIfAbsent(block, k -> new HashSet<>()).add(seat);
-        blockTypes.put(block, block.getType());
         sitUsageCount++;
         Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
@@ -109,11 +104,8 @@ public class SitService {
         return location.add(xOffset, yOffset - baseOffset + gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(block.getType(), 0d), zOffset);
     }
 
-    public void moveSeat(LivingEntity entity, BlockFace blockDirection) {
-        GSeat seat = getSeatByEntity(entity);
-        if(seat == null) return;
-
-        if(entity instanceof Player player) {
+    public void moveSeat(GSeat seat, BlockFace blockDirection) {
+        if(seat.getEntity() instanceof Player player) {
             PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent(player, player.getLocation(), player.getLocation().add(blockDirection.getModX(), blockDirection.getModY(), blockDirection.getModZ()));
             Bukkit.getPluginManager().callEvent(playerMoveEvent);
             if(playerMoveEvent.isCancelled()) return;
@@ -124,15 +116,14 @@ public class SitService {
         gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), seat.getLocation());
     }
 
-    public boolean removeSeat(LivingEntity entity, GStopReason stopReason) { return removeSeat(entity, stopReason, true); }
+    public boolean removeSeat(GSeat seat, GStopReason stopReason) { return removeSeat(seat, stopReason, true); }
 
-    public boolean removeSeat(LivingEntity entity, GStopReason stopReason, boolean useReturnLocation) {
-        GSeat seat = getSeatByEntity(entity);
-        if(seat == null) return true;
-
+    public boolean removeSeat(GSeat seat, GStopReason stopReason, boolean useReturnLocation) {
         PreEntityStopSitEvent preEntityStopSitEvent = new PreEntityStopSitEvent(seat, stopReason);
         Bukkit.getPluginManager().callEvent(preEntityStopSitEvent);
         if(preEntityStopSitEvent.isCancelled() && stopReason.isCancellable()) return false;
+
+        Entity entity = seat.getEntity();
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
         Location entityLocation = entity.getLocation();
@@ -142,7 +133,6 @@ public class SitService {
         if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(18, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
 
         blockSeats.remove(seat.getBlock());
-        blockTypes.remove(seat.getBlock());
         seats.remove(entity.getUniqueId());
         seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
