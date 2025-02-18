@@ -111,7 +111,11 @@ public class SitService {
             if(playerMoveEvent.isCancelled()) return;
         }
 
+        Set<GSeat> seats = blockSeats.get(seat.getBlock());
+        if(seats != null) seats.remove(seat);
         seat.setBlock(seat.getBlock().getRelative(blockDirection));
+        seats = blockSeats.get(seat.getBlock());
+        if(seats != null) seats.add(seat);
         seat.setLocation(seat.getLocation().add(blockDirection.getModX(), blockDirection.getModY(), blockDirection.getModZ()));
         gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), seat.getLocation());
     }
