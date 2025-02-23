@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 public class DataService {
 
@@ -64,7 +65,7 @@ public class DataService {
                     return true;
                 }
             }
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not connect to database!", e); }
         if(retries == MAX_RETRIES) return false;
         retries++;
         return reconnect();

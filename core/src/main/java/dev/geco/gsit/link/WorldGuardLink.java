@@ -6,11 +6,13 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.link.worldguard.RegionFlagHandler;
 import org.bukkit.Location;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class WorldGuardLink {
 
@@ -52,7 +54,7 @@ public class WorldGuardLink {
         if(flag == null) return true;
         try {
             return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location)).testState(null, flag);
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { GSitMain.getInstance().getLogger().log(Level.SEVERE, "Could not check WorldGuard location!", e); }
         return true;
     }
 

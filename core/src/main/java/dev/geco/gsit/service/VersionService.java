@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class VersionService {
 
@@ -51,7 +52,7 @@ public class VersionService {
             if(parameters.length == 0) return mcvPackageClass.getConstructor().newInstance();
             Class<?>[] parameterTypes = Arrays.stream(parameters).map(Object::getClass).toArray(Class<?>[]::new);
             return mcvPackageClass.getConstructor(parameterTypes).newInstance(parameters);
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not get legacy package object with class name '" + className + "'!", e); }
         return null;
     }
 
@@ -61,7 +62,7 @@ public class VersionService {
             if(parameters.length == 0) return mcvPackageClass.getConstructor().newInstance();
             Class<?>[] parameterTypes = Arrays.stream(parameters).map(Object::getClass).toArray(Class<?>[]::new);
             return mcvPackageClass.getConstructor(parameterTypes).newInstance(parameters);
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not get package object with class name '" + className + "'!", e); }
         return null;
     }
 

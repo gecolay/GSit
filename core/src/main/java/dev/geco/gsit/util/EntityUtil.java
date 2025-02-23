@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class EntityUtil implements IEntityUtil {
 
@@ -34,7 +35,7 @@ public class EntityUtil implements IEntityUtil {
             Object serverEntity = getHandle.invoke(entity);
             Method setPositionRotationMethod = serverEntity.getClass().getMethod("setPositionRotation", double.class, double.class, double.class, float.class, float.class);
             setPositionRotationMethod.invoke(serverEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not set entity location", e); }
     }
 
     @Override
@@ -52,7 +53,7 @@ public class EntityUtil implements IEntityUtil {
             seatEntity.remove();
 
             return valid;
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check sit location", e); }
         return false;
     }
 
@@ -70,7 +71,7 @@ public class EntityUtil implements IEntityUtil {
             playerSeatEntity.remove();
 
             return valid;
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check player sit location", e); }
         return false;
     }
 
@@ -100,7 +101,7 @@ public class EntityUtil implements IEntityUtil {
             }
 
             return seatEntity;
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
         return null;
     }
 
@@ -133,7 +134,7 @@ public class EntityUtil implements IEntityUtil {
                 lastEntity = (Entity) spawnMethod.invoke(world, finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloudConsumer);
                 playerSeatEntityIds.add(lastEntity.getUniqueId());
             }
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
         return playerSeatEntityIds;
     }
 

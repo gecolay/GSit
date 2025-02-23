@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class EntityUtil implements IEntityUtil {
 
@@ -105,7 +106,7 @@ public class EntityUtil implements IEntityUtil {
             try {
                 PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(Entity.level().getWorld().getHandle());
                 return entityLookup.addNewEntity(Entity);
-            } catch(Throwable e) { e.printStackTrace(); }
+            } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
             return false;
         }
         LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = Entity.level().getEntities();

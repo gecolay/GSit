@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,7 +69,7 @@ abstract public class MessageService {
                     lang.save(langFile);
                 } else if(!langFile.exists()) gSitMain.saveResource(jarEntry.getName(), false);
             }
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not load messages!", e); }
         File langFolder = new File(gSitMain.getDataFolder(), "lang");
         for(File langFile : Objects.requireNonNull(langFolder.listFiles())) messages.put(langFile.getName().replaceFirst("lang/", "").replaceFirst(".yml", ""), YamlConfiguration.loadConfiguration(langFile));
         defaultLanguage = messages.containsKey(gSitMain.getConfigService().L_LANG) ? gSitMain.getConfigService().L_LANG : "en_us";

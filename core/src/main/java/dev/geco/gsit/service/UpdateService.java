@@ -10,6 +10,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 public class UpdateService {
 
@@ -49,7 +50,7 @@ public class UpdateService {
                 if(scanner.hasNext() && versionConsumer != null) versionConsumer.accept(scanner.next());
             } catch(IOException e) {
                 if(e.getMessage().contains("50")) return;
-                e.printStackTrace();
+                gSitMain.getLogger().log(Level.SEVERE, "Could not get remote version!", e);
             }
         }, false);
     }

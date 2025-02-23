@@ -8,6 +8,8 @@ import dev.geco.gsit.GSitMain;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.logging.Level;
+
 public class PlotSquaredLink {
 
     private final GSitMain gSitMain;
@@ -36,7 +38,7 @@ public class PlotSquaredLink {
             if(plot == null) return !gSitMain.getConfigService().TRUSTED_REGION_ONLY;
 
             return !plot.isDenied(Player.getUniqueId()) && (!gSitMain.getConfigService().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId()));
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check PlotSquared location!", e); }
         return true;
     }
 
