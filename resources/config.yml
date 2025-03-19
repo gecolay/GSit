@@ -45,7 +45,7 @@ Options:
     - "#carpets"
     - "#wool_carpets"
     - "moss_carpet"
-    - "page_moss_carpet"
+    - "pale_moss_carpet"
     - "snow"
 
     # Allow sitting only on the bottom part of stairs and slabs
