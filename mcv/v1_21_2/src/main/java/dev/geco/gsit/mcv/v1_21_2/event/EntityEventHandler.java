@@ -5,7 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDismountEvent;
-import org.bukkit.event.entity.EntityMountEvent;
 
 public class EntityEventHandler implements Listener {
 
@@ -15,8 +14,6 @@ public class EntityEventHandler implements Listener {
         this.gSitMain = gSitMain;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void entityMountEvent(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEvent(event, event.getMount()); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDismountEvent(EntityDismountEvent event) { gSitMain.getEntityEventHandler().handleEntityDismountEvent(event, event.getEntity(), event.getDismounted()); }

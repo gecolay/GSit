@@ -19,10 +19,6 @@ public class EntityEventHandler {
         this.gSitMain = gSitMain;
     }
 
-    public void handleEntityMountEvent(Cancellable event, Entity mount) {
-        if(event.isCancelled() && (mount.getScoreboardTags().contains(GSitMain.NAME + "_SeatEntity") || mount.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG))) event.setCancelled(false);
-    }
-
     public void handleEntityDismountEvent(Cancellable event, Entity entity, Entity dismounted) {
         if(!(entity instanceof Player player)) return;
 
