@@ -9,6 +9,7 @@ import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.GStopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -122,19 +123,13 @@ public class SitService {
 
     public boolean removeSeat(GSeat seat, GStopReason stopReason) { return removeSeat(seat, stopReason, true); }
 
-    public boolean removeSeat(GSeat seat, GStopReason stopReason, boolean useReturnLocation) {
+    public boolean removeSeat(GSeat seat, GStopReason stopReason, boolean useSafeDismount) {
         PreEntityStopSitEvent preEntityStopSitEvent = new PreEntityStopSitEvent(seat, stopReason);
         Bukkit.getPluginManager().callEvent(preEntityStopSitEvent);
         if(preEntityStopSitEvent.isCancelled() && stopReason.isCancellable()) return false;
 
         Entity entity = seat.getEntity();
-
-        Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(seat.getBlock().getType(), 0d), 0d);
-        Location entityLocation = entity.getLocation();
-        returnLocation.setYaw(entityLocation.getYaw());
-        returnLocation.setPitch(entityLocation.getPitch());
-        if(entity.isValid() && useReturnLocation && gSitMain.getVersionManager().isNewerOrVersion(18, 0)) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(18, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        if(useSafeDismount) handleSafeSeatDismount(seat);
 
         blockSeats.remove(seat.getBlock());
         seats.remove(entity.getUniqueId());
@@ -143,6 +138,22 @@ public class SitService {
         sitUsageNanoTime += seat.getLifetimeInNanoSeconds();
 
         return true;
+    }
+
+    public void handleSafeSeatDismount(GSeat seat) {
+        Entity entity = seat.getEntity();
+
+        Material blockType = seat.getBlock().getType();
+        Location upLocation = seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d), 0d);
+
+        Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
+        Location entityLocation = entity.getLocation();
+
+        returnLocation.setYaw(entityLocation.getYaw());
+        returnLocation.setPitch(entityLocation.getPitch());
+
+        if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {

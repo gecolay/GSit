@@ -38,26 +38,26 @@ public class PlayerEventHandler implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void playerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        stopActions(player, GStopReason.DISCONNECT);
+        stopActions(player, GStopReason.DISCONNECT, true);
         gSitMain.getToggleService().clearEntitySitToggleCache(player.getUniqueId());
         doubleSneakCrawlPlayers.remove(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerTeleportEvent(PlayerTeleportEvent event) { stopActions(event.getPlayer(), GStopReason.TELEPORT); }
+    public void playerTeleportEvent(PlayerTeleportEvent event) { stopActions(event.getPlayer(), GStopReason.TELEPORT, false); }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void entityDamageEvent(EntityDamageEvent event) {
         Entity entity = event.getEntity();
         if(!gSitMain.getConfigService().GET_UP_DAMAGE || !(entity instanceof Player player) || event.getDamage() <= 0d) return;
-        stopActions(player, GStopReason.DAMAGE);
+        stopActions(player, GStopReason.DAMAGE, true);
     }
 
-    private void stopActions(Player player, GStopReason stopReason) {
+    private void stopActions(Player player, GStopReason stopReason, boolean useSafeDismount) {
         GSeat seat = gSitMain.getSitService().getSeatByEntity(player);
-        if(seat != null) gSitMain.getSitService().removeSeat(seat, stopReason, true);
+        if(seat != null) gSitMain.getSitService().removeSeat(seat, stopReason, useSafeDismount);
         IGPose pose = gSitMain.getPoseService().getPoseByPlayer(player);
-        if(pose != null) gSitMain.getPoseService().removePose(pose, stopReason, true);
+        if(pose != null) gSitMain.getPoseService().removePose(pose, stopReason, useSafeDismount);
         IGCrawl crawl = gSitMain.getCrawlService().getCrawlByPlayer(player);
         if(crawl != null) gSitMain.getCrawlService().stopCrawl(crawl, stopReason);
     }

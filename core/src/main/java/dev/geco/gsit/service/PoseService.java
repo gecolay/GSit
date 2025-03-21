@@ -10,8 +10,6 @@ import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -32,7 +30,6 @@ public class PoseService {
     private final boolean available;
     private final HashMap<UUID, IGPose> poses = new HashMap<>();
     private final HashMap<Block, Set<IGPose>> blockPoses = new HashMap<>();
-    private final HashMap<Block, Material> blockTypes = new HashMap<>();
     private int poseUsageCount = 0;
     private long poseUsageNanoTime = 0;
 
@@ -54,8 +51,6 @@ public class PoseService {
     public boolean isBlockWithPose(Block block) { return blockPoses.containsKey(block); }
 
     public Set<IGPose> getPosesByBlock(Block block) { return blockPoses.getOrDefault(block, Collections.emptySet()); }
-
-    public Material getPoseBlockMaterial(Block block) { return blockTypes.get(block); }
 
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
@@ -92,7 +87,6 @@ public class PoseService {
         poseObject.spawn();
         poses.put(player.getUniqueId(), poseObject);
         blockPoses.computeIfAbsent(block, k -> new HashSet<>()).add(poseObject);
-        blockTypes.put(block, block.getType());
         poseUsageCount++;
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseObject));
 
@@ -101,26 +95,21 @@ public class PoseService {
 
     public boolean removePose(IGPose pose, GStopReason stopReason) { return removePose(pose, stopReason, true); }
 
-    public boolean removePose(IGPose pose, GStopReason stopReason, boolean useReturnLocation) {
+    public boolean removePose(IGPose pose, GStopReason stopReason, boolean useSafeDismount) {
         PrePlayerStopPoseEvent prePlayerStopPoseEvent = new PrePlayerStopPoseEvent(pose, stopReason);
         Bukkit.getPluginManager().callEvent(prePlayerStopPoseEvent);
         if(prePlayerStopPoseEvent.isCancelled() && stopReason.isCancellable()) return false;
 
+        GSeat seat = pose.getSeat();
         Player player = pose.getPlayer();
+        if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
 
-        Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? pose.getSeat().getReturnLocation() : pose.getSeat().getLocation().add(0d, gSitMain.getSitService().getBaseOffset() + (Tag.STAIRS.isTagged(pose.getSeat().getBlock().getType()) ? SitService.STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(pose.getSeat().getBlock().getType(), 0d), 0d);
-        Location entityLocation = player.getLocation();
-        returnLocation.setYaw(entityLocation.getYaw());
-        returnLocation.setPitch(entityLocation.getPitch());
-        if(player.isValid() && useReturnLocation) gSitMain.getEntityUtil().setEntityLocation(player, returnLocation);
-
-        blockPoses.remove(pose.getSeat().getBlock());
-        blockTypes.remove(pose.getSeat().getBlock());
+        blockPoses.remove(seat.getBlock());
         poses.remove(player.getUniqueId());
         pose.remove();
-        pose.getSeat().getSeatEntity().remove();
+        seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(pose, stopReason));
-        poseUsageNanoTime += pose.getSeat().getLifetimeInNanoSeconds();
+        poseUsageNanoTime += seat.getLifetimeInNanoSeconds();
 
         return true;
     }

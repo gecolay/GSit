@@ -173,11 +173,11 @@ public class GSitAPI {
      * @since 2.0.0
      * @param seat Seat
      * @param stopReason The reason why the seat gets removed
-     * @param useReturnLocation Should the entity get teleported to the return location
+     * @param useSafeDismount Should the entity get teleported to the safe location (includes the return location)
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removeSeat(@NotNull GSeat seat, @NotNull GStopReason stopReason, boolean useReturnLocation) {
-        return getInstance().getSitService().removeSeat(seat, stopReason, useReturnLocation);
+    public static boolean removeSeat(@NotNull GSeat seat, @NotNull GStopReason stopReason, boolean useSafeDismount) {
+        return getInstance().getSitService().removeSeat(seat, stopReason, useSafeDismount);
     }
 
     /**
@@ -338,11 +338,11 @@ public class GSitAPI {
      * @since 2.0.0
      * @param pose Pose object
      * @param stopReason The reason why the pose object gets removed
-     * @param useReturnLocation Should the entity get teleported to the return location
+     * @param useSafeDismount Should the player get teleported to the safe location (includes the return location)
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removePose(@NotNull IGPose pose, @NotNull GStopReason stopReason, boolean useReturnLocation) {
-        return getInstance().getPoseService().removePose(pose, stopReason, useReturnLocation);
+    public static boolean removePose(@NotNull IGPose pose, @NotNull GStopReason stopReason, boolean useSafeDismount) {
+        return getInstance().getPoseService().removePose(pose, stopReason, useSafeDismount);
     }
 
     /**
