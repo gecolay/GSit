@@ -154,6 +154,10 @@ public class SitService {
 
         if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
         if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+        gSitMain.getServer().getScheduler().runTaskLater(gSitMain, () -> {
+            if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+            if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+        }, 1);
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
