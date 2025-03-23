@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -45,6 +46,9 @@ public class PlayerEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerTeleportEvent(PlayerTeleportEvent event) { stopActions(event.getPlayer(), GStopReason.TELEPORT, false); }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void playerDeathEvent(PlayerDeathEvent event) { stopActions(event.getPlayer(), GStopReason.DEATH, false); }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void entityDamageEvent(EntityDamageEvent event) {

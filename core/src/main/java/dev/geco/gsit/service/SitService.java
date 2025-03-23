@@ -147,17 +147,17 @@ public class SitService {
         Location upLocation = seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d), 0d);
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
-        Location entityLocation = entity.getLocation();
 
-        returnLocation.setYaw(entityLocation.getYaw());
-        returnLocation.setPitch(entityLocation.getPitch());
+        gSitMain.getTaskService().runDelayed(() -> {
+            Location entityLocation = entity.getLocation();
 
-        if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
-        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        gSitMain.getServer().getScheduler().runTaskLater(gSitMain, () -> {
+
+            returnLocation.setYaw(entityLocation.getYaw());
+            returnLocation.setPitch(entityLocation.getPitch());
+
             if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
             if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        }, 1);
+        }, 0);
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
