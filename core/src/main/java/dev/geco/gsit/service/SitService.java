@@ -36,6 +36,7 @@ public class SitService {
     private final double baseOffset;
     private final HashMap<UUID, GSeat> seats = new HashMap<>();
     private final HashMap<Block, Set<GSeat>> blockSeats = new HashMap<>();
+    private final HashSet<UUID> seatCooldown = new HashSet<>();
     private int sitUsageCount = 0;
     private long sitUsageNanoTime = 0;
 
@@ -68,6 +69,7 @@ public class SitService {
     public GSeat createSeat(Block block, LivingEntity entity) { return createSeat(block, entity, true, 0d, 0d, 0d, entity.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
 
     public GSeat createSeat(Block block, LivingEntity entity, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
+        if (seatCooldown.contains(entity.getUniqueId())) return null;
         Location returnLocation = entity.getLocation();
         Location seatLocation = getSeatLocation(block, returnLocation, xOffset, yOffset, zOffset, sitInBlockCenter);
         if(!gSitMain.getEntityUtil().isSitLocationValid(seatLocation)) return null;
@@ -148,6 +150,7 @@ public class SitService {
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
 
+        if (entity.isValid()) seatCooldown.add(entity.getUniqueId());
         gSitMain.getTaskService().runDelayed(() -> {
             Location entityLocation = entity.getLocation();
 
@@ -157,7 +160,9 @@ public class SitService {
 
             if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
             if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        }, 0);
+
+            seatCooldown.remove(entity.getUniqueId());
+        }, 1);
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
