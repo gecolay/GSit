@@ -37,6 +37,9 @@ public class TaskService {
     public UUID run(Runnable runnable, boolean sync, Location location) { return run(runnable, sync, null, location); }
 
     private UUID run(Runnable runnable, boolean sync, Entity entity, Location location) {
+        if (!gSitMain.isEnabled()) {
+            return null;
+        }
         UUID taskId = UUID.randomUUID();
         if(gSitMain.supportsTaskFeature()) {
             if(entity != null) {
@@ -87,6 +90,9 @@ public class TaskService {
     public UUID runDelayed(Runnable runnable, boolean sync, Location location, long ticks) { return runDelayed(runnable, sync, null, location, ticks); }
 
     private UUID runDelayed(Runnable runnable, boolean sync, Entity entity, Location location, long ticks) {
+        if (!gSitMain.isEnabled()) {
+            return null;
+        }
         UUID taskId = UUID.randomUUID();
         if(gSitMain.supportsTaskFeature()) {
             if(ticks <= 0) return run(runnable, sync, entity);
@@ -138,6 +144,9 @@ public class TaskService {
     public UUID runAtFixedRate(Runnable runnable, boolean sync, Location location, long delayTicks, long ticks) { return runAtFixedRate(runnable, sync, null, location, delayTicks, ticks); }
 
     private UUID runAtFixedRate(Runnable runnable, boolean sync, Entity entity, Location location, long delayTicks, long ticks) {
+        if (!gSitMain.isEnabled()) {
+            return null;
+        }
         UUID taskId = UUID.randomUUID();
         if(gSitMain.supportsTaskFeature()) {
             if(entity != null) {
