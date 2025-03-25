@@ -143,8 +143,25 @@ public class SitService {
     public void handleSafeSeatDismount(GSeat seat) {
         Entity entity = seat.getEntity();
 
-        Material blockType = seat.getBlock().getType();
-        Location upLocation = seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d), 0d);
+        if (!entity.isValid()) {
+            return;
+        } else {
+            entity.getWorld();
+        }
+
+        Block block = seat.getBlock();
+        Material blockType = Material.AIR;
+        try {
+            blockType = block.getType();
+        } catch (Exception ignored) {
+        }
+
+        Location upLocation = seat.getLocation().clone().add(
+            0d,
+            baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) -
+                    gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d),
+            0d
+        );
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
 
