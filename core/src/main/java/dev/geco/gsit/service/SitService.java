@@ -156,12 +156,7 @@ public class SitService {
         } catch (Exception ignored) {
         }
 
-        Location upLocation = seat.getLocation().clone().add(
-            0d,
-            baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) -
-                    gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d),
-            0d
-        );
+        Location upLocation = seat.getLocation().clone().add(0d, baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d), 0d);
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
 
