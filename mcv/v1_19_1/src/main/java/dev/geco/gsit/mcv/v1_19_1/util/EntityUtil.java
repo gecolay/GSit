@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class EntityUtil implements IEntityUtil {
 
@@ -88,12 +89,12 @@ public class EntityUtil implements IEntityUtil {
         return playerSeatEntityIds;
     }
 
-    private boolean spawnEntity(net.minecraft.world.entity.Entity Entity) {
-        if(!gSitMain.supportsPaperFeature()) return Entity.level.getWorld().getHandle().entityManager.addNewEntity(Entity);
+    private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
+        if(!gSitMain.supportsPaperFeature()) return entity.level.getWorld().getHandle().entityManager.addNewEntity(entity);
         try {
-            net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = Entity.level.getEntities();
-            return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, Entity);
-        } catch(Throwable ignored) { }
+            net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = entity.level.getEntities();
+            return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, entity);
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
         return false;
     }
 

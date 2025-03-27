@@ -101,17 +101,17 @@ public class EntityUtil implements IEntityUtil {
         return playerSeatEntityIds;
     }
 
-    private boolean spawnEntity(net.minecraft.world.entity.Entity Entity) {
+    private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
         if(!gSitMain.supportsPaperFeature()) {
             try {
-                PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(Entity.level.getWorld().getHandle());
-                return entityLookup.addNewEntity(Entity);
+                PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(entity.level.getWorld().getHandle());
+                return entityLookup.addNewEntity(entity);
             } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
             return false;
         }
-        LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = Entity.level.getEntities();
+        LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = entity.level.getEntities();
         if(!(levelEntityGetter instanceof io.papermc.paper.chunk.system.entity.EntityLookup entityLookup)) return false;
-        return entityLookup.addNewEntity(Entity);
+        return entityLookup.addNewEntity(entity);
     }
 
     @Override

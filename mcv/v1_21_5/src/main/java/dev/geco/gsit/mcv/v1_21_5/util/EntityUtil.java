@@ -10,7 +10,6 @@ import dev.geco.gsit.object.IGCrawl;
 import dev.geco.gsit.object.IGPose;
 import dev.geco.gsit.util.IEntityUtil;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
@@ -34,15 +33,14 @@ public class EntityUtil implements IEntityUtil {
 
     public EntityUtil(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        if(gSitMain.supportsPaperFeature()) return;
         List<Field> entityManagerFieldList = new ArrayList<>();
         for(Field field : ServerLevel.class.getDeclaredFields()) if(field.getType().equals(PersistentEntitySectionManager.class)) entityManagerFieldList.add(field);
         entityManager = entityManagerFieldList.getFirst();
-        entityManager.setAccessible(true);
+        if(entityManager != null) entityManager.setAccessible(true);
     }
 
     @Override
-    public void setEntityLocation(Entity entity, Location location) { ((CraftEntity) entity).getHandle().moveTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()); }
+    public void setEntityLocation(Entity entity, Location location) { ((CraftEntity) entity).getHandle().absSnapTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()); }
 
     @Override
     public boolean isSitLocationValid(Location location) { return true; }
@@ -101,17 +99,19 @@ public class EntityUtil implements IEntityUtil {
         return playerSeatEntityIds;
     }
 
-    private boolean spawnEntity(net.minecraft.world.entity.Entity Entity) {
-        if(!gSitMain.supportsPaperFeature()) {
+    private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
+        if(entityManager != null) {
             try {
-                PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(Entity.level().getWorld().getHandle());
-                return entityLookup.addNewEntity(Entity);
+                PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(entity.level().getWorld().getHandle());
+                return entityLookup.addNewEntity(entity);
             } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
             return false;
         }
-        LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = Entity.level().getEntities();
-        if(!(levelEntityGetter instanceof ca.spottedleaf.moonrise.patches.chunk_system.level.entity.EntityLookup entityLookup)) return false;
-        return entityLookup.addNewEntity(Entity);
+        try {
+            net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = entity.level().getEntities();
+            return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, entity);
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
+        return false;
     }
 
     @Override
