@@ -38,6 +38,7 @@ public class TaskService {
 
     private UUID run(Runnable runnable, boolean sync, Entity entity, Location location) {
         UUID taskId = UUID.randomUUID();
+        if(!gSitMain.isEnabled()) return taskId;
         if(gSitMain.supportsTaskFeature()) {
             if(entity != null) {
                 tasks.put(taskId, entity.getScheduler().run(gSitMain, scheduledTask -> {
@@ -88,6 +89,7 @@ public class TaskService {
 
     private UUID runDelayed(Runnable runnable, boolean sync, Entity entity, Location location, long ticks) {
         UUID taskId = UUID.randomUUID();
+        if(!gSitMain.isEnabled()) return taskId;
         if(gSitMain.supportsTaskFeature()) {
             if(ticks <= 0) return run(runnable, sync, entity);
             if(entity != null) {
@@ -139,6 +141,7 @@ public class TaskService {
 
     private UUID runAtFixedRate(Runnable runnable, boolean sync, Entity entity, Location location, long delayTicks, long ticks) {
         UUID taskId = UUID.randomUUID();
+        if(!gSitMain.isEnabled()) return taskId;
         if(gSitMain.supportsTaskFeature()) {
             if(entity != null) {
                 tasks.put(taskId, entity.getScheduler().runAtFixedRate(gSitMain, scheduledTask -> { runnable.run(); }, null, delayTicks <= 0 ? 1 : delayTicks, ticks <= 0 ? 1 : ticks));
