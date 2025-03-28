@@ -45,7 +45,7 @@ public class GSpinCommand implements CommandExecutor {
             return true;
         }
 
-        if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping()) {
+        if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping() || gSitMain.getSitService().isEntityBlocked(player)) {
             gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-now-error");
             return true;
         }

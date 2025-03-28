@@ -53,6 +53,8 @@ public class SitEventHandler implements Listener {
 
         if(!player.isValid() || player.isSneaking()) return;
 
+        if(gSitMain.getSitService().isEntityBlocked(player)) return;
+
         if(gSitMain.getSitService().isEntitySitting(player) || gSitMain.getPoseService().isPlayerPosing(player) || gSitMain.getCrawlService().isPlayerCrawling(player)) return;
 
         double distance = gSitMain.getConfigService().S_MAX_DISTANCE;
