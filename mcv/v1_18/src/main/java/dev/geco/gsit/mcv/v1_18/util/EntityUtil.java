@@ -88,7 +88,7 @@ public class EntityUtil implements IEntityUtil {
         return playerSeatEntityIds;
     }
 
-    private boolean spawnEntity(net.minecraft.world.entity.Entity Entity) { return Entity.level.getWorld().getHandle().entityManager.addNewEntity(Entity); }
+    private boolean spawnEntity(net.minecraft.world.entity.Entity entity) { return entity.level.getWorld().getHandle().entityManager.addNewEntity(entity); }
 
     @Override
     public IGPose createPose(GSeat seat, Pose pose) { return new GPose(seat, pose); }

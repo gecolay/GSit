@@ -1,19 +1,18 @@
-package dev.geco.gsit.mcv.v1_19_3.util;
+package dev.geco.gsit.mcv.v1_21_5.util;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_19_3.object.GCrawl;
-import dev.geco.gsit.mcv.v1_19_3.object.GPose;
-import dev.geco.gsit.mcv.v1_19_3.object.PlayerSeatEntity;
-import dev.geco.gsit.mcv.v1_19_3.object.SeatEntity;
+import dev.geco.gsit.mcv.v1_21_5.object.GCrawl;
+import dev.geco.gsit.mcv.v1_21_5.object.GPose;
+import dev.geco.gsit.mcv.v1_21_5.object.PlayerSeatEntity;
+import dev.geco.gsit.mcv.v1_21_5.object.SeatEntity;
 import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.IGCrawl;
 import dev.geco.gsit.object.IGPose;
 import dev.geco.gsit.util.IEntityUtil;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
@@ -34,15 +33,14 @@ public class EntityUtil implements IEntityUtil {
 
     public EntityUtil(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        if(gSitMain.supportsPaperFeature()) return;
         List<Field> entityManagerFieldList = new ArrayList<>();
         for(Field field : ServerLevel.class.getDeclaredFields()) if(field.getType().equals(PersistentEntitySectionManager.class)) entityManagerFieldList.add(field);
-        entityManager = entityManagerFieldList.get(0);
-        entityManager.setAccessible(true);
+        entityManager = entityManagerFieldList.getFirst();
+        if(entityManager != null) entityManager.setAccessible(true);
     }
 
     @Override
-    public void setEntityLocation(Entity entity, Location location) { ((CraftEntity) entity).getHandle().moveTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()); }
+    public void setEntityLocation(Entity entity, Location location) { ((CraftEntity) entity).getHandle().absSnapTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()); }
 
     @Override
     public boolean isSitLocationValid(Location location) { return true; }
@@ -102,16 +100,18 @@ public class EntityUtil implements IEntityUtil {
     }
 
     private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
-        if(!gSitMain.supportsPaperFeature()) {
+        if(entityManager != null) {
             try {
-                PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(entity.level.getWorld().getHandle());
+                PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(entity.level().getWorld().getHandle());
                 return entityLookup.addNewEntity(entity);
             } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
             return false;
         }
-        LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = entity.level.getEntities();
-        if(!(levelEntityGetter instanceof io.papermc.paper.chunk.system.entity.EntityLookup entityLookup)) return false;
-        return entityLookup.addNewEntity(entity);
+        try {
+            net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = entity.level().getEntities();
+            return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, entity);
+        } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
+        return false;
     }
 
     @Override
