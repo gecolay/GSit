@@ -57,7 +57,7 @@ public class GCrawl implements IGCrawl {
                 if(event.isAsynchronous() || event.getPlayer() != player || blockLocation == null || !blockLocation.getBlock().equals(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND) return;
                 event.setCancelled(true);
                 gSitMain.getTaskService().run(() -> {
-                    buildBlock(blockLocation);
+                    if(!finished) buildBlock(blockLocation);
                 }, false, player);
             }
         };
@@ -116,6 +116,8 @@ public class GCrawl implements IGCrawl {
 
         Location playerLocation = location.clone();
         gSitMain.getTaskService().run(() -> {
+            if(finished) return;
+
             int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
             playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
