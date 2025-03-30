@@ -50,7 +50,11 @@ public class EntityEventHandler {
         }, 2);
 
         Entity bottom = gSitMain.getPassengerUtil().getBottomEntityVehicle(dismounted);
-        if(gSitMain.getConfigService().PS_BOTTOM_RETURN && player.isValid()) gSitMain.getEntityUtil().setEntityLocation(player, bottom.getLocation());
+        if(gSitMain.getConfigService().PS_BOTTOM_RETURN) {
+            gSitMain.getTaskService().runDelayed(() -> {
+                if(player.isValid()) gSitMain.getEntityUtil().setEntityLocation(player, bottom.getLocation());
+            }, player, 1);
+        }
 
         gSitMain.getPlayerSitService().stopPlayerSit(player, GStopReason.GET_UP, false, true, false);
     }
