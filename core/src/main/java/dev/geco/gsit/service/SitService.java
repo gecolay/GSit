@@ -63,7 +63,7 @@ public class SitService {
 
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
         if(!isBlockWithSeat(block)) return true;
-        if(!gSitMain.getPermissionService().hasPermission(entity, "Kick.Sit")) return false;
+        if(!gSitMain.getPermissionService().hasPermission(entity, "Kick.Sit", "Kick.*")) return false;
         for(GSeat seat : getSeatsByBlock(block)) if(!removeSeat(seat, GStopReason.KICKED)) return false;
         return true;
     }

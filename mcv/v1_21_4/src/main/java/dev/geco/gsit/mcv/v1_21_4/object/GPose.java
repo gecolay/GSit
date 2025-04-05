@@ -205,10 +205,6 @@ public class GPose implements IGPose {
         if(pose == Pose.SLEEPING) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
         packages.add(attributeNpcPacket);
-        if(pose == Pose.SLEEPING) {
-            packages.add(teleportNpcPacket);
-            packages.add(teleportNpcPacket);
-        }
         if(pose == Pose.SPIN_ATTACK) packages.add(rotateNpcPacket);
 
         bundle = new ClientboundBundlePacket(packages);
@@ -259,7 +255,16 @@ public class GPose implements IGPose {
         });
     }
 
-    private void addViewerPlayer(Player player) { sendPacket(player, bundle); }
+    private void addViewerPlayer(Player player) {
+        sendPacket(player, bundle);
+        if(pose != Pose.SLEEPING) return;
+        gSitMain.getTaskService().runDelayed(() -> {
+            sendPacket(player, teleportNpcPacket);
+            gSitMain.getTaskService().runDelayed(() -> {
+                sendPacket(player, teleportNpcPacket);
+            }, player, 1);
+        }, player, 1);
+    }
 
     @Override
     public void remove() {
