@@ -60,6 +60,7 @@ permissions:
       GSit.PlayerSit.*: true
       GSit.Pose.*: true
       GSit.Crawl.*: true
+      GSit.Toggle.*: true
       GSit.Kick.*: true
       GSit.ByPass.*: true
       GSit.Update: true
@@ -71,7 +72,10 @@ permissions:
     children:
       GSit.Sit: true
       GSit.SitClick: true
-      GSit.SitToggle: true
+      GSit.Toggle.Sit: true
+      GSit.Toggle.Other.Sit: true
+      GSit.Kick.Sit: true
+      GSit.Kick.Command.Sit: true
 
   GSit.Sit:
     default: true
@@ -79,26 +83,19 @@ permissions:
 
   GSit.SitClick:
     default: true
-    description: Sit click | Permission
-
-  GSit.SitToggle:
-    default: true
-    description: Toggle Sit ability | Permission
+    description: Sit click ability | Permission
 
   GSit.PlayerSit.*:
     default: op
     description: PlayerSit | Permissions
     children:
       GSit.PlayerSit: true
-      GSit.PlayerSitToggle: true
+      GSit.Toggle.PlayerSit: true
+      GSit.Toggle.Other.PlayerSit: true
 
   GSit.PlayerSit:
     default: true
-    description: PlayerSit click | Permission
-
-  GSit.PlayerSitToggle:
-    default: true
-    description: Toggle PlayerSit ability | Permission
+    description: PlayerSit click ability | Permission
 
   GSit.Pose.*:
     default: op
@@ -107,6 +104,8 @@ permissions:
       GSit.Lay: true
       GSit.BellyFlop: true
       GSit.Spin: true
+      GSit.Kick.Pose: true
+      GSit.Kick.Command.Pose: true
 
   GSit.Lay:
     default: true
@@ -126,7 +125,8 @@ permissions:
     children:
       GSit.Crawl: true
       GSit.CrawlSneak: true
-      GSit.CrawlToggle: true
+      GSit.Toggle.Crawl: true
+      GSit.Toggle.Other.Crawl: true
 
   GSit.Crawl:
     default: true
@@ -134,26 +134,67 @@ permissions:
 
   GSit.CrawlSneak:
     default: true
-    description: Crawl sneak | Permission
+    description: Crawl sneak ability | Permission
 
-  GSit.CrawlToggle:
+  GSit.Toggle.*:
+    default: op
+    description: Kick | Permissions
+    children:
+      GSit.Toggle.Sit: true
+      GSit.Toggle.Other.Sit: true
+      GSit.Toggle.PlayerSit: true
+      GSit.Toggle.Other.PlayerSit: true
+      GSit.Toggle.Crawl: true
+      GSit.Toggle.Other.Crawl: true
+
+  GSit.Toggle.Sit:
     default: true
-    description: Toggle Crawl ability | Permission
+    description: Toggle sit click ability command | Permission
+
+  GSit.Toggle.Other.Sit:
+    default: true
+    description: Toggle other sit click ability command | Permission
+
+  GSit.Toggle.PlayerSit:
+    default: true
+    description: Toggle PlayerSit click ability command | Permission
+
+  GSit.Toggle.Other.PlayerSit:
+    default: true
+    description: Toggle other PlayerSit click ability command | Permission
+
+  GSit.Toggle.Crawl:
+    default: true
+    description: Toggle crawl sneak ability command | Permission
+
+  GSit.Toggle.Other.Crawl:
+    default: true
+    description: Toggle other crawl sneak ability command | Permission
 
   GSit.Kick.*:
     default: op
     description: Kick | Permissions
     children:
       GSit.Kick.Sit: true
+      GSit.Kick.Command.Sit: true
       GSit.Kick.Pose: true
+      GSit.Kick.Command.Pose: true
 
   GSit.Kick.Sit:
     default: op
     description: Kick sit | Permission
 
+  GSit.Kick.Command.Sit:
+    default: op
+    description: Kick sit by command | Permission
+
   GSit.Kick.Pose:
     default: op
     description: Kick pose | Permission
+
+  GSit.Kick.Command.Pose:
+    default: op
+    description: Kick pose by command | Permission
 
   GSit.ByPass.*:
     default: op
@@ -164,15 +205,15 @@ permissions:
 
   GSit.ByPass.World:
     default: op
-    description: ByPass world | Permission
+    description: ByPass world restrictions | Permission
 
   GSit.ByPass.Region:
     default: op
-    description: ByPass region | Permission
+    description: ByPass region restrictions | Permission
 
   GSit.Update:
     default: op
-    description: Update notification | Permission
+    description: Receive update notification | Permission
 
   GSit.Reload:
     default: op

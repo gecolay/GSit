@@ -54,7 +54,7 @@ public class PoseService {
 
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
-        if(!gSitMain.getPermissionService().hasPermission(player, "Kick.Pose", "Kick.*")) return false;
+        if(!gSitMain.getPermissionService().hasPermission(player, "Kick.Pose", "Kick.*", "Pose.*")) return false;
         for(IGPose pose : getPosesByBlock(block)) if(!removePose(pose, GStopReason.KICKED)) return false;
         return true;
     }
