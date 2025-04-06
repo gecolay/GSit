@@ -165,7 +165,7 @@ public class SitService {
             if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
 
             entityBlocked.remove(entity.getUniqueId());
-        }, entity, 1);
+        }, returnLocation, 1);
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
