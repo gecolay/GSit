@@ -117,11 +117,10 @@ public class SitService {
             if(playerMoveEvent.isCancelled()) return;
         }
 
-        Set<GSeat> seats = blockSeats.get(seat.getBlock());
-        if(seats != null) seats.remove(seat);
+        Set<GSeat> blockSeatList = blockSeats.get(seat.getBlock());
+        if(blockSeatList != null) blockSeatList.remove(seat);
         seat.setBlock(seat.getBlock().getRelative(blockDirection));
-        seats = blockSeats.get(seat.getBlock());
-        if(seats != null) seats.add(seat);
+        blockSeats.computeIfAbsent(seat.getBlock(), k -> new HashSet<>()).add(seat);
         seat.setLocation(seat.getLocation().add(blockDirection.getModX(), blockDirection.getModY(), blockDirection.getModZ()));
         gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), seat.getLocation());
     }
@@ -136,7 +135,11 @@ public class SitService {
         Entity entity = seat.getEntity();
         if(useSafeDismount) handleSafeSeatDismount(seat);
 
-        blockSeats.remove(seat.getBlock());
+        Set<GSeat> blockSeatList = blockSeats.remove(seat.getBlock());
+        if(blockSeatList != null) {
+            blockSeatList.remove(seat);
+            if(blockSeatList.isEmpty()) blockSeats.remove(seat.getBlock());
+        }
         seats.remove(entity.getUniqueId());
         seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
