@@ -35,6 +35,7 @@ public class EntityUtil implements IEntityUtil {
         this.gSitMain = gSitMain;
         List<Field> entityManagerFieldList = new ArrayList<>();
         for(Field field : ServerLevel.class.getDeclaredFields()) if(field.getType().equals(PersistentEntitySectionManager.class)) entityManagerFieldList.add(field);
+        if(entityManagerFieldList.isEmpty()) return;
         entityManager = entityManagerFieldList.getFirst();
         if(entityManager != null) entityManager.setAccessible(true);
     }

@@ -37,6 +37,7 @@ public class EntityUtil implements IEntityUtil {
         if(gSitMain.supportsPaperFeature()) return;
         List<Field> entityManagerFieldList = new ArrayList<>();
         for(Field field : ServerLevel.class.getDeclaredFields()) if(field.getType().equals(PersistentEntitySectionManager.class)) entityManagerFieldList.add(field);
+        if(entityManagerFieldList.isEmpty()) return;
         entityManager = entityManagerFieldList.getFirst();
         entityManager.setAccessible(true);
     }

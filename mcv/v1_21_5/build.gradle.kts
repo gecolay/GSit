@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(project(":core"))
-    paperweight.paperDevBundle("1.21.5-no-moonrise-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
 }
 
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION

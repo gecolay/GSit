@@ -155,12 +155,15 @@ public class SitService {
 
         if(entity.isValid()) entityBlocked.add(entity.getUniqueId());
 
+        Location entityLocation = entity.getLocation();
+
+        returnLocation.setYaw(entityLocation.getYaw());
+        returnLocation.setPitch(entityLocation.getPitch());
+
+        if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+
         gSitMain.getTaskService().runDelayed(() -> {
-            Location entityLocation = entity.getLocation();
-
-            returnLocation.setYaw(entityLocation.getYaw());
-            returnLocation.setPitch(entityLocation.getPitch());
-
             if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
             if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
 
