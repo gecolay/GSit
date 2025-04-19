@@ -264,7 +264,7 @@ public class GSitMain extends JavaPlugin {
         } catch(ClassNotFoundException e) { supportsPaperFeature = false; }
 
         try {
-            Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
             supportsTaskFeature = true;
         } catch(ClassNotFoundException e) { supportsTaskFeature = false; }
 

@@ -11,7 +11,7 @@ dependencies {
     }
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.4")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.1")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.2")
 }
 
 java {
