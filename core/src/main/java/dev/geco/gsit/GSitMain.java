@@ -77,6 +77,7 @@ public class GSitMain extends JavaPlugin {
     private WorldGuardLink worldGuardLink;
     private boolean supportsPaperFeature = false;
     private boolean supportsTaskFeature = false;
+    private boolean supportsFoliaFeature = false;
 
     public static GSitMain getInstance() { return gSitMain; }
 
@@ -123,6 +124,8 @@ public class GSitMain extends JavaPlugin {
     public boolean supportsPaperFeature() { return supportsPaperFeature; }
 
     public boolean supportsTaskFeature() { return supportsTaskFeature; }
+
+    public boolean supportsFoliaFeature() { return supportsFoliaFeature; }
 
     public void onLoad() {
         gSitMain = this;
@@ -264,9 +267,14 @@ public class GSitMain extends JavaPlugin {
         } catch(ClassNotFoundException e) { supportsPaperFeature = false; }
 
         try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
             supportsTaskFeature = true;
         } catch(ClassNotFoundException e) { supportsTaskFeature = false; }
+
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
+            supportsFoliaFeature = true;
+        } catch(ClassNotFoundException e) { supportsFoliaFeature = false; }
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
             worldGuardLink = new WorldGuardLink();
