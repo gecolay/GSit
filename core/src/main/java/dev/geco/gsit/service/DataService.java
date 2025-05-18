@@ -57,7 +57,7 @@ public class DataService {
             connection = getConnection(false);
             if(connection != null) {
                 if(!type.equals("sqlite")) {
-                    execute("CREATE DATABASE IF NOT EXISTS " + database);
+                    execute("CREATE DATABASE IF NOT EXISTS ?", database);
                     connection = getConnection(true);
                 }
                 if(connection != null) {
