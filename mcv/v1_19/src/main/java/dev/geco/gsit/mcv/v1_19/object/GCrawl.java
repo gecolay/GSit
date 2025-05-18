@@ -98,18 +98,18 @@ public class GCrawl implements IGCrawl {
         int blockSize = (int) ((tickLocation.getY() - tickLocation.getBlockY()) * 100);
         tickLocation.setY(tickLocation.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
         Block aboveBlock = tickLocation.getBlock();
-        boolean hasSolidBlackAbove = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
+        boolean hasSolidBlockAbove = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
         boolean canPlaceBlock = isValidArea(locationBlock.getRelative(BlockFace.UP), aboveBlock, blockLocation != null ? blockLocation.getBlock() : null);
-        boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || hasSolidBlackAbove);
+        boolean canSetBarrier = canPlaceBlock && (aboveBlock.getType().isAir() || hasSolidBlockAbove);
         if(blockLocation == null || !aboveBlock.equals(blockLocation.getBlock())) {
             destoryBlock();
-            if(canSetBarrier && !hasSolidBlackAbove) {
+            if(canSetBarrier && !hasSolidBlockAbove) {
                 buildBlock(tickLocation);
                 return;
             }
         }
 
-        if(canSetBarrier || hasSolidBlackAbove) {
+        if(canSetBarrier || hasSolidBlockAbove) {
             destoryEntity();
             return;
         }
@@ -124,7 +124,7 @@ public class GCrawl implements IGCrawl {
 
             boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-            if(boxEntityExist) {
+            if(!boxEntityExist) {
                 boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                 serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity));
                 boxEntityExist = true;
