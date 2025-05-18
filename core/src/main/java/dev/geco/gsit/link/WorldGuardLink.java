@@ -1,14 +1,17 @@
 package dev.geco.gsit.link;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.link.worldguard.RegionFlagHandler;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,24 +24,17 @@ public class WorldGuardLink {
     public static final StateFlag POSE_FLAG = new StateFlag("pose", true);
     public static final StateFlag CRAWL_FLAG = new StateFlag("crawl", true);
 
-    private final HashMap<String, StateFlag> FLAGS = new HashMap<>(); {
-        FLAGS.put(SIT_FLAG.getName(), SIT_FLAG);
-        FLAGS.put(PLAYERSIT_FLAG.getName(), PLAYERSIT_FLAG);
-        FLAGS.put(POSE_FLAG.getName(), POSE_FLAG);
-        FLAGS.put(CRAWL_FLAG.getName(), CRAWL_FLAG);
-    }
-
-    public StateFlag getFlag(String flagName) { return flagName != null ? FLAGS.getOrDefault(flagName.toLowerCase(), null) : null; }
-
     public void registerFlags() {
+        HashMap<String, StateFlag> flags = new HashMap<>();
+        flags.put(SIT_FLAG.getName(), SIT_FLAG);
+        flags.put(PLAYERSIT_FLAG.getName(), PLAYERSIT_FLAG);
+        flags.put(POSE_FLAG.getName(), POSE_FLAG);
+        flags.put(CRAWL_FLAG.getName(), CRAWL_FLAG);
         FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
-        for(Map.Entry<String, StateFlag> flag : FLAGS.entrySet()) {
+        for(Map.Entry<String, StateFlag> flag : flags.entrySet()) {
             try {
                 flagRegistry.register(flag.getValue());
-            } catch(FlagConflictException | IllegalStateException e) {
-                Flag<?> registeredFlag = flagRegistry.get(flag.getKey());
-                if(registeredFlag instanceof StateFlag) FLAGS.put(flag.getKey(), (StateFlag) registeredFlag);
-            }
+            } catch(Throwable ignored) { }
         }
     }
 
@@ -50,10 +46,16 @@ public class WorldGuardLink {
         WorldGuard.getInstance().getPlatform().getSessionManager().unregisterHandler(RegionFlagHandler.FACTORY);
     }
 
-    public boolean canUseInLocation(Location location, StateFlag flag) {
-        if(flag == null) return true;
+    public boolean canUseInLocation(Location location, Player player, String flag) {
         try {
-            return WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(BukkitAdapter.adapt(location)).testState(null, flag);
+            RegionQuery regionQuery = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+            com.sk89q.worldedit.util.Location regionLocation = BukkitAdapter.adapt(location);
+            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+            // If the player can't ride an entity in the region, we can't use sit anyway
+            if(!flag.equalsIgnoreCase("crawl") && !regionQuery.testBuild(regionLocation, localPlayer, Flags.RIDE, Flags.INTERACT)) return false;
+            FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
+            if(!(flagRegistry.get(flag) instanceof StateFlag stateFlag)) return true;
+            return regionQuery.testState(regionLocation, localPlayer, stateFlag);
         } catch(Throwable e) { GSitMain.getInstance().getLogger().log(Level.SEVERE, "Could not check WorldGuard location!", e); }
         return true;
     }
