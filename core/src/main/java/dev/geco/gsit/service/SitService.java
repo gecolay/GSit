@@ -168,7 +168,9 @@ public class SitService {
 
         gSitMain.getTaskService().runDelayed(() -> {
             if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
-            if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+            gSitMain.getTaskService().runDelayed(() -> {
+                if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+            }, entity, 0);
 
             entityBlocked.remove(entity.getUniqueId());
         }, returnLocation, 1);
