@@ -9,29 +9,61 @@ import org.jetbrains.annotations.NotNull;
 public class EnvironmentUtil {
 
     private final GSitMain gSitMain;
+    private final boolean worldWhitelistEnabled;
+    private final boolean bypassPermissionEnabled;
 
     public EnvironmentUtil(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
+        var config = gSitMain.getConfigService();
+        this.worldWhitelistEnabled = !config.WORLDWHITELIST.isEmpty();
+        this.bypassPermissionEnabled = config.PERMISSION_SERVICE_ENABLED;
     }
 
     public boolean isEntityInAllowedWorld(@NotNull Entity entity) {
-        boolean allowed = !gSitMain.getConfigService().WORLDBLACKLIST.contains(entity.getWorld().getName());
-        if(!gSitMain.getConfigService().WORLDWHITELIST.isEmpty() && !gSitMain.getConfigService().WORLDWHITELIST.contains(entity.getWorld().getName())) allowed = false;
-        return allowed || gSitMain.getPermissionService().hasPermission(entity, "ByPass.World", "ByPass.*");
+        String worldName = entity.getWorld().getName();
+        var config = gSitMain.getConfigService();
+        
+        // Bypass permission check first (cheapest)
+        if (bypassPermissionEnabled && 
+            gSitMain.getPermissionService().hasPermission(entity, "ByPass.World", "ByPass.*")) {
+            return true;
+        }
+        
+        // World whitelist has priority if enabled
+        if (worldWhitelistEnabled) {
+            return config.WORLDWHITELIST.contains(worldName);
+        }
+        
+        // Fallback to blacklist check
+        return !config.WORLDBLACKLIST.contains(worldName);
     }
 
     public boolean canUseInLocation(@NotNull Location location, @NotNull Player player, @NotNull String flag) {
-        if(gSitMain.getPermissionService().hasPermission(player, "ByPass.Region", "ByPass.*")) return true;
-        if(gSitMain.getPlotSquaredLink() != null) {
-            if(flag.equalsIgnoreCase("sit")) {
-                if(!gSitMain.getPlotSquaredLink().canUseSitInLocation(location, player)) return false;
-            } else if(flag.equalsIgnoreCase("playersit")) {
-                if(!gSitMain.getPlotSquaredLink().canUsePlayerSitInLocation(location, player)) return false;
-            } else if(!gSitMain.getPlotSquaredLink().canUseInLocation(location, player)) return false;
+        // Bypass permission check first (cheapest)
+        if (bypassPermissionEnabled && 
+            gSitMain.getPermissionService().hasPermission(player, "ByPass.Region", "ByPass.*")) {
+            return true;
         }
-        if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(location, player, flag)) return false;
-        if(gSitMain.getGriefPreventionLink() != null && !gSitMain.getGriefPreventionLink().canUseInLocation(location, player)) return false;
+        
+        // Check region protections in optimal order
+        if (gSitMain.getPlotSquaredLink() != null && !checkPlotSquared(location, player, flag)) {
+            return false;
+        }
+        if (gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(location, player, flag)) {
+            return false;
+        }
+        if (gSitMain.getGriefPreventionLink() != null && !gSitMain.getGriefPreventionLink().canUseInLocation(location, player)) {
+            return false;
+        }
+        
         return true;
     }
-
+    
+    private boolean checkPlotSquared(Location location, Player player, String flag) {
+        return switch (flag.toLowerCase()) {
+            case "sit" -> gSitMain.getPlotSquaredLink().canUseSitInLocation(location, player);
+            case "playersit" -> gSitMain.getPlotSquaredLink().canUsePlayerSitInLocation(location, player);
+            default -> gSitMain.getPlotSquaredLink().canUseInLocation(location, player);
+        };
+    }
 }
