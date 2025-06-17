@@ -170,7 +170,7 @@ public class SitService {
             if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
             if(gSitMain.supportsFoliaFeature()) gSitMain.getTaskService().runDelayed(() -> {
                 if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-            }, entity, 0);
+            }, true, Bukkit.isOwnedByCurrentRegion(entity) ? entity : null, 0);
             else if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
 
             entityBlocked.remove(entity.getUniqueId());
