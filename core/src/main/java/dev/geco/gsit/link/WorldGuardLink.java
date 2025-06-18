@@ -7,6 +7,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.link.worldguard.RegionFlagHandler;
@@ -48,7 +49,9 @@ public class WorldGuardLink {
 
     public boolean canUseInLocation(Location location, Player player, String flag) {
         try {
-            RegionQuery regionQuery = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            if(container.get(BukkitAdapter.adapt(location.getWorld())) == null) return true;
+            RegionQuery regionQuery = container.createQuery();
             com.sk89q.worldedit.util.Location regionLocation = BukkitAdapter.adapt(location);
             LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
             // If the player can't ride an entity in the region, we can't use sit anyway
