@@ -46,7 +46,7 @@ public class DataService {
 
     public boolean isConnected() {
         try {
-            if(connection != null && !connection.isClosed()) return true;
+            if(connection != null && !connection.isClosed() && connection.isValid(5)) return true;
         } catch(SQLException ignored) { }
         return false;
     }
@@ -95,6 +95,7 @@ public class DataService {
 
     private void ensureConnection() throws SQLException {
         if(isConnected()) return;
+        if(reconnect()) return;
         if(!reconnect()) throw new SQLException("Failed to reconnect to the " + type + " database.");
     }
 
