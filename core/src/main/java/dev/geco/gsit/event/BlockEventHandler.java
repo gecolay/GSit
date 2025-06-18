@@ -41,15 +41,14 @@ public class BlockEventHandler implements Listener {
 
     private void handleBlockPistonEvent(BlockPistonEvent event, List<Block> blocks) {
         Set<GSeat> moveList = new HashSet<>();
+        Set<IGPose> breakList = new HashSet<>();
         for(Block block : blocks) {
-            for(GSeat seat : gSitMain.getSitService().getSeatsByBlock(block)) {
-                if(moveList.contains(seat)) continue;
-                gSitMain.getSitService().moveSeat(seat, event.getDirection());
-                moveList.add(seat);
-            }
+            moveList.addAll(gSitMain.getSitService().getSeatsByBlock(block));
             if(!gSitMain.getConfigService().GET_UP_BREAK) continue;
-            for(IGPose poseSeat : gSitMain.getPoseService().getPosesByBlock(block)) gSitMain.getPoseService().removePose(poseSeat, GStopReason.BLOCK_BREAK);
+            breakList.addAll(gSitMain.getPoseService().getPosesByBlock(block));
         }
+        for(GSeat seat : moveList) gSitMain.getSitService().moveSeat(seat, event.getDirection());
+        for(IGPose poseSeat : breakList) gSitMain.getPoseService().removePose(poseSeat, GStopReason.BLOCK_BREAK);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
