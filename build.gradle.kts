@@ -44,8 +44,7 @@ dependencies {
     api(project(":v1_21_2", io.papermc.paperweight.util.constants.REOBF_CONFIG))
     api(project(":v1_21_4", io.papermc.paperweight.util.constants.REOBF_CONFIG))
     api(project(":v1_21_5", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    //api(project(":v1_21_6", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_21_6"))
+    api(project(":v1_21_6", "default"))
 }
 
 tasks {
@@ -53,7 +52,7 @@ tasks {
         archiveClassifier = ""
         minimize()
         manifest {
-            attributes["paperweight-mappings-namespace"] = io.papermc.paperweight.util.constants.DEOBF_NAMESPACE
+            attributes["paperweight-mappings-namespace"] = io.papermc.paperweight.util.constants.SPIGOT_NAMESPACE
         }
     }
 
