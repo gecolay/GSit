@@ -1,6 +1,6 @@
 package dev.geco.gsit.mcv.v1_19_3.object;
 
-import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.service.SitService;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
@@ -28,7 +28,7 @@ public class SeatEntity extends ArmorStand {
         yRotO = getYRot();
         setYBodyRot(yRotO);
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(1f);
-        addTag(GSitMain.NAME + "_" + getClass().getSimpleName());
+        addTag(SitService.SIT_TAG);
     }
 
     public void startRotate() { rotate = true; }

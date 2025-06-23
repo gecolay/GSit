@@ -31,6 +31,7 @@ public class SitService {
 
     public static final double STAIR_XZ_OFFSET = 0.123d;
     public static final double STAIR_Y_OFFSET = 0.5d;
+    public static final String SIT_TAG = GSitMain.NAME + "_sit";
 
     private final GSitMain gSitMain;
     private final double baseOffset;

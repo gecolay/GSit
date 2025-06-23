@@ -4,7 +4,6 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -53,11 +52,9 @@ public class WorldGuardLink {
             if(container.get(BukkitAdapter.adapt(location.getWorld())) == null) return true;
             RegionQuery regionQuery = container.createQuery();
             com.sk89q.worldedit.util.Location regionLocation = BukkitAdapter.adapt(location);
-            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-            // If the player can't ride an entity in the region, we can't use sit anyway
-            if(!flag.equalsIgnoreCase("crawl") && !regionQuery.testBuild(regionLocation, localPlayer, Flags.RIDE, Flags.INTERACT)) return false;
             FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
             if(!(flagRegistry.get(flag) instanceof StateFlag stateFlag)) return true;
+            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
             return regionQuery.testState(regionLocation, localPlayer, stateFlag);
         } catch(Throwable e) { GSitMain.getInstance().getLogger().log(Level.SEVERE, "Could not check WorldGuard location!", e); }
         return true;

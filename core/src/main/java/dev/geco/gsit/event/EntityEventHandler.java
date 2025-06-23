@@ -6,6 +6,7 @@ import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
 import dev.geco.gsit.service.PlayerSitService;
+import dev.geco.gsit.service.SitService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,6 +18,14 @@ public class EntityEventHandler {
 
     public EntityEventHandler(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
+    }
+
+    public void handleEntityMountEvent(Cancellable event, Entity entity, Entity mount) {
+        if(!event.isCancelled()) return;
+        if(gSitMain.getWorldGuardLink() == null) return;
+        if(!(entity instanceof Player)) return;
+        if(!mount.getScoreboardTags().contains(SitService.SIT_TAG)) return;
+        event.setCancelled(false);
     }
 
     public void handleEntityDismountEvent(Cancellable event, Entity entity, Entity dismounted) {
