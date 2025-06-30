@@ -76,7 +76,7 @@ public class PlayerSitEventHandler implements Listener {
 
         if(!gSitMain.getEnvironmentUtil().canUseInLocation(target.getLocation(), player, "playersit")) return;
 
-        if(gSitMain.getPassengerUtil().isEntityInEntityPassengerList(target, player) || gSitMain.getPassengerUtil().isEntityInEntityPassengerList(player, target)) return;
+        if(gSitMain.getPassengerUtil().isEntityInPassengerList(target, player) || gSitMain.getPassengerUtil().isEntityInPassengerList(player, target)) return;
 
         long amount = gSitMain.getPassengerUtil().getEntityPassengerCount(target) + 1 + gSitMain.getPassengerUtil().getEntityVehicleCount(target) + gSitMain.getPassengerUtil().getEntityPassengerCount(player);
         if(gSitMain.getConfigService().PS_MAX_STACK > 0 && gSitMain.getConfigService().PS_MAX_STACK <= amount) return;

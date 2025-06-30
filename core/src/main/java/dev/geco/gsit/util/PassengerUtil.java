@@ -24,10 +24,10 @@ public class PassengerUtil {
         return passengerCount;
     }
 
-    public boolean isEntityInEntityPassengerList(Entity entity, Entity passenger) {
+    public boolean isEntityInPassengerList(Entity entity, Entity passenger) {
         List<Entity> currentPassengers = entity.getPassengers();
         if(currentPassengers.contains(passenger)) return true;
-        for(Entity currentPassenger : currentPassengers) if(isEntityInEntityPassengerList(currentPassenger, passenger)) return true;
+        for(Entity currentPassenger : currentPassengers) if(isEntityInPassengerList(currentPassenger, passenger)) return true;
         return false;
     }
 

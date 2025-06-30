@@ -19,7 +19,7 @@ public class GriefPreventionLink {
     public boolean canUseInLocation(Location location, Player player) {
         try {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
-            return claim == null || (!gSitMain.getConfigService().TRUSTED_REGION_ONLY || claim.canSiege(player));
+            return claim == null || claim.canSiege(player);
         } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check GriefPrevention location!", e); }
         return true;
     }

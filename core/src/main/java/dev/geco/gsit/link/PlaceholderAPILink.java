@@ -32,7 +32,7 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
     public @NotNull String getVersion() { return gSitMain.getDescription().getVersion(); }
 
     @Override
-    public @NotNull List<String> getPlaceholders() { return Arrays.asList("crawling", "emoting", "playertoggle", "posing", "sitting", "toggle"); }
+    public @NotNull List<String> getPlaceholders() { return Arrays.asList("crawling", "playertoggle", "posing", "sitting", "toggle"); }
 
     @Override
     public boolean persist() { return true; }

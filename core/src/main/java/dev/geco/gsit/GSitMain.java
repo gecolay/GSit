@@ -284,7 +284,7 @@ public class GSitMain extends JavaPlugin {
 
     private void loadPluginDependencies() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("GriefPrevention");
-        if(plugin != null && plugin.isEnabled()) griefPreventionLink = new GriefPreventionLink(this);
+        if(plugin != null && plugin.isEnabled() && configService.TRUSTED_REGION_ONLY) griefPreventionLink = new GriefPreventionLink(this);
         else griefPreventionLink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
@@ -294,7 +294,7 @@ public class GSitMain extends JavaPlugin {
         } else placeholderAPILink = null;
 
         plugin = Bukkit.getPluginManager().getPlugin("PlotSquared");
-        if(plugin != null && plugin.isEnabled()) {
+        if(plugin != null && plugin.isEnabled() && configService.TRUSTED_REGION_ONLY) {
             plotSquaredLink = new PlotSquaredLink(this);
             if(!plotSquaredLink.isPlotSquaredVersionSupported()) plotSquaredLink = null;
         } else plotSquaredLink = null;

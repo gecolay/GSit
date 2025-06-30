@@ -27,17 +27,17 @@ public class PlotSquaredLink {
             PlotAPI plotAPI = new PlotAPI();
 
             PlotPlayer<?> plotPlayer = plotAPI.wrapPlayer(Player.getUniqueId());
-            if(plotPlayer == null) return !gSitMain.getConfigService().TRUSTED_REGION_ONLY;
+            if(plotPlayer == null) return true;
 
             com.plotsquared.core.location.Location location = com.plotsquared.core.location.Location.at(plotPlayer.getLocation().getWorld(), Location.getBlockX(), Location.getBlockY(), Location.getBlockZ());
 
             PlotArea plotArea = plotAPI.getPlotSquared().getPlotAreaManager().getApplicablePlotArea(location);
-            if(plotArea == null) return !gSitMain.getConfigService().TRUSTED_REGION_ONLY;
+            if(plotArea == null) return true;
 
             Plot plot = plotArea.getOwnedPlot(location);
-            if(plot == null) return !gSitMain.getConfigService().TRUSTED_REGION_ONLY;
+            if(plot == null) return true;
 
-            return !plot.isDenied(Player.getUniqueId()) && (!gSitMain.getConfigService().TRUSTED_REGION_ONLY || plot.isAdded(Player.getUniqueId()));
+            return !plot.isDenied(Player.getUniqueId()) && plot.isAdded(Player.getUniqueId());
         } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check PlotSquared location!", e); }
         return true;
     }
