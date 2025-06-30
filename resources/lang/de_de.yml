@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Das Plugin wurde erfolgreich aktiviert."
   plugin-link: "[P]&a Verknüpfung mit&6 %Link%&a erfolgreich!"
-  plugin-update: "[P]&a Neue Version verfügbar:&6 %NewVersion%&a!\n[P]&a Aktuelle Version:&6 %Version%&a!\n[P]&a Lade die neuste Version:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Neue Version verfügbar:&6 %NewVersion%&a! Aktuelle Version:&6 %Version%&a! Lade die neuste Version:&6 %Path%"
   plugin-data: "[P]&c Es konnte keine Verbindung zum Datenspeicher hergestellt werden. Bitte überprüfe die Serverkonsole!"
   plugin-version: "[P]&c Das Plugin kann mit dieser Server-Version nicht genutzt werden! (&b%Version%&c)"
   plugin-reload: "[P]&a Das Plugin wurde erfolgreich neu geladen."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Du hast keine Berechtigung, diesen Befehl zu verwenden!"
   command-sender-error: "[P]&c Du kann diesen Befehl nicht ausführen!"
-  command-version-error: "[P]&c Veraltete Serverversion! (&b%Version%&c)\n[P]&c Aktualisiere den Server, um dieses Feature zu verwenden!"
+  command-version-error: "[P]&c Veraltete Serverversion! (&b%Version%&c) Aktualisiere den Server, um dieses Feature zu verwenden!"
 
   command-gsit-toggle-on: "[P]&a Du hast&6 Sitzen&a Klick-Interaktionen aktiviert."
   command-gsit-toggle-off: "[P]&a Du hast&6 Sitzen&a Klick-Interaktionen deaktiviert."

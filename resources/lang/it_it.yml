@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Il plugin è stato abilitato con successo."
   plugin-link: "[P]&a Agganciato con successo con&6 %Link%&a !"
-  plugin-update: "[P]&a Nuova versione disponibile:&6 %NewVersion%&a!\n[P]&a In questo momento stai usando la versione:&6 %Version%&a!\n[P]&a Scarica l'ultima versione:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Nuova versione disponibile:&6 %NewVersion%&a! In questo momento stai usando la versione:&6 %Version%&a! Scarica l'ultima versione:&6 %Path%"
   plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c Il plugin non può essere utilizzato con questa versione del server! (&b%Version%&c)"
   plugin-reload: "[P]&a Il plugin è stato ricaricato correttamente."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Non hai il permesso di usare questo comando!"
   command-sender-error: "[P]&c Questo mittente non può eseguire questo comando!"
-  command-version-error: "[P]&c Versione server obsoleta! (&b%Version%&c)\n[P]&c Aggiorna il server per usare questa interazione!"
+  command-version-error: "[P]&c Versione server obsoleta! (&b%Version%&c) Aggiorna il server per usare questa interazione!"
 
   command-gsit-toggle-on: "[P]&a Hai abilitato le interazioni-click per sederti."
   command-gsit-toggle-off: "[P]&a Hai disabilitato le interazioni-click per sederti."

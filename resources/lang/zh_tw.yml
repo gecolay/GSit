@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a 插件已成功啟用。"
   plugin-link: "[P]&a 成功連結到&6 %Link%&a！"
-  plugin-update: "[P]&a 新版本可用：&6 %NewVersion%&a！\n[P]&a 目前使用版本：&6 %Version%&a！\n[P]&a 下載最新版本：\n[P]&6 %Path%"
+  plugin-update: "[P]&a 新版本可用：&6 %NewVersion%&a！ 目前使用版本：&6 %Version%&a！ 下載最新版本：&6 %Path%"
   plugin-data: "[P]&c 無法建立到資料儲存的連線。請檢查伺服器控制台！"
   plugin-version: "[P]&c 插件與目前伺服器版本不相容！(&b%Version%&c)"
   plugin-reload: "[P]&a 插件已成功重新載入。"
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c 你沒有權限執行此指令！"
   command-sender-error: "[P]&c 你不能執行此指令！"
-  command-version-error: "[P]&c 伺服器版本太舊！(&b%Version%&c)\n[P]&c 升級伺服器以使用此功能！"
+  command-version-error: "[P]&c 伺服器版本太舊！(&b%Version%&c) 升級伺服器以使用此功能！"
 
   command-gsit-toggle-on: "[P]&a 你可以使用右鍵坐下了。"
   command-gsit-toggle-off: "[P]&a 你不能使用右鍵坐下了。"

@@ -157,25 +157,17 @@ public class SitService {
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
 
-        if(entity.isValid()) entityBlocked.add(entity.getUniqueId());
+        entityBlocked.add(entity.getUniqueId());
 
         Location entityLocation = entity.getLocation();
 
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
 
-        if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
-        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+        gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+        if(!gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
 
-        gSitMain.getTaskService().runDelayed(() -> {
-            if(seat.getSeatEntity().isValid()) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
-            if(gSitMain.supportsFoliaFeature()) gSitMain.getTaskService().runDelayed(() -> {
-                if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-            }, true, Bukkit.isOwnedByCurrentRegion(entity) ? entity : null, 0);
-            else if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-
-            entityBlocked.remove(entity.getUniqueId());
-        }, returnLocation, 1);
+        entityBlocked.remove(entity.getUniqueId());
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {

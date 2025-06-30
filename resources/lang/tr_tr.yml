@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Eklenti başarıyla etkinleştirildi."
   plugin-link: "[P]&6 %Link%&a ile bağlantı başarılı!"
-  plugin-update: "[P]&a Yeni sürüm mevcut:&6 %NewVersion%&a!\n[P]&a Şu anki sürüm:&6 %Version%&a!\n[P]&a En son sürümü indirin:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Yeni sürüm mevcut:&6 %NewVersion%&a! Şu anki sürüm:&6 %Version%&a! En son sürümü indirin:&6 %Path%"
   plugin-data: "[P]&c Veri depolama alanıyla bağlantı kurulamadı. Lütfen sunucu konsolunu kontrol edin!"
   plugin-version: "[P]&c Eklenti bu sunucu sürümüyle kullanılamaz! (&b%Version%&c)"
   plugin-reload: "[P]&a Eklenti başarıyla yeniden yüklendi."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Bu komutu kullanma yetkiniz yok!"
   command-sender-error: "[P]&c Bu komutu çalıştıramazsın!"
-  command-version-error: "[P]&c Eski sunucu sürümü! (&b%Version%&c)\n[P]&c Bu özelliği kullanabilmek için sunucunuzu yükseltin!"
+  command-version-error: "[P]&c Eski sunucu sürümü! (&b%Version%&c) Bu özelliği kullanabilmek için sunucunuzu yükseltin!"
 
   command-gsit-toggle-on: "[P]&6 Oturma&a için tıklama etkileşimlerini etkinleştirdiniz."
   command-gsit-toggle-off: "[P]&6 Oturma&a için tıklama etkileşimlerini devre dışı bıraktınız."

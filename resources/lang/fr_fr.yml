@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Le plugin a été activé avec succès."
   plugin-link: "[P]&a Lien avec&6 %Link%&a réussi !"
-  plugin-update: "[P]&a Nouvelle version disponible :&6 %NewVersion%&a !\n[P]&a Vous êtes actuellement sur la version :&6 %Version%&a !\n[P]&a Téléchargez la dernière version sur :\n[P]&6 %Path%"
+  plugin-update: "[P]&a Nouvelle version disponible :&6 %NewVersion%&a ! Vous êtes actuellement sur la version :&6 %Version%&a ! Téléchargez la dernière version sur :&6 %Path%"
   plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c Ce plugin ne peut pas être utilisé avec cette version de serveur ! (&b%Version%&c)"
   plugin-reload: "[P]&a Le plugin a été rechargé avec succès."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Vous n'avez pas la permission d'utiliser cette commande !"
   command-sender-error: "[P]&c Cet expéditeur ne peut pas exécuter cette commande !"
-  command-version-error: "[P]&c Version de serveur obsolète ! (&b%Version%&c)\n[P]&c Mettez à jour le serveur pour utiliser cette fonctionnalité !"
+  command-version-error: "[P]&c Version de serveur obsolète ! (&b%Version%&c) Mettez à jour le serveur pour utiliser cette fonctionnalité !"
 
   command-gsit-toggle-on: "[P]&a Vous avez activé les interactions par clic pour s’asseoir."
   command-gsit-toggle-off: "[P]&a Vous avez désactivé les interactions par clic pour s’asseoir."

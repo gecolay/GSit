@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Plugin berhasil diaktifkan."
   plugin-link: "[P]&a Berhasil menautkan &6%Link%&a!"
-  plugin-update: "[P]&a Tersedia versi baru:&6 %NewVersion%&a!\n[P]&a Sekarang kamu menjalankan versi:&6 %Version%&a!\n[P]&a Unduh versi terbaru di:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Tersedia versi baru:&6 %NewVersion%&a! Sekarang kamu menjalankan versi:&6 %Version%&a! Unduh versi terbaru di:&6 %Path%"
   plugin-data: "[P]&c Sambungan ke penyimpanan data tidak dapat dibuat. Mohon cek konsol server!"
   plugin-version: "[P]&c Plugin tidak bisa digunakan dengan versi server ini! (&b%Version%&c)"
   plugin-reload: "[P]&a Plugin berhasil dimuat ulang."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Kamu tidak punya izin untuk menggunakan perintah ini!"
   command-sender-error: "[P]&c Kamu tidak bisa menjalankan perintah ini!"
-  command-version-error: "[P]&c Versi server usang! (&b%Version%&c)\n[P]&c Perbarui server ini untuk menggunakan fitur ini!"
+  command-version-error: "[P]&c Versi server usang! (&b%Version%&c) Perbarui server ini untuk menggunakan fitur ini!"
 
   command-gsit-toggle-on: "[P]&a Duduk dengan mengklik diaktifkan."
   command-gsit-toggle-off: "[P]&a Duduk dengan mengklik dinonaktifkan."

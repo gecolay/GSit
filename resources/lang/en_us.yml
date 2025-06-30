@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a The plugin was successfully enabled."
   plugin-link: "[P]&a Link with&6 %Link%&a successful!"
-  plugin-update: "[P]&a New version available:&6 %NewVersion%&a!\n[P]&a Current version:&6 %Version%&a!\n[P]&a Download the latest version:\n[P]&6 %Path%"
+  plugin-update: "[P]&a New version available:&6 %NewVersion%&a! Current version:&6 %Version%&a! Download the latest version:&6 %Path%"
   plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c The plugin can't be used with this server version! (&b%Version%&c)"
   plugin-reload: "[P]&a The plugin was successfully reloaded."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c You don't have permission to use this command!"
   command-sender-error: "[P]&c You can't run this command!"
-  command-version-error: "[P]&c Outdated server version! (&b%Version%&c)\n[P]&c Upgrade the server to use this feature!"
+  command-version-error: "[P]&c Outdated server version! (&b%Version%&c) Upgrade the server to use this feature!"
 
   command-gsit-toggle-on: "[P]&a You have enabled&6 sit&a click-interactions."
   command-gsit-toggle-off: "[P]&a You have disabled&6 sit&a click-interactions."

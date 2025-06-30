@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Кушылма кушылды."
   plugin-link: "[P]&a&6 %Link%&a белән бәяләнде!"
-  plugin-update: "[P]&a Яңа версия бар:&6 %NewVersion%&a!\n[P]&a Хәзерге версия:&6 %Version%&a!\n[P]&a Соңгы версияне йөкләнегез:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Яңа версия бар:&6 %NewVersion%&a! Хәзерге версия:&6 %Version%&a! Соңгы версияне йөкләнегез:&6 %Path%"
   plugin-data: "[P]&c Мәгълүмат саклау урынына тоташу урнаштырып булмады. Сервер консолен тикшерегезче!"
   plugin-version: "[P]&c Кушылма бу сервер версиясе белән кулланыла алмый! (&b%Version%&c)"
   plugin-reload: "[P]&a Кушылма яңадан йөкләнде."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Бу боерыкны куллану өчен Сездә хокук юк!"
   command-sender-error: "[P]&c Сез бу боерыкны кабыза алмыйсыз!"
-  command-version-error: "[P]&c Искергән сервер версиясе! (&b%Version%&c)\n[P]&c Бу функцияне куллану өчен серверны яңартыгыз!"
+  command-version-error: "[P]&c Искергән сервер версиясе! (&b%Version%&c) Бу функцияне куллану өчен серверны яңартыгыз!"
 
   command-gsit-toggle-on: "[P]&a Сез&6 утыру&a эш итүне кушты."
   command-gsit-toggle-off: "[P]&a Сез&6 утыру&a эш итүне сүндерде."

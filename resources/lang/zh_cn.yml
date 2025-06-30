@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a 插件已成功启用"
   plugin-link: "[P]&a 成功链接到&6 %Link%&a !"
-  plugin-update: "[P]&a 新版本可用:&6 %NewVersion%&a!\n[P]&a 当前使用版本:&6 %Version%&a!\n[P]&a 下载最新版本:\n[P]&6 %Path%"
+  plugin-update: "[P]&a 新版本可用:&6 %NewVersion%&a! 当前使用版本:&6 %Version%&a! 下载最新版本:&6 %Path%"
   plugin-data: "[P]&c 无法与存储数据库建立连接. 请检查服务器控制台!"
   plugin-version: "[P]&c 插件与当前服务器版本不兼容! (&b%Version%&c)"
   plugin-reload: "[P]&a 插件已成功重载."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c 你不能执行此命令!"
   command-sender-error: "[P]&c 当前发送人不能执行此命令!"
-  command-version-error: "[P]&c 服务器版本过旧! (&b%Version%&c)\n[P]&c 更新服务器以使用此功能!"
+  command-version-error: "[P]&c 服务器版本过旧! (&b%Version%&c) 更新服务器以使用此功能!"
 
   command-gsit-toggle-on: "[P]&a 你可以通过右键坐下了"
   command-gsit-toggle-off: "[P]&a 你不能通过右键坐下了"

@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Plugin bol úspešne povolený."
   plugin-link: "[P]&a Prepojenie s&6 %Link%&a úspešné!"
-  plugin-update: "[P]&a K dispozícii je nová verzia:&6 %NewVersion%&a!\n[P]&a Momentálne používaš verziu:&6 %Version%&a!\n[P]&a Stiahni si najnovšiu verziu na:\n[P]&6 %Path%"
+  plugin-update: "[P]&a K dispozícii je nová verzia:&6 %NewVersion%&a! Momentálne používaš verziu:&6 %Version%&a! Stiahni si najnovšiu verziu na:&6 %Path%"
   plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c Plugin nie je možné použiť s touto verziou servera! (&b%Version%&c)"
   plugin-reload: "[P]&a Plugin bol úspešne znovu načítaný."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Nemáš povolenie pre použitie tohto príkazu!"
   command-sender-error: "[P]&c Nemôžeš spustiť tento príkaz!"
-  command-version-error: "[P]&c Zastaraná verzia servera! (&b%Version%&c)\n[P]&c Aktualizuj tento server, ak chceš používať túto funkciu!"
+  command-version-error: "[P]&c Zastaraná verzia servera! (&b%Version%&c) Aktualizuj tento server, ak chceš používať túto funkciu!"
 
   command-gsit-toggle-on: "[P]&a Povolil/a si klikacie interakcie pre sedenie."
   command-gsit-toggle-off: "[P]&a Zakázal/a si klikacie interakcie pre sedenie."

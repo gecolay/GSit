@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a Плагін був успішно включений."
   plugin-link: "[P]&a З'єднання з&6 %Link%&a успішне!"
-  plugin-update: "[P]&a Доступна нова версія:&6 %NewVersion%&a!\n[P]&a В даний час ви використовуєте версію:&6 %Version%&a!\n[P]&a Завантажте останню версію на сайті:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Доступна нова версія:&6 %NewVersion%&a! В даний час ви використовуєте версію:&6 %Version%&a! Завантажте останню версію на сайті:&6 %Path%"
   plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
   plugin-version: "[P]&c Цей Плагін не може бути використаний з цією версією сервера! (&b%Version%&c)"
   plugin-reload: "[P]&a The plugin was successfully reloaded."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Ви не маєте дозволу на використання цієї команди!"
   command-sender-error: "[P]&c Цей відправник не може виконати цю команду!"
-  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c)\n[P]&c Update the Server to use this Feature!"
+  command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c) Update the Server to use this Feature!"
 
   command-gsit-toggle-on: "[P]&a Тепер ви можете сісти, натиснувши."
   command-gsit-toggle-off: "[P]&a Ви більше не можете сісти, натиснувши."

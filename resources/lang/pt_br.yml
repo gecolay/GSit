@@ -2,7 +2,7 @@ Plugin:
 
   plugin-enabled: "[P]&a O plugin foi ativado com sucesso."
   plugin-link: "[P]&a Conexão com &6 %Link%&a feita com sucesso!"
-  plugin-update: "[P]&a Uma nova versão foi encontrada:&6 %NewVersion%&a!\n[P]&a No momento a versão que está sendo executada é a:&6 %Version%&a!\n[P]&a A nova versão se encontra para download em:\n[P]&6 %Path%"
+  plugin-update: "[P]&a Uma nova versão foi encontrada:&6 %NewVersion%&a! No momento a versão que está sendo executada é a:&6 %Version%&a! A nova versão se encontra para download em:&6 %Path%"
   plugin-data: "[P]&c A conexão com o armazenamento de dados não pode ser estabelecida. Por favor verifique o console do servidor!"
   plugin-version: "[P]&c O plugin não pode ser utilizado nessa versão atual do servidor! (&b%Version%&c)"
   plugin-reload: "[P]&a O plugin foi recarregado com sucesso."
@@ -13,7 +13,7 @@ Messages:
 
   command-permission-error: "[P]&c Sem permissão para executar esse comando."
   command-sender-error: "[P]&c O console não pode executar esse comando."
-  command-version-error: "[P]&c Versão do servidor desatualizada! (&b%Version%&c)\n[P]&c Atualize o servidor para usar este recurso!"
+  command-version-error: "[P]&c Versão do servidor desatualizada! (&b%Version%&c) Atualize o servidor para usar este recurso!"
 
   command-gsit-toggle-on: "[P]&a Você ativou a função de sentar-se."
   command-gsit-toggle-off: "[P]&a Você desativou a função de sentar-se."
