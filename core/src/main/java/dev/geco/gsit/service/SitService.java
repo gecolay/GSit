@@ -134,6 +134,7 @@ public class SitService {
         if(preEntityStopSitEvent.isCancelled() && stopReason.isCancellable()) return false;
 
         Entity entity = seat.getEntity();
+        entityBlocked.add(entity.getUniqueId());
         if(useSafeDismount) handleSafeSeatDismount(seat);
 
         Set<GSeat> blockSeatList = blockSeats.remove(seat.getBlock());
@@ -143,6 +144,7 @@ public class SitService {
         }
         seats.remove(entity.getUniqueId());
         seat.getSeatEntity().remove();
+        entityBlocked.remove(entity.getUniqueId());
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
         sitUsageNanoTime += seat.getLifetimeInNanoSeconds();
 
@@ -157,8 +159,6 @@ public class SitService {
 
         Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
 
-        entityBlocked.add(entity.getUniqueId());
-
         Location entityLocation = entity.getLocation();
 
         returnLocation.setYaw(entityLocation.getYaw());
@@ -166,8 +166,6 @@ public class SitService {
 
         gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
         if(!gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
-
-        entityBlocked.remove(entity.getUniqueId());
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
