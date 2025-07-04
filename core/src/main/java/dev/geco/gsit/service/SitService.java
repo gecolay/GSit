@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class SitService {
 
@@ -135,7 +136,14 @@ public class SitService {
 
         Entity entity = seat.getEntity();
         entityBlocked.add(entity.getUniqueId());
-        if(useSafeDismount) handleSafeSeatDismount(seat);
+        if(useSafeDismount) {
+            try {
+                handleSafeSeatDismount(seat);
+            } catch(Throwable e) {
+                // If the player is teleported away from his location we can't access the block data anymore, ignore this exception in a folia environment
+                if(!gSitMain.supportsFoliaFeature()) gSitMain.getLogger().log(Level.SEVERE, "Could not safely dismount the entity!", e);
+            }
+        }
 
         Set<GSeat> blockSeatList = blockSeats.remove(seat.getBlock());
         if(blockSeatList != null) {
@@ -164,8 +172,8 @@ public class SitService {
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
 
-        gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        if(!gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+        if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
