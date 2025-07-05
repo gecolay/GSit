@@ -4,7 +4,7 @@ description: ${description}
 authors: [Gecolay]
 website: https://www.spigotmc.org/resources/62325
 main: ${main}
-api-version: 1.13
+api-version: 1.16
 folia-supported: true
 softdepend: [GriefPrevention, PlaceholderAPI, PlotSquared, WorldGuard]
 

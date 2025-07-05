@@ -90,7 +90,7 @@ public class EntityUtil implements IEntityUtil {
     }
 
     private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
-        if(!gSitMain.supportsPaperFeature()) return entity.level.getWorld().getHandle().entityManager.addNewEntity(entity);
+        if(!gSitMain.isPaperServer()) return entity.level.getWorld().getHandle().entityManager.addNewEntity(entity);
         try {
             net.minecraft.world.level.entity.LevelEntityGetter<net.minecraft.world.entity.Entity> levelEntityGetter = entity.level.getEntities();
             return (boolean) levelEntityGetter.getClass().getMethod("addNewEntity", net.minecraft.world.entity.Entity.class).invoke(levelEntityGetter, entity);

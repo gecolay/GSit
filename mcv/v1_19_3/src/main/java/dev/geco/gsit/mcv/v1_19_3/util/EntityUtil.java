@@ -34,7 +34,7 @@ public class EntityUtil implements IEntityUtil {
 
     public EntityUtil(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        if(gSitMain.supportsPaperFeature()) return;
+        if(gSitMain.isPaperServer()) return;
         List<Field> entityManagerFieldList = new ArrayList<>();
         for(Field field : ServerLevel.class.getDeclaredFields()) if(field.getType().equals(PersistentEntitySectionManager.class)) entityManagerFieldList.add(field);
         if(entityManagerFieldList.isEmpty()) return;
@@ -103,7 +103,7 @@ public class EntityUtil implements IEntityUtil {
     }
 
     private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
-        if(!gSitMain.supportsPaperFeature()) {
+        if(!gSitMain.isPaperServer()) {
             try {
                 PersistentEntitySectionManager<net.minecraft.world.entity.Entity> entityLookup = (PersistentEntitySectionManager<net.minecraft.world.entity.Entity>) entityManager.get(entity.level.getWorld().getHandle());
                 return entityLookup.addNewEntity(entity);

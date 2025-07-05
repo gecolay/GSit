@@ -88,7 +88,7 @@ public class PlayerSitService {
             for(UUID passenger : passengers.getValue()) {
                 Entity passengerEntity = Bukkit.getEntity(passenger);
                 if(passengerEntity == null) continue;
-                if(gSitMain.supportsFoliaFeature()) gSitMain.getTaskService().run(passengerEntity::remove, passengerEntity);
+                if(gSitMain.isFoliaServer()) gSitMain.getTaskService().run(passengerEntity::remove, passengerEntity);
                 else passengerEntity.remove();
             }
             String key = source.getUniqueId().toString() + passengers.getKey();
@@ -105,7 +105,7 @@ public class PlayerSitService {
             for(UUID vehicle : vehicles.getValue()) {
                 Entity vehicleEntity = Bukkit.getEntity(vehicle);
                 if(vehicleEntity == null) continue;
-                if(gSitMain.supportsFoliaFeature()) gSitMain.getTaskService().run(vehicleEntity::remove, vehicleEntity);
+                if(gSitMain.isFoliaServer()) gSitMain.getTaskService().run(vehicleEntity::remove, vehicleEntity);
                 else vehicleEntity.remove();
             }
             String key = vehicles.getKey().toString() + source.getUniqueId();

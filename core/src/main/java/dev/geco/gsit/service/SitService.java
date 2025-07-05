@@ -170,7 +170,7 @@ public class SitService {
             if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
         } catch(Throwable e) {
             // If we can't access the block, entity or seat entity data in a Folia server environment we ignore this error
-            if(!gSitMain.supportsFoliaFeature()) gSitMain.getLogger().log(Level.SEVERE, "Could not safely dismount the entity!", e);
+            if(!gSitMain.isFoliaServer()) gSitMain.getLogger().log(Level.SEVERE, "Could not safely dismount the entity!", e);
         }
     }
 

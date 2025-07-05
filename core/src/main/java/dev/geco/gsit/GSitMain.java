@@ -75,9 +75,9 @@ public class GSitMain extends JavaPlugin {
     private PlaceholderAPILink placeholderAPILink;
     private PlotSquaredLink plotSquaredLink;
     private WorldGuardLink worldGuardLink;
-    private boolean supportsPaperFeature = false;
     private boolean supportsTaskFeature = false;
-    private boolean supportsFoliaFeature = false;
+    private boolean isPaperServer = false;
+    private boolean isFoliaServer = false;
 
     public static GSitMain getInstance() { return gSitMain; }
 
@@ -121,11 +121,11 @@ public class GSitMain extends JavaPlugin {
 
     public WorldGuardLink getWorldGuardLink() { return worldGuardLink; }
 
-    public boolean supportsPaperFeature() { return supportsPaperFeature; }
-
     public boolean supportsTaskFeature() { return supportsTaskFeature; }
 
-    public boolean supportsFoliaFeature() { return supportsFoliaFeature; }
+    public boolean isPaperServer() { return isPaperServer; }
+
+    public boolean isFoliaServer() { return isFoliaServer; }
 
     public void onLoad() {
         gSitMain = this;
@@ -150,7 +150,7 @@ public class GSitMain extends JavaPlugin {
 
         loadFeatures();
 
-        messageService = supportsPaperFeature && versionService.isNewerOrVersion(18, 2) ? new PaperMessageService(this) : new SpigotMessageService(this);
+        messageService = isPaperServer && versionService.isNewerOrVersion(18, 2) ? new PaperMessageService(this) : new SpigotMessageService(this);
     }
 
     public void onEnable() {
@@ -262,19 +262,19 @@ public class GSitMain extends JavaPlugin {
 
     private void loadFeatures() {
         try {
-            Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
-            supportsPaperFeature = true;
-        } catch(ClassNotFoundException e) { supportsPaperFeature = false; }
-
-        try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
             supportsTaskFeature = true;
         } catch(ClassNotFoundException e) { supportsTaskFeature = false; }
 
         try {
+            Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
+            isPaperServer = true;
+        } catch(ClassNotFoundException e) { isPaperServer = false; }
+
+        try {
             Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
-            supportsFoliaFeature = true;
-        } catch(ClassNotFoundException e) { supportsFoliaFeature = false; }
+            isFoliaServer = true;
+        } catch(ClassNotFoundException e) { isFoliaServer = false; }
 
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
             worldGuardLink = new WorldGuardLink();
