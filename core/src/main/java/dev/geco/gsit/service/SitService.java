@@ -136,14 +136,7 @@ public class SitService {
 
         Entity entity = seat.getEntity();
         entityBlocked.add(entity.getUniqueId());
-        if(useSafeDismount) {
-            try {
-                handleSafeSeatDismount(seat);
-            } catch(Throwable e) {
-                // If the player is teleported away from his location we can't access the block data anymore, ignore this exception in a folia environment
-                if(!gSitMain.supportsFoliaFeature()) gSitMain.getLogger().log(Level.SEVERE, "Could not safely dismount the entity!", e);
-            }
-        }
+        if(useSafeDismount) handleSafeSeatDismount(seat);
 
         Set<GSeat> blockSeatList = blockSeats.remove(seat.getBlock());
         if(blockSeatList != null) {
@@ -162,18 +155,23 @@ public class SitService {
     public void handleSafeSeatDismount(GSeat seat) {
         Entity entity = seat.getEntity();
 
-        Material blockType = seat.getBlock().getType();
-        Location upLocation = seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d), 0d);
+        try {
+            Material blockType = seat.getBlock().getType();
+            Location upLocation = seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(blockType) ? STAIR_Y_OFFSET : 0d) - gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockType, 0d), 0d);
 
-        Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
+            Location returnLocation = gSitMain.getConfigService().GET_UP_RETURN ? seat.getReturnLocation() : upLocation;
 
-        Location entityLocation = entity.getLocation();
+            Location entityLocation = entity.getLocation();
 
-        returnLocation.setYaw(entityLocation.getYaw());
-        returnLocation.setPitch(entityLocation.getPitch());
+            returnLocation.setYaw(entityLocation.getYaw());
+            returnLocation.setPitch(entityLocation.getPitch());
 
-        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+            if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+            if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        } catch(Throwable e) {
+            // If we can't access the block, entity or seat entity data in a Folia server environment we ignore this error
+            if(!gSitMain.supportsFoliaFeature()) gSitMain.getLogger().log(Level.SEVERE, "Could not safely dismount the entity!", e);
+        }
     }
 
     public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
