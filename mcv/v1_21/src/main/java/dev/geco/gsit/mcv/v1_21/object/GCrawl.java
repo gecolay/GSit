@@ -131,7 +131,7 @@ public class GCrawl implements IGCrawl {
                 serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
             } else {
                 serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-                boxEntity.teleportTo(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                boxEntity.setPosRaw(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), true);
                 serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
             }
         }, true, playerLocation);
