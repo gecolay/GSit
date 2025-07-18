@@ -1,0 +1,50 @@
+Plugin:
+
+  plugin-enabled: '[P]&a Plugin đã được bật thành công.'
+  plugin-link: '[P]&a Liên kết với&6 %Link%&a thành công!'
+  plugin-update: '[P]&a Đã có phiên bản mới:&6 %NewVersion%&a! [P]&a Phiên bản hiện tại:&6 %Version%&a! [P]&a Tải về bản mới nhất: [P]&6 %Path%'
+  plugin-data: '[P]&c Không thể kết nối với dữ liệu Database.Hãy kiểm tra console của server!'
+  plugin-version: '[P]&c Plugin này không hỗ trợ phiên bản server hiện tại! (&b%Version%&c)'
+  plugin-reload: '[P]&a Plugin đã được reload thành công.'
+  plugin-disabled: '[P]&a Plugin đã được tắt thành công.'
+  plugin-prefix: '&7[&6GSit&7]'
+
+Messages:
+
+  command-permission-error: '[P]&c Bạn không có quyền dùng lệnh này!'
+  command-sender-error: '[P]&c Bạn không thể chạy lệnh này!'
+  command-version-error: '[P]&c Phiên bản server quá cũ! (&b%Version%&c) [P]&c Cập nhật server để dùng tính năng này!'
+
+  command-gsit-toggle-on: '[P]&a Bạn đã bật tương tác ngồi bằng&6 click&a.'
+  command-gsit-toggle-off: '[P]&a Bạn đã tắt tương tác ngồi bằng&6 click&a.'
+  command-gsit-playertoggle-on: '[P]&a Bạn đã bật cho phép người chơi khác ngồi bằng&6 click&a.'
+  command-gsit-playertoggle-off: '[P]&a Bạn đã tắt cho phép người chơi khác ngồi bằng&6 click&a.'
+  command-gcrawl-toggle-on: '[P]&a Bạn đã bật chức năng&6 bò&a bằng việc nhấn shift 2 lần.'
+  command-gcrawl-toggle-off: '[P]&a Bạn đã tắt chức năng&6 bò&a bằng việc nhấn shift 2 lần.'
+
+  action-sit-now-error: '[P]&c Hiện tại không thể ngồi được!'
+  action-sit-world-error: '[P]&c Không thể ngồi trong thế giới này!'
+  action-sit-location-error: '[P]&c Không thể ngồi ở đây!'
+  action-sit-safe-error: '[P]&c Ngồi ở đây không an toàn!'
+  action-sit-region-error: '[P]&c Không thể ngồi trong vùng này!'
+  action-sit-kick-error: '[P]&c Đã có người ngồi ở đây rồi!'
+  action-sit-error: '[P]&c Có lỗi xảy ra, không thể ngồi tại đây!'
+  action-sit-info: '&6<lang:key.sneak>&a để đứng dậy'
+
+  action-playersit-info: '&6<lang:key.sneak>&a để đứng dậy'
+
+  action-pose-now-error: '[P]&c Hiện tại không thể tạo dáng được!'
+  action-pose-world-error: '[P]&c Không thể tạo dáng trong thế giới này!'
+  action-pose-location-error: '[P]&c Không thể tạo dáng ở đây!'
+  action-pose-safe-error: '[P]&c Tạo dáng ở đây không an toàn!'
+  action-pose-region-error: '[P]&c Không thể tạo dáng trong vùng này!'
+  action-pose-kick-error: '[P]&c Đã có người tạo dáng ở đây rồi!'
+  action-pose-error: '[P]&c Có lỗi xảy ra, không thể tạo dáng tại đây!'
+  action-pose-info: '&6<lang:key.sneak>&a để đứng dậy'
+
+  action-crawl-now-error: '[P]&c Hiện tại không thể bò được!'
+  action-crawl-world-error: '[P]&c Không thể bò trong thế giới này!'
+  action-crawl-region-error: '[P]&c Không thể bò trong vùng này!'
+  action-crawl-info: '&6<lang:key.sneak>&a để đứng dậy'
+
+  action-blocked-error: '[P]&c Bạn không được phép dùng lệnh này lúc này!'
