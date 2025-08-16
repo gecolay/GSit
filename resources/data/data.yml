@@ -6,3 +6,5 @@ Database:
   database: "gsit"
   user: "root"
   password: "root"
+  # define JDBC args like 'useUnicode=true', separate with '&'
+  args: ""
