@@ -145,7 +145,7 @@ public class SitService {
         }
         seats.remove(entity.getUniqueId());
         seat.getSeatEntity().remove();
-        entityBlocked.remove(entity.getUniqueId());
+        gSitMain.getTaskService().runDelayed(() -> entityBlocked.remove(entity.getUniqueId()), 1);
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
         sitUsageNanoTime += seat.getLifetimeInNanoSeconds();
 
