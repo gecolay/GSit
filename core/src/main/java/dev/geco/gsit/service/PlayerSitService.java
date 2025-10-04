@@ -83,13 +83,13 @@ public class PlayerSitService {
         }
 
         if(passengers != null) {
+            source.eject();
             bottomToTopStacks.remove(source.getUniqueId());
             topToBottomStacks.remove(passengers.getKey());
             for(UUID passenger : passengers.getValue()) {
                 Entity passengerEntity = Bukkit.getEntity(passenger);
                 if(passengerEntity == null) continue;
-                if(gSitMain.isFoliaServer()) gSitMain.getTaskService().run(passengerEntity::remove, passengerEntity);
-                else passengerEntity.remove();
+                passengerEntity.remove();
             }
             String key = source.getUniqueId().toString() + passengers.getKey();
             Long spawnTime = spawnTimes.get(key);
@@ -100,13 +100,13 @@ public class PlayerSitService {
         }
 
         if(vehicles != null) {
+            source.leaveVehicle();
             topToBottomStacks.remove(source.getUniqueId());
             bottomToTopStacks.remove(vehicles.getKey());
             for(UUID vehicle : vehicles.getValue()) {
                 Entity vehicleEntity = Bukkit.getEntity(vehicle);
                 if(vehicleEntity == null) continue;
-                if(gSitMain.isFoliaServer()) gSitMain.getTaskService().run(vehicleEntity::remove, vehicleEntity);
-                else vehicleEntity.remove();
+                vehicleEntity.remove();
             }
             String key = vehicles.getKey().toString() + source.getUniqueId();
             Long spawnTime = spawnTimes.get(key);
