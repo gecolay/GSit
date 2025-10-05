@@ -72,7 +72,7 @@ public class PlayerSitEventHandler implements Listener {
         if(gSitMain.getCrawlService().isPlayerCrawling(player)) return;
 
         double distance = gSitMain.getConfigService().PS_MAX_DISTANCE;
-        if(distance > 0d && target.getLocation().add(0, target.getHeight() / 2, 0).distance(player.getLocation().clone().add(0, player.getHeight() / 2, 0)) > distance) return;
+        if(distance > 0d && target.getLocation().add(0, target.getHeight() / 2, 0).distanceSquared(player.getLocation().clone().add(0, player.getHeight() / 2, 0)) > distance * distance) return;
 
         if(!gSitMain.getEnvironmentUtil().canUseInLocation(target.getLocation(), player, "playersit")) return;
 

@@ -59,7 +59,7 @@ public class SitEventHandler implements Listener {
 
         double distance = gSitMain.getConfigService().S_MAX_DISTANCE;
         Location location = clickedBlock.getLocation();
-        if(distance > 0d && location.clone().add(0.5, 0.5, 0.5).distance(player.getLocation()) > distance) return;
+        if(distance > 0d && location.clone().add(0.5, 0.5, 0.5).distanceSquared(player.getLocation()) > distance * distance) return;
 
         if(!gSitMain.getConfigService().ALLOW_UNSAFE && !(clickedBlock.getRelative(BlockFace.UP).isPassable())) return;
 
@@ -90,34 +90,34 @@ public class SitEventHandler implements Listener {
             if(((Slab) clickedBlock.getBlockData()).getType() != Slab.Type.BOTTOM && gSitMain.getConfigService().S_BOTTOM_PART_ONLY) return;
         }
 
-        boolean interactionPointAvailable = gSitMain.getConfigService().CENTER_BLOCK;
+        boolean useCenter = gSitMain.getConfigService().CENTER_BLOCK;
 
-        double xoffset = interactionPointAvailable ? 0 : -0.5d;
-        double zoffset = interactionPointAvailable ? 0 : -0.5d;
+        double xoffset = useCenter ? 0 : -0.5d;
+        double zoffset = xoffset;
 
-        if(!interactionPointAvailable) {
+        if(!useCenter) {
             try {
                 Vector interactionPointVector = event.getClickedPosition();
                 if(interactionPointVector != null) {
-                    interactionPointAvailable = true;
+                    useCenter = true;
                     xoffset += interactionPointVector.getX() - interactionPointVector.getBlockX();
                     zoffset += interactionPointVector.getZ() - interactionPointVector.getBlockZ();
                 }
             } catch(Throwable ignored) { }
         }
 
-        if(!interactionPointAvailable) {
+        if(!useCenter) {
             try {
                 Location interactionPoint = event.getInteractionPoint();
                 if(interactionPoint != null) {
-                    interactionPointAvailable = true;
+                    useCenter = true;
                     xoffset += interactionPoint.getX() - interactionPoint.getBlockX();
                     zoffset += interactionPoint.getZ() - interactionPoint.getBlockZ();
                 }
             } catch(Throwable ignored) { }
         }
 
-        if(gSitMain.getSitService().createSeat(clickedBlock, player, true, interactionPointAvailable ? xoffset : 0d, 0d, interactionPointAvailable ? zoffset : 0, player.getLocation().getYaw(), true) != null) event.setCancelled(true);
+        if(gSitMain.getSitService().createSeat(clickedBlock, player, true, useCenter ? xoffset : 0d, 0d, useCenter ? zoffset : 0, player.getLocation().getYaw(), true) != null) event.setCancelled(true);
     }
 
 }

@@ -301,7 +301,7 @@ public class GPose implements IGPose {
 
     private Set<Player> getNearbyPlayers() {
         Set<Player> currentNearbyPlayers = new HashSet<>();
-        seatPlayer.getWorld().getPlayers().stream().filter(player -> seat.getLocation().distance(player.getLocation()) <= renderRange && player.canSee(seatPlayer)).forEach(currentNearbyPlayers::add);
+        seatPlayer.getWorld().getPlayers().stream().filter(player -> seat.getLocation().distanceSquared(player.getLocation()) <= renderRange * renderRange && player.canSee(seatPlayer)).forEach(currentNearbyPlayers::add);
         return currentNearbyPlayers;
     }
 

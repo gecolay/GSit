@@ -9,4 +9,5 @@
 *.iml
 build
 .gradle
+*.log
 ## build <--
