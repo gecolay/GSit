@@ -45,7 +45,7 @@ dependencies {
     api(project(":v1_21_4", io.papermc.paperweight.util.constants.REOBF_CONFIG))
     api(project(":v1_21_5", io.papermc.paperweight.util.constants.REOBF_CONFIG))
     api(project(":v1_21_6", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_21_9", "default"))
+    api(project(":v1_21_9", io.papermc.paperweight.util.constants.REOBF_CONFIG))
 }
 
 tasks {

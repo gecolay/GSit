@@ -4,10 +4,10 @@ plugins {
 
 dependencies {
     compileOnly(project(":core"))
-    paperweight.paperDevBundle("1.21.9-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.10-R0.1-SNAPSHOT")
 }
 
-paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(24)
@@ -15,4 +15,8 @@ java {
 
 tasks.compileJava {
     options.release = 21
+}
+
+tasks.assemble {
+    dependsOn(tasks.reobfJar)
 }
