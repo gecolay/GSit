@@ -10,7 +10,7 @@ dependencies {
         exclude("it.unimi.dsi", "fastutil")
     }
     compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.5")
+    compileOnly("com.github.GriefPrevention:GriefPrevention:18.0.0")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.8")
 }
 

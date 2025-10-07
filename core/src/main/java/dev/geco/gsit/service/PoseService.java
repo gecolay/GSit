@@ -5,15 +5,15 @@ import dev.geco.gsit.api.event.PlayerStopPoseEvent;
 import dev.geco.gsit.api.event.PlayerPoseEvent;
 import dev.geco.gsit.api.event.PrePlayerStopPoseEvent;
 import dev.geco.gsit.api.event.PrePlayerPoseEvent;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.StopReason;
+import dev.geco.gsit.model.Pose;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,8 +28,8 @@ public class PoseService {
 
     private final GSitMain gSitMain;
     private final boolean available;
-    private final HashMap<UUID, IGPose> poses = new HashMap<>();
-    private final HashMap<Block, Set<IGPose>> blockPoses = new HashMap<>();
+    private final HashMap<UUID, Pose> poses = new HashMap<>();
+    private final HashMap<Block, Set<Pose>> blockPoses = new HashMap<>();
     private int poseUsageCount = 0;
     private long poseUsageNanoTime = 0;
 
@@ -40,28 +40,28 @@ public class PoseService {
 
     public boolean isAvailable() { return available; }
 
-    public HashMap<UUID, IGPose> getAllPoses() { return poses; }
+    public HashMap<UUID, Pose> getAllPoses() { return poses; }
 
     public boolean isPlayerPosing(Player player) { return poses.containsKey(player.getUniqueId()); }
 
-    public IGPose getPoseByPlayer(Player player) { return poses.get(player.getUniqueId()); }
+    public Pose getPoseByPlayer(Player player) { return poses.get(player.getUniqueId()); }
 
-    public void removeAllPoses() { for(IGPose pose : new ArrayList<>(poses.values())) removePose(pose, GStopReason.PLUGIN); }
+    public void removeAllPoses() { for(Pose pose : new ArrayList<>(poses.values())) removePose(pose, StopReason.PLUGIN); }
 
     public boolean isBlockWithPose(Block block) { return blockPoses.containsKey(block); }
 
-    public Set<IGPose> getPosesByBlock(Block block) { return blockPoses.getOrDefault(block, Collections.emptySet()); }
+    public Set<Pose> getPosesByBlock(Block block) { return blockPoses.getOrDefault(block, Collections.emptySet()); }
 
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
         if(!gSitMain.getPermissionService().hasPermission(player, "Kick.Pose", "Kick.*")) return false;
-        for(IGPose pose : getPosesByBlock(block)) if(!removePose(pose, GStopReason.KICKED)) return false;
+        for(Pose pose : getPosesByBlock(block)) if(!removePose(pose, StopReason.KICKED)) return false;
         return true;
     }
 
-    public IGPose createPose(Block block, Player player, Pose pose) { return createPose(block, player, pose, 0d, 0d, 0d, player.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
+    public Pose createPose(Block block, Player player, PoseType poseType) { return createPose(block, player, poseType, 0d, 0d, 0d, player.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
 
-    public IGPose createPose(Block block, Player player, Pose pose, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
+    public Pose createPose(Block block, Player player, PoseType poseType, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
         Location returnLocation = player.getLocation();
         Location seatLocation = gSitMain.getSitService().getSeatLocation(block, returnLocation, xOffset, yOffset, zOffset, sitInBlockCenter);
         if(!gSitMain.getEntityUtil().isSitLocationValid(seatLocation)) return null;
@@ -83,24 +83,24 @@ public class PoseService {
             }
         }
 
-        IGPose poseObject = gSitMain.getEntityUtil().createPose(new GSeat(block, seatLocation, player, seatEntity, returnLocation), pose);
-        poseObject.spawn();
-        poses.put(player.getUniqueId(), poseObject);
-        blockPoses.computeIfAbsent(block, k -> new HashSet<>()).add(poseObject);
+        Pose pose = gSitMain.getEntityUtil().createPose(new Seat(block, seatLocation, player, seatEntity, returnLocation), poseType);
+        pose.spawn();
+        poses.put(player.getUniqueId(), pose);
+        blockPoses.computeIfAbsent(block, b -> new HashSet<>()).add(pose);
         poseUsageCount++;
-        Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(poseObject));
+        Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(pose));
 
-        return poseObject;
+        return pose;
     }
 
-    public boolean removePose(IGPose pose, GStopReason stopReason) { return removePose(pose, stopReason, true); }
+    public boolean removePose(Pose pose, StopReason stopReason) { return removePose(pose, stopReason, true); }
 
-    public boolean removePose(IGPose pose, GStopReason stopReason, boolean useSafeDismount) {
+    public boolean removePose(Pose pose, StopReason stopReason, boolean useSafeDismount) {
         PrePlayerStopPoseEvent prePlayerStopPoseEvent = new PrePlayerStopPoseEvent(pose, stopReason);
         Bukkit.getPluginManager().callEvent(prePlayerStopPoseEvent);
         if(prePlayerStopPoseEvent.isCancelled() && stopReason.isCancellable()) return false;
 
-        GSeat seat = pose.getSeat();
+        Seat seat = pose.getSeat();
         Player player = pose.getPlayer();
         if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
 

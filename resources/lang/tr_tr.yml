@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a Eklenti başarıyla etkinleştirildi."
   plugin-link: "[P]&6 %Link%&a ile bağlantı başarılı!"
   plugin-update: "[P]&a Yeni sürüm mevcut:&6 %NewVersion%&a! Şu anki sürüm:&6 %Version%&a! En son sürümü indirin:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c Bu komutu kullanma yetkiniz yok!"
   command-sender-error: "[P]&c Bu komutu çalıştıramazsın!"
   command-version-error: "[P]&c Eski sunucu sürümü! (&b%Version%&c) Bu özelliği kullanabilmek için sunucunuzu yükseltin!"

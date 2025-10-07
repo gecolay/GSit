@@ -1,16 +1,16 @@
 package dev.geco.gsit.api;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGCrawl;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.StopReason;
+import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.Pose;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,7 +69,7 @@ public class GSitAPI {
      * @since 2.0.0
      * @return Map of all seats
      */
-    public static @NotNull HashMap<UUID, GSeat> getAllSeats() {
+    public static @NotNull HashMap<UUID, Seat> getAllSeats() {
         return getInstance().getSitService().getAllSeats();
     }
 
@@ -80,7 +80,7 @@ public class GSitAPI {
      * @param entity Entity
      * @return Seat or <code>null</code> if there was no seat
      */
-    public static @Nullable GSeat getSeatByEntity(@NotNull LivingEntity entity) {
+    public static @Nullable Seat getSeatByEntity(@NotNull LivingEntity entity) {
         return getInstance().getSitService().getSeatByEntity(entity);
     }
 
@@ -91,7 +91,7 @@ public class GSitAPI {
      * @param block Block
      * @return Set of seats
      */
-    public static @NotNull Set<GSeat> getSeatsByBlock(@NotNull Block block) {
+    public static @NotNull Set<Seat> getSeatsByBlock(@NotNull Block block) {
         return getInstance().getSitService().getSeatsByBlock(block);
     }
 
@@ -103,7 +103,7 @@ public class GSitAPI {
      * @param entity Entity
      * @return Seat or <code>null</code> if the creation failed or was cancelled by event
      */
-    public static @Nullable GSeat createSeat(@NotNull Block block, @NotNull LivingEntity entity) {
+    public static @Nullable Seat createSeat(@NotNull Block block, @NotNull LivingEntity entity) {
         return getInstance().getSitService().createSeat(block, entity);
     }
 
@@ -119,7 +119,7 @@ public class GSitAPI {
      * @param sitInBlockCenter Should the seat location be centered on the block
      * @return Seat or <code>null</code> if the creation failed or was cancelled by event
      */
-    public static @Nullable GSeat createSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean canRotate, float seatRotation, boolean sitInBlockCenter) {
+    public static @Nullable Seat createSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean canRotate, float seatRotation, boolean sitInBlockCenter) {
         return getInstance().getSitService().createSeat(block, entity, canRotate, 0d, 0d, 0d, seatRotation, sitInBlockCenter);
     }
 
@@ -139,7 +139,7 @@ public class GSitAPI {
      * @param sitInBlockCenter Should the seat location be centered on the block
      * @return Seat or <code>null</code> if the creation failed or was cancelled by event
      */
-    public static @Nullable GSeat createSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
+    public static @Nullable Seat createSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
         return getInstance().getSitService().createSeat(block, entity, canRotate, xOffset, yOffset, zOffset, seatRotation, sitInBlockCenter);
     }
 
@@ -150,7 +150,7 @@ public class GSitAPI {
      * @param seat Seat
      * @param blockDirection The direction in which the seat should get moved
      */
-    public static void moveSeat(@NotNull GSeat seat, @NotNull BlockFace blockDirection) {
+    public static void moveSeat(@NotNull Seat seat, @NotNull BlockFace blockDirection) {
         getInstance().getSitService().moveSeat(seat, blockDirection);
     }
 
@@ -162,7 +162,7 @@ public class GSitAPI {
      * @param stopReason The reason why the seat gets removed
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removeSeat(@NotNull GSeat seat, @NotNull GStopReason stopReason) {
+    public static boolean removeSeat(@NotNull Seat seat, @NotNull StopReason stopReason) {
         return getInstance().getSitService().removeSeat(seat, stopReason);
     }
 
@@ -176,7 +176,7 @@ public class GSitAPI {
      * @param useSafeDismount Should the entity get teleported to the safe location (includes the return location)
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removeSeat(@NotNull GSeat seat, @NotNull GStopReason stopReason, boolean useSafeDismount) {
+    public static boolean removeSeat(@NotNull Seat seat, @NotNull StopReason stopReason, boolean useSafeDismount) {
         return getInstance().getSitService().removeSeat(seat, stopReason, useSafeDismount);
     }
 
@@ -223,7 +223,7 @@ public class GSitAPI {
      * @param stopReason The reason why the player sit action is stopped
      * @return <code>true</code> or <code>false</code> if the action was cancelled by event
      */
-    public static boolean stopPlayerSit(@NotNull Player player, @NotNull GStopReason stopReason) {
+    public static boolean stopPlayerSit(@NotNull Player player, @NotNull StopReason stopReason) {
         return getInstance().getPlayerSitService().stopPlayerSit(player, stopReason);
     }
 
@@ -239,109 +239,109 @@ public class GSitAPI {
     }
 
     /**
-     * Gets all pose objects
+     * Gets all poses
      * @author Gecolay
      * @since 2.0.0
-     * @return Map of all pose objects
+     * @return Map of all poses
      */
-    public static @NotNull HashMap<UUID, IGPose> getAllPoses() {
+    public static @NotNull HashMap<UUID, Pose> getAllPoses() {
         return getInstance().getPoseService().getAllPoses();
     }
 
     /**
-     * Gets the pose object of a player
+     * Gets the pose of a player
      * @author Gecolay
      * @since 2.0.0
      * @param player Player
-     * @return Pose object or <code>null</code> if there was no pose object
+     * @return Pose or <code>null</code> if there was no pose
      */
-    public static @Nullable IGPose getPoseByPlayer(@NotNull Player player) {
+    public static @Nullable Pose getPoseByPlayer(@NotNull Player player) {
         return getInstance().getPoseService().getPoseByPlayer(player);
     }
 
     /**
-     * Gets all pose objects by a block
+     * Gets all poses by a block
      * @author Gecolay
      * @since 2.0.0
      * @param block Block
-     * @return Set of pose objects
+     * @return Set of poses
      */
-    public static @NotNull Set<IGPose> getPosesByBlock(@NotNull Block block) {
+    public static @NotNull Set<Pose> getPosesByBlock(@NotNull Block block) {
         return getInstance().getPoseService().getPosesByBlock(block);
     }
 
     /**
-     * Creates a new pose object on a block for a player
+     * Creates a new pose on a block for a player
      * @author Gecolay
      * @since 2.0.0
-     * @param block Block which should be connected to the returned pose object
+     * @param block Block which should be connected to the returned pose
      * @param player Player
-     * @param pose Pose {@link Pose}
-     * @return Pose object or <code>null</code> if the creation failed or was cancelled by event
+     * @param poseType PoseType {@link PoseType}
+     * @return Pose or <code>null</code> if the creation failed or was cancelled by event
      */
-    public static @Nullable IGPose createPose(@NotNull Block block, @NotNull Player player, @NotNull Pose pose) {
-        return getInstance().getPoseService().createPose(block, player, pose);
+    public static @Nullable Pose createPose(@NotNull Block block, @NotNull Player player, @NotNull PoseType poseType) {
+        return getInstance().getPoseService().createPose(block, player, poseType);
     }
 
     /**
-     * Creates a new pose object on a block for a player
+     * Creates a new pose on a block for a player
      * The pose can be static or rotating
      * @author Gecolay
      * @since 2.0.0
-     * @param block Block which should be connected to the returned pose object
+     * @param block Block which should be connected to the returned pose
      * @param player Player
-     * @param pose Pose {@link Pose}
+     * @param poseType PoseType {@link PoseType}
      * @param seatRotation The default rotation of the seat from the pose
      * @param sitInBlockCenter Should the seat location from the pose be centered on the block
-     * @return Pose object or <code>null</code> if the creation failed or was cancelled by event
+     * @return Pose or <code>null</code> if the creation failed or was cancelled by event
      */
-    public static @Nullable IGPose createPose(@NotNull Block block, @NotNull Player player, @NotNull Pose pose, float seatRotation, boolean sitInBlockCenter) {
-        return getInstance().getPoseService().createPose(block, player, pose, 0d, 0d, 0d, seatRotation, sitInBlockCenter);
+    public static @Nullable Pose createPose(@NotNull Block block, @NotNull Player player, @NotNull PoseType poseType, float seatRotation, boolean sitInBlockCenter) {
+        return getInstance().getPoseService().createPose(block, player, poseType, 0d, 0d, 0d, seatRotation, sitInBlockCenter);
     }
 
     /**
-     * Creates a new pose object on a block for a player
+     * Creates a new pose on a block for a player
      * The pose can be static or rotating
      * The pose can be moved to with an offset
      * @author Gecolay
      * @since 2.0.0
-     * @param block Block which should be connected to the returned pose object
+     * @param block Block which should be connected to the returned pose
      * @param player Player
-     * @param pose Pose {@link Pose}
+     * @param poseType PoseType {@link PoseType}
      * @param xOffset The x coordinate offset for the pose
      * @param yOffset The y coordinate offset for the pose
      * @param zOffset The z coordinate offset for the pose
      * @param seatRotation The default rotation of the seat from the pose
      * @param sitInBlockCenter Should the seat location from the pose be centered on the block
-     * @return Pose object or <code>null</code> if the creation failed or was cancelled by event
+     * @return Pose or <code>null</code> if the creation failed or was cancelled by event
      */
-    public static @Nullable IGPose createPose(@NotNull Block block, @NotNull Player player, @NotNull Pose pose, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
-        return getInstance().getPoseService().createPose(block, player, pose, xOffset, yOffset, zOffset, seatRotation, sitInBlockCenter);
+    public static @Nullable Pose createPose(@NotNull Block block, @NotNull Player player, @NotNull PoseType poseType, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
+        return getInstance().getPoseService().createPose(block, player, poseType, xOffset, yOffset, zOffset, seatRotation, sitInBlockCenter);
     }
 
     /**
-     * Removes a pose object
+     * Removes a pose
      * @author Gecolay
      * @since 2.0.0
-     * @param pose Pose object
-     * @param stopReason The reason why the pose object gets removed
+     * @param pose Pose
+     * @param stopReason The reason why the pose gets removed
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removePose(@NotNull IGPose pose, @NotNull GStopReason stopReason) {
+    public static boolean removePose(@NotNull Pose pose, @NotNull StopReason stopReason) {
         return getInstance().getPoseService().removePose(pose, stopReason);
     }
 
     /**
-     * Removes a pose object
+     * Removes a pose
      * The return teleport can be disabled, if for example the entity already teleports somewhere else
      * @author Gecolay
      * @since 2.0.0
-     * @param pose Pose object
-     * @param stopReason The reason why the pose object gets removed
+     * @param pose Pose
+     * @param stopReason The reason why the pose gets removed
      * @param useSafeDismount Should the player get teleported to the safe location (includes the return location)
      * @return <code>true</code> or <code>false</code> if the deletion failed or was cancelled by event
      */
-    public static boolean removePose(@NotNull IGPose pose, @NotNull GStopReason stopReason, boolean useSafeDismount) {
+    public static boolean removePose(@NotNull Pose pose, @NotNull StopReason stopReason, boolean useSafeDismount) {
         return getInstance().getPoseService().removePose(pose, stopReason, useSafeDismount);
     }
 
@@ -357,23 +357,23 @@ public class GSitAPI {
     }
 
     /**
-     * Gets all crawl objects
+     * Gets all crawls
      * @author Gecolay
      * @since 2.0.0
-     * @return Map of all crawl objects
+     * @return Map of all crawls
      */
-    public static @NotNull HashMap<UUID, IGCrawl> getAllCrawls() {
+    public static @NotNull HashMap<UUID, Crawl> getAllCrawls() {
         return getInstance().getCrawlService().getAllCrawls();
     }
 
     /**
-     * Gets the crawl object by a player
+     * Gets the crawl by a player
      * @author Gecolay
      * @since 2.0.0
      * @param player Player
-     * @return Crawl object or <code>null</code> if there was no crawl object
+     * @return Crawl or <code>null</code> if there was no crawl
      */
-    public static @Nullable IGCrawl getCrawlByPlayer(@NotNull Player player) {
+    public static @Nullable Crawl getCrawlByPlayer(@NotNull Player player) {
         return getInstance().getCrawlService().getCrawlByPlayer(player);
     }
 
@@ -382,9 +382,9 @@ public class GSitAPI {
      * @author Gecolay
      * @since 2.0.0
      * @param player Player
-     * @return Crawl object or <code>null</code> if the start failed or was cancelled by event
+     * @return Crawl or <code>null</code> if the start failed or was cancelled by event
      */
-    public static @Nullable IGCrawl startCrawl(@NotNull Player player) {
+    public static @Nullable Crawl startCrawl(@NotNull Player player) {
         return getInstance().getCrawlService().startCrawl(player);
     }
 
@@ -392,11 +392,11 @@ public class GSitAPI {
      * Stops a crawl session for a player
      * @author Gecolay
      * @since 2.0.0
-     * @param crawl Crawl object
+     * @param crawl Crawl
      * @param stopReason  The reason why the crawl session stops
      * @return <code>true</code> or <code>false</code> if the stop failed or was cancelled by event
      */
-    public static boolean stopCrawl(@NotNull IGCrawl crawl, @NotNull GStopReason stopReason) {
+    public static boolean stopCrawl(@NotNull Crawl crawl, @NotNull StopReason stopReason) {
         return getInstance().getCrawlService().stopCrawl(crawl, stopReason);
     }
 

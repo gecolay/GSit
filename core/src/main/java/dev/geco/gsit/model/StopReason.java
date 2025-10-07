@@ -1,6 +1,6 @@
-package dev.geco.gsit.object;
+package dev.geco.gsit.model;
 
-public enum GStopReason {
+public enum StopReason {
 
     BLOCK_BREAK(true),
     DAMAGE(true),
@@ -16,7 +16,7 @@ public enum GStopReason {
 
     private final boolean cancellable;
 
-    GStopReason(boolean cancellable) {
+    StopReason(boolean cancellable) {
         this.cancellable = cancellable;
     }
 

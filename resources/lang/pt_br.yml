@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a O plugin foi ativado com sucesso."
   plugin-link: "[P]&a Conexão com &6 %Link%&a feita com sucesso!"
   plugin-update: "[P]&a Uma nova versão foi encontrada:&6 %NewVersion%&a! No momento a versão que está sendo executada é a:&6 %Version%&a! A nova versão se encontra para download em:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c Sem permissão para executar esse comando."
   command-sender-error: "[P]&c O console não pode executar esse comando."
   command-version-error: "[P]&c Versão do servidor desatualizada! (&b%Version%&c) Atualize o servidor para usar este recurso!"

@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a Plugin berhasil diaktifkan."
   plugin-link: "[P]&a Berhasil menautkan &6%Link%&a!"
   plugin-update: "[P]&a Tersedia versi baru:&6 %NewVersion%&a! Sekarang kamu menjalankan versi:&6 %Version%&a! Unduh versi terbaru di:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c Kamu tidak punya izin untuk menggunakan perintah ini!"
   command-sender-error: "[P]&c Kamu tidak bisa menjalankan perintah ini!"
   command-version-error: "[P]&c Versi server usang! (&b%Version%&c) Perbarui server ini untuk menggunakan fitur ini!"

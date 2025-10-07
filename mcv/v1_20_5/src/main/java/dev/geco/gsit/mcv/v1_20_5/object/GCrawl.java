@@ -1,8 +1,8 @@
 package dev.geco.gsit.mcv.v1_20_5.object;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGCrawl;
+import dev.geco.gsit.model.StopReason;
+import dev.geco.gsit.model.Crawl;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
@@ -26,7 +26,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-public class GCrawl implements IGCrawl {
+public class GCrawl implements Crawl {
 
     private final GSitMain gSitMain = GSitMain.getInstance();
     private final Player player;
@@ -73,7 +73,7 @@ public class GCrawl implements IGCrawl {
 
         stopListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) { if(!event.isAsynchronous() && event.getPlayer() == player && event.isSneaking()) gSitMain.getCrawlService().stopCrawl(GCrawl.this, GStopReason.GET_UP); }
+            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) { if(!event.isAsynchronous() && event.getPlayer() == player && event.isSneaking()) gSitMain.getCrawlService().stopCrawl(GCrawl.this, StopReason.GET_UP); }
         };
     }
 
@@ -170,7 +170,7 @@ public class GCrawl implements IGCrawl {
 
     private boolean checkCrawlValid() {
         if(serverPlayer.isInWater() || player.isFlying()) {
-            gSitMain.getCrawlService().stopCrawl(this, GStopReason.ENVIRONMENT);
+            gSitMain.getCrawlService().stopCrawl(this, StopReason.ENVIRONMENT);
             return false;
         }
         return true;

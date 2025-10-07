@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a 插件已成功啟用。"
   plugin-link: "[P]&a 成功連結到&6 %Link%&a！"
   plugin-update: "[P]&a 新版本可用：&6 %NewVersion%&a！ 目前使用版本：&6 %Version%&a！ 下載最新版本：&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c 你沒有權限執行此指令！"
   command-sender-error: "[P]&c 你不能執行此指令！"
   command-version-error: "[P]&c 伺服器版本太舊！(&b%Version%&c) 升級伺服器以使用此功能！"

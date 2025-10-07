@@ -2,8 +2,9 @@ package dev.geco.gsit;
 
 import dev.geco.gsit.api.event.GSitLoadedEvent;
 import dev.geco.gsit.api.event.GSitReloadEvent;
-import dev.geco.gsit.cmd.GBellyFlopCommand;
+import dev.geco.gsit.cmd.GBellyflopCommand;
 import dev.geco.gsit.cmd.GCrawlCommand;
+import dev.geco.gsit.cmd.GLayBackCommand;
 import dev.geco.gsit.cmd.GLayCommand;
 import dev.geco.gsit.cmd.GSitCommand;
 import dev.geco.gsit.cmd.GSitReloadCommand;
@@ -36,9 +37,9 @@ import dev.geco.gsit.service.UpdateService;
 import dev.geco.gsit.service.VersionService;
 import dev.geco.gsit.service.message.PaperMessageService;
 import dev.geco.gsit.service.message.SpigotMessageService;
-import dev.geco.gsit.util.EntityUtil;
+import dev.geco.gsit.util.LegacyEntityUtil;
 import dev.geco.gsit.util.EnvironmentUtil;
-import dev.geco.gsit.util.IEntityUtil;
+import dev.geco.gsit.util.EntityUtil;
 import dev.geco.gsit.util.PassengerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -70,7 +71,7 @@ public class GSitMain extends JavaPlugin {
     private EntityEventHandler entityEventHandler;
     private PassengerUtil passengerUtil;
     private EnvironmentUtil environmentUtil;
-    private IEntityUtil entityUtil;
+    private EntityUtil entityUtil;
     private GriefPreventionLink griefPreventionLink;
     private PlaceholderAPILink placeholderAPILink;
     private PlotSquaredLink plotSquaredLink;
@@ -111,7 +112,7 @@ public class GSitMain extends JavaPlugin {
 
     public EnvironmentUtil getEnvironmentUtil() { return environmentUtil; }
 
-    public IEntityUtil getEntityUtil() { return entityUtil; }
+    public EntityUtil getEntityUtil() { return entityUtil; }
 
     public GriefPreventionLink getGriefPreventionLink() { return griefPreventionLink; }
 
@@ -156,7 +157,7 @@ public class GSitMain extends JavaPlugin {
     public void onEnable() {
         if(!versionCheck()) return;
 
-        entityUtil = versionService.isNewerOrVersion(18, 0) ? (IEntityUtil) versionService.getPackageObjectInstance("util.EntityUtil", this) : new EntityUtil(this);
+        entityUtil = versionService.isNewerOrVersion(18, 0) ? (EntityUtil) versionService.getPackageObjectInstance("util.EntityUtil", this) : new LegacyEntityUtil(this);
 
         loadPluginDependencies();
         loadSettings(Bukkit.getConsoleSender());
@@ -216,7 +217,10 @@ public class GSitMain extends JavaPlugin {
         getCommand("glay").setExecutor(new GLayCommand(this));
         getCommand("glay").setTabCompleter(new EmptyTabComplete());
         getCommand("glay").setPermissionMessage(messageService.getMessage("Messages.command-permission-error"));
-        getCommand("gbellyflop").setExecutor(new GBellyFlopCommand(this));
+        getCommand("glayback").setExecutor(new GLayBackCommand(this));
+        getCommand("glayback").setTabCompleter(new EmptyTabComplete());
+        getCommand("glayback").setPermissionMessage(messageService.getMessage("Messages.command-permission-error"));
+        getCommand("gbellyflop").setExecutor(new GBellyflopCommand(this));
         getCommand("gbellyflop").setTabCompleter(new EmptyTabComplete());
         getCommand("gbellyflop").setPermissionMessage(messageService.getMessage("Messages.command-permission-error"));
         getCommand("gspin").setExecutor(new GSpinCommand(this));

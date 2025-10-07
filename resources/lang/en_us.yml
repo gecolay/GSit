@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a The plugin was successfully enabled."
   plugin-link: "[P]&a Link with&6 %Link%&a successful!"
   plugin-update: "[P]&a New version available:&6 %NewVersion%&a! Current version:&6 %Version%&a! Download the latest version:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c You don't have permission to use this command!"
   command-sender-error: "[P]&c You can't run this command!"
   command-version-error: "[P]&c Outdated server version! (&b%Version%&c) Upgrade the server to use this feature!"

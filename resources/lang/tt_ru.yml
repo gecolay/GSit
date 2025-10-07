@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a Кушылма кушылды."
   plugin-link: "[P]&a&6 %Link%&a белән бәяләнде!"
   plugin-update: "[P]&a Яңа версия бар:&6 %NewVersion%&a! Хәзерге версия:&6 %Version%&a! Соңгы версияне йөкләнегез:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c Бу боерыкны куллану өчен Сездә хокук юк!"
   command-sender-error: "[P]&c Сез бу боерыкны кабыза алмыйсыз!"
   command-version-error: "[P]&c Искергән сервер версиясе! (&b%Version%&c) Бу функцияне куллану өчен серверны яңартыгыз!"

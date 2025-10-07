@@ -1,8 +1,9 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.Pose;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -10,15 +11,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class GBellyFlopCommand implements CommandExecutor {
+public class GLayBackCommand implements CommandExecutor {
 
     private final GSitMain gSitMain;
 
-    public GBellyFlopCommand(GSitMain gSitMain) {
+    public GLayBackCommand(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
     }
 
@@ -29,7 +29,7 @@ public class GBellyFlopCommand implements CommandExecutor {
             return true;
         }
 
-        if(!gSitMain.getPermissionService().hasPermission(sender, "BellyFlop", "Pose.*")) {
+        if(!gSitMain.getPermissionService().hasPermission(sender, "LayBack", "Pose.*")) {
             gSitMain.getMessageService().sendMessage(sender, "Messages.command-permission-error");
             return true;
         }
@@ -39,9 +39,9 @@ public class GBellyFlopCommand implements CommandExecutor {
             return true;
         }
 
-        IGPose poseObject = gSitMain.getPoseService().getPoseByPlayer(player);
-        if(poseObject != null && poseObject.getPose() == Pose.SWIMMING) {
-            gSitMain.getPoseService().removePose(poseObject, GStopReason.GET_UP);
+        Pose pose = gSitMain.getPoseService().getPoseByPlayer(player);
+        if(pose != null && pose.getPoseType() == PoseType.LAY_BACK) {
+            gSitMain.getPoseService().removePose(pose, StopReason.GET_UP);
             return true;
         }
 
@@ -81,7 +81,9 @@ public class GBellyFlopCommand implements CommandExecutor {
             return true;
         }
 
-        if(gSitMain.getPoseService().createPose(block, player, Pose.SWIMMING) == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-error");
+        pose = gSitMain.getPoseService().createPose(block, player, PoseType.LAY_BACK);
+        if(pose == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-error");
+
         return true;
     }
 

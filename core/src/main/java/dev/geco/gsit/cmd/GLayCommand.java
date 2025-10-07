@@ -1,8 +1,9 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.StopReason;
+import dev.geco.gsit.model.Pose;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -10,7 +11,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,9 +39,9 @@ public class GLayCommand implements CommandExecutor {
             return true;
         }
 
-        IGPose poseObject = gSitMain.getPoseService().getPoseByPlayer(player);
-        if(poseObject != null && poseObject.getPose() == Pose.SLEEPING) {
-            gSitMain.getPoseService().removePose(poseObject, GStopReason.GET_UP);
+        Pose pose = gSitMain.getPoseService().getPoseByPlayer(player);
+        if(pose != null && pose.getPoseType() == PoseType.LAY) {
+            gSitMain.getPoseService().removePose(pose, StopReason.GET_UP);
             return true;
         }
 
@@ -81,7 +81,9 @@ public class GLayCommand implements CommandExecutor {
             return true;
         }
 
-        if(gSitMain.getPoseService().createPose(block, player, Pose.SLEEPING) == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-error");
+        pose = gSitMain.getPoseService().createPose(block, player, PoseType.LAY);
+        if(pose == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-error");
+
         return true;
     }
 

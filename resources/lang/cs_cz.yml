@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a Plugin byl úspěsně zapnut."
   plugin-link: "[P]&a Spojení s&6 %Link%&a proběhlo úspěšně!"
   plugin-update: "[P]&a Nová verze dostupná:&6 %NewVersion%&a! Aktuální nainstalovaná verze:&6 %Version%&a! Stáhni si nejnovější verzi na:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c Nemáš oprávnění použít tenhle příkaz!"
   command-sender-error: "[P]&c Nemůžeš spustit tenhle příkaz!"
   command-version-error: "[P]&c Zastaralá verze serveru! (&b%Version%&c) Aktualizuj tenhle server k použití téhle funkce!"

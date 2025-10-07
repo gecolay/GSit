@@ -1,6 +1,6 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.object.GSeat;
+import dev.geco.gsit.model.Seat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityEvent;
@@ -8,10 +8,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class EntitySitEvent extends EntityEvent {
 
-    private final GSeat seat;
+    private final Seat seat;
     private static final HandlerList handlers = new HandlerList();
 
-    public EntitySitEvent(@NotNull GSeat seat) {
+    public EntitySitEvent(@NotNull Seat seat) {
         super(seat.getEntity());
         this.seat = seat;
     }
@@ -19,7 +19,7 @@ public class EntitySitEvent extends EntityEvent {
     @Override
     public @NotNull LivingEntity getEntity() { return (LivingEntity) super.getEntity(); }
 
-    public @NotNull GSeat getSeat() { return seat; }
+    public @NotNull Seat getSeat() { return seat; }
 
     @Override
     public @NotNull HandlerList getHandlers() { return handlers; }

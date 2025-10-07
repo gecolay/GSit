@@ -1,8 +1,8 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GStopReason;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Tag;
@@ -36,9 +36,9 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            GSeat seat = gSitMain.getSitService().getSeatByEntity(player);
+            Seat seat = gSitMain.getSitService().getSeatByEntity(player);
             if(seat != null) {
-                gSitMain.getSitService().removeSeat(seat, GStopReason.GET_UP);
+                gSitMain.getSitService().removeSeat(seat, StopReason.GET_UP);
                 return true;
             }
 

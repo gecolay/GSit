@@ -1,7 +1,7 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.StopReason;
+import dev.geco.gsit.model.Pose;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
@@ -9,20 +9,20 @@ import org.jetbrains.annotations.NotNull;
 
 public class PrePlayerStopPoseEvent extends PlayerEvent implements Cancellable {
 
-    private final IGPose pose;
-    private final GStopReason reason;
+    private final Pose pose;
+    private final StopReason reason;
     private boolean cancel = false;
     private static final HandlerList handlers = new HandlerList();
 
-    public PrePlayerStopPoseEvent(@NotNull IGPose pose, @NotNull GStopReason reason) {
+    public PrePlayerStopPoseEvent(@NotNull Pose pose, @NotNull StopReason reason) {
         super(pose.getPlayer());
         this.pose = pose;
         this.reason = reason;
     }
 
-    public @NotNull IGPose getPose() { return pose; }
+    public @NotNull Pose getPose() { return pose; }
 
-    public @NotNull GStopReason getReason() { return reason; }
+    public @NotNull StopReason getReason() { return reason; }
 
     @Override
     public boolean isCancelled() { return cancel; }

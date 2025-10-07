@@ -1,6 +1,6 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.object.GStopReason;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -9,16 +9,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class PrePlayerStopPlayerSitEvent extends PlayerEvent implements Cancellable {
 
-    private final GStopReason reason;
+    private final StopReason reason;
     private boolean cancel = false;
     private static final HandlerList handlers = new HandlerList();
 
-    public PrePlayerStopPlayerSitEvent(@NotNull Player player, @NotNull GStopReason reason) {
+    public PrePlayerStopPlayerSitEvent(@NotNull Player player, @NotNull StopReason reason) {
         super(player);
         this.reason = reason;
     }
 
-    public @NotNull GStopReason getReason() { return reason; }
+    public @NotNull StopReason getReason() { return reason; }
 
     @Override
     public boolean isCancelled() { return cancel; }

@@ -5,7 +5,7 @@ import dev.geco.gsit.api.event.PlayerPlayerSitEvent;
 import dev.geco.gsit.api.event.PlayerStopPlayerSitEvent;
 import dev.geco.gsit.api.event.PrePlayerPlayerSitEvent;
 import dev.geco.gsit.api.event.PrePlayerStopPlayerSitEvent;
-import dev.geco.gsit.object.GStopReason;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -44,7 +44,7 @@ public class PlayerSitService {
     public void removeAllPlayerSitStacks() {
         for(UUID topPlayerUuid : new ArrayList<>(topToBottomStacks.keySet())) {
             Player topPlayer = Bukkit.getPlayer(topPlayerUuid);
-            if(topPlayer != null) stopPlayerSit(topPlayer, GStopReason.PLUGIN, false, true, true);
+            if(topPlayer != null) stopPlayerSit(topPlayer, StopReason.PLUGIN, false, true, true);
         }
         bottomToTopStacks.clear();
         topToBottomStacks.clear();
@@ -58,7 +58,7 @@ public class PlayerSitService {
         Bukkit.getPluginManager().callEvent(prePlayerPlayerSitEvent);
         if(prePlayerPlayerSitEvent.isCancelled()) return false;
 
-        Set<UUID> playerSeatEntityIds = gSitMain.getEntityUtil().createPlayerSeatEntities(player, target);
+        Set<UUID> playerSeatEntityIds = gSitMain.getEntityUtil().createPlayerSitEntities(player, target);
         if(gSitMain.getConfigService().CUSTOM_MESSAGE) gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-playersit-info");
         playerSitUsageCount++;
         bottomToTopStacks.put(target.getUniqueId(), new AbstractMap.SimpleImmutableEntry<>(player.getUniqueId(), playerSeatEntityIds));
@@ -69,9 +69,9 @@ public class PlayerSitService {
         return true;
     }
 
-    public boolean stopPlayerSit(Player source, GStopReason stopReason) { return stopPlayerSit(source, stopReason, true, true, true); }
+    public boolean stopPlayerSit(Player source, StopReason stopReason) { return stopPlayerSit(source, stopReason, true, true, true); }
 
-    public boolean stopPlayerSit(Player source, GStopReason stopReason, boolean removePassengers, boolean removeVehicle, boolean callPreEvent) {
+    public boolean stopPlayerSit(Player source, StopReason stopReason, boolean removePassengers, boolean removeVehicle, boolean callPreEvent) {
         AbstractMap.SimpleImmutableEntry<UUID, Set<UUID>> passengers = removePassengers ? bottomToTopStacks.get(source.getUniqueId()) : null;
         AbstractMap.SimpleImmutableEntry<UUID, Set<UUID>> vehicles = removeVehicle ? topToBottomStacks.get(source.getUniqueId()) : null;
         if(passengers == null && vehicles == null) return true;

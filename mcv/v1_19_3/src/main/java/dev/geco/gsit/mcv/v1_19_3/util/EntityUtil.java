@@ -5,10 +5,10 @@ import dev.geco.gsit.mcv.v1_19_3.object.GCrawl;
 import dev.geco.gsit.mcv.v1_19_3.object.GPose;
 import dev.geco.gsit.mcv.v1_19_3.object.PlayerSeatEntity;
 import dev.geco.gsit.mcv.v1_19_3.object.SeatEntity;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.IGCrawl;
-import dev.geco.gsit.object.IGPose;
-import dev.geco.gsit.util.IEntityUtil;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.Pose;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
@@ -16,7 +16,6 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class EntityUtil implements IEntityUtil {
+public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
 
     private final GSitMain gSitMain;
     private Field entityManager = null;
@@ -74,7 +73,7 @@ public class EntityUtil implements IEntityUtil {
     }
 
     @Override
-    public Set<UUID> createPlayerSeatEntities(Player player, Player target) {
+    public Set<UUID> createPlayerSitEntities(Player player, Player target) {
         if(player == null || !player.isValid()) return Collections.emptySet();
 
         net.minecraft.world.entity.Entity topEntity = ((CraftEntity) target).getHandle();
@@ -116,9 +115,9 @@ public class EntityUtil implements IEntityUtil {
     }
 
     @Override
-    public IGPose createPose(GSeat seat, Pose pose) { return new GPose(seat, pose); }
+    public Pose createPose(Seat seat, PoseType poseType) { return new GPose(seat, poseType); }
 
     @Override
-    public IGCrawl createCrawl(Player player) { return new GCrawl(player); }
+    public Crawl createCrawl(Player player) { return new GCrawl(player); }
 
 }

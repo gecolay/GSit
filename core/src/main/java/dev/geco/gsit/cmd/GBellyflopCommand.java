@@ -14,11 +14,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class GSpinCommand implements CommandExecutor {
+public class GBellyflopCommand implements CommandExecutor {
 
     private final GSitMain gSitMain;
 
-    public GSpinCommand(GSitMain gSitMain) {
+    public GBellyflopCommand(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
     }
 
@@ -29,7 +29,7 @@ public class GSpinCommand implements CommandExecutor {
             return true;
         }
 
-        if(!gSitMain.getPermissionService().hasPermission(sender, "Spin", "Pose.*")) {
+        if(!gSitMain.getPermissionService().hasPermission(sender, "Bellyflop", "Pose.*")) {
             gSitMain.getMessageService().sendMessage(sender, "Messages.command-permission-error");
             return true;
         }
@@ -40,7 +40,7 @@ public class GSpinCommand implements CommandExecutor {
         }
 
         Pose pose = gSitMain.getPoseService().getPoseByPlayer(player);
-        if(pose != null && pose.getPoseType() == PoseType.SPIN) {
+        if(pose != null && pose.getPoseType() == PoseType.BELLYFLOP) {
             gSitMain.getPoseService().removePose(pose, StopReason.GET_UP);
             return true;
         }
@@ -81,7 +81,7 @@ public class GSpinCommand implements CommandExecutor {
             return true;
         }
 
-        pose = gSitMain.getPoseService().createPose(block, player, PoseType.SPIN);
+        pose = gSitMain.getPoseService().createPose(block, player, PoseType.BELLYFLOP);
         if(pose == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-error");
 
         return true;

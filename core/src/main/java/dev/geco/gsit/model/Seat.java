@@ -1,4 +1,4 @@
-package dev.geco.gsit.object;
+package dev.geco.gsit.model;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -6,7 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-public class GSeat {
+public class Seat {
 
     protected Block block;
     protected Location location;
@@ -15,7 +15,7 @@ public class GSeat {
     protected Location returnLocation;
     private final long spawnTime = System.nanoTime();
 
-    public GSeat(@NotNull Block block, @NotNull Location location, @NotNull LivingEntity entity, @NotNull Entity seatEntity, @NotNull Location returnLocation) {
+    public Seat(@NotNull Block block, @NotNull Location location, @NotNull LivingEntity entity, @NotNull Entity seatEntity, @NotNull Location returnLocation) {
         this.block = block;
         this.location = location;
         this.entity = entity;
@@ -25,15 +25,15 @@ public class GSeat {
 
     public @NotNull Block getBlock() { return block; }
 
-    public @NotNull GSeat setBlock(@NotNull Block Block) {
-        block = Block;
+    public @NotNull Seat setBlock(@NotNull Block block) {
+        this.block = block;
         return this;
     }
 
     public @NotNull Location getLocation() { return location.clone(); }
 
-    public @NotNull GSeat setLocation(@NotNull Location Location) {
-        location = Location;
+    public @NotNull Seat setLocation(@NotNull Location location) {
+        this.location = location;
         return this;
     }
 
@@ -43,8 +43,8 @@ public class GSeat {
 
     public @NotNull Location getReturnLocation() { return returnLocation.clone(); }
 
-    public @NotNull GSeat setReturnLocation(@NotNull Location ReturnLocation) {
-        returnLocation = ReturnLocation;
+    public @NotNull Seat setReturnLocation(@NotNull Location returnLocation) {
+        this.returnLocation = returnLocation;
         return this;
     }
 

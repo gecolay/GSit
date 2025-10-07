@@ -1,5 +1,4 @@
 Lang:
-
   # Plugin language
   lang: en_us
 
@@ -7,7 +6,6 @@ Lang:
   client-lang: true
 
 Options:
-
   # Plugin sends update notifications
   check-for-update: true
 
@@ -36,7 +34,6 @@ Options:
   custom-message: true
 
   Sit:
-
     # Blocks where a player can sit by clicking (materials & tags) ('*' for every block)
     # Create a height-offset by separating the material or tag with a ';' character
     SitMaterials:
@@ -61,7 +58,6 @@ Options:
     default-sit-mode: true
 
   PlayerSit:
-
     # Allow players to sit on other players by clicking
     allow-sit: true
 
@@ -87,7 +83,6 @@ Options:
     default-sit-mode: true
 
   Pose:
-
     # Allow interactions with the environment or other players while posing
     interact: false
 
@@ -104,7 +99,6 @@ Options:
     lay-night-skip: true
 
   Crawl:
-
     # Allow standing up from crawling by sneaking
     get-up-sneak: true
 

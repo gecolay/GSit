@@ -1,8 +1,8 @@
-package dev.geco.gsit.object;
+package dev.geco.gsit.model;
 
 import org.bukkit.entity.Player;
 
-public interface IGCrawl {
+public interface Crawl {
 
     void start();
 

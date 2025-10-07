@@ -2,8 +2,9 @@ package dev.geco.gsit.mcv.v1_21_9.object;
 
 import com.mojang.datafixers.util.Pair;
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.service.PoseService;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -36,7 +37,6 @@ import org.bukkit.Statistic;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -59,12 +59,12 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.Set;
 
-public class GPose implements IGPose {
+public class GPose implements Pose {
 
     private final GSitMain gSitMain = GSitMain.getInstance();
-    private final GSeat seat;
+    private final Seat seat;
     private final Player seatPlayer;
-    private final Pose pose;
+    private final PoseType poseType;
     private Set<Player> nearbyPlayers = new HashSet<>();
     private final ServerPlayer serverPlayer;
     protected final Mannequin mannequin;
@@ -82,10 +82,10 @@ public class GPose implements IGPose {
     protected int renderRange;
     private final Listener listener;
 
-    public GPose(GSeat seat, Pose pose) {
+    public GPose(Seat seat, PoseType poseType) {
         this.seat = seat;
         seatPlayer = (Player) seat.getEntity();
-        this.pose = pose;
+        this.poseType = poseType;
 
         serverPlayer = ((CraftPlayer) seatPlayer).getHandle();
 
@@ -98,16 +98,16 @@ public class GPose implements IGPose {
         mannequin = createMannequin();
         double scale = serverPlayer.getScale();
         double offset = seatLocation.getY() + gSitMain.getSitService().getBaseOffset();
-        boolean isSleeping = pose == org.bukkit.entity.Pose.SLEEPING;
-        if(isSleeping) offset += 0.1125d * scale;
-        if(pose == org.bukkit.entity.Pose.SWIMMING) offset += -0.19 * scale;
+        boolean isLayPoseType = poseType == PoseType.LAY || poseType == PoseType.LAY_BACK;
+        if(isLayPoseType) offset += 0.1125d * scale;
+        if(poseType == PoseType.BELLYFLOP) offset += -0.19 * scale;
         float sleepYaw = direction == Direction.SOUTH ? 270 : direction == Direction.WEST ? 180 : direction == Direction.EAST ? 0 : 90;
         mannequin.absSnapTo(
-            seatLocation.getX() + (isSleeping ? (direction == Direction.EAST ? 1.5 : direction == Direction.WEST ? -1.5 : 0) : 0),
+            seatLocation.getX() + (isLayPoseType ? (direction == Direction.EAST ? 1.5 : direction == Direction.WEST ? -1.5 : 0) : 0),
             offset,
-            seatLocation.getZ() + (isSleeping ? (direction == Direction.NORTH ? -1.5 : direction == Direction.SOUTH ? 1.5 : 0) : 0),
-            isSleeping ? sleepYaw : 0f,
-            pose == org.bukkit.entity.Pose.SPIN_ATTACK ? -90f : 0f
+            seatLocation.getZ() + (isLayPoseType ? (direction == Direction.NORTH ? -1.5 : direction == Direction.SOUTH ? 1.5 : 0) : 0),
+            isLayPoseType ? sleepYaw : 0f,
+            poseType == PoseType.SPIN ? -90f : 0f
         );
 
         createNpcPacket = new ClientboundAddEntityPacket(mannequin.getId(), mannequin.getUUID(), mannequin.getX(), mannequin.getY(), mannequin.getZ(), mannequin.getXRot(), mannequin.getYRot(), mannequin.getType(), 0, mannequin.getDeltaMovement(), mannequin.getYHeadRot());
@@ -150,8 +150,8 @@ public class GPose implements IGPose {
         mannequin.setGlowingTag(serverPlayer.hasGlowingTag());
         if(serverPlayer.hasGlowingTag()) serverPlayer.setGlowingTag(false);
 
-        mannequin.setPose(net.minecraft.world.entity.Pose.values()[pose.ordinal()]);
-        if(pose == Pose.SPIN_ATTACK) mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(8), (byte) 4);
+        mannequin.setPose(net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
+        if(poseType == PoseType.SPIN) mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(8), (byte) 4);
         mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(15), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(15)));
         mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(16), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(16)));
         leftShoulderCache = serverPlayer.getEntityData().get(EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(19));
@@ -163,7 +163,7 @@ public class GPose implements IGPose {
 
         setEquipmentVisibility(false);
 
-        if(pose == Pose.SLEEPING) {
+        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) {
             if(gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(true);
             if(gSitMain.getConfigService().P_LAY_REST) seatPlayer.setStatistic(Statistic.TIME_SINCE_REST, 0);
         }
@@ -198,7 +198,7 @@ public class GPose implements IGPose {
                 removeViewerPlayer(nearbyPlayer);
             }
 
-            if(pose != Pose.SPIN_ATTACK) updateDirection();
+            if(poseType != PoseType.SPIN) updateDirection();
 
             serverPlayer.setInvisible(true);
 
@@ -208,7 +208,7 @@ public class GPose implements IGPose {
 
             updateSkin();
 
-            if(pose != Pose.SLEEPING || !gSitMain.getConfigService().P_LAY_SNORING_SOUNDS) return;
+            if((poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) || !gSitMain.getConfigService().P_LAY_SNORING_SOUNDS) return;
 
             long tick = serverPlayer.getPlayerTime();
 
@@ -231,7 +231,7 @@ public class GPose implements IGPose {
 
         for(Player nearbyPlayer : nearbyPlayers) removeViewerPlayer(nearbyPlayer);
 
-        if(pose == Pose.SLEEPING && gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
+        if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
 
         if(!serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY)) serverPlayer.setInvisible(false);
 
@@ -257,7 +257,7 @@ public class GPose implements IGPose {
     private float fixYaw(float yaw) { return (yaw < 0f ? 360f + yaw : yaw) % 360f; }
 
     private void updateDirection() {
-        if(pose == Pose.SWIMMING) {
+        if(poseType == PoseType.BELLYFLOP) {
             byte fixedRotation = getFixedRotation(seatPlayer.getLocation().getYaw());
             if(directionCache == fixedRotation) return;
             directionCache = fixedRotation;
@@ -370,13 +370,13 @@ public class GPose implements IGPose {
     private void sendPacket(ServerPlayer player, Packet<?> packet) { player.connection.send(packet); }
 
     @Override
-    public GSeat getSeat() { return seat; }
+    public Seat getSeat() { return seat; }
 
     @Override
     public Player getPlayer() { return seatPlayer; }
 
     @Override
-    public Pose getPose() { return pose; }
+    public PoseType getPoseType() { return poseType; }
 
     @Override
     public String toString() { return seat.toString(); }

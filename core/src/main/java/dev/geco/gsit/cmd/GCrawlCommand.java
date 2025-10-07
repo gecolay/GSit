@@ -1,8 +1,8 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGCrawl;
+import dev.geco.gsit.model.StopReason;
+import dev.geco.gsit.model.Crawl;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,9 +36,9 @@ public class GCrawlCommand implements CommandExecutor {
                 return true;
             }
 
-            IGCrawl crawl = gSitMain.getCrawlService().getCrawlByPlayer(player);
+            Crawl crawl = gSitMain.getCrawlService().getCrawlByPlayer(player);
             if(crawl != null) {
-                gSitMain.getCrawlService().stopCrawl(crawl, GStopReason.GET_UP);
+                gSitMain.getCrawlService().stopCrawl(crawl, StopReason.GET_UP);
                 return true;
             }
 

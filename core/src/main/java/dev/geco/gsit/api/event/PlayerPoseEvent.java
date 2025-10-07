@@ -1,21 +1,21 @@
 package dev.geco.gsit.api.event;
 
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.Pose;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerPoseEvent extends PlayerEvent {
 
-    private final IGPose pose;
+    private final Pose pose;
     private static final HandlerList handlers = new HandlerList();
 
-    public PlayerPoseEvent(@NotNull IGPose pose) {
+    public PlayerPoseEvent(@NotNull Pose pose) {
         super(pose.getPlayer());
         this.pose = pose;
     }
 
-    public @NotNull IGPose getPose() { return pose; }
+    public @NotNull Pose getPose() { return pose; }
 
     @Override
     public @NotNull HandlerList getHandlers() { return handlers; }

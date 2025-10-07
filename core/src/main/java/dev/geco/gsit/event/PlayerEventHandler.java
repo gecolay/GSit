@@ -1,10 +1,10 @@
 package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GStopReason;
-import dev.geco.gsit.object.IGCrawl;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.StopReason;
+import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.Pose;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,30 +39,30 @@ public class PlayerEventHandler implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void playerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        stopActions(player, GStopReason.DISCONNECT, true);
+        stopActions(player, StopReason.DISCONNECT, true);
         gSitMain.getToggleService().clearEntitySitToggleCache(player.getUniqueId());
         doubleSneakCrawlPlayers.remove(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerTeleportEvent(PlayerTeleportEvent event) { stopActions(event.getPlayer(), GStopReason.TELEPORT, false); }
+    public void playerTeleportEvent(PlayerTeleportEvent event) { stopActions(event.getPlayer(), StopReason.TELEPORT, false); }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void playerDeathEvent(PlayerDeathEvent event) { stopActions(event.getEntity(), GStopReason.DEATH, false); }
+    public void playerDeathEvent(PlayerDeathEvent event) { stopActions(event.getEntity(), StopReason.DEATH, false); }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void entityDamageEvent(EntityDamageEvent event) {
         Entity entity = event.getEntity();
         if(!gSitMain.getConfigService().GET_UP_DAMAGE || !(entity instanceof Player player) || event.getDamage() <= 0d) return;
-        stopActions(player, GStopReason.DAMAGE, true);
+        stopActions(player, StopReason.DAMAGE, true);
     }
 
-    private void stopActions(Player player, GStopReason stopReason, boolean useSafeDismount) {
-        GSeat seat = gSitMain.getSitService().getSeatByEntity(player);
+    private void stopActions(Player player, StopReason stopReason, boolean useSafeDismount) {
+        Seat seat = gSitMain.getSitService().getSeatByEntity(player);
         if(seat != null) gSitMain.getSitService().removeSeat(seat, stopReason, useSafeDismount);
-        IGPose pose = gSitMain.getPoseService().getPoseByPlayer(player);
+        Pose pose = gSitMain.getPoseService().getPoseByPlayer(player);
         if(pose != null) gSitMain.getPoseService().removePose(pose, stopReason, useSafeDismount);
-        IGCrawl crawl = gSitMain.getCrawlService().getCrawlByPlayer(player);
+        Crawl crawl = gSitMain.getCrawlService().getCrawlByPlayer(player);
         if(crawl != null) gSitMain.getCrawlService().stopCrawl(crawl, stopReason);
     }
 

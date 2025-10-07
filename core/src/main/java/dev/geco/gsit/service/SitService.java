@@ -5,8 +5,8 @@ import dev.geco.gsit.api.event.EntityStopSitEvent;
 import dev.geco.gsit.api.event.EntitySitEvent;
 import dev.geco.gsit.api.event.PreEntityStopSitEvent;
 import dev.geco.gsit.api.event.PreEntitySitEvent;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GStopReason;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,8 +36,8 @@ public class SitService {
 
     private final GSitMain gSitMain;
     private final double baseOffset;
-    private final HashMap<UUID, GSeat> seats = new HashMap<>();
-    private final HashMap<Block, Set<GSeat>> blockSeats = new HashMap<>();
+    private final HashMap<UUID, Seat> seats = new HashMap<>();
+    private final HashMap<Block, Set<Seat>> blockSeats = new HashMap<>();
     private final HashSet<UUID> entityBlocked = new HashSet<>();
     private int sitUsageCount = 0;
     private long sitUsageNanoTime = 0;
@@ -49,30 +49,30 @@ public class SitService {
 
     public double getBaseOffset() { return baseOffset; }
 
-    public HashMap<UUID, GSeat> getAllSeats() { return seats; }
+    public HashMap<UUID, Seat> getAllSeats() { return seats; }
 
     public boolean isEntitySitting(LivingEntity entity) { return seats.containsKey(entity.getUniqueId()); }
 
-    public GSeat getSeatByEntity(LivingEntity entity) { return seats.get(entity.getUniqueId()); }
+    public Seat getSeatByEntity(LivingEntity entity) { return seats.get(entity.getUniqueId()); }
 
-    public void removeAllSeats() { for(GSeat seat : new ArrayList<>(seats.values())) removeSeat(seat, GStopReason.PLUGIN); }
+    public void removeAllSeats() { for(Seat seat : new ArrayList<>(seats.values())) removeSeat(seat, StopReason.PLUGIN); }
 
     public boolean isBlockWithSeat(Block block) { return blockSeats.containsKey(block); }
 
     public boolean isEntityBlocked(Entity entity) { return entityBlocked.contains(entity.getUniqueId()); }
 
-    public Set<GSeat> getSeatsByBlock(Block block) { return blockSeats.getOrDefault(block, Collections.emptySet()); }
+    public Set<Seat> getSeatsByBlock(Block block) { return blockSeats.getOrDefault(block, Collections.emptySet()); }
 
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
         if(!isBlockWithSeat(block)) return true;
         if(!gSitMain.getPermissionService().hasPermission(entity, "Kick.Sit", "Kick.*")) return false;
-        for(GSeat seat : getSeatsByBlock(block)) if(!removeSeat(seat, GStopReason.KICKED)) return false;
+        for(Seat seat : getSeatsByBlock(block)) if(!removeSeat(seat, StopReason.KICKED)) return false;
         return true;
     }
 
-    public GSeat createSeat(Block block, LivingEntity entity) { return createSeat(block, entity, true, 0d, 0d, 0d, entity.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
+    public Seat createSeat(Block block, LivingEntity entity) { return createSeat(block, entity, true, 0d, 0d, 0d, entity.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
 
-    public GSeat createSeat(Block block, LivingEntity entity, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
+    public Seat createSeat(Block block, LivingEntity entity, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
         if(entityBlocked.contains(entity.getUniqueId())) return null;
 
         Location returnLocation = entity.getLocation();
@@ -96,9 +96,9 @@ public class SitService {
             }
         }
 
-        GSeat seat = new GSeat(block, seatLocation, entity, seatEntity, returnLocation);
+        Seat seat = new Seat(block, seatLocation, entity, seatEntity, returnLocation);
         seats.put(entity.getUniqueId(), seat);
-        blockSeats.computeIfAbsent(block, k -> new HashSet<>()).add(seat);
+        blockSeats.computeIfAbsent(block, b -> new HashSet<>()).add(seat);
         sitUsageCount++;
         Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
@@ -112,24 +112,24 @@ public class SitService {
         return location.add(xOffset, yOffset - baseOffset + gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(block.getType(), 0d), zOffset);
     }
 
-    public void moveSeat(GSeat seat, BlockFace blockDirection) {
+    public void moveSeat(Seat seat, BlockFace blockDirection) {
         if(seat.getEntity() instanceof Player player) {
             PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent(player, player.getLocation(), player.getLocation().add(blockDirection.getModX(), blockDirection.getModY(), blockDirection.getModZ()));
             Bukkit.getPluginManager().callEvent(playerMoveEvent);
             if(playerMoveEvent.isCancelled()) return;
         }
 
-        Set<GSeat> blockSeatList = blockSeats.get(seat.getBlock());
+        Set<Seat> blockSeatList = blockSeats.get(seat.getBlock());
         if(blockSeatList != null) blockSeatList.remove(seat);
         seat.setBlock(seat.getBlock().getRelative(blockDirection));
-        blockSeats.computeIfAbsent(seat.getBlock(), k -> new HashSet<>()).add(seat);
+        blockSeats.computeIfAbsent(seat.getBlock(), b -> new HashSet<>()).add(seat);
         seat.setLocation(seat.getLocation().add(blockDirection.getModX(), blockDirection.getModY(), blockDirection.getModZ()));
         gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), seat.getLocation());
     }
 
-    public boolean removeSeat(GSeat seat, GStopReason stopReason) { return removeSeat(seat, stopReason, true); }
+    public boolean removeSeat(Seat seat, StopReason stopReason) { return removeSeat(seat, stopReason, true); }
 
-    public boolean removeSeat(GSeat seat, GStopReason stopReason, boolean useSafeDismount) {
+    public boolean removeSeat(Seat seat, StopReason stopReason, boolean useSafeDismount) {
         PreEntityStopSitEvent preEntityStopSitEvent = new PreEntityStopSitEvent(seat, stopReason);
         Bukkit.getPluginManager().callEvent(preEntityStopSitEvent);
         if(preEntityStopSitEvent.isCancelled() && stopReason.isCancellable()) return false;
@@ -138,7 +138,7 @@ public class SitService {
         entityBlocked.add(entity.getUniqueId());
         if(useSafeDismount) handleSafeSeatDismount(seat);
 
-        Set<GSeat> blockSeatList = blockSeats.remove(seat.getBlock());
+        Set<Seat> blockSeatList = blockSeats.remove(seat.getBlock());
         if(blockSeatList != null) {
             blockSeatList.remove(seat);
             if(blockSeatList.isEmpty()) blockSeats.remove(seat.getBlock());
@@ -152,7 +152,7 @@ public class SitService {
         return true;
     }
 
-    public void handleSafeSeatDismount(GSeat seat) {
+    public void handleSafeSeatDismount(Seat seat) {
         Entity entity = seat.getEntity();
 
         try {
@@ -174,7 +174,7 @@ public class SitService {
         }
     }
 
-    public GSeat createStairSeatForEntity(Block block, LivingEntity entity) {
+    public Seat createStairSeatForEntity(Block block, LivingEntity entity) {
         Stairs blockData = (Stairs) block.getBlockData();
         if(blockData.getHalf() != Bisected.Half.BOTTOM) return createSeat(block, entity);
 

@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a Laajennus käynnistyi onnistuneesti."
   plugin-link: "[P]&a Yhdistettiin onnistuneesti&6 %Link%&a laajennukseen!"
   plugin-update: "[P]&a Uusi versio saatavilla:&6 %NewVersion%&a! Käytössä oleva versio:&6 %Version%&a! Lataa uusin versio täältä:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c Sinulla ei ole oikeutta tähän komentoon!"
   command-sender-error: "[P]&c Vain pelaajat voivat käyttää tätä komentoa!"
   command-version-error: "[P]&c Outdated Server Version! (&b%Version%&c) Update the Server to use this Feature!"

@@ -1,5 +1,4 @@
 Plugin:
-
   plugin-enabled: "[P]&a プラグインは正常に有効になりました。"
   plugin-link: "[P]&6 %Link%&a と正常に連携されました！"
   plugin-update: "[P]&a 新しいバージョンが使用可能になりました:&6 %NewVersion%&a！ 現在使われているバージョン:&6 %Version%&a！ ここから最新版をダウンロード:&6 %Path%"
@@ -10,7 +9,6 @@ Plugin:
   plugin-prefix: "&7[&6GSit&7]"
 
 Messages:
-
   command-permission-error: "[P]&c このコマンドを実行する権限を持っていません！"
   command-sender-error: "[P]&c その人はそのコマンドを実行することができません！"
   command-version-error: "[P]&c 古いサーバーバージョンです！ (&b%Version%&c) この機能を使うためにサーバーを更新してください！"
