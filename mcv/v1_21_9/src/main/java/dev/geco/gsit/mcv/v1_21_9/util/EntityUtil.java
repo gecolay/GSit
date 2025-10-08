@@ -1,14 +1,12 @@
 package dev.geco.gsit.mcv.v1_21_9.util;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_21_9.object.GCrawl;
-import dev.geco.gsit.mcv.v1_21_9.object.GPose;
-import dev.geco.gsit.mcv.v1_21_9.object.PlayerSeatEntity;
-import dev.geco.gsit.mcv.v1_21_9.object.SeatEntity;
+import dev.geco.gsit.mcv.v1_21_9.model.Crawl;
+import dev.geco.gsit.mcv.v1_21_9.model.Pose;
+import dev.geco.gsit.mcv.v1_21_9.entity.PlayerSitEntity;
+import dev.geco.gsit.mcv.v1_21_9.entity.SeatEntity;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
-import dev.geco.gsit.model.Crawl;
-import dev.geco.gsit.model.Pose;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
@@ -77,27 +75,27 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
 
         net.minecraft.world.entity.Entity topEntity = ((CraftEntity) target).getHandle();
 
-        int maxEntities = gSitMain.getPlayerSitService().getSeatEntityStackCount();
+        int maxEntities = gSitMain.getPlayerSitService().getSitEntityStackCount();
         if(maxEntities <= 0) {
             ((CraftEntity) player).getHandle().startRiding(topEntity, true, true);
             return Collections.emptySet();
         }
 
-        Set<UUID> playerSeatEntityIds = new HashSet<>();
+        Set<UUID> playerSitEntityIds = new HashSet<>();
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
-            net.minecraft.world.entity.Entity playerSeatEntity = new PlayerSeatEntity(target.getLocation());
-            playerSeatEntity.startRiding(topEntity, true, true);
-            if(entityCount == maxEntities) ((CraftEntity) player).getHandle().startRiding(playerSeatEntity, true, true);
-            if(!spawnEntity(playerSeatEntity)) {
+            net.minecraft.world.entity.Entity playerSitEntity = new PlayerSitEntity(target.getLocation());
+            playerSitEntity.startRiding(topEntity, true, true);
+            if(entityCount == maxEntities) ((CraftEntity) player).getHandle().startRiding(playerSitEntity, true, true);
+            if(!spawnEntity(playerSitEntity)) {
                 ((CraftEntity) player).getHandle().startRiding(topEntity, true, true);
-                return playerSeatEntityIds;
+                return playerSitEntityIds;
             }
-            playerSeatEntityIds.add(playerSeatEntity.getUUID());
-            topEntity = playerSeatEntity;
+            playerSitEntityIds.add(playerSitEntity.getUUID());
+            topEntity = playerSitEntity;
         }
 
-        return playerSeatEntityIds;
+        return playerSitEntityIds;
     }
 
     private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
@@ -116,9 +114,9 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     }
 
     @Override
-    public Pose createPose(Seat seat, PoseType poseType) { return new GPose(seat, poseType); }
+    public dev.geco.gsit.model.Pose createPose(Seat seat, PoseType poseType) { return new Pose(seat, poseType); }
 
     @Override
-    public Crawl createCrawl(Player player) { return new GCrawl(player); }
+    public dev.geco.gsit.model.Crawl createCrawl(Player player) { return new Crawl(player); }
 
 }

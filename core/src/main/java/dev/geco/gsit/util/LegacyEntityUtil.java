@@ -66,9 +66,9 @@ public class LegacyEntityUtil implements EntityUtil {
 
             World world = location.getWorld();
             Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
-            Entity playerSeatEntity = (Entity) spawnMethod.invoke(world, location, AreaEffectCloud.class, areaEffectCloudConsumer);
-            boolean valid = playerSeatEntity.isValid();
-            playerSeatEntity.remove();
+            Entity playerSitEntity = (Entity) spawnMethod.invoke(world, location, AreaEffectCloud.class, areaEffectCloudConsumer);
+            boolean valid = playerSitEntity.isValid();
+            playerSitEntity.remove();
 
             return valid;
         } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check player sit location", e); }
@@ -109,9 +109,9 @@ public class LegacyEntityUtil implements EntityUtil {
     public Set<UUID> createPlayerSitEntities(Player player, Player target) {
         if(player == null || !player.isValid()) return Collections.emptySet();
 
-        int maxEntities = gSitMain.getPlayerSitService().getSeatEntityStackCount();
+        int maxEntities = gSitMain.getPlayerSitService().getSitEntityStackCount();
         Entity lastEntity = target;
-        Set<UUID> playerSeatEntityIds = new HashSet<>();
+        Set<UUID> playerSitEntityIds = new HashSet<>();
         try {
             World world = target.getWorld();
             Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
@@ -132,10 +132,10 @@ public class LegacyEntityUtil implements EntityUtil {
                 };
 
                 lastEntity = (Entity) spawnMethod.invoke(world, finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloudConsumer);
-                playerSeatEntityIds.add(lastEntity.getUniqueId());
+                playerSitEntityIds.add(lastEntity.getUniqueId());
             }
         } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
-        return playerSeatEntityIds;
+        return playerSitEntityIds;
     }
 
     @Override
