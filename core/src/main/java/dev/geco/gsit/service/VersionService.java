@@ -33,10 +33,10 @@ public class VersionService {
         serverVersion = rawServerVersion.substring(0, rawServerVersion.indexOf('-'));
         if(!isNewerOrVersion(18, 0)) return;
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
-        available = hasPackageClass("object.SeatEntity");
+        available = hasPackageClass("entity.SeatEntity");
         if(available) return;
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + LATEST_VERSION;
-        available = hasPackageClass("object.SeatEntity");
+        available = hasPackageClass("entity.SeatEntity");
     }
 
     public String getServerVersion() { return serverVersion; }
@@ -73,7 +73,7 @@ public class VersionService {
         try {
             Class.forName(packagePath + "." + className);
             return true;
-        } catch(Throwable ignored) { }
+        } catch(Throwable e) { e.printStackTrace(); }
         return false;
     }
 
