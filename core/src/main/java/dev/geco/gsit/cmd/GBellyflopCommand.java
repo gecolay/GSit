@@ -64,7 +64,10 @@ public class GBellyflopCommand implements CommandExecutor {
 
         boolean overSize = false;
         try {
-            for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) overSize = true;
+            for(BoundingBox boundingBox : block.getCollisionShape().getBoundingBoxes()) if(boundingBox.getMaxY() > 1.25) {
+                overSize = true;
+                break;
+            }
         } catch(Throwable ignored) { }
         if(!gSitMain.getConfigService().ALLOW_UNSAFE && !(block.getRelative(BlockFace.UP).isPassable() && !overSize && (!block.isPassable() || !gSitMain.getConfigService().CENTER_BLOCK))) {
             gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-location-error");
