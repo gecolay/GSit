@@ -27,8 +27,8 @@ public class PlayerSitService {
     private final HashMap<UUID, AbstractMap.SimpleImmutableEntry<UUID, Set<UUID>>> topToBottomStacks = new HashMap<>();
     private final Set<Player> preventDismountStackPlayers = new HashSet<>();
     private final HashMap<String, Long> spawnTimes = new HashMap<>();
-    private int playerSitUsageCount = 0;
-    private long playerSitUsageNanoTime = 0;
+    private int playerSitCount = 0;
+    private long playerSitTime = 0;
 
     public PlayerSitService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -60,7 +60,7 @@ public class PlayerSitService {
 
         Set<UUID> playerSitEntityIds = gSitMain.getEntityUtil().createPlayerSitEntities(player, target);
         if(gSitMain.getConfigService().CUSTOM_MESSAGE) gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-playersit-info");
-        playerSitUsageCount++;
+        playerSitCount++;
         bottomToTopStacks.put(target.getUniqueId(), new AbstractMap.SimpleImmutableEntry<>(player.getUniqueId(), playerSitEntityIds));
         topToBottomStacks.put(player.getUniqueId(), new AbstractMap.SimpleImmutableEntry<>(target.getUniqueId(), playerSitEntityIds));
         Bukkit.getPluginManager().callEvent(new PlayerPlayerSitEvent(player, target));
@@ -94,7 +94,7 @@ public class PlayerSitService {
             String key = source.getUniqueId().toString() + passengers.getKey();
             Long spawnTime = spawnTimes.get(key);
             if(spawnTime != null) {
-                playerSitUsageNanoTime += System.nanoTime() - spawnTime;
+                playerSitTime += System.nanoTime() - spawnTime;
                 spawnTimes.remove(key);
             }
         }
@@ -111,7 +111,7 @@ public class PlayerSitService {
             String key = vehicles.getKey().toString() + source.getUniqueId();
             Long spawnTime = spawnTimes.get(key);
             if(spawnTime != null) {
-                playerSitUsageNanoTime += System.nanoTime() - spawnTime;
+                playerSitTime += System.nanoTime() - spawnTime;
                 spawnTimes.remove(key);
             }
         }
@@ -121,14 +121,14 @@ public class PlayerSitService {
         return true;
     }
 
-    public int getPlayerSitUsageCount() { return playerSitUsageCount; }
+    public int getPlayerSitCount() { return this.playerSitCount; }
 
-    public long getPlayerSitUsageTimeInSeconds() { return playerSitUsageNanoTime / 1_000_000_000; }
+    public int getPlayerSitTime() { return Math.toIntExact(this.playerSitTime / 1_000_000_000); }
 
-    public void resetPlayerSitUsageStats() {
+    public void resetPlayerSitStats() {
         spawnTimes.clear();
-        playerSitUsageCount = 0;
-        playerSitUsageNanoTime = 0;
+        playerSitCount = 0;
+        playerSitTime = 0;
     }
 
 }

@@ -19,8 +19,8 @@ public class CrawlService {
     private final GSitMain gSitMain;
     private final boolean available;
     private final HashMap<UUID, Crawl> crawls = new HashMap<>();
-    private int crawlUsageCount = 0;
-    private long crawlUsageNanoTime = 0;
+    private int crawlCount = 0;
+    private long crawlTime = 0;
 
     public CrawlService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -47,7 +47,7 @@ public class CrawlService {
         Crawl crawl = gSitMain.getEntityUtil().createCrawl(player);
         crawl.start();
         crawls.put(player.getUniqueId(), crawl);
-        crawlUsageCount++;
+        crawlCount++;
         Bukkit.getPluginManager().callEvent(new PlayerCrawlEvent(crawl));
 
         return crawl;
@@ -61,18 +61,18 @@ public class CrawlService {
         crawls.remove(crawl.getPlayer().getUniqueId());
         crawl.stop();
         Bukkit.getPluginManager().callEvent(new PlayerStopCrawlEvent(crawl, stopReason));
-        crawlUsageNanoTime += crawl.getLifetimeInNanoSeconds();
+        crawlTime += crawl.getLifetimeInNanoSeconds();
 
         return true;
     }
 
-    public int getCrawlUsageCount() { return crawlUsageCount; }
+    public int getCrawlCount() { return this.crawlCount; }
 
-    public long getCrawlUsageTimeInSeconds() { return crawlUsageNanoTime / 1_000_000_000; }
+    public int getCrawlTime() { return Math.toIntExact(this.crawlTime / 1_000_000_000); }
 
-    public void resetCrawlUsageStats() {
-        crawlUsageCount = 0;
-        crawlUsageNanoTime = 0;
+    public void resetCrawlStats() {
+        crawlCount = 0;
+        crawlTime = 0;
     }
 
 }

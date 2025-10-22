@@ -32,8 +32,8 @@ public class PoseService {
     private final boolean available;
     private final HashMap<UUID, Pose> poses = new HashMap<>();
     private final HashMap<Block, Set<Pose>> blockPoses = new HashMap<>();
-    private HashMap<PoseType, Integer> poseUsageCount = new HashMap<>();
-    private HashMap<PoseType, Long> poseUsageNanoTime = new HashMap<>();
+    private HashMap<PoseType, Integer> poseCount = new HashMap<>();
+    private HashMap<PoseType, Long> poseTime = new HashMap<>();
 
     public PoseService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -89,7 +89,7 @@ public class PoseService {
         pose.spawn();
         poses.put(player.getUniqueId(), pose);
         blockPoses.computeIfAbsent(block, b -> new HashSet<>()).add(pose);
-        poseUsageCount.merge(poseType, 1, Integer::sum);
+        poseCount.merge(poseType, 1, Integer::sum);
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(pose));
 
         return pose;
@@ -111,18 +111,18 @@ public class PoseService {
         pose.remove();
         seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(pose, stopReason));
-        poseUsageNanoTime.merge(pose.getPoseType(), seat.getLifetimeInNanoSeconds(), Long::sum);
+        poseTime.merge(pose.getPoseType(), seat.getLifetimeInNanoSeconds(), Long::sum);
 
         return true;
     }
 
-    public Map<PoseType, Integer> getPoseUsageCount() { return poseUsageCount; }
+    public Map<PoseType, Integer> getPoseCount() { return poseCount; }
 
-    public Map<PoseType, Long> getPoseUsageTimeInSeconds() { return poseUsageNanoTime.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / 1_000_000_000)); }
+    public Map<PoseType, Integer> getPoseTime() { return poseTime.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> Math.toIntExact(e.getValue() / 1_000_000_000))); }
 
-    public void resetPoseUsageStats() {
-        poseUsageCount.clear();
-        poseUsageNanoTime.clear();
+    public void resetPoseStats() {
+        poseCount.clear();
+        poseTime.clear();
     }
 
 }

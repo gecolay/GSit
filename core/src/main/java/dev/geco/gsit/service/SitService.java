@@ -39,8 +39,8 @@ public class SitService {
     private final HashMap<UUID, Seat> seats = new HashMap<>();
     private final HashMap<Block, Set<Seat>> blockSeats = new HashMap<>();
     private final HashSet<UUID> entityBlocked = new HashSet<>();
-    private int sitUsageCount = 0;
-    private long sitUsageNanoTime = 0;
+    private int sitCount = 0;
+    private long sitTime = 0;
 
     public SitService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -99,7 +99,7 @@ public class SitService {
         Seat seat = new Seat(block, seatLocation, entity, seatEntity, returnLocation);
         seats.put(entity.getUniqueId(), seat);
         blockSeats.computeIfAbsent(block, b -> new HashSet<>()).add(seat);
-        sitUsageCount++;
+        sitCount++;
         Bukkit.getPluginManager().callEvent(new EntitySitEvent(seat));
 
         return seat;
@@ -147,7 +147,7 @@ public class SitService {
         seat.getSeatEntity().remove();
         gSitMain.getTaskService().runDelayed(() -> entityBlocked.remove(entity.getUniqueId()), 1);
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
-        sitUsageNanoTime += seat.getLifetimeInNanoSeconds();
+        sitTime += seat.getLifetimeInNanoSeconds();
 
         return true;
     }
@@ -203,13 +203,13 @@ public class SitService {
         return null;
     }
 
-    public int getSitUsageCount() { return sitUsageCount; }
+    public int getSitCount() { return this.sitCount; }
 
-    public long getSitUsageTimeInSeconds() { return sitUsageNanoTime / 1_000_000_000; }
+    public int getSitTime() { return Math.toIntExact(this.sitTime / 1_000_000_000); }
 
-    public void resetSitUsageStats() {
-        sitUsageCount = 0;
-        sitUsageNanoTime = 0;
+    public void resetSitStats() {
+        sitCount = 0;
+        sitTime = 0;
     }
 
 }

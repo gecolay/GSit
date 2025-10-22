@@ -115,6 +115,10 @@ public class BStatsMetric {
         metricsBase.shutdown();
     }
 
+    public void setCollectCallback(Runnable callback) {
+        metricsBase.setCollectCallback(callback);
+    }
+
     /**
      * Adds a custom chart.
      *
@@ -191,6 +195,8 @@ public class BStatsMetric {
         private final Set<CustomChart> customCharts = new HashSet<>();
 
         private final boolean enabled;
+
+        private Runnable collectCallback;
 
         /**
          * Creates a new MetricsBase class instance.
@@ -274,6 +280,10 @@ public class BStatsMetric {
             scheduler.shutdown();
         }
 
+        public void setCollectCallback(Runnable callback) {
+            collectCallback = callback;
+        }
+
         private void startSubmitting() {
             final Runnable submitTask =
                     () -> {
@@ -313,6 +323,7 @@ public class BStatsMetric {
                             .map(customChart -> customChart.getRequestJsonObject(errorLogger, logErrors))
                             .filter(Objects::nonNull)
                             .toArray(JsonObjectBuilder.JsonObject[]::new);
+            if (collectCallback != null) collectCallback.run();
             serviceJsonBuilder.appendField("id", serviceId);
             serviceJsonBuilder.appendField("customCharts", chartData);
             baseJsonBuilder.appendField("service", serviceJsonBuilder.build());

@@ -23,6 +23,7 @@ import dev.geco.gsit.link.GriefPreventionLink;
 import dev.geco.gsit.link.PlaceholderAPILink;
 import dev.geco.gsit.link.PlotSquaredLink;
 import dev.geco.gsit.link.WorldGuardLink;
+import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.service.ConfigService;
 import dev.geco.gsit.service.CrawlService;
 import dev.geco.gsit.service.DataService;
@@ -77,6 +78,7 @@ public class GSitMain extends JavaPlugin {
     private PlaceholderAPILink placeholderAPILink;
     private PlotSquaredLink plotSquaredLink;
     private WorldGuardLink worldGuardLink;
+    private BStatsMetric bStatsMetric;
     private boolean supportsTaskFeature = false;
     private boolean isPaperServer = false;
     private boolean isFoliaServer = false;
@@ -177,6 +179,7 @@ public class GSitMain extends JavaPlugin {
 
     public void onDisable() {
         unload();
+        bStatsMetric.shutdown();
         messageService.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
 
@@ -322,25 +325,30 @@ public class GSitMain extends JavaPlugin {
     }
 
     private void setupBStatsMetric() {
-        BStatsMetric bStatsMetric = new BStatsMetric(this, BSTATS_RESOURCE_ID);
+        bStatsMetric = new BStatsMetric(this, BSTATS_RESOURCE_ID);
 
         bStatsMetric.addCustomChart(new BStatsMetric.SimplePie("plugin_language", () -> configService.L_LANG));
         bStatsMetric.addCustomChart(new BStatsMetric.AdvancedPie("minecraft_version_player_amount", () -> Map.of(versionService.getServerVersion(), Bukkit.getOnlinePlayers().size())));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_sit_feature", () -> sitService.getSitUsageCount()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_sit_feature", () -> (int) sitService.getSitUsageTimeInSeconds()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_psit_feature", () -> playerSitService.getPlayerSitUsageCount()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_psit_feature", () -> (int) playerSitService.getPlayerSitUsageTimeInSeconds()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_pose_feature", () -> poseService.getPoseUsageCount().values().stream().mapToInt(Integer::intValue).sum()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_pose_feature", () -> (int) poseService.getPoseUsageTimeInSeconds().values().stream().mapToInt(Long::intValue).sum()));
-        bStatsMetric.addCustomChart(new BStatsMetric.MultiLineChart("use_pose_feature_detail", () -> poseService.getPoseUsageCount().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue))));
-        bStatsMetric.addCustomChart(new BStatsMetric.MultiLineChart("seconds_pose_feature_detail", () -> poseService.getPoseUsageTimeInSeconds().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), e -> e.getValue().intValue()))));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_crawl_feature", () -> crawlService.getCrawlUsageCount()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_crawl_feature", () -> (int) crawlService.getCrawlUsageTimeInSeconds()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("sit_count", () -> sitService.getSitCount()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("sit_time", () -> sitService.getSitTime()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("player_sit_count", () -> playerSitService.getPlayerSitCount()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("player_sit_time", () -> playerSitService.getPlayerSitTime()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("pose_count", () -> poseService.getPoseCount().values().stream().mapToInt(Integer::intValue).sum()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("pose_time", () -> poseService.getPoseTime().values().stream().mapToInt(Integer::intValue).sum()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("crawl_count", () -> crawlService.getCrawlCount()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("crawl_time", () -> crawlService.getCrawlTime()));
 
-        sitService.resetSitUsageStats();
-        playerSitService.resetPlayerSitUsageStats();
-        poseService.resetPoseUsageStats();
-        crawlService.resetCrawlUsageStats();
+        for(PoseType poseType : PoseType.values()) {
+            bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart(poseType.getName() + "_count", () -> poseService.getPoseCount().getOrDefault(poseType,0)));
+            bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart(poseType.getName() + "_time", () -> Math.toIntExact(poseService.getPoseTime().getOrDefault(poseType, 0))));
+        }
+
+        bStatsMetric.setCollectCallback(() -> {
+            sitService.resetSitStats();
+            playerSitService.resetPlayerSitStats();
+            poseService.resetPoseStats();
+            crawlService.resetCrawlStats();
+        });
     }
 
 }
