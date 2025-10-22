@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class PoseService {
 
@@ -30,8 +32,8 @@ public class PoseService {
     private final boolean available;
     private final HashMap<UUID, Pose> poses = new HashMap<>();
     private final HashMap<Block, Set<Pose>> blockPoses = new HashMap<>();
-    private int poseUsageCount = 0;
-    private long poseUsageNanoTime = 0;
+    private HashMap<PoseType, Integer> poseUsageCount = new HashMap<>();
+    private HashMap<PoseType, Long> poseUsageNanoTime = new HashMap<>();
 
     public PoseService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -87,7 +89,7 @@ public class PoseService {
         pose.spawn();
         poses.put(player.getUniqueId(), pose);
         blockPoses.computeIfAbsent(block, b -> new HashSet<>()).add(pose);
-        poseUsageCount++;
+        poseUsageCount.merge(poseType, 1, Integer::sum);
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(pose));
 
         return pose;
@@ -109,18 +111,18 @@ public class PoseService {
         pose.remove();
         seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(pose, stopReason));
-        poseUsageNanoTime += seat.getLifetimeInNanoSeconds();
+        poseUsageNanoTime.merge(pose.getPoseType(), seat.getLifetimeInNanoSeconds(), Long::sum);
 
         return true;
     }
 
-    public int getPoseUsageCount() { return poseUsageCount; }
+    public Map<PoseType, Integer> getPoseUsageCount() { return poseUsageCount; }
 
-    public long getPoseUsageTimeInSeconds() { return poseUsageNanoTime / 1_000_000_000; }
+    public Map<PoseType, Long> getPoseUsageTimeInSeconds() { return poseUsageNanoTime.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / 1_000_000_000)); }
 
     public void resetPoseUsageStats() {
-        poseUsageCount = 0;
-        poseUsageNanoTime = 0;
+        poseUsageCount.clear();
+        poseUsageNanoTime.clear();
     }
 
 }

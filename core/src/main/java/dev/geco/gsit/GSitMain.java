@@ -48,6 +48,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GSitMain extends JavaPlugin {
 
@@ -329,8 +330,10 @@ public class GSitMain extends JavaPlugin {
         bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_sit_feature", () -> (int) sitService.getSitUsageTimeInSeconds()));
         bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_psit_feature", () -> playerSitService.getPlayerSitUsageCount()));
         bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_psit_feature", () -> (int) playerSitService.getPlayerSitUsageTimeInSeconds()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_pose_feature", () -> poseService.getPoseUsageCount()));
-        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_pose_feature", () -> (int) poseService.getPoseUsageTimeInSeconds()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_pose_feature", () -> poseService.getPoseUsageCount().values().stream().mapToInt(Integer::intValue).sum()));
+        bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_pose_feature", () -> (int) poseService.getPoseUsageTimeInSeconds().values().stream().mapToInt(Long::intValue).sum()));
+        bStatsMetric.addCustomChart(new BStatsMetric.MultiLineChart("use_pose_feature_detail", () -> poseService.getPoseUsageCount().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue))));
+        bStatsMetric.addCustomChart(new BStatsMetric.MultiLineChart("seconds_pose_feature_detail", () -> poseService.getPoseUsageTimeInSeconds().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), e -> e.getValue().intValue()))));
         bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("use_crawl_feature", () -> crawlService.getCrawlUsageCount()));
         bStatsMetric.addCustomChart(new BStatsMetric.SingleLineChart("seconds_crawl_feature", () -> (int) crawlService.getCrawlUsageTimeInSeconds()));
 
