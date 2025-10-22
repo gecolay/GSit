@@ -73,7 +73,7 @@ public class VersionService {
         try {
             Class.forName(packagePath + "." + className);
             return true;
-        } catch(Throwable e) { e.printStackTrace(); }
+        } catch(Throwable ignored) { }
         return false;
     }
 
