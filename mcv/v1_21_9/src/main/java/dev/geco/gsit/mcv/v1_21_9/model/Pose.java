@@ -2,6 +2,7 @@ package dev.geco.gsit.mcv.v1_21_9.model;
 
 import com.mojang.datafixers.util.Pair;
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.mcv.v1_21_9.entity.PlayerSitEntity;
 import dev.geco.gsit.mcv.v1_21_9.entity.SeatEntity;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
@@ -18,6 +19,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
+import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateAttributesPacket;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -68,6 +70,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private Set<Player> nearbyPlayers = new HashSet<>();
     private final ServerPlayer serverPlayer;
     protected final Mannequin mannequin;
+    private PlayerSitEntity vehicleEntity;
     private OptionalInt leftShoulderCache;
     private OptionalInt rightShoulderCache;
     private final Direction direction;
@@ -112,6 +115,17 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         createNpcPacket = new ClientboundAddEntityPacket(mannequin.getId(), mannequin.getUUID(), mannequin.getX(), mannequin.getY(), mannequin.getZ(), mannequin.getXRot(), mannequin.getYRot(), mannequin.getType(), 0, mannequin.getDeltaMovement(), mannequin.getYHeadRot());
         removeNpcPacket = new ClientboundRemoveEntitiesPacket(mannequin.getId());
+
+        if(poseType == PoseType.LAY_BACK) {
+            vehicleEntity = new PlayerSitEntity(seatPlayer.getLocation());
+            vehicleEntity.absSnapTo(
+                seatLocation.getX() + (direction == Direction.EAST ? 1.0 : direction == Direction.WEST ? -1.0 : 0),
+                seatLocation.getY() + gSitMain.getSitService().getBaseOffset() + -0.375 * scale,
+                seatLocation.getZ() + (direction == Direction.NORTH ? -1.0 : direction == Direction.SOUTH ? 1.0 : 0),
+                sleepYaw,
+                0f
+            );
+        }
 
         listener = new Listener() {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -174,6 +188,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
         List<Packet<? super ClientGamePacketListener>> packages = new ArrayList<>();
 
         packages.add(createNpcPacket);
+        if(poseType == PoseType.LAY_BACK) {
+            mannequin.startRiding(vehicleEntity, true, false);
+            mannequin.setPose(net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
+            packages.add(new ClientboundAddEntityPacket(vehicleEntity.getId(), vehicleEntity.getUUID(), vehicleEntity.getX(), vehicleEntity.getY(), vehicleEntity.getZ(), vehicleEntity.getXRot(), vehicleEntity.getYRot(), vehicleEntity.getType(), 0, vehicleEntity.getDeltaMovement(), vehicleEntity.getYHeadRot()));
+            packages.add(new ClientboundSetEntityDataPacket(vehicleEntity.getId(), vehicleEntity.getEntityData().getNonDefaultValues()));
+            packages.add(new ClientboundSetPassengersPacket(vehicleEntity));
+        }
         packages.add(metaNpcPacket);
         packages.add(attributeNpcPacket);
 
@@ -230,6 +251,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         seatPlayer.removeScoreboardTag(PoseService.POSE_TAG);
 
         for(Player nearbyPlayer : nearbyPlayers) removeViewerPlayer(nearbyPlayer);
+        if(vehicleEntity != null) sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(vehicleEntity.getId()));
 
         if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
 
