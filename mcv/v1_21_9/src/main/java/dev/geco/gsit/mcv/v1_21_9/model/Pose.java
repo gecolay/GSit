@@ -323,7 +323,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         SynchedEntityData entityData = mannequin.getEntityData();
         mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(15), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(15)));
         mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(16), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(16)));
-        mannequin.setProfile(ResolvableProfile.createResolved(serverPlayer.gameProfile));
+        mannequin.setProfile(ResolvableProfile.createResolved(serverPlayer.getGameProfile()));
         if(!entityData.isDirty()) return;
 
         ClientboundSetEntityDataPacket entityDataPacket = new ClientboundSetEntityDataPacket(mannequin.getId(), entityData.packDirty());
@@ -381,7 +381,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
     private Mannequin createMannequin() {
         Mannequin playerMannequin = new Mannequin(EntityType.MANNEQUIN, serverPlayer.level());
-        playerMannequin.setProfile(ResolvableProfile.createResolved(serverPlayer.gameProfile));
+        playerMannequin.setProfile(ResolvableProfile.createResolved(serverPlayer.getGameProfile()));
         playerMannequin.setHideDescription(true);
         playerMannequin.setImmovable(true);
         return playerMannequin;
