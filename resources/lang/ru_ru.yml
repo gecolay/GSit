@@ -1,8 +1,8 @@
 Plugin:
   plugin-enabled: "[P]&a Плагин был включен."
-  plugin-link: "[P]&a Соединение с &6 %Link%&a Успешно!"
+  plugin-link: "[P]&a Соединение с&6 %Link%&a успешно!"
   plugin-update: "[P]&a Доступна новая версия:&6 %NewVersion%&a! Ваша версия:&6 %Version%&a! Скачайте последнюю версию:&6 %Path%"
-  plugin-data: "[P]&c A connection to the data storage could not be established. Please check the server console!"
+  plugin-data: "[P]&c Не удалось установить соединение с базой данных. Пожалуйста, проверьте консоль сервера!"
   plugin-version: "[P]&c Плагин не может быть использован с этой версией сервера! (&b%Version%&c)"
   plugin-reload: "[P]&a Плагин был успешно перезагружен."
   plugin-disabled: "[P]&a Плагин был успешно отключен."
@@ -26,10 +26,10 @@ Messages:
   action-sit-safe-error: "[P]&c Здесь сидеть небезопасно!"
   action-sit-region-error: "[P]&c Вы не можете сидеть в этом регионе!"
   action-sit-kick-error: "[P]&c Кто-то уже сидит здесь!"
-  action-sit-error: "[P]&c Due to an error you can't sit here!"
-  action-sit-info: "&aИспользуйте &6 <lang:key.sneak>&a, чтобы встать."
+  action-sit-error: "[P]&c Из-за ошибки вы не можете здесь сидеть!"
+  action-sit-info: "&aИспользуйте&6 <lang:key.sneak>&a, чтобы встать."
 
-  action-playersit-info: "&aИспользуйте &6 <lang:key.sneak>&a, чтобы встать."
+  action-playersit-info: "&aИспользуйте&6 <lang:key.sneak>&a, чтобы встать."
 
   action-pose-now-error: "[P]&c Вы не можете использовать эту команду сейчас!"
   action-pose-world-error: "[P]&c Вы не можете использовать эту команду в этом мире!"
@@ -37,12 +37,12 @@ Messages:
   action-pose-safe-error: "[P]&c Здесь небезопасно использовать эту команду!"
   action-pose-region-error: "[P]&c Вы не можете использовать эту команду в этом регионе!"
   action-pose-kick-error: "[P]&c Кто-то уже здесь использует эту команду!"
-  action-pose-error: "[P]&c Due to an error you can't pose here!"
-  action-pose-info: "&aИспользуйте &6 <lang:key.sneak>&a, чтобы встать."
+  action-pose-error: "[P]&c Из-за ошибки вы не можете использовать эту позу здесь!"
+  action-pose-info: "&aИспользуйте&6 <lang:key.sneak>&a, чтобы встать."
 
   action-crawl-now-error: "[P]&c Вы не можете ползать сейчас!"
   action-crawl-world-error: "[P]&c Вы не можете ползать в этом мире!"
   action-crawl-region-error: "[P]&c Вы не можете ползать в этом регионе!"
-  action-crawl-info: "&aИспользуйте &6 <lang:key.sneak>&a, чтобы встать."
+  action-crawl-info: "&aИспользуйте&6 <lang:key.sneak>&a, чтобы встать."
 
   action-blocked-error: "[P]&c Вам не разрешено выполнять эту команду прямо сейчас!"
