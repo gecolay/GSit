@@ -103,12 +103,17 @@ permissions:
     description: Pose | Permissions
     children:
       GSit.Lay: true
+      GSit.LayBack: true
       GSit.BellyFlop: true
       GSit.Spin: true
 
   GSit.Lay:
     default: true
     description: Lay command | Permission
+
+  GSit.LayBack:
+    default: true
+    description: Lay back | Permission
 
   GSit.BellyFlop:
     default: true
