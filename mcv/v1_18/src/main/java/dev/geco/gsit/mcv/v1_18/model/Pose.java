@@ -21,6 +21,7 @@ import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.MinecraftServer;
@@ -90,9 +91,17 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private NonNullList<ItemStack> equipmentSlotCache;
     private net.minecraft.world.item.ItemStack mainSlotCache;
     private float directionCache;
+    private boolean sleepingIgnoredCache;
     protected int renderRange;
     private UUID taskId;
     private final Listener listener;
+    private static final EntityDataAccessor<net.minecraft.world.entity.Pose> POSE_ACCESSOR = EntityDataSerializers.POSE.createAccessor(6);
+    private static final EntityDataAccessor<Byte> DATA_FLAG_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(8);
+    private static final EntityDataAccessor<Optional<BlockPos>> SLEEP_BLOCK_POS_ACCESSOR = EntityDataSerializers.OPTIONAL_BLOCK_POS.createAccessor(14);
+    private static final EntityDataAccessor<Byte> SKIN_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(17);
+    private static final EntityDataAccessor<Byte> MAIN_HAND_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(18);
+    private static final EntityDataAccessor<CompoundTag> LEFT_SHOULDER_ACCESSOR = EntityDataSerializers.COMPOUND_TAG.createAccessor(19);
+    private static final EntityDataAccessor<CompoundTag> RIGHT_SHOULDER_ACCESSOR = EntityDataSerializers.COMPOUND_TAG.createAccessor(20);
 
     public Pose(Seat seat, PoseType poseType) {
         this.seat = seat;
@@ -158,22 +167,23 @@ public class Pose implements dev.geco.gsit.model.Pose {
         playerNpc.setGlowingTag(serverPlayer.hasGlowingTag());
         if(serverPlayer.hasGlowingTag()) serverPlayer.setGlowingTag(false);
 
-        playerNpc.getEntityData().set(EntityDataSerializers.POSE.createAccessor(6), net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
-        if(poseType == PoseType.SPIN) playerNpc.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(8), (byte) 4);
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) playerNpc.getEntityData().set(EntityDataSerializers.OPTIONAL_BLOCK_POS.createAccessor(14), Optional.of(bedPos));
-        playerNpc.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(17), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(17)));
-        playerNpc.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(18), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(18)));
-        playerNpc.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), serverPlayer.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
-        playerNpc.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), serverPlayer.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
-        serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), new CompoundTag());
-        serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), new CompoundTag());
+        playerNpc.getEntityData().set(POSE_ACCESSOR, net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
+        if(poseType == PoseType.SPIN) playerNpc.getEntityData().set(DATA_FLAG_ACCESSOR, (byte) 4);
+        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) playerNpc.getEntityData().set(SLEEP_BLOCK_POS_ACCESSOR, Optional.of(bedPos));
+        playerNpc.getEntityData().set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
+        playerNpc.getEntityData().set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
+        playerNpc.getEntityData().set(LEFT_SHOULDER_ACCESSOR, serverPlayer.getEntityData().get(LEFT_SHOULDER_ACCESSOR));
+        playerNpc.getEntityData().set(RIGHT_SHOULDER_ACCESSOR, serverPlayer.getEntityData().get(RIGHT_SHOULDER_ACCESSOR));
+        serverPlayer.getEntityData().set(LEFT_SHOULDER_ACCESSOR, new CompoundTag());
+        serverPlayer.getEntityData().set(RIGHT_SHOULDER_ACCESSOR, new CompoundTag());
 
         serverPlayer.setInvisible(true);
 
         setEquipmentVisibility(false);
 
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) {
-            if(gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(true);
+            sleepingIgnoredCache = seatPlayer.isSleepingIgnored();
+            if(gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(true);
             if(gSitMain.getConfigService().P_LAY_REST) seatPlayer.setStatistic(Statistic.TIME_SINCE_REST, 0);
         }
 
@@ -210,14 +220,14 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         for(Player nearbyPlayer : nearbyPlayers) removeViewerPlayer(nearbyPlayer);
 
-        if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
+        if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(false);
 
         if(!serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY)) serverPlayer.setInvisible(false);
 
         setEquipmentVisibility(true);
 
-        serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(19), playerNpc.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(19)));
-        serverPlayer.getEntityData().set(EntityDataSerializers.COMPOUND_TAG.createAccessor(20), playerNpc.getEntityData().get(EntityDataSerializers.COMPOUND_TAG.createAccessor(20)));
+        serverPlayer.getEntityData().set(LEFT_SHOULDER_ACCESSOR, playerNpc.getEntityData().get(LEFT_SHOULDER_ACCESSOR));
+        serverPlayer.getEntityData().set(RIGHT_SHOULDER_ACCESSOR, playerNpc.getEntityData().get(RIGHT_SHOULDER_ACCESSOR));
 
         serverPlayer.setGlowingTag(playerNpc.hasGlowingTag());
     }
@@ -315,8 +325,8 @@ public class Pose implements dev.geco.gsit.model.Pose {
         playerNpc.setInvisible(serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY));
 
         SynchedEntityData entityData = playerNpc.getEntityData();
-        entityData.set(EntityDataSerializers.BYTE.createAccessor(17), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(17)));
-        entityData.set(EntityDataSerializers.BYTE.createAccessor(18), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(18)));
+        entityData.set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
+        entityData.set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
         if(!entityData.isDirty()) return;
 
         ClientboundSetEntityDataPacket entityDataPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), entityData, false);

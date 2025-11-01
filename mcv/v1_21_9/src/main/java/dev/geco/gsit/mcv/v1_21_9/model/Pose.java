@@ -21,6 +21,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateAttributesPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
@@ -82,8 +83,14 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private NonNullList<ItemStack> equipmentSlotCache;
     private net.minecraft.world.item.ItemStack mainSlotCache;
     private float directionCache;
+    private boolean sleepingIgnoredCache;
     protected int renderRange;
     private final Listener listener;
+    private static final EntityDataAccessor<Byte> POSE_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(8);
+    private static final EntityDataAccessor<Byte> SKIN_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(15);
+    private static final EntityDataAccessor<Byte> MAIN_HAND_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(16);
+    private static final EntityDataAccessor<OptionalInt> LEFT_SHOULDER_ACCESSOR = EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(19);
+    private static final EntityDataAccessor<OptionalInt> RIGHT_SHOULDER_ACCESSOR = EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(20);
 
     public Pose(Seat seat, PoseType poseType) {
         this.seat = seat;
@@ -165,20 +172,21 @@ public class Pose implements dev.geco.gsit.model.Pose {
         if(serverPlayer.hasGlowingTag()) serverPlayer.setGlowingTag(false);
 
         mannequin.setPose(net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
-        if(poseType == PoseType.SPIN) mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(8), (byte) 4);
-        mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(15), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(15)));
-        mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(16), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(16)));
-        leftShoulderCache = serverPlayer.getEntityData().get(EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(19));
-        rightShoulderCache = serverPlayer.getEntityData().get(EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(20));
-        serverPlayer.getEntityData().set(EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(19), OptionalInt.empty());
-        serverPlayer.getEntityData().set(EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(20), OptionalInt.empty());
+        if(poseType == PoseType.SPIN) mannequin.getEntityData().set(POSE_ACCESSOR, (byte) 4);
+        mannequin.getEntityData().set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
+        mannequin.getEntityData().set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
+        leftShoulderCache = serverPlayer.getEntityData().get(LEFT_SHOULDER_ACCESSOR);
+        rightShoulderCache = serverPlayer.getEntityData().get(RIGHT_SHOULDER_ACCESSOR);
+        serverPlayer.getEntityData().set(LEFT_SHOULDER_ACCESSOR, OptionalInt.empty());
+        serverPlayer.getEntityData().set(RIGHT_SHOULDER_ACCESSOR, OptionalInt.empty());
 
         serverPlayer.setInvisible(true);
 
         setEquipmentVisibility(false);
 
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) {
-            if(gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(true);
+            sleepingIgnoredCache = seatPlayer.isSleepingIgnored();
+            if(gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(true);
             if(gSitMain.getConfigService().P_LAY_REST) seatPlayer.setStatistic(Statistic.TIME_SINCE_REST, 0);
         }
 
@@ -253,14 +261,14 @@ public class Pose implements dev.geco.gsit.model.Pose {
         for(Player nearbyPlayer : nearbyPlayers) removeViewerPlayer(nearbyPlayer);
         if(vehicleEntity != null) sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(vehicleEntity.getId()));
 
-        if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP) seatPlayer.setSleepingIgnored(false);
+        if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(false);
 
         if(!serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY)) serverPlayer.setInvisible(false);
 
         setEquipmentVisibility(true);
 
-        serverPlayer.getEntityData().set(EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(19), leftShoulderCache);
-        serverPlayer.getEntityData().set(EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(20), rightShoulderCache);
+        serverPlayer.getEntityData().set(LEFT_SHOULDER_ACCESSOR, leftShoulderCache);
+        serverPlayer.getEntityData().set(RIGHT_SHOULDER_ACCESSOR, rightShoulderCache);
 
         serverPlayer.setGlowingTag(mannequin.hasGlowingTag());
     }
@@ -321,8 +329,8 @@ public class Pose implements dev.geco.gsit.model.Pose {
         mannequin.setInvisible(serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY));
 
         SynchedEntityData entityData = mannequin.getEntityData();
-        mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(15), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(15)));
-        mannequin.getEntityData().set(EntityDataSerializers.BYTE.createAccessor(16), serverPlayer.getEntityData().get(EntityDataSerializers.BYTE.createAccessor(16)));
+        mannequin.getEntityData().set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
+        mannequin.getEntityData().set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
         mannequin.setProfile(ResolvableProfile.createResolved(serverPlayer.getGameProfile()));
         if(!entityData.isDirty()) return;
 
