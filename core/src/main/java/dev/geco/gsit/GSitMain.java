@@ -179,7 +179,7 @@ public class GSitMain extends JavaPlugin {
 
     public void onDisable() {
         unload();
-        bStatsMetric.shutdown();
+        if(bStatsMetric != null) bStatsMetric.shutdown();
         messageService.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-disabled");
     }
 
