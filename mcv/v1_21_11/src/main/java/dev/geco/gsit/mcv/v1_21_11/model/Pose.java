@@ -1,10 +1,10 @@
-package dev.geco.gsit.mcv.v1_21_9.model;
+package dev.geco.gsit.mcv.v1_21_11.model;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_21_9.entity.PlayerSitEntity;
-import dev.geco.gsit.mcv.v1_21_9.entity.SeatEntity;
+import dev.geco.gsit.mcv.v1_21_11.entity.PlayerSitEntity;
+import dev.geco.gsit.mcv.v1_21_11.entity.SeatEntity;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.service.PoseService;
@@ -36,6 +36,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -112,8 +113,8 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private static final EntityDataAccessor<net.minecraft.world.entity.Pose> POSE_ACCESSOR = EntityDataSerializers.POSE.createAccessor(6);
     private static final EntityDataAccessor<Byte> DATA_FLAG_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(8);
     private static final EntityDataAccessor<Optional<BlockPos>> SLEEP_BLOCK_POS_ACCESSOR = EntityDataSerializers.OPTIONAL_BLOCK_POS.createAccessor(14);
-    private static final EntityDataAccessor<Byte> SKIN_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(15);
-    private static final EntityDataAccessor<Byte> MAIN_HAND_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(16);
+    private static final EntityDataAccessor<HumanoidArm> MAIN_HAND_ACCESSOR = EntityDataSerializers.HUMANOID_ARM.createAccessor(15);
+    private static final EntityDataAccessor<Byte> SKIN_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(16);
     private static final EntityDataAccessor<OptionalInt> LEFT_SHOULDER_ACCESSOR = EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(19);
     private static final EntityDataAccessor<OptionalInt> RIGHT_SHOULDER_ACCESSOR = EntityDataSerializers.OPTIONAL_UNSIGNED_INT.createAccessor(20);
 
@@ -191,8 +192,8 @@ public class Pose implements dev.geco.gsit.model.Pose {
         playerNpc.getEntityData().set(POSE_ACCESSOR, net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
         if(poseType == PoseType.SPIN) playerNpc.getEntityData().set(DATA_FLAG_ACCESSOR, (byte) 4);
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) playerNpc.getEntityData().set(SLEEP_BLOCK_POS_ACCESSOR, Optional.of(bedPos));
-        playerNpc.getEntityData().set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
         playerNpc.getEntityData().set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
+        playerNpc.getEntityData().set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
         playerNpc.getEntityData().set(LEFT_SHOULDER_ACCESSOR, serverPlayer.getEntityData().get(LEFT_SHOULDER_ACCESSOR));
         playerNpc.getEntityData().set(RIGHT_SHOULDER_ACCESSOR, serverPlayer.getEntityData().get(RIGHT_SHOULDER_ACCESSOR));
         serverPlayer.getEntityData().set(LEFT_SHOULDER_ACCESSOR, OptionalInt.empty());
@@ -357,8 +358,8 @@ public class Pose implements dev.geco.gsit.model.Pose {
         playerNpc.setInvisible(serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY));
 
         SynchedEntityData entityData = playerNpc.getEntityData();
-        entityData.set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
         entityData.set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
+        entityData.set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
         if(!entityData.isDirty()) return;
 
         ClientboundSetEntityDataPacket entityDataPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), entityData.packDirty());
