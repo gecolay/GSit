@@ -162,8 +162,13 @@ permissions:
     default: op
     description: ByPass | Permissions
     children:
+      GSit.ByPass.Command: true
       GSit.ByPass.World: true
       GSit.ByPass.Region: true
+
+  GSit.ByPass.Command:
+    default: op
+    description: ByPass command | Permission
 
   GSit.ByPass.World:
     default: op
