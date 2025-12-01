@@ -131,7 +131,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
                 serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
             } else {
                 serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-                boxEntity.setPosRaw(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), true);
+                boxEntity.setPosRaw(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                 serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity));
             }
         }, true, playerLocation);
