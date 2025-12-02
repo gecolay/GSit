@@ -49,7 +49,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GSitMain extends JavaPlugin {
 
