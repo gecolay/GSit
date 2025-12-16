@@ -16,7 +16,7 @@ dependencies {
 
 java {
     disableAutoTargetJvm()
-    toolchain.languageVersion = JavaLanguageVersion.of(24)
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
 
 tasks.compileJava {
