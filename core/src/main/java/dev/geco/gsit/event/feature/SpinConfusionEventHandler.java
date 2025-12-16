@@ -21,7 +21,7 @@ public class SpinConfusionEventHandler implements Listener {
     public void playerStopPoseEvent(PlayerStopPoseEvent event) {
         if(event.getPose().getPoseType() != PoseType.SPIN) return;
         if(!gSitMain.getConfigService().FEATUREFLAGS.contains("SPIN_CONFUSION")) return;
-        event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.getByName(gSitMain.getVersionManager().isNewerOrVersion(20, 5) ? "NAUSEA" : "CONFUSION"), 120, 2));
+        event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.getByName(gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 20, 5}) ? "NAUSEA" : "CONFUSION"), 120, 2));
     }
 
 }

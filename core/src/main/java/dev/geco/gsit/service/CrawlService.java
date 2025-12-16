@@ -24,7 +24,7 @@ public class CrawlService {
 
     public CrawlService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        available = gSitMain.getVersionManager().isNewerOrVersion(18, 0);
+        available = gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 18});
     }
 
     public boolean isAvailable() { return available; }

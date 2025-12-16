@@ -153,13 +153,13 @@ public class GSitMain extends JavaPlugin {
 
         loadFeatures();
 
-        messageService = isPaperServer && versionService.isNewerOrVersion(18, 2) ? new PaperMessageService(this) : new SpigotMessageService(this);
+        messageService = isPaperServer && versionService.isNewerOrVersion(new int[]{1, 18, 2}) ? new PaperMessageService(this) : new SpigotMessageService(this);
     }
 
     public void onEnable() {
         if(!versionCheck()) return;
 
-        entityUtil = versionService.isNewerOrVersion(18, 0) ? (EntityUtil) versionService.getPackageObjectInstance("util.EntityUtil", this) : new LegacyEntityUtil(this);
+        entityUtil = versionService.isNewerOrVersion(new int[]{1, 18}) ? (EntityUtil) versionService.getPackageObjectInstance("util.EntityUtil", this) : new LegacyEntityUtil(this);
 
         loadPluginDependencies();
         loadSettings(Bukkit.getConsoleSender());
@@ -242,7 +242,7 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockEventHandler(this), this);
         getServer().getPluginManager().registerEvents(new SitEventHandler(this), this);
 
-        Listener mcvEntityEventHandler = versionService.isNewerOrVersion(18, 0) ? (Listener) versionService.getPackageObjectInstance("event.EntityEventHandler", this) : null;
+        Listener mcvEntityEventHandler = versionService.isNewerOrVersion(new int[]{1, 18}) ? (Listener) versionService.getPackageObjectInstance("event.EntityEventHandler", this) : null;
         if(mcvEntityEventHandler == null) mcvEntityEventHandler = (Listener) versionService.getLegacyPackageObjectInstance("event.EntityEventHandler", this);
         if(mcvEntityEventHandler != null) getServer().getPluginManager().registerEvents(mcvEntityEventHandler, this);
 
@@ -250,7 +250,7 @@ public class GSitMain extends JavaPlugin {
     }
 
     private boolean versionCheck() {
-        if(!versionService.isNewerOrVersion(16, 0) || (versionService.isNewerOrVersion(18, 0) && !versionService.isAvailable())) {
+        if(!versionService.isNewerOrVersion(new int[]{1, 16}) || (versionService.isNewerOrVersion(new int[]{1, 18}) && !versionService.isAvailable())) {
             messageService.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", versionService.getServerVersion());
             updateService.checkForUpdates();
             Bukkit.getPluginManager().disablePlugin(this);

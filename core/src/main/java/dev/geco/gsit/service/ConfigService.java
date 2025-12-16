@@ -65,7 +65,7 @@ public class ConfigService {
     public ConfigService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
 
-        if(!gSitMain.getVersionManager().isNewerOrVersion(18, 2)) {
+        if(!gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 18, 2})) {
             try {
                 File configFile = new File(gSitMain.getDataFolder(), "config.yml");
                 FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);

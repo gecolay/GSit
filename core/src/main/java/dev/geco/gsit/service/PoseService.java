@@ -37,7 +37,7 @@ public class PoseService {
 
     public PoseService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        available = gSitMain.getVersionManager().isNewerOrVersion(18, 0);
+        available = gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 18});
     }
 
     public boolean isAvailable() { return available; }

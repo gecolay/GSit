@@ -44,7 +44,7 @@ public class SitService {
 
     public SitService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        baseOffset = gSitMain.getVersionManager().isNewerOrVersion(20, 2) ? -0.05d : 0.2d;
+        baseOffset = gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 20, 2}) ? -0.05d : 0.2d;
     }
 
     public double getBaseOffset() { return baseOffset; }
@@ -167,7 +167,7 @@ public class SitService {
             returnLocation.setPitch(entityLocation.getPitch());
 
             if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-            if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(17, 0)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+            if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 17})) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
         } catch(Throwable e) {
             // If we can't access the block, entity or seat entity data in a Folia server environment we ignore this error
             if(!gSitMain.isFoliaServer()) gSitMain.getLogger().log(Level.SEVERE, "Could not safely dismount the entity!", e);

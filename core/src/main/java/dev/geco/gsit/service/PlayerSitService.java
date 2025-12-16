@@ -32,7 +32,7 @@ public class PlayerSitService {
 
     public PlayerSitService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        sitEntityStackCount = gSitMain.getVersionManager().isNewerOrVersion(20, 2) ? 1 : 2;
+        sitEntityStackCount = gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 20, 2}) ? 1 : 2;
     }
 
     public int getSitEntityStackCount() { return sitEntityStackCount; }

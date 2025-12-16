@@ -45,7 +45,7 @@ abstract public class MessageService {
 
     public void loadMessages() {
         messages.clear();
-        boolean betterSave = gSitMain.getVersionManager().isNewerOrVersion(18, 2);
+        boolean betterSave = gSitMain.getVersionManager().isNewerOrVersion(new int[]{1, 18, 2});
         try(JarFile jarFile = new JarFile(Paths.get(gSitMain.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toString())) {
             Enumeration<JarEntry> jarFiles = jarFile.entries();
             while(jarFiles.hasMoreElements()) {

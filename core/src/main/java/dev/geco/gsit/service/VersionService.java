@@ -2,6 +2,7 @@ package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,9 +30,8 @@ public class VersionService {
 
     public VersionService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        String rawServerVersion = Bukkit.getServer().getBukkitVersion();
-        serverVersion = rawServerVersion.substring(0, rawServerVersion.indexOf('-'));
-        if(!isNewerOrVersion(18, 0)) return;
+        serverVersion = getMinecraftVersion();
+        if(!isNewerOrVersion(new int[] {1, 18})) return;
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
         available = hasPackageClass("entity.SeatEntity");
         if(available) return;
@@ -39,14 +39,33 @@ public class VersionService {
         available = hasPackageClass("entity.SeatEntity");
     }
 
+    private String getMinecraftVersion() {
+        String rawServerVersion = Bukkit.getServer().getVersion();
+        int mcIndexStart = rawServerVersion.indexOf("MC:");
+        if(mcIndexStart != -1) {
+            mcIndexStart += 3;
+            int mcIndexEnd = rawServerVersion.indexOf(')', mcIndexStart);
+            if(mcIndexEnd != -1) rawServerVersion = rawServerVersion.substring(mcIndexStart, mcIndexEnd);
+            int mcDashIndex = rawServerVersion.indexOf('-', mcIndexStart);
+            if(mcDashIndex != -1) rawServerVersion = rawServerVersion.substring(mcIndexStart, mcDashIndex);
+        }
+        return rawServerVersion.trim();
+    }
+
     public String getServerVersion() { return serverVersion; }
 
     public boolean isAvailable() { return available; }
 
-    public boolean isNewerOrVersion(int version, int subVersion) {
-        String[] serverVersionSplit = serverVersion.split("\\.");
-        if(Integer.parseInt(serverVersionSplit[1]) > version) return true;
-        return Integer.parseInt(serverVersionSplit[1]) == version && (serverVersionSplit.length > 2 ? Integer.parseInt(serverVersionSplit[2]) >= subVersion : subVersion == 0);
+    public boolean isNewerOrVersion(int[] version) {
+        String[] parts = serverVersion.split("\\.");
+        int max = Math.max(parts.length, version.length);
+        for(int i = 0; i < max; i++) {
+            int sv = (i < parts.length) ? Integer.parseInt(parts[i]) : 0;
+            int tv = (i < version.length) ? version[i] : 0;
+            if (sv > tv) return true;
+            if (sv < tv) return false;
+        }
+        return true;
     }
 
     public Object getLegacyPackageObjectInstance(String className, Object... parameters) {
