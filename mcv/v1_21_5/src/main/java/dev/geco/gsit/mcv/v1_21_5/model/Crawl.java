@@ -25,6 +25,8 @@ import java.util.Set;
 
 public class Crawl implements dev.geco.gsit.model.Crawl {
 
+    private static final long SNEAK_COOLDOWN_NANOS = 1_000_000_000L; // 1 segundo
+
     private final GSitMain gSitMain = GSitMain.getInstance();
     private final Player player;
     private final ServerPlayer serverPlayer;
@@ -45,21 +47,41 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
 
         listener = new Listener() {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void entityToggleSwimEvent(EntityToggleSwimEvent event) { if(event.getEntity() == player) event.setCancelled(true); }
+            public void entityToggleSwimEvent(EntityToggleSwimEvent event) {
+                if (event.getEntity() == player) event.setCancelled(true);
+            }
         };
 
         moveListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void playerMoveEvent(PlayerMoveEvent event) {
-                if(event.isAsynchronous() || event.getPlayer() != player) return;
+                if (event.isAsynchronous() || event.getPlayer() != player) return;
                 Location fromLocation = event.getFrom(), toLocation = event.getTo();
-                if(fromLocation.getX() != toLocation.getX() || fromLocation.getZ() != toLocation.getZ() || fromLocation.getY() != toLocation.getY()) tick(toLocation);
+                if (fromLocation.getX() != toLocation.getX()
+                        || fromLocation.getZ() != toLocation.getZ()
+                        || fromLocation.getY() != toLocation.getY()) {
+                    tick(toLocation);
+                }
             }
         };
 
+        // Cooldown al hacer sneak para levantarse
         stopListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) { if(!event.isAsynchronous() && event.getPlayer() == player && event.isSneaking()) gSitMain.getCrawlService().stopCrawl(Crawl.this, StopReason.GET_UP); }
+            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) {
+                if (event.isAsynchronous()
+                        || event.getPlayer() != player
+                        || !event.isSneaking()) return;
+
+                // Si todavía no pasó 1 segundo desde que empezó el crawl, ignorar el sneak
+                if (getLifetimeInNanoSeconds() < SNEAK_COOLDOWN_NANOS) {
+                    // Opcional: evitar que otros plugins reaccionen al sneak
+                    // event.setCancelled(true);
+                    return;
+                }
+
+                gSitMain.getCrawlService().stopCrawl(Crawl.this, StopReason.GET_UP);
+            }
         };
     }
 
@@ -71,44 +93,63 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
 
         gSitMain.getTaskService().runDelayed(() -> {
             Bukkit.getPluginManager().registerEvents(moveListener, gSitMain);
-            if(gSitMain.getConfigService().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(stopListener, gSitMain);
+            if (gSitMain.getConfigService().C_GET_UP_SNEAK)
+                Bukkit.getPluginManager().registerEvents(stopListener, gSitMain);
             tick(player.getLocation());
         }, false, player, 1);
     }
 
     private void tick(Location location) {
-        if(finished || !checkCrawlValid()) return;
+        if (finished || !checkCrawlValid()) return;
 
         Location tickLocation = location.clone();
         Block locationBlock = tickLocation.getBlock();
         int blockSize = (int) ((tickLocation.getY() - tickLocation.getBlockY()) * 100);
         tickLocation.setY(tickLocation.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
         Block aboveBlock = tickLocation.getBlock();
-        boolean hasSolidBlockAbove = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
-        if(hasSolidBlockAbove) {
+        boolean hasSolidBlockAbove = aboveBlock.getBoundingBox().contains(tickLocation.toVector())
+                && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
+        if (hasSolidBlockAbove) {
             destoryEntity();
             return;
         }
 
         Location playerLocation = location.clone();
         gSitMain.getTaskService().run(() -> {
-            if(finished) return;
+            if (finished) return;
 
-            int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
+            int height = locationBlock.getBoundingBox().getHeight() >= 0.4
+                    || playerLocation.getY() % 0.015625 == 0.0
+                    ? (player.getFallDistance() > 0.7 ? 0 : blockSize)
+                    : 0;
 
             playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
 
             boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
 
-            if(!boxEntityExist) {
+            if (!boxEntityExist) {
                 boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
+                serverPlayer.connection.send(new ClientboundAddEntityPacket(
+                        boxEntity.getId(), boxEntity.getUUID(),
+                        boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(),
+                        boxEntity.getXRot(), boxEntity.getYRot(),
+                        boxEntity.getType(), 0,
+                        boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()
+                ));
                 boxEntityExist = true;
-                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(
+                        boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()
+                ));
             } else {
-                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(
+                        boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()
+                ));
                 boxEntity.setPosRaw(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
+                serverPlayer.connection.send(new ClientboundTeleportEntityPacket(
+                        boxEntity.getId(),
+                        net.minecraft.world.entity.PositionMoveRotation.of(boxEntity),
+                        Set.of(), false
+                ));
             }
         }, true, playerLocation);
     }
@@ -127,13 +168,13 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     private void destoryEntity() {
-        if(!boxEntityExist) return;
+        if (!boxEntityExist) return;
         serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
         boxEntityExist = false;
     }
 
     private boolean checkCrawlValid() {
-        if(serverPlayer.isInWater() || player.isFlying()) {
+        if (serverPlayer.isInWater() || player.isFlying()) {
             gSitMain.getCrawlService().stopCrawl(this, StopReason.ENVIRONMENT);
             return false;
         }
@@ -141,12 +182,17 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     @Override
-    public Player getPlayer() { return player; }
+    public Player getPlayer() {
+        return player;
+    }
 
     @Override
-    public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }
+    public long getLifetimeInNanoSeconds() {
+        return System.nanoTime() - spawnTime;
+    }
 
     @Override
-    public String toString() { return boxEntity.getUUID().toString(); }
-
+    public String toString() {
+        return boxEntity.getUUID().toString();
+    }
 }

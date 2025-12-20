@@ -29,24 +29,8 @@ allprojects {
 
 dependencies {
     api(project(":core"))
-    api(project(":v1_17_1", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_18", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_18_2", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_19", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_19_1", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_19_3", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_19_4", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_20", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_20_2", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_20_3", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_20_5", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_21", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_21_2", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_21_4", io.papermc.paperweight.util.constants.REOBF_CONFIG))
     api(project(":v1_21_5", io.papermc.paperweight.util.constants.REOBF_CONFIG))
     api(project(":v1_21_6", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_21_9", io.papermc.paperweight.util.constants.REOBF_CONFIG))
-    api(project(":v1_21_11", "default"))
 }
 
 tasks {
