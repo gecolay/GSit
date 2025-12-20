@@ -59,8 +59,17 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
 
         stopListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) { if(!event.isAsynchronous() && event.getPlayer() == player && event.isSneaking()) gSitMain.getCrawlService().stopCrawl(Crawl.this, StopReason.GET_UP); }
-        };
+            public void playerToggleSneakEvent(PlayerToggleSneakEvent event) {
+                if (event.isAsynchronous()
+                        || event.getPlayer() != player
+                        || !event.isSneaking()) return;
+
+                if (getLifetimeInNanoSeconds() < SNEAK_COOLDOWN_NANOS) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                gSitMain.getCrawlService().stopCrawl(Crawl.this, StopReason.GET_UP);
     }
 
     @Override
