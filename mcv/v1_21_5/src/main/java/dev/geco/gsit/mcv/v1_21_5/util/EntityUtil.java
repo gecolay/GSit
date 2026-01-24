@@ -8,10 +8,12 @@ import dev.geco.gsit.mcv.v1_21_5.entity.SeatEntity;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -39,7 +41,15 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     }
 
     @Override
-    public void setEntityLocation(Entity entity, Location location) { ((CraftEntity) entity).getHandle().absSnapTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()); }
+    public void setEntityLocation(Entity entity, Location location) {
+        if(entity instanceof Player) {
+            ServerGamePacketListenerImpl serverGamePacketListener = ((CraftPlayer) entity).getHandle().connection;
+            serverGamePacketListener.teleport(location);
+            serverGamePacketListener.resetPosition();
+        } else {
+            ((CraftEntity) entity).getHandle().snapTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        }
+    }
 
     @Override
     public boolean isSitLocationValid(Location location) { return true; }

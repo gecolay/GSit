@@ -38,7 +38,6 @@ public class SitService {
     private final double baseOffset;
     private final HashMap<UUID, Seat> seats = new HashMap<>();
     private final HashMap<Block, Set<Seat>> blockSeats = new HashMap<>();
-    private final HashSet<UUID> entityBlocked = new HashSet<>();
     private int sitCount = 0;
     private long sitTime = 0;
 
@@ -59,8 +58,6 @@ public class SitService {
 
     public boolean isBlockWithSeat(Block block) { return blockSeats.containsKey(block); }
 
-    public boolean isEntityBlocked(Entity entity) { return entityBlocked.contains(entity.getUniqueId()); }
-
     public Set<Seat> getSeatsByBlock(Block block) { return blockSeats.getOrDefault(block, Collections.emptySet()); }
 
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
@@ -73,8 +70,6 @@ public class SitService {
     public Seat createSeat(Block block, LivingEntity entity) { return createSeat(block, entity, true, 0d, 0d, 0d, entity.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
 
     public Seat createSeat(Block block, LivingEntity entity, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
-        if(entityBlocked.contains(entity.getUniqueId())) return null;
-
         Location returnLocation = entity.getLocation();
         Location seatLocation = getSeatLocation(block, returnLocation, xOffset, yOffset, zOffset, sitInBlockCenter);
         if(!gSitMain.getEntityUtil().isSitLocationValid(seatLocation)) return null;
@@ -135,7 +130,7 @@ public class SitService {
         if(preEntityStopSitEvent.isCancelled() && stopReason.isCancellable()) return false;
 
         Entity entity = seat.getEntity();
-        entityBlocked.add(entity.getUniqueId());
+        seats.remove(entity.getUniqueId());
         if(useSafeDismount) handleSafeSeatDismount(seat);
 
         Set<Seat> blockSeatList = blockSeats.remove(seat.getBlock());
@@ -143,9 +138,7 @@ public class SitService {
             blockSeatList.remove(seat);
             if(blockSeatList.isEmpty()) blockSeats.remove(seat.getBlock());
         }
-        seats.remove(entity.getUniqueId());
         seat.getSeatEntity().remove();
-        gSitMain.getTaskService().runDelayed(() -> entityBlocked.remove(entity.getUniqueId()), 1);
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
         sitTime += seat.getLifetimeInNanoSeconds();
 

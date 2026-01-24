@@ -42,7 +42,7 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping() || gSitMain.getSitService().isEntityBlocked(player)) {
+            if(!player.isValid() || player.isSneaking() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping()) {
                 gSitMain.getMessageService().sendMessage(sender, "Messages.action-sit-now-error");
                 return true;
             }

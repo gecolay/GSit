@@ -104,10 +104,10 @@ public class PoseService {
 
         Seat seat = pose.getSeat();
         Player player = pose.getPlayer();
-        if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
-
         blockPoses.remove(seat.getBlock());
         poses.remove(player.getUniqueId());
+        if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
+
         pose.remove();
         seat.getSeatEntity().remove();
         Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(pose, stopReason));
