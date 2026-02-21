@@ -2,7 +2,6 @@ package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
 import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,13 +24,15 @@ public class VersionService {
     }
     private final GSitMain gSitMain;
     private final String serverVersion;
+    private final int[] serverVersionParts;
     private String packagePath;
     private boolean available;
 
     public VersionService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
         serverVersion = getMinecraftVersion();
-        if(!isNewerOrVersion(new int[] {1, 18})) return;
+        serverVersionParts = Arrays.stream(serverVersion.split("\\.")).mapToInt(Integer::parseInt).toArray();
+        if(!isNewerOrVersion(1, 18)) return;
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
         available = hasPackageClass("entity.SeatEntity");
         if(available) return;
@@ -56,11 +57,10 @@ public class VersionService {
 
     public boolean isAvailable() { return available; }
 
-    public boolean isNewerOrVersion(int[] version) {
-        String[] parts = serverVersion.split("\\.");
-        int max = Math.max(parts.length, version.length);
+    public boolean isNewerOrVersion(int... version) {
+        int max = Math.max(serverVersionParts.length, version.length);
         for(int i = 0; i < max; i++) {
-            int sv = (i < parts.length) ? Integer.parseInt(parts[i]) : 0;
+            int sv = (i < serverVersionParts.length) ? serverVersionParts[i] : 0;
             int tv = (i < version.length) ? version[i] : 0;
             if (sv > tv) return true;
             if (sv < tv) return false;
