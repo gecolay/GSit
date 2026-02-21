@@ -251,7 +251,7 @@ public class GSitMain extends JavaPlugin {
 
     private boolean versionCheck() {
         if(!versionService.isNewerOrVersion(new int[]{1, 16}) || (versionService.isNewerOrVersion(new int[]{1, 18}) && !versionService.isAvailable())) {
-            messageService.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", versionService.getServerVersion());
+            messageService.sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-version", "%Version%", Bukkit.getServer().getVersion());
             updateService.checkForUpdates();
             Bukkit.getPluginManager().disablePlugin(this);
             return false;
