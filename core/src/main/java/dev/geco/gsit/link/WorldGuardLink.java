@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -25,13 +26,13 @@ public class WorldGuardLink {
     public static final StateFlag CRAWL_FLAG = new StateFlag("crawl", true);
 
     public void registerFlags() {
-        HashMap<String, StateFlag> flags = new HashMap<>();
+        HashMap<String, Flag<?>> flags = new HashMap<>();
         flags.put(SIT_FLAG.getName(), SIT_FLAG);
         flags.put(PLAYERSIT_FLAG.getName(), PLAYERSIT_FLAG);
         flags.put(POSE_FLAG.getName(), POSE_FLAG);
         flags.put(CRAWL_FLAG.getName(), CRAWL_FLAG);
         FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
-        for(Map.Entry<String, StateFlag> flag : flags.entrySet()) {
+        for(Map.Entry<String, Flag<?>> flag : flags.entrySet()) {
             try {
                 flagRegistry.register(flag.getValue());
             } catch(Throwable ignored) { }
