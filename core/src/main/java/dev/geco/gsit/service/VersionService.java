@@ -30,7 +30,7 @@ public class VersionService {
 
     public VersionService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        serverVersion = getMinecraftVersion();
+        serverVersion = extractServerVersion();
         serverVersionParts = Arrays.stream(serverVersion.split("\\.")).mapToInt(Integer::parseInt).toArray();
         if(!isNewerOrVersion(1, 18)) return;
         packagePath = gSitMain.getClass().getPackage().getName() + ".mcv." + getPackageVersion();
@@ -40,17 +40,15 @@ public class VersionService {
         available = hasPackageClass("entity.SeatEntity");
     }
 
-    private String getMinecraftVersion() {
+    private String extractServerVersion() {
         String rawServerVersion = Bukkit.getServer().getVersion();
         int mcIndexStart = rawServerVersion.indexOf("MC:");
         if(mcIndexStart != -1) {
-            mcIndexStart += 3;
+            mcIndexStart += 4;
             int mcIndexEnd = rawServerVersion.indexOf(')', mcIndexStart);
             if(mcIndexEnd != -1) rawServerVersion = rawServerVersion.substring(mcIndexStart, mcIndexEnd);
-            int mcDashIndex = rawServerVersion.indexOf('-', mcIndexStart);
-            if(mcDashIndex != -1) rawServerVersion = rawServerVersion.substring(mcIndexStart, mcDashIndex);
         }
-        return rawServerVersion.trim();
+        return rawServerVersion.split(" ")[0].trim();
     }
 
     public String getServerVersion() { return serverVersion; }

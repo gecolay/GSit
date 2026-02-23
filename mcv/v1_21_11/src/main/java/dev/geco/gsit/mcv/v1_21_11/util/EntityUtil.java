@@ -9,8 +9,10 @@ import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -44,7 +46,7 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     public void setEntityLocation(Entity entity, Location location) {
         if(entity instanceof Player) {
             ServerGamePacketListenerImpl serverGamePacketListener = ((CraftPlayer) entity).getHandle().connection;
-            serverGamePacketListener.internalTeleport(location);
+            serverGamePacketListener.internalTeleport(new PositionMoveRotation(new Vec3(location.getX(), location.getY(), location.getZ()), Vec3.ZERO, location.getYaw(), location.getPitch()), Collections.emptySet());
             serverGamePacketListener.resetPosition();
         } else {
             ((CraftEntity) entity).getHandle().snapTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
