@@ -109,7 +109,8 @@ public class PoseService {
         if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
 
         pose.remove();
-        seat.getSeatEntity().remove();
+        if(!stopReason.isUsingEntityTask()) seat.getSeatEntity().remove();
+        else gSitMain.getTaskService().run(() -> seat.getSeatEntity().remove(), seat.getSeatEntity());
         Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(pose, stopReason));
         poseTime.merge(pose.getPoseType(), seat.getLifetimeInNanoSeconds(), Long::sum);
 
