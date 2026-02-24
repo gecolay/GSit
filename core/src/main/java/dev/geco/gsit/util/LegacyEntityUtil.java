@@ -30,6 +30,10 @@ public class LegacyEntityUtil implements EntityUtil {
 
     @Override
     public void setEntityLocation(Entity entity, Location location) {
+        if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) {
+            entity.teleport(location);
+            return;
+        }
         try {
             Method getHandle = entity.getClass().getMethod("getHandle");
             Object serverEntity = getHandle.invoke(entity);

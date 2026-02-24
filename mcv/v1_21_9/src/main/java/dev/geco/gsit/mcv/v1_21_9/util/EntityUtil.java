@@ -45,6 +45,10 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     @Override
     public void setEntityLocation(Entity entity, Location location) {
         if(entity instanceof Player) {
+            if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) {
+                entity.teleport(location);
+                return;
+            }
             ServerGamePacketListenerImpl serverGamePacketListener = ((CraftPlayer) entity).getHandle().connection;
             serverGamePacketListener.internalTeleport(new PositionMoveRotation(new Vec3(location.getX(), location.getY(), location.getZ()), Vec3.ZERO, location.getYaw(), location.getPitch()), Collections.emptySet());
             serverGamePacketListener.resetPosition();
