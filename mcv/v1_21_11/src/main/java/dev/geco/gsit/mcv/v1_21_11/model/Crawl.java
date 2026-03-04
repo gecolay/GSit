@@ -1,7 +1,7 @@
 package dev.geco.gsit.mcv.v1_21_11.model;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_21_11.entity.CrawlEntity;
+import dev.geco.gsit.mcv.v1_21_11.entity.BoxEntity;
 import dev.geco.gsit.model.StopReason;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
@@ -18,46 +18,44 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleSwimEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Crawl implements dev.geco.gsit.model.Crawl {
 
     private final GSitMain gSitMain = GSitMain.getInstance();
     private final Player player;
     private final ServerPlayer serverPlayer;
-    protected final CrawlEntity crawlEntity;
-    private boolean crawlEntityExist = false;
+    protected final BoxEntity boxEntity;
+    private boolean boxEntityExist = false;
     private final Listener listener;
-    //private final Listener moveListener;
+    private final Listener moveListener;
     private final Listener stopListener;
     private boolean finished = false;
     private final long spawnTime = System.nanoTime();
-    private final Timer timer = new Timer();
 
     public Crawl(Player player) {
         this.player = player;
 
         serverPlayer = ((CraftPlayer) player).getHandle();
 
-        crawlEntity = new CrawlEntity(player.getLocation());
+        boxEntity = new BoxEntity(player.getLocation());
 
         listener = new Listener() {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void entityToggleSwimEvent(EntityToggleSwimEvent event) { if(event.getEntity() == player) event.setCancelled(true); }
         };
 
-        /*moveListener = new Listener() {
+        moveListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
             public void playerMoveEvent(PlayerMoveEvent event) {
                 if(event.isAsynchronous() || event.getPlayer() != player) return;
                 Location fromLocation = event.getFrom(), toLocation = event.getTo();
                 if(fromLocation.getX() != toLocation.getX() || fromLocation.getZ() != toLocation.getZ() || fromLocation.getY() != toLocation.getY()) tick(toLocation);
             }
-        };*/
+        };
 
         stopListener = new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -72,39 +70,45 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
         Bukkit.getPluginManager().registerEvents(listener, gSitMain);
 
         gSitMain.getTaskService().runDelayed(() -> {
-            //Bukkit.getPluginManager().registerEvents(moveListener, gSitMain);
+            Bukkit.getPluginManager().registerEvents(moveListener, gSitMain);
             if(gSitMain.getConfigService().C_GET_UP_SNEAK) Bukkit.getPluginManager().registerEvents(stopListener, gSitMain);
             tick(player.getLocation());
-
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    tick(player.getLocation());
-                }
-            }, 0, 1);
         }, false, player, 1);
     }
 
     private void tick(Location location) {
         if(finished || !checkCrawlValid()) return;
 
-        //player.setSwimming(true);
+        Location tickLocation = location.clone();
+        Block locationBlock = tickLocation.getBlock();
+        int blockSize = (int) ((tickLocation.getY() - tickLocation.getBlockY()) * 100);
+        tickLocation.setY(tickLocation.getBlockY() + (blockSize >= 40 ? 2.49 : 1.49));
+        Block aboveBlock = tickLocation.getBlock();
+        boolean hasSolidBlockAbove = aboveBlock.getBoundingBox().contains(tickLocation.toVector()) && !aboveBlock.getCollisionShape().getBoundingBoxes().isEmpty();
+        if(hasSolidBlockAbove) {
+            destoryEntity();
+            return;
+        }
 
         Location playerLocation = location.clone();
         gSitMain.getTaskService().run(() -> {
             if(finished) return;
 
-            playerLocation.setY(playerLocation.getY() - (0.625 - (serverPlayer.getScale() * 0.625)) + 0.625);
+            int height = locationBlock.getBoundingBox().getHeight() >= 0.4 || playerLocation.getY() % 0.015625 == 0.0 ? (player.getFallDistance() > 0.7 ? 0 : blockSize) : 0;
 
-            if(!crawlEntityExist) {
-                crawlEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                serverPlayer.connection.send(new ClientboundAddEntityPacket(crawlEntity.getId(), crawlEntity.getUUID(), crawlEntity.getX(), crawlEntity.getY(), crawlEntity.getZ(), crawlEntity.getXRot(), crawlEntity.getYRot(), crawlEntity.getType(), 0, crawlEntity.getDeltaMovement(), crawlEntity.getYHeadRot()));
-                crawlEntityExist = true;
-                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(crawlEntity.getId(), crawlEntity.getEntityData().getNonDefaultValues()));
+            playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
+
+            boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
+
+            if(!boxEntityExist) {
+                boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
+                boxEntityExist = true;
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
             } else {
-                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(crawlEntity.getId(), crawlEntity.getEntityData().getNonDefaultValues()));
-                crawlEntity.setPosRaw(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                serverPlayer.connection.send(new ClientboundTeleportEntityPacket(crawlEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(crawlEntity), Set.of(), false));
+                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
+                boxEntity.setPosRaw(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+                serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
             }
         }, true, playerLocation);
     }
@@ -112,9 +116,9 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     @Override
     public void stop() {
         finished = true;
-        timer.cancel();
 
         HandlerList.unregisterAll(listener);
+        HandlerList.unregisterAll(moveListener);
         HandlerList.unregisterAll(stopListener);
 
         player.setSwimming(false);
@@ -123,13 +127,13 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     private void destoryEntity() {
-        if(!crawlEntityExist) return;
-        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(crawlEntity.getId()));
-        crawlEntityExist = false;
+        if(!boxEntityExist) return;
+        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
+        boxEntityExist = false;
     }
 
     private boolean checkCrawlValid() {
-        if(serverPlayer.isInWater()) {
+        if(serverPlayer.isInWater() || player.isFlying()) {
             gSitMain.getCrawlService().stopCrawl(this, StopReason.ENVIRONMENT);
             return false;
         }
@@ -143,6 +147,6 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }
 
     @Override
-    public String toString() { return crawlEntity.getUUID().toString(); }
+    public String toString() { return boxEntity.getUUID().toString(); }
 
 }
