@@ -1,7 +1,7 @@
-package dev.geco.gsit.mcv.v1_21_11.model;
+package dev.geco.gsit.mcv.v26_1.model;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_21_11.entity.CrawlEntity;
+import dev.geco.gsit.mcv.v26_1.entity.CrawlEntity;
 import dev.geco.gsit.model.StopReason;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
