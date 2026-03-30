@@ -63,8 +63,11 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.MainHand;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -101,13 +104,77 @@ public class Pose implements dev.geco.gsit.model.Pose {
     protected int renderRange;
     private UUID taskId;
     private final Listener listener;
-    private static final EntityDataAccessor<net.minecraft.world.entity.Pose> POSE_ACCESSOR = EntityDataSerializers.POSE.createAccessor(6);
-    private static final EntityDataAccessor<Byte> DATA_FLAG_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(8);
-    private static final EntityDataAccessor<Optional<BlockPos>> SLEEP_BLOCK_POS_ACCESSOR = EntityDataSerializers.OPTIONAL_BLOCK_POS.createAccessor(14);
-    private static final EntityDataAccessor<Byte> SKIN_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(17);
-    private static final EntityDataAccessor<Byte> MAIN_HAND_ACCESSOR = EntityDataSerializers.BYTE.createAccessor(18);
-    private static final EntityDataAccessor<CompoundTag> LEFT_SHOULDER_ACCESSOR = EntityDataSerializers.COMPOUND_TAG.createAccessor(19);
-    private static final EntityDataAccessor<CompoundTag> RIGHT_SHOULDER_ACCESSOR = EntityDataSerializers.COMPOUND_TAG.createAccessor(20);
+    private static final EntityDataAccessor<net.minecraft.world.entity.Pose> POSE_ACCESSOR;
+    private static final EntityDataAccessor<Byte>                            DATA_FLAG_ACCESSOR;
+    private static final EntityDataAccessor<Optional<BlockPos>>              SLEEP_BLOCK_POS_ACCESSOR;
+    private static final EntityDataAccessor<Byte>                            SKIN_ACCESSOR;
+    private static final EntityDataAccessor<Byte>                            MAIN_HAND_ACCESSOR;
+    private static final EntityDataAccessor<CompoundTag>                     LEFT_SHOULDER_ACCESSOR;
+    private static final EntityDataAccessor<CompoundTag>                     RIGHT_SHOULDER_ACCESSOR;
+
+    static {
+        List<EntityDataAccessor<?>> entityFields    = scanClass(net.minecraft.world.entity.Entity.class);
+        List<EntityDataAccessor<?>> livingFields    = scanClass(net.minecraft.world.entity.LivingEntity.class);
+        List<EntityDataAccessor<?>> playerNmsFields = scanClass(net.minecraft.world.entity.player.Player.class);
+
+        // --- Entity ---
+        POSE_ACCESSOR            = requireOne(entityFields, EntityDataSerializers.POSE, "Entity", "POSE");
+
+        // --- LivingEntity ---
+        List<EntityDataAccessor<Byte>> livingBytes  = findAll(livingFields, EntityDataSerializers.BYTE);
+        DATA_FLAG_ACCESSOR       = livingBytes.get(0);
+        SLEEP_BLOCK_POS_ACCESSOR = requireOne(livingFields, EntityDataSerializers.OPTIONAL_BLOCK_POS, "LivingEntity", "SLEEP_BLOCK_POS");
+
+        // --- Player (NMS) ---
+        List<EntityDataAccessor<Byte>> playerBytes  = findAll(playerNmsFields, EntityDataSerializers.BYTE);
+        SKIN_ACCESSOR            = playerBytes.get(0);
+        MAIN_HAND_ACCESSOR       = playerBytes.get(1);
+        List<EntityDataAccessor<CompoundTag>> playerTags = findAll(playerNmsFields, EntityDataSerializers.COMPOUND_TAG);
+        LEFT_SHOULDER_ACCESSOR   = playerTags.get(0);
+        RIGHT_SHOULDER_ACCESSOR  = playerTags.get(1);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<EntityDataAccessor<?>> scanClass(Class<?> clazz) {
+        List<EntityDataAccessor<?>> result = new ArrayList<>();
+        for (Field f : clazz.getDeclaredFields()) {
+            if (!Modifier.isStatic(f.getModifiers())) continue;
+            if (!EntityDataAccessor.class.isAssignableFrom(f.getType())) continue;
+            try {
+                f.setAccessible(true);
+                EntityDataAccessor<?> acc = (EntityDataAccessor<?>) f.get(null);
+                if (acc != null) result.add(acc);
+            } catch (IllegalAccessException ignored) {}
+        }
+        result.sort(Comparator.comparingInt(EntityDataAccessor::getId));
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> List<EntityDataAccessor<T>> findAll(
+            List<EntityDataAccessor<?>> sorted,
+            net.minecraft.network.syncher.EntityDataSerializer<T> serializer) {
+        List<EntityDataAccessor<T>> out = new ArrayList<>();
+        for (EntityDataAccessor<?> a : sorted)
+            if (a.getSerializer() == serializer) out.add((EntityDataAccessor<T>) a);
+        return out;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private static <T> EntityDataAccessor<T> requireOne(
+            List<EntityDataAccessor<?>> sorted,
+            net.minecraft.network.syncher.EntityDataSerializer<T> serializer,
+            String className,
+            String fieldName) {
+        List<EntityDataAccessor<T>> found = findAll(sorted, serializer);
+        if (found.size() == 1) return found.get(0);
+        throw new RuntimeException(
+            "[GSit] find " + className + " EntityDataAccessor<" + fieldName + "> fail:" +
+            "find" + found.size()
+        );
+    }
+
 
     public Pose(Seat seat, PoseType poseType) {
         this.seat = seat;
