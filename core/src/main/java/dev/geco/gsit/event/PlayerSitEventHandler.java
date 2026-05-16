@@ -3,7 +3,6 @@ package dev.geco.gsit.event;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.model.StopReason;
 import dev.geco.gsit.service.PlayerSitService;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -13,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityMountEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -92,6 +92,18 @@ public class PlayerSitEventHandler implements Listener {
         gSitMain.getPlayerSitService().sitOnPlayer(player, highestPlayer);
     }
 
-    private boolean isPlayerNPC(Player player) { return !Bukkit.getOnlinePlayers().contains(player); }
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void entityMountEvent(EntityMountEvent event) {
+        if(!event.isCancelled()) return;
+        if(!(event.getEntity() instanceof Player sitter)) return;
+
+        Entity mount = event.getMount();
+        if(!mount.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) return;
+
+        gSitMain.getTaskService().runDelayed(
+                () -> gSitMain.getPlayerSitService().stopPlayerSit(sitter, StopReason.GET_UP, false, true, false), 1);
+    }
+
+    private boolean isPlayerNPC(Player player) { return !org.bukkit.Bukkit.getOnlinePlayers().contains(player); }
 
 }
