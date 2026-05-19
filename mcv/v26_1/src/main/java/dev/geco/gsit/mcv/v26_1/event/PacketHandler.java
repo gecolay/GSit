@@ -30,13 +30,15 @@ public class PacketHandler implements dev.geco.gsit.event.PacketHandler {
         ChannelPipeline channelPipeline = getPipeline(serverPlayer);
         if(channelPipeline == null) return;
         if(channelPipeline.get(GSitMain.NAME) != null) channelPipeline.remove(GSitMain.NAME);
-        channelPipeline.addBefore("packet_handler", GSitMain.NAME, new ChannelDuplexHandler() {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override
             public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) throws Exception {
                 if(handlePacket(packet, player)) return;
                 super.write(channelHandlerContext, packet, channelPromise);
             }
-        });
+        };
+        if(channelPipeline.get("packet_handler") != null) channelPipeline.addBefore("packet_handler", GSitMain.NAME, channelDuplexHandler);
+        else channelPipeline.addLast(GSitMain.NAME, channelDuplexHandler);
     }
 
     @Override
