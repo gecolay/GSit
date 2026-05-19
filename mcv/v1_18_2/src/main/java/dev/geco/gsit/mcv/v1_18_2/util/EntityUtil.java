@@ -13,6 +13,7 @@ import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,10 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     @Override
     public void setEntityLocation(@NotNull Entity entity, @NotNull Location location) {
         if(entity instanceof Player) {
+            if(gSitMain.isFoliaServer()) {
+                entity.teleportAsync(location, PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                return;
+            }
             ServerGamePacketListenerImpl serverGamePacketListener = ((CraftPlayer) entity).getHandle().connection;
             serverGamePacketListener.teleport(location);
             serverGamePacketListener.resetPosition();

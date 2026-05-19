@@ -150,10 +150,7 @@ public class SitService {
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
 
-        if(entity.isValid()) {
-            if(gSitMain.isFoliaServer()) gSitMain.getTaskService().run(() -> gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation), entity);
-            else gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        }
+        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
         if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(1, 17)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
     }
 
