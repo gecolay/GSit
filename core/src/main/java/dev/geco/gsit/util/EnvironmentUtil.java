@@ -30,8 +30,7 @@ public class EnvironmentUtil {
             } else if(!gSitMain.getPlotSquaredLink().canUseInLocation(location, player)) return false;
         }
         if(gSitMain.getWorldGuardLink() != null && !gSitMain.getWorldGuardLink().canUseInLocation(location, player, flag)) return false;
-        if(gSitMain.getGriefPreventionLink() != null && !gSitMain.getGriefPreventionLink().canUseInLocation(location, player)) return false;
-        return true;
+        return gSitMain.getGriefPreventionLink() == null || gSitMain.getGriefPreventionLink().canUseInLocation(location, player);
     }
 
 }

@@ -1,9 +1,9 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.StopReason;
-import dev.geco.gsit.model.Pose;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

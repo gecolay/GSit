@@ -2,9 +2,9 @@ package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.PrePlayerStopPlayerSitEvent;
+import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.StopReason;
-import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.service.PlayerSitService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;

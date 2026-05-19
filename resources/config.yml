@@ -112,23 +112,18 @@ Options:
   trusted-region-only: false
 
   # List of worlds where all features are disabled
-  WorldBlacklist:
-  - "blocked_world"
+  WorldBlacklist: []
 
   # List of worlds where all features are enabled (other worlds are blocked when the list is not empty)
   WorldWhitelist: []
 
   # Materials where sitting or posing is disabled
-  MaterialBlacklist:
-  - "lava"
+  MaterialBlacklist: []
 
   # Commands that cannot be executed while using a feature
   CommandBlacklist:
   - "skin"
   - "nick"
-
-  # Enable extended compatibility mode for all features (use only if necessary, e.g., to resolve false feedback from anti-cheat plugins)
-  enhanced-compatibility: false
 
   # List of active feature flags (primarily for unofficial features for individual use)
   FeatureFlags: []

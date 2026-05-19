@@ -11,8 +11,8 @@ import com.sk89q.worldguard.session.Session;
 import com.sk89q.worldguard.session.handler.Handler;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.link.WorldGuardLink;
-import dev.geco.gsit.model.StopReason;
 import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.StopReason;
 
 import java.util.Set;
 

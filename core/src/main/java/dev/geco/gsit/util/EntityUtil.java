@@ -1,9 +1,9 @@
 package dev.geco.gsit.util;
 
-import dev.geco.gsit.model.PoseType;
-import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.Crawl;
 import dev.geco.gsit.model.Pose;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.Seat;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

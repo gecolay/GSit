@@ -1,9 +1,9 @@
 package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.StopReason;
-import dev.geco.gsit.model.Pose;
 import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;

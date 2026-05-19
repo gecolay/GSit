@@ -1,10 +1,10 @@
 package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.api.event.EntityStopSitEvent;
 import dev.geco.gsit.api.event.EntitySitEvent;
-import dev.geco.gsit.api.event.PreEntityStopSitEvent;
+import dev.geco.gsit.api.event.EntityStopSitEvent;
 import dev.geco.gsit.api.event.PreEntitySitEvent;
+import dev.geco.gsit.api.event.PreEntityStopSitEvent;
 import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class SitService {
 
@@ -82,14 +81,7 @@ public class SitService {
         Entity seatEntity = gSitMain.getEntityUtil().createSeatEntity(seatLocation, entity, canRotate);
         if(seatEntity == null) return null;
 
-        if(gSitMain.getConfigService().CUSTOM_MESSAGE && entity instanceof Player) {
-            gSitMain.getMessageService().sendActionBarMessage((Player) entity, "Messages.action-sit-info");
-            if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) {
-                gSitMain.getTaskService().runDelayed(() -> {
-                    gSitMain.getMessageService().sendActionBarMessage((Player) entity, "Messages.action-sit-info");
-                }, entity, 2);
-            }
-        }
+        if(gSitMain.getConfigService().CUSTOM_MESSAGE && entity instanceof Player) gSitMain.getMessageService().sendActionBarMessage((Player) entity, "Messages.action-sit-info");
 
         Seat seat = new Seat(block, seatLocation, entity, seatEntity, returnLocation);
         seats.put(entity.getUniqueId(), seat);

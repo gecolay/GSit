@@ -1,10 +1,10 @@
 package dev.geco.gsit.mcv.v1_21_5.util;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.mcv.v1_21_5.model.Crawl;
-import dev.geco.gsit.mcv.v1_21_5.model.Pose;
 import dev.geco.gsit.mcv.v1_21_5.entity.PlayerSitEntity;
 import dev.geco.gsit.mcv.v1_21_5.entity.SeatEntity;
+import dev.geco.gsit.mcv.v1_21_5.model.Crawl;
+import dev.geco.gsit.mcv.v1_21_5.model.Pose;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
 import net.minecraft.server.level.ServerLevel;
@@ -43,10 +43,6 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     @Override
     public void setEntityLocation(Entity entity, Location location) {
         if(entity instanceof Player) {
-            if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) {
-                entity.teleport(location);
-                return;
-            }
             ServerGamePacketListenerImpl serverGamePacketListener = ((CraftPlayer) entity).getHandle().connection;
             serverGamePacketListener.teleport(location);
             serverGamePacketListener.resetPosition();
@@ -69,10 +65,8 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
 
         SeatEntity seatEntity = new SeatEntity(location);
 
-        boolean riding = true;
-        if(!gSitMain.getConfigService().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
+        boolean riding = rider.startRiding(seatEntity, true);
         if(!spawnEntity(seatEntity)) return null;
-        if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) riding = rider.startRiding(seatEntity, true);
         if(!riding || !seatEntity.passengers.contains(rider)) {
             seatEntity.discard();
             return null;

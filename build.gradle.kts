@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.gradle.language.jvm.tasks.ProcessResources
 
 plugins {
     `java-library`
@@ -9,8 +8,6 @@ plugins {
 }
 
 allprojects {
-    apply(plugin = "java-library")
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -21,11 +18,11 @@ allprojects {
         maven("https://jitpack.io/")
     }
 
-    tasks.compileJava {
+    tasks.withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
     }
 
-    tasks.javadoc {
+    tasks.withType<Javadoc>().configureEach {
         options.encoding = "UTF-8"
     }
 }

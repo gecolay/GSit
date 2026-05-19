@@ -1,14 +1,14 @@
 package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.api.event.PlayerStopPoseEvent;
 import dev.geco.gsit.api.event.PlayerPoseEvent;
-import dev.geco.gsit.api.event.PrePlayerStopPoseEvent;
+import dev.geco.gsit.api.event.PlayerStopPoseEvent;
 import dev.geco.gsit.api.event.PrePlayerPoseEvent;
+import dev.geco.gsit.api.event.PrePlayerStopPoseEvent;
+import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.StopReason;
-import dev.geco.gsit.model.Pose;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -32,8 +32,8 @@ public class PoseService {
     private final boolean available;
     private final HashMap<UUID, Pose> poses = new HashMap<>();
     private final HashMap<Block, Set<Pose>> blockPoses = new HashMap<>();
-    private HashMap<PoseType, Integer> poseCount = new HashMap<>();
-    private HashMap<PoseType, Long> poseTime = new HashMap<>();
+    private final HashMap<PoseType, Integer> poseCount = new HashMap<>();
+    private final HashMap<PoseType, Long> poseTime = new HashMap<>();
 
     public PoseService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -76,14 +76,7 @@ public class PoseService {
         Entity seatEntity = gSitMain.getEntityUtil().createSeatEntity(seatLocation, player, true);
         if(seatEntity == null) return null;
 
-        if(gSitMain.getConfigService().CUSTOM_MESSAGE) {
-            gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-pose-info");
-            if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) {
-                gSitMain.getTaskService().runDelayed(() -> {
-                    gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-pose-info");
-                }, player, 2);
-            }
-        }
+        if(gSitMain.getConfigService().CUSTOM_MESSAGE) gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-pose-info");
 
         Pose pose = gSitMain.getEntityUtil().createPose(new Seat(block, seatLocation, player, seatEntity, returnLocation), poseType);
         pose.spawn();

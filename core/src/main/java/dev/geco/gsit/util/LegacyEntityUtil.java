@@ -1,10 +1,10 @@
 package dev.geco.gsit.util;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.model.PoseType;
-import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.Crawl;
 import dev.geco.gsit.model.Pose;
+import dev.geco.gsit.model.PoseType;
+import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.service.PlayerSitService;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,10 +30,6 @@ public class LegacyEntityUtil implements EntityUtil {
 
     @Override
     public void setEntityLocation(Entity entity, Location location) {
-        if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY) {
-            entity.teleport(location);
-            return;
-        }
         try {
             Method getHandle = entity.getClass().getMethod("getHandle");
             Object serverEntity = getHandle.invoke(entity);
@@ -95,13 +91,12 @@ public class LegacyEntityUtil implements EntityUtil {
                 try { armorStand.setSmall(true); } catch(Throwable ignored) { }
                 try { armorStand.setBasePlate(false); } catch(Throwable ignored) { }
                 armorStand.addScoreboardTag(GSitMain.NAME + "_SeatEntity");
-                if(!gSitMain.getConfigService().ENHANCED_COMPATIBILITY && entity != null && entity.isValid()) riding[0] = armorStand.addPassenger(entity);
+                if(entity != null && entity.isValid()) riding[0] = armorStand.addPassenger(entity);
             };
 
             World world = location.getWorld();
             Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
             Entity seatEntity = (Entity) spawnMethod.invoke(world, location, ArmorStand.class, consumer);
-            if(gSitMain.getConfigService().ENHANCED_COMPATIBILITY && entity != null && entity.isValid()) riding[0] = seatEntity.addPassenger(entity);
             if(entity != null && entity.isValid() && (!riding[0] || !seatEntity.getPassengers().contains(entity))) {
                 seatEntity.remove();
                 return null;

@@ -1,8 +1,8 @@
 package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.model.StopReason;
 import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

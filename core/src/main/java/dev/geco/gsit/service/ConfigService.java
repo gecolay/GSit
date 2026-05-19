@@ -57,7 +57,6 @@ public class ConfigService {
     public List<String> WORLDWHITELIST = new ArrayList<>();
     public final List<Material> MATERIALBLACKLIST = new ArrayList<>();
     public List<String> COMMANDBLACKLIST = new ArrayList<>();
-    public boolean ENHANCED_COMPATIBILITY;
     public List<String> FEATUREFLAGS = new ArrayList<>();
 
     private final GSitMain gSitMain;
@@ -150,7 +149,6 @@ public class ConfigService {
             } catch(Throwable ignored) { }
         }
         COMMANDBLACKLIST = gSitMain.getConfig().getStringList("Options.CommandBlacklist");
-        ENHANCED_COMPATIBILITY = gSitMain.getConfig().getBoolean("Options.enhanced-compatibility", false);
         FEATUREFLAGS = gSitMain.getConfig().getStringList("Options.FeatureFlags");
     }
 

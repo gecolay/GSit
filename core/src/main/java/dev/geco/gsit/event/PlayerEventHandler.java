@@ -1,10 +1,10 @@
 package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.model.Seat;
-import dev.geco.gsit.model.StopReason;
 import dev.geco.gsit.model.Crawl;
 import dev.geco.gsit.model.Pose;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
