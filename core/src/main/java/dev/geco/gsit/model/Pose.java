@@ -1,6 +1,7 @@
 package dev.geco.gsit.model;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public interface Pose {
 
@@ -8,10 +9,10 @@ public interface Pose {
 
     void remove();
 
-    Seat getSeat();
+    @NotNull Seat getSeat();
 
-    Player getPlayer();
+    @NotNull Player getPlayer();
 
-    PoseType getPoseType();
+    @NotNull PoseType getPoseType();
 
 }

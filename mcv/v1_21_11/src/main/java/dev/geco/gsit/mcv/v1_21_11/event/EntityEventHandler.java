@@ -19,6 +19,7 @@ public class EntityEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @SuppressWarnings("deprecation")
     public void entityMountEventLow(EntityMountEvent event) {
         if(gSitMain.getWorldGuardLink() == null) return;
         if(!(event.getEntity() instanceof Player player)) return;

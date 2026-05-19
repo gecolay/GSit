@@ -45,6 +45,8 @@ public class CrawlService {
         if(gSitMain.getConfigService().CUSTOM_MESSAGE) gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-crawl-info");
 
         Crawl crawl = gSitMain.getEntityUtil().createCrawl(player);
+        if(crawl == null) return null;
+
         crawl.start();
         crawls.put(player.getUniqueId(), crawl);
         crawlCount++;

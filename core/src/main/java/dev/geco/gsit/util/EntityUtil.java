@@ -7,24 +7,26 @@ import dev.geco.gsit.model.Seat;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public interface EntityUtil {
 
-    void setEntityLocation(Entity entity, Location location);
+    void setEntityLocation(@NotNull Entity entity, @NotNull Location location);
 
-    boolean isSitLocationValid(Location location);
+    boolean isSitLocationValid(@NotNull Location location);
 
-    boolean isPlayerSitLocationValid(Location location);
+    boolean isPlayerSitLocationValid(@NotNull Location location);
 
-    Entity createSeatEntity(Location location, Entity entity, boolean canRotate);
+    @Nullable Entity createSeatEntity(@NotNull Location location, @NotNull Entity entity, boolean canRotate);
 
-    Set<UUID> createPlayerSitEntities(Player player, Player target);
+    @Nullable List<UUID> createPlayerSitEntities(@NotNull Player player, @NotNull Player target);
 
-    Pose createPose(Seat seat, PoseType poseType);
+    @Nullable Pose createPose(@NotNull Seat seat, @NotNull PoseType poseType);
 
-    Crawl createCrawl(Player player);
+    @Nullable Crawl createCrawl(@NotNull Player player);
 
 }

@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.jetbrains.annotations.NotNull;
 
 public class Crawl implements dev.geco.gsit.model.Crawl {
 
@@ -41,6 +42,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     private boolean finished = false;
     private final long spawnTime = System.nanoTime();
 
+    @SuppressWarnings("deprecation")
     public Crawl(Player player) {
         this.player = player;
 
@@ -78,6 +80,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void start() {
         player.setSwimming(true);
 
@@ -138,6 +141,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void stop() {
         finished = true;
 
@@ -179,7 +183,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     private boolean isValidArea(Block blockUp, Block aboveBlock, Block locationBlock) { return blockUp.equals(aboveBlock) || blockUp.equals(locationBlock); }
 
     @Override
-    public Player getPlayer() { return player; }
+    public @NotNull Player getPlayer() { return player; }
 
     @Override
     public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }

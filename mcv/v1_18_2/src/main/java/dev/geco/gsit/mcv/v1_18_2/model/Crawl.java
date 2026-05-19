@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.jetbrains.annotations.NotNull;
 
 public class Crawl implements dev.geco.gsit.model.Crawl {
 
@@ -179,7 +180,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     private boolean isValidArea(Block blockUp, Block aboveBlock, Block locationBlock) { return blockUp.equals(aboveBlock) || blockUp.equals(locationBlock); }
 
     @Override
-    public Player getPlayer() { return player; }
+    public @NotNull Player getPlayer() { return player; }
 
     @Override
     public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }

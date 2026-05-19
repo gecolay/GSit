@@ -12,11 +12,12 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -29,7 +30,7 @@ public class LegacyEntityUtil implements EntityUtil {
     }
 
     @Override
-    public void setEntityLocation(Entity entity, Location location) {
+    public void setEntityLocation(@NotNull Entity entity, @NotNull Location location) {
         try {
             Method getHandle = entity.getClass().getMethod("getHandle");
             Object serverEntity = getHandle.invoke(entity);
@@ -40,7 +41,7 @@ public class LegacyEntityUtil implements EntityUtil {
 
     @Override
     @SuppressWarnings("removal")
-    public boolean isSitLocationValid(Location location) {
+    public boolean isSitLocationValid(@NotNull Location location) {
         try {
             org.bukkit.util.Consumer<ArmorStand> armorStandConsumer = (armorStand) -> {
                 try { armorStand.setInvisible(true); } catch(Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch(Throwable ignored) { } }
@@ -60,7 +61,7 @@ public class LegacyEntityUtil implements EntityUtil {
 
     @Override
     @SuppressWarnings("removal")
-    public boolean isPlayerSitLocationValid(Location location) {
+    public boolean isPlayerSitLocationValid(@NotNull Location location) {
         try {
             org.bukkit.util.Consumer<AreaEffectCloud> areaEffectCloudConsumer = (areaEffectCloud) -> {
                 try { areaEffectCloud.setRadius(0); } catch(Throwable ignored) { }
@@ -79,11 +80,12 @@ public class LegacyEntityUtil implements EntityUtil {
 
     @Override
     @SuppressWarnings("removal")
-    public Entity createSeatEntity(Location location, Entity entity, boolean canRotate) {
+    public @Nullable Entity createSeatEntity(@NotNull Location location, @NotNull Entity entity, boolean canRotate) {
+        if(!entity.isValid()) return null;
+
         try {
             final boolean[] riding = { true };
             org.bukkit.util.Consumer<ArmorStand> consumer = (armorStand) -> {
-
                 try { armorStand.setInvisible(true); } catch(Throwable e) { try { ArmorStand.class.getMethod("setVisible", boolean.class).invoke(armorStand, false); } catch(Throwable ignored) { } }
                 try { armorStand.setGravity(false); } catch(Throwable ignored) { }
                 try { armorStand.setMarker(true); } catch(Throwable ignored) { }
@@ -91,16 +93,13 @@ public class LegacyEntityUtil implements EntityUtil {
                 try { armorStand.setSmall(true); } catch(Throwable ignored) { }
                 try { armorStand.setBasePlate(false); } catch(Throwable ignored) { }
                 armorStand.addScoreboardTag(GSitMain.NAME + "_SeatEntity");
-                if(entity != null && entity.isValid()) riding[0] = armorStand.addPassenger(entity);
+                riding[0] = armorStand.addPassenger(entity);
             };
 
             World world = location.getWorld();
             Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
             Entity seatEntity = (Entity) spawnMethod.invoke(world, location, ArmorStand.class, consumer);
-            if(entity != null && entity.isValid() && (!riding[0] || !seatEntity.getPassengers().contains(entity))) {
-                seatEntity.remove();
-                return null;
-            }
+            if(!riding[0]) return null;
 
             return seatEntity;
         } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
@@ -109,42 +108,51 @@ public class LegacyEntityUtil implements EntityUtil {
 
     @Override
     @SuppressWarnings("removal")
-    public Set<UUID> createPlayerSitEntities(Player player, Player target) {
-        if(player == null || !player.isValid()) return Collections.emptySet();
+    public @Nullable List<UUID> createPlayerSitEntities(@NotNull Player player, @NotNull Player target) {
+        if(!player.isValid()) return null;
+
+        Entity topEntity = target;
 
         int maxEntities = gSitMain.getPlayerSitService().getSitEntityStackCount();
-        Entity lastEntity = target;
-        Set<UUID> playerSitEntityIds = new HashSet<>();
+        if(maxEntities <= 0) {
+            boolean riding = topEntity.addPassenger(player);
+            if(riding) return new ArrayList<>();
+            return null;
+        }
+
+        List<AreaEffectCloud> playerSitEntities = new ArrayList<>();
+
         try {
             World world = target.getWorld();
             Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, org.bukkit.util.Consumer.class);
 
             for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
-                Entity finalLastEntity = lastEntity;
+                final boolean[] riding = { true };
+                Entity finalTopEntity = topEntity;
                 int finalEntityCount = entityCount;
-
                 org.bukkit.util.Consumer<AreaEffectCloud> areaEffectCloudConsumer = (areaEffectCloud) -> {
-
                     try { areaEffectCloud.setRadius(0); } catch(Throwable ignored) { }
                     try { areaEffectCloud.setDuration(Integer.MAX_VALUE); } catch(Throwable ignored) { }
                     try { areaEffectCloud.setGravity(false); } catch(Throwable ignored) { }
                     try { areaEffectCloud.setInvulnerable(true); } catch(Throwable ignored) { }
                     areaEffectCloud.addScoreboardTag(PlayerSitService.PLAYERSIT_ENTITY_TAG);
-                    finalLastEntity.addPassenger(areaEffectCloud);
-                    if(finalEntityCount == maxEntities) areaEffectCloud.addPassenger(player);
+                    riding[0] = finalTopEntity.addPassenger(areaEffectCloud);
+                    if(!riding[0]) return;
+                    if(finalEntityCount == maxEntities) riding[0] = areaEffectCloud.addPassenger(player);
                 };
+                AreaEffectCloud playerSitEntity = (AreaEffectCloud) spawnMethod.invoke(world, target.getLocation(), AreaEffectCloud.class, areaEffectCloudConsumer);
+                playerSitEntities.add(playerSitEntity);
+                topEntity = playerSitEntity;
 
-                lastEntity = (Entity) spawnMethod.invoke(world, finalLastEntity.getLocation(), AreaEffectCloud.class, areaEffectCloudConsumer);
-                playerSitEntityIds.add(lastEntity.getUniqueId());
             }
         } catch(Throwable e) { gSitMain.getLogger().log(Level.SEVERE, "Could not spawn entity", e); }
-        return playerSitEntityIds;
+        return playerSitEntities.stream().map(AreaEffectCloud::getUniqueId).toList();
     }
 
     @Override
-    public Pose createPose(Seat seat, PoseType poseType) { return null; }
+    public @Nullable Pose createPose(@NotNull Seat seat, @NotNull PoseType poseType) { return null; }
 
     @Override
-    public Crawl createCrawl(Player player) { return null; }
+    public @Nullable Crawl createCrawl(@NotNull Player player) { return null; }
 
 }

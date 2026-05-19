@@ -14,6 +14,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,8 +24,8 @@ public class PlayerSitService {
 
     private final GSitMain gSitMain;
     private final int sitEntityStackCount;
-    private final HashMap<UUID, AbstractMap.SimpleImmutableEntry<UUID, Set<UUID>>> bottomToTopStacks = new HashMap<>();
-    private final HashMap<UUID, AbstractMap.SimpleImmutableEntry<UUID, Set<UUID>>> topToBottomStacks = new HashMap<>();
+    private final HashMap<UUID, AbstractMap.SimpleImmutableEntry<UUID, List<UUID>>> bottomToTopStacks = new HashMap<>();
+    private final HashMap<UUID, AbstractMap.SimpleImmutableEntry<UUID, List<UUID>>> topToBottomStacks = new HashMap<>();
     private final Set<Player> preventDismountStackPlayers = new HashSet<>();
     private final HashMap<String, Long> spawnTimes = new HashMap<>();
     private int playerSitCount = 0;
@@ -58,13 +59,16 @@ public class PlayerSitService {
         Bukkit.getPluginManager().callEvent(prePlayerPlayerSitEvent);
         if(prePlayerPlayerSitEvent.isCancelled()) return false;
 
-        Set<UUID> playerSitEntityIds = gSitMain.getEntityUtil().createPlayerSitEntities(player, target);
+        List<UUID> playerSitEntityIds = gSitMain.getEntityUtil().createPlayerSitEntities(player, target);
+        if(playerSitEntityIds == null) return false;
+
         if(gSitMain.getConfigService().CUSTOM_MESSAGE) gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-playersit-info");
-        playerSitCount++;
+
         bottomToTopStacks.put(target.getUniqueId(), new AbstractMap.SimpleImmutableEntry<>(player.getUniqueId(), playerSitEntityIds));
         topToBottomStacks.put(player.getUniqueId(), new AbstractMap.SimpleImmutableEntry<>(target.getUniqueId(), playerSitEntityIds));
-        Bukkit.getPluginManager().callEvent(new PlayerPlayerSitEvent(player, target));
         spawnTimes.put(target.getUniqueId().toString() + player.getUniqueId(), System.nanoTime());
+        playerSitCount++;
+        Bukkit.getPluginManager().callEvent(new PlayerPlayerSitEvent(player, target));
 
         return true;
     }
@@ -72,8 +76,8 @@ public class PlayerSitService {
     public boolean stopPlayerSit(Player source, StopReason stopReason) { return stopPlayerSit(source, stopReason, true, true, true); }
 
     public boolean stopPlayerSit(Player source, StopReason stopReason, boolean removePassengers, boolean removeVehicle, boolean callPreEvent) {
-        AbstractMap.SimpleImmutableEntry<UUID, Set<UUID>> passengers = removePassengers ? bottomToTopStacks.get(source.getUniqueId()) : null;
-        AbstractMap.SimpleImmutableEntry<UUID, Set<UUID>> vehicles = removeVehicle ? topToBottomStacks.get(source.getUniqueId()) : null;
+        AbstractMap.SimpleImmutableEntry<UUID, List<UUID>> passengers = removePassengers ? bottomToTopStacks.get(source.getUniqueId()) : null;
+        AbstractMap.SimpleImmutableEntry<UUID, List<UUID>> vehicles = removeVehicle ? topToBottomStacks.get(source.getUniqueId()) : null;
         if(passengers == null && vehicles == null) return true;
 
         if(callPreEvent) {

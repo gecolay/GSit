@@ -79,6 +79,8 @@ public class PoseService {
         if(gSitMain.getConfigService().CUSTOM_MESSAGE) gSitMain.getMessageService().sendActionBarMessage(player, "Messages.action-pose-info");
 
         Pose pose = gSitMain.getEntityUtil().createPose(new Seat(block, seatLocation, player, seatEntity, returnLocation), poseType);
+        if(pose == null) return null;
+
         pose.spawn();
         poses.put(player.getUniqueId(), pose);
         blockPoses.computeIfAbsent(block, b -> new HashSet<>()).add(pose);

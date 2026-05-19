@@ -27,6 +27,7 @@ public class EntityEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
+    @SuppressWarnings("deprecation")
     public void entityMountEventHigh(EntityMountEvent event) {
         if(gSitMain.getWorldGuardLink() == null) return;
         if(!(event.getEntity() instanceof Player player)) return;
@@ -36,6 +37,7 @@ public class EntityEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @SuppressWarnings("deprecation")
     public void entityDismountEvent(EntityDismountEvent event) { gSitMain.getEntityEventHandler().handleEntityDismountEvent(event, event.getEntity(), event.getDismounted()); }
 
 }

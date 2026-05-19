@@ -1,6 +1,7 @@
 package dev.geco.gsit.model;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public interface Crawl {
 
@@ -8,7 +9,7 @@ public interface Crawl {
 
     void stop();
 
-    Player getPlayer();
+    @NotNull Player getPlayer();
 
     long getLifetimeInNanoSeconds();
 

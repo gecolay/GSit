@@ -66,6 +66,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.MainHand;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -406,13 +407,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private void sendPacket(ServerPlayer player, Packet<?> packet) { player.connection.send(packet); }
 
     @Override
-    public Seat getSeat() { return seat; }
+    public @NotNull Seat getSeat() { return seat; }
 
     @Override
-    public Player getPlayer() { return seatPlayer; }
+    public @NotNull Player getPlayer() { return seatPlayer; }
 
     @Override
-    public PoseType getPoseType() { return poseType; }
+    public @NotNull PoseType getPoseType() { return poseType; }
 
     @Override
     public String toString() { return seat.toString(); }

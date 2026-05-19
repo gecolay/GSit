@@ -16,13 +16,12 @@ import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -42,7 +41,7 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     }
 
     @Override
-    public void setEntityLocation(Entity entity, Location location) {
+    public void setEntityLocation(@NotNull Entity entity, @NotNull Location location) {
         if(entity instanceof Player) {
             ServerGamePacketListenerImpl serverGamePacketListener = ((CraftPlayer) entity).getHandle().connection;
             serverGamePacketListener.teleport(location);
@@ -53,25 +52,22 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     }
 
     @Override
-    public boolean isSitLocationValid(Location location) { return true; }
+    public boolean isSitLocationValid(@NotNull Location location) { return true; }
 
     @Override
-    public boolean isPlayerSitLocationValid(Location location) { return true; }
+    public boolean isPlayerSitLocationValid(@NotNull Location location) { return true; }
 
     @Override
-    public Entity createSeatEntity(Location location, Entity entity, boolean canRotate) {
-        if(entity == null || !entity.isValid()) return null;
+    public @Nullable Entity createSeatEntity(@NotNull Location location, @NotNull Entity entity, boolean canRotate) {
+        if(!entity.isValid()) return null;
 
         net.minecraft.world.entity.Entity rider = ((CraftEntity) entity).getHandle();
 
         SeatEntity seatEntity = new SeatEntity(location);
 
         boolean riding = rider.startRiding(seatEntity, true);
+        if(!riding) return null;
         if(!spawnEntity(seatEntity)) return null;
-        if(!riding || !seatEntity.passengers.contains(rider)) {
-            seatEntity.discard();
-            return null;
-        }
 
         if(canRotate) seatEntity.startRotate();
 
@@ -79,34 +75,46 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     }
 
     @Override
-    public Set<UUID> createPlayerSitEntities(Player player, Player target) {
-        if(player == null || !player.isValid()) return Collections.emptySet();
+    public List<UUID> createPlayerSitEntities(@NotNull Player player, @NotNull Player target) {
+        if(!player.isValid()) return null;
 
         net.minecraft.world.entity.Entity topEntity = ((CraftEntity) target).getHandle();
 
         int maxEntities = gSitMain.getPlayerSitService().getSitEntityStackCount();
         if(maxEntities <= 0) {
-            ((CraftEntity) player).getHandle().startRiding(topEntity, true);
-            return Collections.emptySet();
+            boolean riding = ((CraftEntity) player).getHandle().startRiding(topEntity, true);
+            if(riding) return new ArrayList<>();
+            return null;
         }
 
-        Set<UUID> playerSitEntityIds = new HashSet<>();
+        List<PlayerSitEntity> playerSitEntities = new ArrayList<>();
 
         for(int entityCount = 1; entityCount <= maxEntities; entityCount++) {
-            net.minecraft.world.entity.Entity playerSitEntity = new PlayerSitEntity(target.getLocation());
-            playerSitEntity.startRiding(topEntity, true);
-            if(entityCount == maxEntities) ((CraftEntity) player).getHandle().startRiding(playerSitEntity, true);
-            if(!spawnEntity(playerSitEntity)) {
-                ((CraftEntity) player).getHandle().startRiding(topEntity, true);
-                return playerSitEntityIds;
+            PlayerSitEntity playerSitEntity = new PlayerSitEntity(target.getLocation());
+            boolean riding = playerSitEntity.startRiding(topEntity, true);
+            if(!riding) {
+                playerSitEntities.forEach(PlayerSitEntity::discard);
+                return null;
             }
-            playerSitEntityIds.add(playerSitEntity.getUUID());
+            if(entityCount == maxEntities) {
+                riding = ((CraftEntity) player).getHandle().startRiding(playerSitEntity, true);
+                if(!riding) {
+                    playerSitEntities.forEach(PlayerSitEntity::discard);
+                    return null;
+                }
+            }
+            playerSitEntities.add(playerSitEntity);
+            if(!spawnEntity(playerSitEntity)) {
+                playerSitEntities.forEach(PlayerSitEntity::discard);
+                return null;
+            }
             topEntity = playerSitEntity;
         }
 
-        return playerSitEntityIds;
+        return playerSitEntities.stream().map(PlayerSitEntity::getUUID).toList();
     }
 
+    @SuppressWarnings("unchecked")
     private boolean spawnEntity(net.minecraft.world.entity.Entity entity) {
         if(!gSitMain.isPaperServer()) {
             try {
@@ -121,9 +129,9 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     }
 
     @Override
-    public dev.geco.gsit.model.Pose createPose(Seat seat, PoseType poseType) { return new Pose(seat, poseType); }
+    public @Nullable Pose createPose(@NotNull Seat seat, @NotNull PoseType poseType) { return new Pose(seat, poseType); }
 
     @Override
-    public dev.geco.gsit.model.Crawl createCrawl(Player player) { return new Crawl(player); }
+    public @Nullable Crawl createCrawl(@NotNull Player player) { return new Crawl(player); }
 
 }

@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleSwimEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -36,6 +37,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     private boolean finished = false;
     private final long spawnTime = System.nanoTime();
 
+    @SuppressWarnings("deprecation")
     public Crawl(Player player) {
         this.player = player;
 
@@ -64,6 +66,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void start() {
         player.setSwimming(true);
 
@@ -114,6 +117,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void stop() {
         finished = true;
 
@@ -141,7 +145,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     @Override
-    public Player getPlayer() { return player; }
+    public @NotNull Player getPlayer() { return player; }
 
     @Override
     public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }
