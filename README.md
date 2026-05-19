@@ -21,7 +21,7 @@ git clone https://github.com/gecolay/GSit.git
 
 ### Build
 
-Run the `gradlew clean build` command.
+Run the `gradlew build` command.
 
 The final `GSit-x.x-x.jar` file will be in the [`build/libs`](./build/libs) folder.
 

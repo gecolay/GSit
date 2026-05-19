@@ -55,11 +55,11 @@ tasks {
         options.release = 16
     }
 
-    named<ShadowJar>("shadowJar") {
+    shadowJar {
         enabled = false
     }
 
-    named<Jar>("jar") {
+    jar {
         enabled = false
     }
 
@@ -124,7 +124,7 @@ publishing {
             groupId = project.group.toString()
             artifactId = project.name
             version = project.version.toString()
-            from(project.components["java"])
+            artifact(tasks.named("shadowJarDev"))
         }
     }
 }
