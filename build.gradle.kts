@@ -83,7 +83,7 @@ tasks {
             )
 
             inputs.property("source", sourceName)
-            inputs.properties(sourceProps)
+            inputs.properties(props)
 
             expand(props)
         }
