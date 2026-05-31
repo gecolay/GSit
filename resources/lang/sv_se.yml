@@ -1,0 +1,48 @@
+Plugin:
+  plugin-enabled: "[P]&a Pluginet har aktiverats."
+  plugin-link: "[P]&a Länk med&6 %Link%&a aktiverad!"
+  plugin-update: "[P]&a En ny version är tillgänglig:&6 %NewVersion%&a! Aktuell version:&6 %Version%&a! Ladda ner den senaste versionen:&6 %Path%"
+  plugin-data: "[P]&c En anslutning till vald lagring kunde inte skapas. Kontrollera serverkonsollen!"
+  plugin-version: "[P]&c Pluginet kan inte användas med denna version av server! (&b%Version%&c)"
+  plugin-reload: "[P]&a Pluginet har laddats om."
+  plugin-disabled: "[P]&a Pluginet har inaktiverats."
+  plugin-prefix: "&7[&6GSit&7]"
+
+Messages:
+  command-permission-error: "[P]&c Du saknar behörighet att använda detta kommando!"
+  command-sender-error: "[P]&c Du kan inte använda detta kommando!"
+  command-version-error: "[P]&c Utdaterad version av server! (&b%Version%&c) Uppdatera servern för att använda denna funktion!"
+
+  command-gsit-toggle-on: "[P]&a Du har aktiverat&6 sitt&a med klick."
+  command-gsit-toggle-off: "[P]&a Du har inaktiverat&6 sitt&a med klick."
+  command-gsit-playertoggle-on: "[P]&a Du har aktiverat&6 spelarsitt&a med klick."
+  command-gsit-playertoggle-off: "[P]&a Du har inaktiverat&6 spelarsitt&a med klick."
+  command-gcrawl-toggle-on: "[P]&a Du har aktiverat&6 kryp&a med dubbelsmyg."
+  command-gcrawl-toggle-off: "[P]&a Du har inaktiverat&6 kryp&a med dubbelsmyg."
+
+  action-sit-now-error: "[P]&c Du kan inte sitta just nu!"
+  action-sit-world-error: "[P]&c Du kan inte sitta i den här världen!"
+  action-sit-location-error: "[P]&c Du kan inte sitta här!"
+  action-sit-safe-error: "[P]&c Det är inte säkert att sitta här!"
+  action-sit-region-error: "[P]&c Du kan inte sitta i den här regionen!"
+  action-sit-kick-error: "[P]&c Någon sitter redan här!"
+  action-sit-error: "[P]&c Ett fel uppstod när du skulle sitta!"
+  action-sit-info: "&6<lang:key.sneak>&a för att ställa dig upp"
+
+  action-playersit-info: "&6<lang:key.sneak>&a för att ställa dig upp"
+
+  action-pose-now-error: "[P]&c Du kan inte göra en pose just nu!"
+  action-pose-world-error: "[P]&c Du kan inte göra en pose i den här världen!"
+  action-pose-location-error: "[P]&c Du kan inte göra en pose här!"
+  action-pose-safe-error: "[P]&c Det är inte säkert att göra en pose här!"
+  action-pose-region-error: "[P]&c Du kan inte göra en pose i den här regionen!"
+  action-pose-kick-error: "[P]&c Någon gör redan en pose här!"
+  action-pose-error: "[P]&c Ett fel uppstod när du skulle göra en pose!"
+  action-pose-info: "&6<lang:key.sneak>&a för att ställa dig upp"
+
+  action-crawl-now-error: "[P]&c Du kan inte krypa just nu!"
+  action-crawl-world-error: "[P]&c Du kan inte krypa i den här världen!"
+  action-crawl-region-error: "[P]&c Du kan inte krypa i den här regionen!"
+  action-crawl-info: "&6<lang:key.sneak>&a för att ställa dig upp"
+
+  action-blocked-error: "[P]&c Du saknar behörighet att använda det här kommandot just nu!"
