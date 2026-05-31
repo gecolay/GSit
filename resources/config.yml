@@ -34,8 +34,8 @@ Options:
   custom-message: true
 
   Sit:
-    # Blocks where a player can sit by clicking (materials & tags) ('*' for every block)
-    # Create a height-offset by separating the material or tag with a ';' character
+    # Sit materials where a player can sit by clicking (can be a material, block data or tag)
+    # Create a height-offset by separating the material, block data or tag with a ';' character
     SitMaterials:
     - "#stairs"
     - "#slabs"

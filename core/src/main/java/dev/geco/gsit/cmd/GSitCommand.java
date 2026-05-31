@@ -54,7 +54,7 @@ public class GSitCommand implements CommandExecutor {
 
             Location playerLocation = player.getLocation();
             Block block = playerLocation.getBlock().isPassable() ? playerLocation.subtract(0, 0.0625, 0).getBlock() : playerLocation.getBlock();
-            if(gSitMain.getConfigService().MATERIALBLACKLIST.contains(block.getType())) {
+            if(gSitMain.getSitService().isBlacklistedSitBlockData(block.getBlockData())) {
                 gSitMain.getMessageService().sendMessage(sender, "Messages.action-sit-location-error");
                 return true;
             }
@@ -84,7 +84,7 @@ public class GSitCommand implements CommandExecutor {
 
         switch(args[0]) {
             case "toggle":
-                if(gSitMain.getPermissionService().hasPermission(sender, "SitToggle", "Sit.*") && !gSitMain.getConfigService().S_SITMATERIALS.isEmpty()) {
+                if(gSitMain.getPermissionService().hasPermission(sender, "SitToggle", "Sit.*")) {
                     boolean toggle = gSitMain.getToggleService().canEntityUseSit(player.getUniqueId());
                     if(args.length > 1 && args[1].equalsIgnoreCase("off")) toggle = true;
                     if(args.length > 1 && args[1].equalsIgnoreCase("on")) toggle = false;

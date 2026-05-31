@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.YamlConfigurationOptions;
@@ -31,7 +32,7 @@ public class ConfigService {
     public boolean SAME_BLOCK_REST;
     public boolean CENTER_BLOCK;
     public boolean CUSTOM_MESSAGE;
-    public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
+    public final HashMap<BlockData, Double> S_SITMATERIALS = new HashMap<>();
     public boolean S_BOTTOM_PART_ONLY;
     public boolean S_EMPTY_HAND_ONLY;
     public double S_MAX_DISTANCE;
@@ -55,7 +56,7 @@ public class ConfigService {
     public boolean TRUSTED_REGION_ONLY;
     public List<String> WORLDBLACKLIST = new ArrayList<>();
     public List<String> WORLDWHITELIST = new ArrayList<>();
-    public final List<Material> MATERIALBLACKLIST = new ArrayList<>();
+    public final List<BlockData> MATERIALBLACKLIST = new ArrayList<>();
     public List<String> COMMANDBLACKLIST = new ArrayList<>();
     public List<String> FEATUREFLAGS = new ArrayList<>();
 
@@ -108,10 +109,10 @@ public class ConfigService {
             try {
                 String[] materialAndOffset = material.split(";");
                 if(materialAndOffset[0].startsWith("#")) {
-                    for(Material tagMaterial : Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(materialAndOffset[0].substring(1).toLowerCase()), Material.class).getValues()) S_SITMATERIALS.put(tagMaterial, materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
-                    continue;
-                }
-                S_SITMATERIALS.put(materialAndOffset[0].equalsIgnoreCase("*") ? Material.AIR : Material.valueOf(materialAndOffset[0].toUpperCase()), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
+                    Tag<Material> tag = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(materialAndOffset[0].substring(1).toLowerCase()), Material.class);
+                    if(tag == null) continue;
+                    for(Material tagMaterial : tag.getValues()) S_SITMATERIALS.put(tagMaterial.createBlockData(), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
+                } else S_SITMATERIALS.put(Bukkit.createBlockData(materialAndOffset[0]), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
             } catch(Throwable ignored) { }
         }
         S_BOTTOM_PART_ONLY = gSitMain.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
@@ -144,8 +145,11 @@ public class ConfigService {
         MATERIALBLACKLIST.clear();
         for(String material : gSitMain.getConfig().getStringList("Options.MaterialBlacklist")) {
             try {
-                if(material.startsWith("#")) MATERIALBLACKLIST.addAll(Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(material.substring(1).toLowerCase()), Material.class).getValues());
-                else MATERIALBLACKLIST.add(Material.valueOf(material.toUpperCase()));
+                if(material.startsWith("#")) {
+                    Tag<Material> tag = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(material.substring(1).toLowerCase()), Material.class);
+                    if(tag == null) continue;
+                    MATERIALBLACKLIST.addAll(tag.getValues().stream().map(Material::createBlockData).toList());
+                } else MATERIALBLACKLIST.add(Bukkit.createBlockData(material));
             } catch(Throwable ignored) { }
         }
         COMMANDBLACKLIST = gSitMain.getConfig().getStringList("Options.CommandBlacklist");

@@ -57,7 +57,7 @@ public class GLayCommand implements CommandExecutor {
 
         Location playerLocation = player.getLocation();
         Block block = playerLocation.getBlock().isPassable() ? playerLocation.subtract(0, 0.0625, 0).getBlock() : playerLocation.getBlock();
-        if(gSitMain.getConfigService().MATERIALBLACKLIST.contains(block.getType())) {
+        if(gSitMain.getSitService().isBlacklistedSitBlockData(block.getBlockData())) {
             gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-location-error");
             return true;
         }

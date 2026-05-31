@@ -2,7 +2,6 @@ package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.Tag;
@@ -10,6 +9,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.entity.Player;
@@ -45,9 +45,8 @@ public class SitEventHandler implements Listener {
         Block clickedBlock = event.getClickedBlock();
         if(clickedBlock == null || !gSitMain.getPermissionService().hasPermission(player, "SitClick", "Sit.*")) return;
 
-        if(!gSitMain.getConfigService().S_SITMATERIALS.containsKey(clickedBlock.getType()) && !gSitMain.getConfigService().S_SITMATERIALS.containsKey(Material.AIR)) return;
-
-        if(gSitMain.getConfigService().MATERIALBLACKLIST.contains(clickedBlock.getType())) return;
+        BlockData blockData = clickedBlock.getBlockData();
+        if(!gSitMain.getSitService().isValidSitBlockData(blockData) || gSitMain.getSitService().isBlacklistedSitBlockData(blockData)) return;
 
         if(!gSitMain.getEnvironmentUtil().isEntityInAllowedWorld(player)) return;
 
@@ -75,7 +74,7 @@ public class SitEventHandler implements Listener {
 
         if(Tag.STAIRS.isTagged(clickedBlock.getType())) {
 
-            if(((Stairs) clickedBlock.getBlockData()).getHalf() == Bisected.Half.BOTTOM) {
+            if(((Stairs) blockData).getHalf() == Bisected.Half.BOTTOM) {
 
                 if(gSitMain.getSitService().createStairSeatForEntity(clickedBlock, player) != null) {
 
@@ -85,7 +84,7 @@ public class SitEventHandler implements Listener {
             } else if(gSitMain.getConfigService().S_BOTTOM_PART_ONLY) return;
         } else if(Tag.SLABS.isTagged(clickedBlock.getType())) {
 
-            if(((Slab) clickedBlock.getBlockData()).getType() != Slab.Type.BOTTOM && gSitMain.getConfigService().S_BOTTOM_PART_ONLY) return;
+            if(((Slab) blockData).getType() != Slab.Type.BOTTOM && gSitMain.getConfigService().S_BOTTOM_PART_ONLY) return;
         }
 
         boolean useCenter = gSitMain.getConfigService().CENTER_BLOCK;
