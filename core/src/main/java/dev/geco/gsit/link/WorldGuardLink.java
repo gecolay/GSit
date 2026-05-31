@@ -24,6 +24,7 @@ public class WorldGuardLink {
     public static final StateFlag PLAYERSIT_FLAG = new StateFlag("playersit", true);
     public static final StateFlag POSE_FLAG = new StateFlag("pose", true);
     public static final StateFlag CRAWL_FLAG = new StateFlag("crawl", true);
+    public static final String NPC_TAG = "NPC";
 
     public void registerFlags() {
         HashMap<String, Flag<?>> flags = new HashMap<>();

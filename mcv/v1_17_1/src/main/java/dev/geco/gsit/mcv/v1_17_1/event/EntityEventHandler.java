@@ -1,12 +1,9 @@
 package dev.geco.gsit.mcv.v1_17_1.event;
 
 import dev.geco.gsit.GSitMain;
-import dev.geco.gsit.service.SitService;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -19,21 +16,10 @@ public class EntityEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void entityMountEventLow(EntityMountEvent event) {
-        if(gSitMain.getWorldGuardLink() == null) return;
-        if(!(event.getEntity() instanceof Player player)) return;
-        if(!event.getMount().getScoreboardTags().contains(SitService.SIT_TAG)) return;
-        player.setMetadata("NPC", new FixedMetadataValue(gSitMain, null));
-    }
+    public void entityMountEventLow(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventLow(event, event.getMount()); }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void entityMountEventHigh(EntityMountEvent event) {
-        if(gSitMain.getWorldGuardLink() == null) return;
-        if(!(event.getEntity() instanceof Player player)) return;
-        if(!event.getMount().getScoreboardTags().contains(SitService.SIT_TAG)) return;
-        if(!player.hasMetadata("NPC")) return;
-        player.removeMetadata("NPC", gSitMain);
-    }
+    public void entityMountEventHigh(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventHigh(event, event.getMount()); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDismountEvent(EntityDismountEvent event) { gSitMain.getEntityEventHandler().handleEntityDismountEvent(event, event.getEntity(), event.getDismounted()); }

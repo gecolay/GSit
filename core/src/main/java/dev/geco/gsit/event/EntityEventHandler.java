@@ -2,14 +2,18 @@ package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.api.event.PrePlayerStopPlayerSitEvent;
+import dev.geco.gsit.link.WorldGuardLink;
 import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.StopReason;
 import dev.geco.gsit.service.PlayerSitService;
+import dev.geco.gsit.service.SitService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.entity.EntityEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
 public class EntityEventHandler {
 
@@ -17,6 +21,22 @@ public class EntityEventHandler {
 
     public EntityEventHandler(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
+    }
+
+    @SuppressWarnings("deprecation")
+    public void handleEntityMountEventLow(EntityEvent event, Entity mounted) {
+        if(gSitMain.getWorldGuardLink() == null) return;
+        if(!(event.getEntity() instanceof Player player)) return;
+        if(!mounted.getScoreboardTags().contains(SitService.SIT_TAG) && !mounted.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) return;
+        player.setMetadata(WorldGuardLink.NPC_TAG, new FixedMetadataValue(gSitMain, null));
+    }
+
+    public void handleEntityMountEventHigh(EntityEvent event, Entity mounted) {
+        if(gSitMain.getWorldGuardLink() == null) return;
+        if(!(event.getEntity() instanceof Player player)) return;
+        if(!mounted.getScoreboardTags().contains(SitService.SIT_TAG) && !mounted.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) return;
+        if(!player.hasMetadata(WorldGuardLink.NPC_TAG)) return;
+        player.removeMetadata(WorldGuardLink.NPC_TAG, gSitMain);
     }
 
     public void handleEntityDismountEvent(Cancellable event, Entity entity, Entity dismounted) {
