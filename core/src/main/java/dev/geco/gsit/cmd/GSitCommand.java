@@ -110,6 +110,8 @@ public class GSitCommand implements CommandExecutor {
                     gSitMain.getToggleService().setEntityCanUseSit(uuid, true);
                     gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-toggle-on");
                 }
+
+                return true;
             }
             case "playertoggle" -> {
                 if(!gSitMain.getPermissionService().hasPermission(sender, "PlayerSitToggle", "PlayerSit.*") || !gSitMain.getConfigService().PS_ALLOW_SIT) {
@@ -136,6 +138,8 @@ public class GSitCommand implements CommandExecutor {
                     gSitMain.getToggleService().setPlayerCanUsePlayerSit(uuid, true);
                     gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-playertoggle-on");
                 }
+
+                return true;
             }
         }
 

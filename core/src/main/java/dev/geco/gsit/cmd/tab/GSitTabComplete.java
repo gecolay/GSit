@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 public class GSitTabComplete implements TabCompleter {
@@ -38,7 +37,7 @@ public class GSitTabComplete implements TabCompleter {
                     complete.add("on");
                     complete.add("off");
                 } else {
-                    complete.addAll(Stream.of(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getUniqueId).map(UUID::toString).toList());
+                    complete.addAll(Stream.of(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).toList());
                 }
             }
             if(gSitMain.getPermissionService().hasPermission(sender, "PlayerSitToggle", "PlayerSit.*") && args[0].equalsIgnoreCase("playertoggle") && gSitMain.getConfigService().PS_ALLOW_SIT) {
@@ -46,7 +45,7 @@ public class GSitTabComplete implements TabCompleter {
                     complete.add("on");
                     complete.add("off");
                 } else {
-                    complete.addAll(Stream.of(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getUniqueId).map(UUID::toString).toList());
+                    complete.addAll(Stream.of(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).toList());
                 }
             }
             if(!args[args.length - 1].isEmpty()) {
