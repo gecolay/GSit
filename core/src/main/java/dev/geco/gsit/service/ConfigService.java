@@ -32,7 +32,8 @@ public class ConfigService {
     public boolean SAME_BLOCK_REST;
     public boolean CENTER_BLOCK;
     public boolean CUSTOM_MESSAGE;
-    public final HashMap<BlockData, Double> S_SITMATERIALS = new HashMap<>();
+    public final HashMap<Material, Double> S_SITMATERIALS = new HashMap<>();
+    public final HashMap<BlockData, Double> S_SITBLOCKDATA = new HashMap<>();
     public boolean S_BOTTOM_PART_ONLY;
     public boolean S_EMPTY_HAND_ONLY;
     public double S_MAX_DISTANCE;
@@ -56,7 +57,8 @@ public class ConfigService {
     public boolean TRUSTED_REGION_ONLY;
     public List<String> WORLDBLACKLIST = new ArrayList<>();
     public List<String> WORLDWHITELIST = new ArrayList<>();
-    public final List<BlockData> MATERIALBLACKLIST = new ArrayList<>();
+    public final List<Material> MATERIALBLACKLIST = new ArrayList<>();
+    public final List<BlockData> BLOCKDATABLACKLIST = new ArrayList<>();
     public List<String> COMMANDBLACKLIST = new ArrayList<>();
     public List<String> FEATUREFLAGS = new ArrayList<>();
 
@@ -104,17 +106,7 @@ public class ConfigService {
         CENTER_BLOCK = gSitMain.getConfig().getBoolean("Options.center-block", true);
         CUSTOM_MESSAGE = gSitMain.getConfig().getBoolean("Options.custom-message", true);
 
-        S_SITMATERIALS.clear();
-        for(String material : gSitMain.getConfig().getStringList("Options.Sit.SitMaterials")) {
-            try {
-                String[] materialAndOffset = material.split(";");
-                if(materialAndOffset[0].startsWith("#")) {
-                    Tag<Material> tag = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(materialAndOffset[0].substring(1).toLowerCase()), Material.class);
-                    if(tag == null) continue;
-                    for(Material tagMaterial : tag.getValues()) S_SITMATERIALS.put(tagMaterial.createBlockData(), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
-                } else S_SITMATERIALS.put(Bukkit.createBlockData(materialAndOffset[0]), materialAndOffset.length > 1 ? Double.parseDouble(materialAndOffset[1]) : 0d);
-            } catch(Throwable ignored) { }
-        }
+        fillSitMaterialMap();
         S_BOTTOM_PART_ONLY = gSitMain.getConfig().getBoolean("Options.Sit.bottom-part-only", true);
         S_EMPTY_HAND_ONLY = gSitMain.getConfig().getBoolean("Options.Sit.empty-hand-only", true);
         S_MAX_DISTANCE = gSitMain.getConfig().getDouble("Options.Sit.max-distance", 0d);
@@ -142,18 +134,78 @@ public class ConfigService {
         TRUSTED_REGION_ONLY = gSitMain.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = gSitMain.getConfig().getStringList("Options.WorldBlacklist");
         WORLDWHITELIST = gSitMain.getConfig().getStringList("Options.WorldWhitelist");
-        MATERIALBLACKLIST.clear();
-        for(String material : gSitMain.getConfig().getStringList("Options.MaterialBlacklist")) {
-            try {
-                if(material.startsWith("#")) {
-                    Tag<Material> tag = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(material.substring(1).toLowerCase()), Material.class);
-                    if(tag == null) continue;
-                    MATERIALBLACKLIST.addAll(tag.getValues().stream().map(Material::createBlockData).toList());
-                } else MATERIALBLACKLIST.add(Bukkit.createBlockData(material));
-            } catch(Throwable ignored) { }
-        }
+        fillBlacklistedMaterialList();
         COMMANDBLACKLIST = gSitMain.getConfig().getStringList("Options.CommandBlacklist");
         FEATUREFLAGS = gSitMain.getConfig().getStringList("Options.FeatureFlags");
     }
+
+    private void fillSitMaterialMap() {
+        S_SITMATERIALS.clear();
+        S_SITBLOCKDATA.clear();
+        for(String materialStr : gSitMain.getConfig().getStringList("Options.Sit.SitMaterials")) {
+            try {
+                SitMaterialDefinition sitMaterialDefinition = parseSitMaterial(materialStr);
+                if(sitMaterialDefinition.material.startsWith("#")) {
+                    Tag<Material> tag = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(sitMaterialDefinition.material.substring(1).toLowerCase()), Material.class);
+                    if(tag == null) continue;
+                    for(Material tagMaterial : tag.getValues()) {
+                        if(sitMaterialDefinition.blockData.isEmpty()) S_SITMATERIALS.put(tagMaterial, sitMaterialDefinition.offset);
+                        else S_SITBLOCKDATA.put(Bukkit.createBlockData(tagMaterial, sitMaterialDefinition.blockData), sitMaterialDefinition.offset);
+                    }
+                    continue;
+                }
+                Material material = Material.valueOf(sitMaterialDefinition.material.toUpperCase());
+                if(sitMaterialDefinition.blockData.isEmpty()) S_SITMATERIALS.put(material, sitMaterialDefinition.offset);
+                else S_SITBLOCKDATA.put(Bukkit.createBlockData(material, sitMaterialDefinition.blockData), sitMaterialDefinition.offset);
+            } catch(Throwable ignored) { }
+        }
+    }
+
+    private void fillBlacklistedMaterialList() {
+        MATERIALBLACKLIST.clear();
+        BLOCKDATABLACKLIST.clear();
+        for(String materialStr : gSitMain.getConfig().getStringList("Options.MaterialBlacklist")) {
+            try {
+                SitMaterialDefinition sitMaterialDefinition = parseSitMaterial(materialStr);
+                if(sitMaterialDefinition.material.startsWith("#")) {
+                    Tag<Material> tag = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft(sitMaterialDefinition.material.substring(1).toLowerCase()), Material.class);
+                    if(tag == null) continue;
+                    for(Material tagMaterial : tag.getValues()) {
+                        if(sitMaterialDefinition.blockData.isEmpty()) MATERIALBLACKLIST.add(tagMaterial);
+                        else BLOCKDATABLACKLIST.add(Bukkit.createBlockData(tagMaterial, sitMaterialDefinition.blockData));
+                    }
+                    continue;
+                }
+                Material material = Material.valueOf(sitMaterialDefinition.material.toUpperCase());
+                if(sitMaterialDefinition.blockData.isEmpty()) MATERIALBLACKLIST.add(material);
+                else BLOCKDATABLACKLIST.add(Bukkit.createBlockData(material, sitMaterialDefinition.blockData));
+            } catch(Throwable ignored) { }
+        }
+    }
+
+    private record SitMaterialDefinition(String material, String blockData, double offset) {}
+
+    private SitMaterialDefinition parseSitMaterial(String input) {
+        double offset = 0d;
+        int semicolon = input.indexOf(';');
+        if(semicolon >= 0) {
+            int blockDataStart = Math.min(positiveOrMax(input.indexOf('[')), positiveOrMax(input.indexOf('{')));
+            if(blockDataStart == Integer.MAX_VALUE) {
+                offset = Double.parseDouble(input.substring(semicolon + 1));
+                input = input.substring(0, semicolon);
+            } else if(semicolon < blockDataStart) {
+                offset = Double.parseDouble(input.substring(semicolon + 1, blockDataStart));
+                input = input.substring(0, semicolon) + input.substring(blockDataStart);
+            } else {
+                offset = Double.parseDouble(input.substring(semicolon + 1));
+                input = input.substring(0, semicolon);
+            }
+        }
+        int blockDataStart = Math.min(positiveOrMax(input.indexOf('[')), positiveOrMax(input.indexOf('{')));
+        if(blockDataStart == Integer.MAX_VALUE) return new SitMaterialDefinition(input, "", offset);
+        return new SitMaterialDefinition(input.substring(0, blockDataStart), input.substring(blockDataStart), offset);
+    }
+
+    private int positiveOrMax(int value) { return value < 0 ? Integer.MAX_VALUE : value; }
 
 }

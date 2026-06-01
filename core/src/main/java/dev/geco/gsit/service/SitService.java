@@ -68,18 +68,18 @@ public class SitService {
     }
 
     public boolean isValidSitBlockData(BlockData blockData) {
-        for(BlockData sitBlockData : gSitMain.getConfigService().S_SITMATERIALS.keySet()) if(sitBlockData.matches(blockData)) return true;
-        return false;
+        for(BlockData sitBlockData : gSitMain.getConfigService().S_SITBLOCKDATA.keySet()) if(sitBlockData.matches(blockData)) return true;
+        return gSitMain.getConfigService().S_SITMATERIALS.containsKey(blockData.getMaterial());
     }
 
     public double getSitBlockDataHeightOffset(BlockData blockData) {
-        for(Map.Entry<BlockData, Double> sitBlockData : gSitMain.getConfigService().S_SITMATERIALS.entrySet()) if(sitBlockData.getKey().matches(blockData)) return sitBlockData.getValue();
-        return 0;
+        for(Map.Entry<BlockData, Double> sitBlockData : gSitMain.getConfigService().S_SITBLOCKDATA.entrySet()) if(sitBlockData.getKey().matches(blockData)) return sitBlockData.getValue();
+        return gSitMain.getConfigService().S_SITMATERIALS.getOrDefault(blockData.getMaterial(), 0d);
     }
 
     public boolean isBlacklistedSitBlockData(BlockData blockData) {
-        for(BlockData sitBlockData : gSitMain.getConfigService().MATERIALBLACKLIST) if(sitBlockData.matches(blockData)) return true;
-        return false;
+        for(BlockData sitBlockData : gSitMain.getConfigService().BLOCKDATABLACKLIST) if(sitBlockData.matches(blockData)) return true;
+        return gSitMain.getConfigService().MATERIALBLACKLIST.contains(blockData.getMaterial());
     }
 
     public Seat createSeat(Block block, LivingEntity entity) { return createSeat(block, entity, true, 0d, 0d, 0d, entity.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
