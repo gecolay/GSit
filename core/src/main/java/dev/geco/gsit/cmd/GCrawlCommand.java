@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class GCrawlCommand implements CommandExecutor {
 
     private final GSitMain gSitMain;
@@ -20,12 +22,12 @@ public class GCrawlCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(!(sender instanceof Player player)) {
-            gSitMain.getMessageService().sendMessage(sender, "Messages.command-sender-error");
-            return true;
-        }
-
         if(args.length == 0) {
+            if(!(sender instanceof Player player)) {
+                gSitMain.getMessageService().sendMessage(sender, "Messages.command-sender-error");
+                return true;
+            }
+
             if(!gSitMain.getPermissionService().hasPermission(sender, "Crawl", "Crawl.*")) {
                 gSitMain.getMessageService().sendMessage(sender, "Messages.command-permission-error");
                 return true;
@@ -61,23 +63,45 @@ public class GCrawlCommand implements CommandExecutor {
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("toggle") && gSitMain.getConfigService().C_DOUBLE_SNEAK) {
-            if(gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*")) {
-                boolean toggle = gSitMain.getToggleService().canPlayerUseCrawl(player.getUniqueId());
-                if(args.length > 1 && args[1].equalsIgnoreCase("off")) toggle = true;
-                if(args.length > 1 && args[1].equalsIgnoreCase("on")) toggle = false;
+        if(!args[0].equalsIgnoreCase("toggle") || !gSitMain.getConfigService().C_DOUBLE_SNEAK) {
+            Bukkit.dispatchCommand(sender, label);
+            return true;
+        }
 
-                if(toggle) {
-                    gSitMain.getToggleService().setPlayerCanUseCrawl(player.getUniqueId(), false);
-                    gSitMain.getMessageService().sendMessage(sender, "Messages.command-gcrawl-toggle-off");
-                } else {
-                    gSitMain.getToggleService().setPlayerCanUseCrawl(player.getUniqueId(), true);
-                    gSitMain.getMessageService().sendMessage(sender, "Messages.command-gcrawl-toggle-on");
-                }
-            } else Bukkit.dispatchCommand(sender, label);
-        } else Bukkit.dispatchCommand(sender, label);
+        if(gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*")) {
+            Bukkit.dispatchCommand(sender, label);
+            return true;
+        }
+
+        if(args.length == 1 && !(sender instanceof Player)) {
+            Bukkit.dispatchCommand(sender, label);
+            return true;
+        }
+
+        UUID uuid = sender instanceof Player player ? player.getUniqueId() : getTargetUuid(args[1]);
+
+        boolean toggle = gSitMain.getToggleService().canPlayerUseCrawl(uuid);
+        int toggleIndex = sender instanceof Player ? 1 : 2;
+        if(args.length > toggleIndex && args[toggleIndex].equalsIgnoreCase("off")) toggle = true;
+        if(args.length > toggleIndex && args[toggleIndex].equalsIgnoreCase("on")) toggle = false;
+
+        if(toggle) {
+            gSitMain.getToggleService().setPlayerCanUseCrawl(uuid, false);
+            gSitMain.getMessageService().sendMessage(sender, "Messages.command-gcrawl-toggle-off");
+        } else {
+            gSitMain.getToggleService().setPlayerCanUseCrawl(uuid, true);
+            gSitMain.getMessageService().sendMessage(sender, "Messages.command-gcrawl-toggle-on");
+        }
 
         return true;
+    }
+
+    private UUID getTargetUuid(String name) {
+        try {
+            return UUID.fromString(name);
+        } catch(IllegalArgumentException e) {
+            return Bukkit.getOfflinePlayer(name).getUniqueId();
+        }
     }
 
 }

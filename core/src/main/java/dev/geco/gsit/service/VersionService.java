@@ -63,8 +63,8 @@ public class VersionService {
         for(int i = 0; i < max; i++) {
             int sv = (i < serverVersionParts.length) ? serverVersionParts[i] : 0;
             int tv = (i < version.length) ? version[i] : 0;
-            if (sv > tv) return true;
-            if (sv < tv) return false;
+            if(sv > tv) return true;
+            if(sv < tv) return false;
         }
         return true;
     }

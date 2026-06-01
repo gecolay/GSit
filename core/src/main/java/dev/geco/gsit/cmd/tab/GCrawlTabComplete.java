@@ -1,6 +1,8 @@
 package dev.geco.gsit.cmd.tab;
 
 import dev.geco.gsit.GSitMain;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -9,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public class GCrawlTabComplete implements TabCompleter {
 
@@ -20,7 +24,7 @@ public class GCrawlTabComplete implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(!gSitMain.getConfigService().C_DOUBLE_SNEAK || !(sender instanceof Player)) return new ArrayList<>();
+        if(!gSitMain.getConfigService().C_DOUBLE_SNEAK) return new ArrayList<>();
         List<String> complete = new ArrayList<>(), completeStarted = new ArrayList<>();
         if(args.length == 1) {
             if(gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*")) complete.add("toggle");
@@ -30,6 +34,19 @@ public class GCrawlTabComplete implements TabCompleter {
             }
         } else if(args.length == 2) {
             if(gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*") && args[0].equalsIgnoreCase("toggle")) {
+                if(sender instanceof Player) {
+                    complete.add("on");
+                    complete.add("off");
+                } else {
+                    complete.addAll(Stream.of(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getUniqueId).map(UUID::toString).toList());
+                }
+            }
+            if(!args[args.length - 1].isEmpty()) {
+                for(String entry : complete) if(entry.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) completeStarted.add(entry);
+                complete.clear();
+            }
+        } else if(args.length == 3) {
+            if(gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*") && args[0].equalsIgnoreCase("toggle") && !(sender instanceof Player)) {
                 complete.add("on");
                 complete.add("off");
             }

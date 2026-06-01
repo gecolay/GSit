@@ -98,7 +98,7 @@ tasks {
             dependsOn(resourceTask)
 
             archiveClassifier.set("")
-            destinationDirectory.set(layout.buildDirectory.dir(if (sourceName == "dev") "libs" else "libs/$sourceName"))
+            destinationDirectory.set(layout.buildDirectory.dir(if(sourceName == "dev") "libs" else "libs/$sourceName"))
 
             from(sourceSets.main.get().output)
             from(resourceTask)

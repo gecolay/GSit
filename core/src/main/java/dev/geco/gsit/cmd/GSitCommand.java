@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class GSitCommand implements CommandExecutor {
 
     private final GSitMain gSitMain;
@@ -25,12 +27,12 @@ public class GSitCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(!(sender instanceof Player player)) {
-            gSitMain.getMessageService().sendMessage(sender, "Messages.command-sender-error");
-            return true;
-        }
-
         if(args.length == 0) {
+            if(!(sender instanceof Player player)) {
+                gSitMain.getMessageService().sendMessage(sender, "Messages.command-sender-error");
+                return true;
+            }
+
             if(!gSitMain.getPermissionService().hasPermission(sender, "Sit", "Sit.*")) {
                 gSitMain.getMessageService().sendMessage(sender, "Messages.command-permission-error");
                 return true;
@@ -83,42 +85,70 @@ public class GSitCommand implements CommandExecutor {
         }
 
         switch(args[0]) {
-            case "toggle":
-                if(gSitMain.getPermissionService().hasPermission(sender, "SitToggle", "Sit.*")) {
-                    boolean toggle = gSitMain.getToggleService().canEntityUseSit(player.getUniqueId());
-                    if(args.length > 1 && args[1].equalsIgnoreCase("off")) toggle = true;
-                    if(args.length > 1 && args[1].equalsIgnoreCase("on")) toggle = false;
-
-                    if(toggle) {
-                        gSitMain.getToggleService().setEntityCanUseSit(player.getUniqueId(), false);
-                        gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-toggle-off");
-                    } else {
-                        gSitMain.getToggleService().setEntityCanUseSit(player.getUniqueId(), true);
-                        gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-toggle-on");
-                    }
-                    break;
+            case "toggle" -> {
+                if(!gSitMain.getPermissionService().hasPermission(sender, "SitToggle", "Sit.*")) {
+                    Bukkit.dispatchCommand(sender, label);
+                    return true;
                 }
-            case "playertoggle":
-                if(gSitMain.getPermissionService().hasPermission(sender, "PlayerSitToggle", "PlayerSit.*") && gSitMain.getConfigService().PS_ALLOW_SIT) {
-                    boolean toggle = gSitMain.getToggleService().canPlayerUsePlayerSit(player.getUniqueId());
-                    if(args.length > 1 && args[1].equalsIgnoreCase("off")) toggle = true;
-                    if(args.length > 1 && args[1].equalsIgnoreCase("on")) toggle = false;
 
-                    if(toggle) {
-                        gSitMain.getToggleService().setPlayerCanUsePlayerSit(player.getUniqueId(), false);
-                        gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-playertoggle-off");
-                    } else {
-                        gSitMain.getToggleService().setPlayerCanUsePlayerSit(player.getUniqueId(), true);
-                        gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-playertoggle-on");
-                    }
-                    break;
+                if(args.length == 1 && !(sender instanceof Player)) {
+                    Bukkit.dispatchCommand(sender, label);
+                    return true;
                 }
-            default:
-                Bukkit.dispatchCommand(sender, label);
-                break;
+
+                UUID uuid = sender instanceof Player player ? player.getUniqueId() : getTargetUuid(args[1]);
+
+                boolean toggle = gSitMain.getToggleService().canEntityUseSit(uuid);
+                int toggleIndex = sender instanceof Player ? 1 : 2;
+                if(args.length > toggleIndex && args[toggleIndex].equalsIgnoreCase("off")) toggle = true;
+                if(args.length > toggleIndex && args[toggleIndex].equalsIgnoreCase("on")) toggle = false;
+
+                if(toggle) {
+                    gSitMain.getToggleService().setEntityCanUseSit(uuid, false);
+                    gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-toggle-off");
+                } else {
+                    gSitMain.getToggleService().setEntityCanUseSit(uuid, true);
+                    gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-toggle-on");
+                }
+            }
+            case "playertoggle" -> {
+                if(!gSitMain.getPermissionService().hasPermission(sender, "PlayerSitToggle", "PlayerSit.*") || !gSitMain.getConfigService().PS_ALLOW_SIT) {
+                    Bukkit.dispatchCommand(sender, label);
+                    return true;
+                }
+
+                if(args.length == 1 && !(sender instanceof Player)) {
+                    Bukkit.dispatchCommand(sender, label);
+                    return true;
+                }
+
+                UUID uuid = sender instanceof Player player ? player.getUniqueId() : getTargetUuid(args[1]);
+
+                boolean toggle = gSitMain.getToggleService().canPlayerUsePlayerSit(uuid);
+                int toggleIndex = sender instanceof Player ? 1 : 2;
+                if(args.length > toggleIndex && args[toggleIndex].equalsIgnoreCase("off")) toggle = true;
+                if(args.length > toggleIndex && args[toggleIndex].equalsIgnoreCase("on")) toggle = false;
+
+                if(toggle) {
+                    gSitMain.getToggleService().setPlayerCanUsePlayerSit(uuid, false);
+                    gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-playertoggle-off");
+                } else {
+                    gSitMain.getToggleService().setPlayerCanUsePlayerSit(uuid, true);
+                    gSitMain.getMessageService().sendMessage(sender, "Messages.command-gsit-playertoggle-on");
+                }
+            }
         }
 
+        Bukkit.dispatchCommand(sender, label);
         return true;
+    }
+
+    private UUID getTargetUuid(String name) {
+        try {
+            return UUID.fromString(name);
+        } catch(IllegalArgumentException e) {
+            return Bukkit.getOfflinePlayer(name).getUniqueId();
+        }
     }
 
 }

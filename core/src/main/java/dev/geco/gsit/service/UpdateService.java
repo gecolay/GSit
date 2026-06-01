@@ -60,7 +60,7 @@ public class UpdateService {
                 String tag = extractJsonValue(json, "tag_name");
                 if(tag != null && versionConsumer != null) versionConsumer.accept(tag);
             } catch(Throwable e) {
-                if (e.getMessage().contains("50")) return;
+                if(e.getMessage().contains("50")) return;
                 gSitMain.getLogger().log(Level.WARNING, "Could not get github remote version!", e);
             }
         }, false);
@@ -82,7 +82,7 @@ public class UpdateService {
                     if(tag != null && versionConsumer != null) versionConsumer.accept(tag);
                 }
             } catch(Throwable e) {
-                if (e.getMessage().contains("50")) return;
+                if(e.getMessage().contains("50")) return;
                 gSitMain.getLogger().log(Level.WARNING, "Could not get modrinth remote version!", e);
             }
         }, false);
