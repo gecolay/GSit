@@ -34,8 +34,8 @@ Options:
   custom-message: true
 
   Sit:
-    # Sit materials where a player can sit by clicking (can be a material, block data or tag)
-    # Create a height-offset by separating the material, block data or tag with a ';' character
+    # Sit materials where a player can sit by clicking (material or tag, each can have block data)
+    # Create a custom height offset by separating it with a ';' character
     SitMaterials:
     - "#stairs"
     - "#slabs"
@@ -51,7 +51,7 @@ Options:
     # Require an empty main hand to sit by clicking
     empty-hand-only: true
 
-    # Maximum distance from the block to allow sitting by clicking (0 means unlimited)
+    # Maximum distance from the block to allow sitting by clicking (0 = unlimited)
     max-distance: 0.0
 
     # Allow sitting by default without using 'sit toggle'
@@ -64,7 +64,7 @@ Options:
     # Allow players to sit on NPCs by clicking
     allow-sit-npc: true
 
-    # Maximum number of players that can be stacked (0 means unlimited)
+    # Maximum number of players that can be stacked (0 = unlimited)
     max-stack: 0
 
     # Force eject passengers when sneaking
@@ -76,7 +76,7 @@ Options:
     # Require an empty main hand to sit on other players
     empty-hand-only: true
 
-    # Maximum distance for sitting on other players (0 means unlimited)
+    # Maximum distance for sitting on other players (0 = unlimited)
     max-distance: 0.0
 
     # Allow sitting on other players by default without using 'sit playertoggle'
@@ -86,7 +86,7 @@ Options:
     # Allow interactions with the environment or other players while posing
     interact: false
 
-    # Reset the time since a player's last rest when lying down (affects phantom spawn timer)
+    # Reset the time since a player's last rest when lying down (affects e.g. phantom spawn timer)
     lay-rest: true
 
     # Emit snoring sounds when lying down
