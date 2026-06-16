@@ -4,7 +4,7 @@ public enum StopReason {
 
     BLOCK_BREAK(true, false),
     DAMAGE(true, false),
-    DEATH(false, false),
+    DEATH(false, true),
     ENVIRONMENT(true, false),
     GAMEMODE_CHANGE(false, false),
     GET_UP(true, false),
