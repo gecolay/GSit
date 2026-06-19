@@ -294,7 +294,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(false);
 
-        if(!serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY)) serverPlayer.setInvisible(false);
+        if(!serverPlayer.getActiveEffectsMap().containsKey(MobEffects.INVISIBILITY)) serverPlayer.setInvisible(false);
 
         setEquipmentVisibility(true);
 
@@ -356,7 +356,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
     }
 
     private void updateSkin() {
-        playerNpc.setInvisible(serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY));
+        playerNpc.setInvisible(serverPlayer.getActiveEffectsMap().containsKey(MobEffects.INVISIBILITY));
 
         SynchedEntityData entityData = playerNpc.getEntityData();
         entityData.set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
