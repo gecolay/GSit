@@ -169,8 +169,12 @@ public class SitService {
         returnLocation.setYaw(entityLocation.getYaw());
         returnLocation.setPitch(entityLocation.getPitch());
 
-        if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
-        if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(1, 17)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        try {
+            if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+            if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(1, 17)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
+        } catch(IllegalStateException e) {
+            if(!gSitMain.isFoliaServer()) gSitMain.getLogger().log(Level.WARNING, "Failed to set entity location", e);
+        }
     }
 
     public Seat createStairSeatForEntity(Block block, LivingEntity entity) {
