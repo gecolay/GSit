@@ -85,6 +85,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private final Location blockLocation;
     private final Block bedBlock;
     private final BlockPos bedPos;
+    private final double height;
     private final Direction direction;
     protected ClientboundBlockUpdatePacket setBedPacket;
     protected ClientboundPlayerInfoUpdatePacket addNpcInfoPacket;
@@ -126,6 +127,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         bedPos = new BlockPos(blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
 
         playerNpc = createNPC();
+        height = seatLocation.getY();
         playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + (poseType == PoseType.LAY || poseType == PoseType.LAY_BACK ? 0.3125d : poseType == PoseType.SPIN ? 0.2d : 0d), seatLocation.getZ(), 0f, 0f);
 
         direction = getDirection();
@@ -214,7 +216,16 @@ public class Pose implements dev.geco.gsit.model.Pose {
         startUpdate();
     }
 
-    private void addViewerPlayer(Player player) { sendPacket(player, bundle); }
+    private void addViewerPlayer(Player player) {
+        sendPacket(player, bundle);
+        if((poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) || height < 1) return;
+        gSitMain.getTaskService().runDelayed(() -> {
+            sendPacket(player, teleportNpcPacket);
+            gSitMain.getTaskService().runDelayed(() -> {
+                sendPacket(player, teleportNpcPacket);
+            }, player, 1);
+        }, player, 1);
+    }
 
     @Override
     public void remove() {

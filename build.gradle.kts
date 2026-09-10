@@ -25,6 +25,10 @@ allprojects {
     tasks.withType<Javadoc>().configureEach {
         options.encoding = "UTF-8"
     }
+
+    configurations.all {
+        resolutionStrategy.force("net.kyori:adventure-text-serializer-ansi:4.26.1")
+    }
 }
 
 java {

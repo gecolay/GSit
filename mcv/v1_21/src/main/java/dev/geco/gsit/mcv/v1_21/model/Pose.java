@@ -89,6 +89,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private final Location blockLocation;
     private final Block bedBlock;
     private final BlockPos bedPos;
+    private final double height;
     private final Direction direction;
     protected ClientboundBlockUpdatePacket setBedPacket;
     protected ClientboundPlayerInfoUpdatePacket addNpcInfoPacket;
@@ -130,8 +131,9 @@ public class Pose implements dev.geco.gsit.model.Pose {
         bedPos = new BlockPos(blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
 
         playerNpc = createNPC();
-        double offset = seatLocation.getY() + gSitMain.getSitService().getBaseOffset();
+        height = seatLocation.getY() + gSitMain.getSitService().getBaseOffset();
         double scale = serverPlayer.getScale();
+        double offset = height;
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) offset += 0.1125d * scale;
         if(poseType == PoseType.BELLYFLOP) offset += -0.19 * scale;
         playerNpc.moveTo(seatLocation.getX(), offset, seatLocation.getZ(), 0f, 0f);
@@ -256,7 +258,16 @@ public class Pose implements dev.geco.gsit.model.Pose {
         });
     }
 
-    private void addViewerPlayer(Player player) { sendPacket(player, bundle); }
+    private void addViewerPlayer(Player player) {
+        sendPacket(player, bundle);
+        if((poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) || height < 1) return;
+        gSitMain.getTaskService().runDelayed(() -> {
+            sendPacket(player, teleportNpcPacket);
+            gSitMain.getTaskService().runDelayed(() -> {
+                sendPacket(player, teleportNpcPacket);
+            }, player, 1);
+        }, player, 1);
+    }
 
     @Override
     public void remove() {
