@@ -4,15 +4,15 @@ plugins {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.14") {
+    compileOnly("io.papermc.paper:paper-api:26.3-pre-2.build.+")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.18") {
         exclude("com.google.guava", "guava")
         exclude("com.google.code.gson", "gson")
         exclude("it.unimi.dsi", "fastutil")
     }
-    compileOnly("me.clip:placeholderapi:2.12.2")
+    compileOnly("me.clip:placeholderapi:2.12.3")
     compileOnly("com.github.GriefPrevention:GriefPrevention:18.0.0")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.13")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.6.0")
 }
 
 java {

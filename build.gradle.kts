@@ -3,8 +3,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     `java-library`
     `maven-publish`
-    id("com.gradleup.shadow") version "9.4.2"
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.21" apply false
+    id("com.gradleup.shadow") version "9.6.1"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.23" apply false
 }
 
 allprojects {
@@ -77,7 +77,11 @@ tasks {
             from("resources")
             into(layout.buildDirectory.dir("generated/resources/$sourceName"))
 
-            val baseProps = project.properties.filterValues { it is String || it is Number || it is Boolean }.mapValues { it.value.toString() }
+            val baseProps = mapOf(
+                "name" to project.name,
+                "version" to project.version.toString(),
+                "description" to project.description.orEmpty()
+            )
             val props = baseProps + sourceProps + mapOf(
                 "source" to sourceName,
                 "main" to "${project.group}.${project.name}Main"
