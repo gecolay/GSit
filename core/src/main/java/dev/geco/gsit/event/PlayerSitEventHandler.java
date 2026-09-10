@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -50,8 +51,13 @@ public class PlayerSitEventHandler implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void entityDamageEvent(EntityDamageEvent event) { if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof LivingEntity && event.getEntity().getVehicle() != null && event.getEntity().getVehicle().getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) event.setCancelled(true); }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void playerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) { if(gSitMain.getPlotSquaredLink() != null) handlePlayerInteractAtEntityEvent(event); }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void playerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) {
+    public void playerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) { if(gSitMain.getPlotSquaredLink() == null) handlePlayerInteractAtEntityEvent(event); }
+
+    private void handlePlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) {
 
         Entity rightClicked = event.getRightClicked();
         if(!(rightClicked instanceof Player target)) return;
@@ -89,7 +95,22 @@ public class PlayerSitEventHandler implements Listener {
 
         if(!gSitMain.getToggleService().canPlayerUsePlayerSit(player.getUniqueId()) || !gSitMain.getToggleService().canPlayerUsePlayerSit(highestPlayer.getUniqueId())) return;
 
-        gSitMain.getPlayerSitService().sitOnPlayer(player, highestPlayer);
+        if(gSitMain.getPlayerSitService().sitOnPlayer(player, highestPlayer)) event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void playerInteractEntityEvent(PlayerInteractEntityEvent event) { if(gSitMain.getPlotSquaredLink() != null) handlePlayerInteractEntityEvent(event); }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void playerInteractEntityEvent(PlayerInteractEntityEvent event) { if(gSitMain.getPlotSquaredLink() == null) handlePlayerInteractEntityEvent(event); }
+
+    private void handlePlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
+
+        Entity rightClicked = event.getRightClicked();
+        if(!(rightClicked instanceof Player target)) return;
+
+        Player player = event.getPlayer();
+        if(gSitMain.getPassengerUtil().isEntityInPassengerList(target, player)) event.setCancelled(true);
     }
 
     private boolean isPlayerNPC(Player player) { return !Bukkit.getOnlinePlayers().contains(player); }
