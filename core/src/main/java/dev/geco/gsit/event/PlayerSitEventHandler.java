@@ -52,10 +52,10 @@ public class PlayerSitEventHandler implements Listener {
     public void entityDamageEvent(EntityDamageEvent event) { if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof LivingEntity && event.getEntity().getVehicle() != null && event.getEntity().getVehicle().getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) event.setCancelled(true); }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void playerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) { if(gSitMain.getPlotSquaredLink() != null) handlePlayerInteractAtEntityEvent(event); }
+    public void playerInteractAtEntityEventHigh(PlayerInteractAtEntityEvent event) { if(gSitMain.getPlotSquaredLink() != null) handlePlayerInteractAtEntityEvent(event); }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void playerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) { if(gSitMain.getPlotSquaredLink() == null) handlePlayerInteractAtEntityEvent(event); }
+    public void playerInteractAtEntityEventHighest(PlayerInteractAtEntityEvent event) { if(gSitMain.getPlotSquaredLink() == null) handlePlayerInteractAtEntityEvent(event); }
 
     private void handlePlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) {
 
@@ -99,10 +99,10 @@ public class PlayerSitEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void playerInteractEntityEvent(PlayerInteractEntityEvent event) { if(gSitMain.getPlotSquaredLink() != null) handlePlayerInteractEntityEvent(event); }
+    public void playerInteractEntityEventHigh(PlayerInteractEntityEvent event) { if(gSitMain.getPlotSquaredLink() != null) handlePlayerInteractEntityEvent(event); }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void playerInteractEntityEvent(PlayerInteractEntityEvent event) { if(gSitMain.getPlotSquaredLink() == null) handlePlayerInteractEntityEvent(event); }
+    public void playerInteractEntityEventHighest(PlayerInteractEntityEvent event) { if(gSitMain.getPlotSquaredLink() == null) handlePlayerInteractEntityEvent(event); }
 
     private void handlePlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 

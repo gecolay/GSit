@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     `java-library`
     `maven-publish`
@@ -24,10 +22,6 @@ allprojects {
 
     tasks.withType<Javadoc>().configureEach {
         options.encoding = "UTF-8"
-    }
-
-    configurations.all {
-        resolutionStrategy.force("net.kyori:adventure-text-serializer-ansi:4.26.1")
     }
 }
 
@@ -64,12 +58,25 @@ tasks {
         options.release = 16
     }
 
-    shadowJar {
+    jar {
         enabled = false
     }
 
-    jar {
-        enabled = false
+    shadowJar {
+        group = "build"
+
+        archiveClassifier.set("")
+        archiveBaseName.set("${project.name}-base")
+        destinationDirectory.set(layout.buildDirectory.dir("generated/shadow-base"))
+
+        from(sourceSets.main.get().output)
+        from("resources") {
+            exclude("plugin.yml")
+        }
+
+        configurations = listOf(project.configurations.runtimeClasspath.get())
+
+        minimize()
     }
 
     val sources = mapOf(
@@ -82,7 +89,9 @@ tasks {
 
     val resourceTasks = sources.mapValues { (sourceName, sourceProps) ->
         register<ProcessResources>("processResources${sourceName.replaceFirstChar { it.uppercase() }}") {
-            from("resources")
+            from("resources") {
+                include("plugin.yml")
+            }
             into(layout.buildDirectory.dir("generated/resources/$sourceName"))
 
             val baseProps = mapOf(
@@ -103,22 +112,20 @@ tasks {
     }
 
     val jarTasks = sources.keys.associateWith { sourceName ->
-        register<ShadowJar>("shadowJar${sourceName.replaceFirstChar { it.uppercase() }}") {
+        register<Jar>("shadowJar${sourceName.replaceFirstChar { it.uppercase() }}") {
             group = "build"
 
             val resourceTask = resourceTasks.getValue(sourceName)
 
-            dependsOn(resourceTask)
+            dependsOn(shadowJar, resourceTask)
 
             archiveClassifier.set("")
             destinationDirectory.set(layout.buildDirectory.dir(if(sourceName == "dev") "libs" else "libs/$sourceName"))
 
-            from(sourceSets.main.get().output)
+            from(zipTree(shadowJar.get().archiveFile)) {
+                exclude("META-INF/MANIFEST.MF")
+            }
             from(resourceTask)
-
-            configurations = listOf(project.configurations.runtimeClasspath.get())
-
-            minimize()
 
             manifest {
                 attributes["paperweight-mappings-namespace"] = io.papermc.paperweight.util.constants.SPIGOT_NAMESPACE
