@@ -27,6 +27,10 @@ allprojects {
     }
 }
 
+java {
+    disableAutoTargetJvm()
+}
+
 dependencies {
     api(project(":core"))
     api(project(":v1_17_1", io.papermc.paperweight.util.constants.REOBF_CONFIG))
