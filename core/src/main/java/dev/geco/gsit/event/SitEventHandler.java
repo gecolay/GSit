@@ -1,6 +1,7 @@
 package dev.geco.gsit.event;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.model.Seat;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -52,7 +53,8 @@ public class SitEventHandler implements Listener {
 
         if(!player.isValid() || player.isSneaking()) return;
 
-        if(gSitMain.getSitService().isEntitySitting(player) || gSitMain.getPoseService().isPlayerPosing(player) || gSitMain.getCrawlService().isPlayerCrawling(player)) return;
+        Seat seat = gSitMain.getSitService().getSeatByEntity(player);
+        if(seat != null && seat.getBlock().equals(clickedBlock)) return;
 
         double distance = gSitMain.getConfigService().S_MAX_DISTANCE;
         Location location = clickedBlock.getLocation();

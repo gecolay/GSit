@@ -16,11 +16,11 @@ public class EntityEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void entityMountEventLow(org.bukkit.event.entity.EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventLow(event, event.getMount()); }
+    public void entityMountEventLow(org.bukkit.event.entity.EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventLow(event, event.getEntity(), event.getMount()); }
 
     @EventHandler(priority = EventPriority.HIGH)
     @SuppressWarnings("deprecation")
-    public void entityMountEventHigh(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventHigh(event, event.getMount()); }
+    public void entityMountEventHigh(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventHigh(event, event.getEntity(), event.getMount()); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     @SuppressWarnings("deprecation")

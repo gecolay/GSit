@@ -24,16 +24,29 @@ public class EntityEventHandler {
     }
 
     @SuppressWarnings("deprecation")
-    public void handleEntityMountEventLow(EntityEvent event, Entity mounted) {
+    public void handleEntityMountEventLow(Cancellable event, Entity entity, Entity mounted) {
         if(gSitMain.getWorldGuardLink() == null) return;
-        if(!(event.getEntity() instanceof Player player)) return;
+        if(!(entity instanceof Player player)) return;
         if(!mounted.getScoreboardTags().contains(SitService.SIT_TAG) && !mounted.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) return;
         player.setMetadata(WorldGuardLink.NPC_TAG, new FixedMetadataValue(gSitMain, null));
     }
 
-    public void handleEntityMountEventHigh(EntityEvent event, Entity mounted) {
+    public void handleEntityMountEventHigh(Cancellable event, Entity entity, Entity mounted) {
+        if(!(entity instanceof Player player)) return;
+
+        Seat seat = gSitMain.getSitService().getSeatByEntity(player);
+        if(seat != null && !gSitMain.getSitService().removeSeat(seat, StopReason.SWITCH, false)) {
+            event.setCancelled(true);
+            return;
+        }
+
+        Pose pose = gSitMain.getPoseService().getPoseByPlayer(player);
+        if(pose != null && !gSitMain.getPoseService().removePose(pose, StopReason.SWITCH, false)) {
+            event.setCancelled(true);
+            return;
+        }
+
         if(gSitMain.getWorldGuardLink() == null) return;
-        if(!(event.getEntity() instanceof Player player)) return;
         if(!mounted.getScoreboardTags().contains(SitService.SIT_TAG) && !mounted.getScoreboardTags().contains(PlayerSitService.PLAYERSIT_ENTITY_TAG)) return;
         if(!player.hasMetadata(WorldGuardLink.NPC_TAG)) return;
         player.removeMetadata(WorldGuardLink.NPC_TAG, gSitMain);

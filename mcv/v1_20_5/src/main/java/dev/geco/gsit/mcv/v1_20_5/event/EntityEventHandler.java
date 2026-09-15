@@ -16,10 +16,10 @@ public class EntityEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void entityMountEventLow(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventLow(event, event.getMount()); }
+    public void entityMountEventLow(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventLow(event, event.getEntity(), event.getMount()); }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void entityMountEventHigh(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventHigh(event, event.getMount()); }
+    public void entityMountEventHigh(EntityMountEvent event) { gSitMain.getEntityEventHandler().handleEntityMountEventHigh(event, event.getEntity(), event.getMount()); }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDismountEvent(EntityDismountEvent event) { gSitMain.getEntityEventHandler().handleEntityDismountEvent(event, event.getEntity(), event.getDismounted()); }

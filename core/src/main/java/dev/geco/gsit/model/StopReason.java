@@ -8,6 +8,7 @@ public enum StopReason {
     ENVIRONMENT(true, false),
     GAMEMODE_CHANGE(false, false),
     GET_UP(true, false),
+    SWITCH(true, false),
     KICKED(true, false),
     PLUGIN(false, true),
     REGION(true, false),
