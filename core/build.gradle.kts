@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.18") {
         exclude("com.google.guava", "guava")
         exclude("com.google.code.gson", "gson")
