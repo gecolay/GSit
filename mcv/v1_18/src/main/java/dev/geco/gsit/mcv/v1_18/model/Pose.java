@@ -58,7 +58,6 @@ import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.MainHand;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -133,31 +132,31 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         listener = new Listener() {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void playerInteractEvent(PlayerInteractEvent Event) { if(Event.getPlayer() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
+            public void playerInteractEvent(PlayerInteractEvent event) { if(event.getPlayer() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void playerInteractEntityEvent(PlayerInteractEntityEvent Event) { if(Event.getPlayer() == seatPlayer) Event.setCancelled(true); }
+            public void playerInteractEntityEvent(PlayerInteractEntityEvent event) { if(event.getPlayer() == seatPlayer) event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void entityDamageByEntityEvent(EntityDamageByEntityEvent Event) { if(Event.getDamager() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
+            public void entityDamageByEntityEvent(EntityDamageByEntityEvent event) { if(event.getDamager() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void entityDamageEvent(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playAnimation(ClientboundAnimatePacket.HURT); }
+            public void entityDamageEvent(EntityDamageEvent event) { if(event.getEntity() == seatPlayer) playAnimation(ClientboundAnimatePacket.HURT); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void projectileLaunchEvent(ProjectileLaunchEvent Event) { if(Event.getEntity().getShooter() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
+            public void projectileLaunchEvent(ProjectileLaunchEvent event) { if(event.getEntity().getShooter() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerAnimationEvent(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer) playAnimation(Event.getAnimationType() == PlayerAnimationType.ARM_SWING ? ClientboundAnimatePacket.SWING_MAIN_HAND : ClientboundAnimatePacket.SWING_OFF_HAND); }
+            public void playerAnimationEvent(PlayerAnimationEvent event) { if(event.getPlayer() == seatPlayer) playAnimation(event.getAnimationType() == PlayerAnimationType.ARM_SWING ? ClientboundAnimatePacket.SWING_MAIN_HAND : ClientboundAnimatePacket.SWING_OFF_HAND); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void inventoryClickEvent(InventoryClickEvent Event) { if(Event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
+            public void inventoryClickEvent(InventoryClickEvent event) { if(event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void playerDropItemEvent(PlayerDropItemEvent Event) { if(Event.getPlayer() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
+            public void playerDropItemEvent(PlayerDropItemEvent event) { if(event.getPlayer() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void entityPotionEffectEvent(EntityPotionEffectEvent Event) { if(Event.getEntity() == seatPlayer) serverPlayer.setInvisible(true); }
+            public void entityPotionEffectEvent(EntityPotionEffectEvent event) { if(event.getEntity() == seatPlayer) serverPlayer.setInvisible(true); }
         };
     }
 
