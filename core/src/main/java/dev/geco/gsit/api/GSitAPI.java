@@ -144,6 +144,57 @@ public class GSitAPI {
     }
 
     /**
+     * Creates a new seat on a block for an entity
+     * @author Gecolay
+     * @since 3.6.0
+     * @param block Block which should be connected to the returned seat
+     * @param entity Entity
+     * @param force Force a seat creation (skip block checks)
+     * @return Seat or <code>null</code> if the creation failed or was cancelled by event
+     */
+    public static @Nullable Seat createCustomSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean force) {
+        return getInstance().getSitService().createCustomSeat(block, entity, force);
+    }
+
+    /**
+     * Creates a new seat on a block for an entity
+     * The seat can be static or rotating
+     * @author Gecolay
+     * @since 3.6.0
+     * @param block Block which should be connected to the returned seat
+     * @param entity Entity
+     * @param canRotate Can the seat rotate
+     * @param seatRotation The default rotation of the seat
+     * @param sitInBlockCenter Should the seat location be centered on the block
+     * @param force Force a seat creation (skip block checks)
+     * @return Seat or <code>null</code> if the creation failed or was cancelled by event
+     */
+    public static @Nullable Seat createCustomSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean force, boolean canRotate, float seatRotation, boolean sitInBlockCenter) {
+        return getInstance().getSitService().createCustomSeat(block, entity, force, canRotate, 0d, 0d, 0d, seatRotation, sitInBlockCenter);
+    }
+
+    /**
+     * Creates a new seat on a block for an entity
+     * The seat can be static or rotating
+     * The seat can be moved to with an offset
+     * @author Gecolay
+     * @since 3.6.0
+     * @param block Block which should be connected to the returned seat
+     * @param entity Entity
+     * @param canRotate Can the seat rotate
+     * @param xOffset The x coordinate offset for the seat
+     * @param yOffset The y coordinate offset for the seat
+     * @param zOffset The z coordinate offset for the seat
+     * @param seatRotation The default rotation of the seat
+     * @param sitInBlockCenter Should the seat location be centered on the block
+     * @param force Force a seat creation (skip block checks)
+     * @return Seat or <code>null</code> if the creation failed or was cancelled by event
+     */
+    public static @Nullable Seat createCustomSeat(@NotNull Block block, @NotNull LivingEntity entity, boolean force, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
+        return getInstance().getSitService().createCustomSeat(block, entity, force, canRotate, xOffset, yOffset, zOffset, seatRotation, sitInBlockCenter);
+    }
+
+    /**
      * Moves a seat in a block direction
      * @author Gecolay
      * @since 2.0.0
