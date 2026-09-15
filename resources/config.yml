@@ -43,6 +43,7 @@ Options:
     - "#wool_carpets"
     - "moss_carpet"
     - "pale_moss_carpet"
+    - "shelf_mushroom"
     - "snow"
 
     # Allow sitting only on the bottom part of stairs and slabs

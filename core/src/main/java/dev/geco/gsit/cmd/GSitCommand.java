@@ -5,7 +5,6 @@ import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -80,7 +79,7 @@ public class GSitCommand implements CommandExecutor {
                 return true;
             }
 
-            if(Tag.STAIRS.isTagged(block.getType()) ? gSitMain.getSitService().createStairSeatForEntity(block, player) == null : gSitMain.getSitService().createSeat(block, player) == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-sit-error");
+            if(gSitMain.getSitService().createCustomSeat(block, player, true) == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-sit-error");
             return true;
         }
 

@@ -5,14 +5,10 @@ import dev.geco.gsit.model.Seat;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
-import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Slab;
-import org.bukkit.block.data.type.Stairs;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -74,21 +70,6 @@ public class SitEventHandler implements Listener {
 
         if(!gSitMain.getConfigService().SAME_BLOCK_REST && !gSitMain.getSitService().kickSeatEntitiesFromBlock(clickedBlock, player)) return;
 
-        if(Tag.STAIRS.isTagged(clickedBlock.getType())) {
-
-            if(((Stairs) blockData).getHalf() == Bisected.Half.BOTTOM) {
-
-                if(gSitMain.getSitService().createStairSeatForEntity(clickedBlock, player) != null) {
-
-                    event.setCancelled(true);
-                    return;
-                }
-            } else if(gSitMain.getConfigService().S_BOTTOM_PART_ONLY) return;
-        } else if(Tag.SLABS.isTagged(clickedBlock.getType())) {
-
-            if(((Slab) blockData).getType() != Slab.Type.BOTTOM && gSitMain.getConfigService().S_BOTTOM_PART_ONLY) return;
-        }
-
         boolean useCenter = gSitMain.getConfigService().CENTER_BLOCK;
 
         double xoffset = useCenter ? 0 : -0.5d;
@@ -116,7 +97,7 @@ public class SitEventHandler implements Listener {
             } catch(Throwable ignored) { }
         }
 
-        if(gSitMain.getSitService().createSeat(clickedBlock, player, true, useCenter ? xoffset : 0d, 0d, useCenter ? zoffset : 0, player.getLocation().getYaw(), true) != null) event.setCancelled(true);
+        if(gSitMain.getSitService().createCustomSeat(clickedBlock, player, false, true, useCenter ? xoffset : 0d, 0d, useCenter ? zoffset : 0, player.getLocation().getYaw(), true) != null) event.setCancelled(true);
     }
 
 }

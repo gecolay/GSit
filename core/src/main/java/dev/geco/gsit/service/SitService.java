@@ -9,11 +9,12 @@ import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -33,6 +34,7 @@ public class SitService {
 
     public static final double STAIR_XZ_OFFSET = 0.123d;
     public static final double STAIR_Y_OFFSET = 0.5d;
+    public static final double DIRECTIONAL_XZ_OFFSET = 0.2d;
     public static final String SIT_TAG = GSitMain.NAME + "_sit";
 
     private final GSitMain gSitMain;
@@ -44,7 +46,7 @@ public class SitService {
 
     public SitService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
-        baseOffset = gSitMain.getVersionManager().isNewerOrVersion(1, 20, 2) ? -0.05d : 0.2d;
+        baseOffset = gSitMain.getVersionManager().isNewerOrVersion(1, 20, 2) ? -0.025d : 0.1975d;
     }
 
     public double getBaseOffset() { return baseOffset; }
@@ -160,8 +162,9 @@ public class SitService {
         Location returnLocation;
         if(gSitMain.getConfigService().GET_UP_RETURN) returnLocation = seat.getReturnLocation();
         else {
-            double sitBlockDataHeightOffset = getSitBlockDataHeightOffset(seat.getBlock().getBlockData());
-            returnLocation = seat.getLocation().add(0d, baseOffset + (Tag.STAIRS.isTagged(seat.getBlock().getType()) ? STAIR_Y_OFFSET : 0d) - sitBlockDataHeightOffset, 0d);
+            BlockData blockData = seat.getBlock().getBlockData();
+            double sitBlockDataHeightOffset = getSitBlockDataHeightOffset(blockData);
+            returnLocation = seat.getLocation().add(0d, baseOffset + (blockData instanceof Stairs ? STAIR_Y_OFFSET : 0d) - sitBlockDataHeightOffset, 0d);
         }
 
         Entity entity = seat.getEntity();
@@ -178,13 +181,32 @@ public class SitService {
         }
     }
 
-    public Seat createStairSeatForEntity(Block block, LivingEntity entity) {
-        Stairs blockData = (Stairs) block.getBlockData();
+    public Seat createCustomSeat(Block block, LivingEntity entity, boolean force) { return createCustomSeat(block, entity, force, true, 0d, 0d, 0d, entity.getLocation().getYaw(), gSitMain.getConfigService().CENTER_BLOCK); }
+
+    public Seat createCustomSeat(Block block, LivingEntity entity, boolean force, boolean canRotate, double xOffset, double yOffset, double zOffset, float seatRotation, boolean sitInBlockCenter) {
+        BlockData blockData = block.getBlockData();
+
+        if(!force && blockData instanceof Slab slab && (slab.getType() != Slab.Type.BOTTOM && gSitMain.getConfigService().S_BOTTOM_PART_ONLY)) return null;
+
+        if(blockData instanceof Stairs stair) {
+            if(stair.getHalf() == Bisected.Half.BOTTOM) {
+                return gSitMain.getSitService().createStairSeat(block, stair, entity);
+            } else if(!force && gSitMain.getConfigService().S_BOTTOM_PART_ONLY) return null;
+        }
+
+        if(block.getType().name().equals("SHELF_MUSHROOM") && blockData instanceof Directional directional) {
+            return createDirectionalSeat(block, directional, entity);
+        }
+
+        return createSeat(block, entity, canRotate, xOffset, yOffset, zOffset, seatRotation, sitInBlockCenter);
+    }
+
+    private Seat createStairSeat(Block block, Stairs blockData, LivingEntity entity) {
         if(blockData.getHalf() != Bisected.Half.BOTTOM) return createSeat(block, entity);
 
         BlockFace blockFace = blockData.getFacing().getOppositeFace();
         if(blockData.getShape() == Stairs.Shape.STRAIGHT) {
-            return switch (blockFace) {
+            return switch(blockFace) {
                 case EAST -> createSeat(block, entity, false, STAIR_XZ_OFFSET, -STAIR_Y_OFFSET, 0d, -90f, true);
                 case SOUTH -> createSeat(block, entity, false, 0d, -STAIR_Y_OFFSET, STAIR_XZ_OFFSET, 0f, true);
                 case WEST -> createSeat(block, entity, false, -STAIR_XZ_OFFSET, -STAIR_Y_OFFSET, 0d, 90f, true);
@@ -205,6 +227,18 @@ public class SitService {
         }
 
         return null;
+    }
+
+    private Seat createDirectionalSeat(Block block, Directional blockData, LivingEntity entity) {
+        BlockFace blockFace = blockData.getFacing().getOppositeFace();
+
+        return switch(blockFace) {
+            case EAST -> createSeat(block, entity, false, DIRECTIONAL_XZ_OFFSET, 0d, 0d, 90f, true);
+            case SOUTH -> createSeat(block, entity, false, 0d, 0d, DIRECTIONAL_XZ_OFFSET, 180f, true);
+            case WEST -> createSeat(block, entity, false, -DIRECTIONAL_XZ_OFFSET, 0d, 0d, -90f, true);
+            case NORTH -> createSeat(block, entity, false, 0d, 0d, -DIRECTIONAL_XZ_OFFSET, 0f, true);
+            default -> null;
+        };
     }
 
     public int getSitCount() { return this.sitCount; }
