@@ -142,13 +142,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
             public void entityDamageByEntityEvent(EntityDamageByEntityEvent Event) { if(Event.getDamager() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void entityDamageEvent(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playAnimation(1); }
+            public void entityDamageEvent(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playAnimation(ClientboundAnimatePacket.HURT); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void projectileLaunchEvent(ProjectileLaunchEvent Event) { if(Event.getEntity().getShooter() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerAnimationEvent(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getAnimationType() == PlayerAnimationType.ARM_SWING) playAnimation(Event.getPlayer().getMainHand().equals(MainHand.RIGHT) ? 0 : 3); }
+            public void playerAnimationEvent(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer) playAnimation(Event.getAnimationType() == PlayerAnimationType.ARM_SWING ? ClientboundAnimatePacket.SWING_MAIN_HAND : ClientboundAnimatePacket.SWING_OFF_HAND); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void inventoryClickEvent(InventoryClickEvent Event) { if(Event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }

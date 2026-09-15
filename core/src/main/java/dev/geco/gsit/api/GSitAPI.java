@@ -144,7 +144,7 @@ public class GSitAPI {
     }
 
     /**
-     * Creates a new seat on a block for an entity
+     * Creates a new seat on a block for an entity with custom behavior (e.g. location)
      * @author Gecolay
      * @since 3.6.0
      * @param block Block which should be connected to the returned seat
@@ -157,7 +157,7 @@ public class GSitAPI {
     }
 
     /**
-     * Creates a new seat on a block for an entity
+     * Creates a new seat on a block for an entity with custom behavior (e.g. location)
      * The seat can be static or rotating
      * @author Gecolay
      * @since 3.6.0
@@ -174,7 +174,7 @@ public class GSitAPI {
     }
 
     /**
-     * Creates a new seat on a block for an entity
+     * Creates a new seat on a block for an entity with custom behavior (e.g. location)
      * The seat can be static or rotating
      * The seat can be moved to with an offset
      * @author Gecolay

@@ -16,6 +16,7 @@ import net.minecraft.network.protocol.game.ClientboundAddPlayerPacket;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundBundlePacket;
+import net.minecraft.network.protocol.game.ClientboundHurtAnimationPacket;
 import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
@@ -150,13 +151,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
             public void entityDamageByEntityEvent(EntityDamageByEntityEvent Event) { if(Event.getDamager() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void entityDamageEvent(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playAnimation(1); }
+            public void entityDamageEvent(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playDamageAnimation(); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void projectileLaunchEvent(ProjectileLaunchEvent Event) { if(Event.getEntity().getShooter() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerAnimationEvent(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getAnimationType() == PlayerAnimationType.ARM_SWING) playAnimation(Event.getPlayer().getMainHand().equals(MainHand.RIGHT) ? 0 : 3); }
+            public void playerAnimationEvent(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer) playHandAnimation(Event.getAnimationType() == PlayerAnimationType.ARM_SWING ? ClientboundAnimatePacket.SWING_MAIN_HAND : ClientboundAnimatePacket.SWING_OFF_HAND); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void inventoryClickEvent(InventoryClickEvent Event) { if(Event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
@@ -204,7 +205,6 @@ public class Pose implements dev.geco.gsit.model.Pose {
         packages.add(createNpcPacket);
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) packages.add(teleportNpcPacket);
         if(poseType == PoseType.SPIN) packages.add(rotateNpcPacket);
 
         bundle = new ClientboundBundlePacket(packages);
@@ -218,13 +218,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
     private void addViewerPlayer(Player player) {
         sendPacket(player, bundle);
-        if((poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) || height < 1) return;
+        if(poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) return;
         gSitMain.getTaskService().runDelayed(() -> {
             sendPacket(player, teleportNpcPacket);
             gSitMain.getTaskService().runDelayed(() -> {
                 sendPacket(player, teleportNpcPacket);
-            }, player, 1);
-        }, player, 1);
+            }, player, 2);
+        }, player, 2);
     }
 
     @Override
@@ -386,7 +386,12 @@ public class Pose implements dev.geco.gsit.model.Pose {
         for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, setEquipmentPacket);
     }
 
-    private void playAnimation(int animationId) {
+    private void playDamageAnimation() {
+        ClientboundHurtAnimationPacket animationPacket = new ClientboundHurtAnimationPacket(playerNpc);
+        for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, animationPacket);
+    }
+
+    private void playHandAnimation(int animationId) {
         ClientboundAnimatePacket animatePacket = new ClientboundAnimatePacket(playerNpc, animationId);
         for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, animatePacket);
     }

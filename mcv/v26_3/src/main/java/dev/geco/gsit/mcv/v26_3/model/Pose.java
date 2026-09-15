@@ -14,9 +14,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundBundlePacket;
+import net.minecraft.network.protocol.game.ClientboundHurtAnimationPacket;
 import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
@@ -25,6 +25,7 @@ import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
+import net.minecraft.network.protocol.game.ClientboundSwingAnimationPacket;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateAttributesPacket;
 import net.minecraft.network.protocol.game.VecDelta;
@@ -35,10 +36,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -68,7 +71,6 @@ import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.MainHand;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -165,13 +167,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
             public void entityDamageByEntityEvent(EntityDamageByEntityEvent Event) { if(Event.getDamager() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void entityDamageEvent(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playAnimation(1); }
+            public void entityDamageEvent(EntityDamageEvent Event) { if(Event.getEntity() == seatPlayer) playDamageAnimation(); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void projectileLaunchEvent(ProjectileLaunchEvent Event) { if(Event.getEntity().getShooter() == seatPlayer && !gSitMain.getConfigService().P_INTERACT) Event.setCancelled(true); }
 
             @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-            public void playerAnimationEvent(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer && Event.getAnimationType() == PlayerAnimationType.ARM_SWING) playAnimation(Event.getPlayer().getMainHand().equals(MainHand.RIGHT) ? 0 : 3); }
+            public void playerAnimationEvent(PlayerAnimationEvent Event) { if(Event.getPlayer() == seatPlayer) playHandAnimation(Event.getAnimationType() == PlayerAnimationType.ARM_SWING ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND); }
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void inventoryClickEvent(InventoryClickEvent Event) { if(Event.getWhoClicked() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) Event.setCancelled(true); }
@@ -222,7 +224,6 @@ public class Pose implements dev.geco.gsit.model.Pose {
         packages.add(metaNpcPacket);
         packages.add(attributeNpcPacket);
         if(poseType == PoseType.SPIN) packages.add(rotateNpcPacket);
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) packages.add(teleportNpcPacket);
 
         bundle = new ClientboundBundlePacket(packages);
 
@@ -274,13 +275,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
     private void addViewerPlayer(Player player) {
         sendPacket(player, bundle);
-        if((poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) || height < 1) return;
+        if(poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) return;
         gSitMain.getTaskService().runDelayed(() -> {
             sendPacket(player, teleportNpcPacket);
             gSitMain.getTaskService().runDelayed(() -> {
                 sendPacket(player, teleportNpcPacket);
-            }, player, 1);
-        }, player, 1);
+            }, player, 2);
+        }, player, 2);
     }
 
     @Override
@@ -405,9 +406,14 @@ public class Pose implements dev.geco.gsit.model.Pose {
         for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, setEquipmentPacket);
     }
 
-    private void playAnimation(int animationId) {
-        ClientboundAnimatePacket animatePacket = new ClientboundAnimatePacket(playerNpc, animationId);
-        for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, animatePacket);
+    private void playDamageAnimation() {
+        ClientboundHurtAnimationPacket animationPacket = new ClientboundHurtAnimationPacket(playerNpc);
+        for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, animationPacket);
+    }
+
+    private void playHandAnimation(InteractionHand hand) {
+        ClientboundSwingAnimationPacket animationPacket = new ClientboundSwingAnimationPacket(playerNpc, hand, SwingAnimation.DEFAULT);
+        for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, animationPacket);
     }
 
     private byte getFixedRotation(float rotation) { return (byte) (rotation * 256f / 360f); }
