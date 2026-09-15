@@ -3,6 +3,7 @@ package dev.geco.gsit.mcv.v1_19_4.model;
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.mcv.v1_19_4.entity.PlayerSitEntity;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
 import dev.geco.gsit.service.PoseService;
@@ -12,6 +13,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundAddPlayerPacket;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
@@ -24,6 +26,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
+import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -82,10 +85,10 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private Set<Player> nearbyPlayers = new HashSet<>();
     private final ServerPlayer serverPlayer;
     protected final ServerPlayer playerNpc;
+    private PlayerSitEntity vehicleEntity;
     private final Location blockLocation;
     private final Block bedBlock;
     private final BlockPos bedPos;
-    private final double height;
     private final Direction direction;
     protected ClientboundBlockUpdatePacket setBedPacket;
     protected ClientboundPlayerInfoUpdatePacket addNpcInfoPacket;
@@ -127,8 +130,8 @@ public class Pose implements dev.geco.gsit.model.Pose {
         bedPos = new BlockPos(blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
 
         playerNpc = createNPC();
-        height = seatLocation.getY();
-        playerNpc.moveTo(seatLocation.getX(), seatLocation.getY() + (poseType == PoseType.LAY || poseType == PoseType.LAY_BACK ? 0.3125d : poseType == PoseType.SPIN ? 0.2d : 0d), seatLocation.getZ(), 0f, 0f);
+        double height = seatLocation.getY();
+        playerNpc.absMoveTo(seatLocation.getX(), height + (poseType == PoseType.LAY || poseType == PoseType.LAY_BACK ? 0.3125d : poseType == PoseType.SPIN ? 0.2d : 0d), seatLocation.getZ(), 0f, 0f);
 
         direction = getDirection();
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) setBedPacket = new ClientboundBlockUpdatePacket(bedPos, Blocks.WHITE_BED.defaultBlockState().setValue(BedBlock.FACING, direction.getOpposite()).setValue(BedBlock.PART, BedPart.HEAD));
@@ -138,6 +141,11 @@ public class Pose implements dev.geco.gsit.model.Pose {
         createNpcPacket = new ClientboundAddPlayerPacket(playerNpc);
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) teleportNpcPacket = new ClientboundTeleportEntityPacket(playerNpc);
         if(poseType == PoseType.SPIN) rotateNpcPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90f), true);
+        if(poseType == PoseType.LAY_BACK) {
+            vehicleEntity = new PlayerSitEntity(seatPlayer.getLocation());
+            float sleepYaw = direction == Direction.SOUTH ? 270 : direction == Direction.WEST ? 180 : direction == Direction.EAST ? 0 : 90;
+            vehicleEntity.absMoveTo(seatLocation.getX(), height - 0.375, seatLocation.getZ(), sleepYaw, 0f);
+        }
 
         listener = new Listener() {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -202,6 +210,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         packages.add(addNpcInfoPacket);
         packages.add(createNpcPacket);
+        if(poseType == PoseType.LAY_BACK) {
+            playerNpc.startRiding(vehicleEntity, true);
+            playerNpc.setPose(net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
+            packages.add(new ClientboundAddEntityPacket(vehicleEntity));
+            packages.add(new ClientboundSetEntityDataPacket(vehicleEntity.getId(), vehicleEntity.getEntityData().getNonDefaultValues()));
+            packages.add(new ClientboundSetPassengersPacket(vehicleEntity));
+        }
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
         if(poseType == PoseType.SPIN) packages.add(rotateNpcPacket);
@@ -234,6 +249,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         seatPlayer.removeScoreboardTag(PoseService.POSE_TAG);
 
         for(Player nearbyPlayer : nearbyPlayers) removeViewerPlayer(nearbyPlayer);
+        if(vehicleEntity != null) sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(vehicleEntity.getId()));
 
         if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(false);
 

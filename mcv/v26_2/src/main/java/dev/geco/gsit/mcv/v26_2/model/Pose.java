@@ -89,11 +89,11 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private Set<Player> nearbyPlayers = new HashSet<>();
     private final ServerPlayer serverPlayer;
     protected final ServerPlayer playerNpc;
+    private PlayerSitEntity vehicleEntity;
     private final PlayerSitEntity hideNameEntity;
     private final Location blockLocation;
     private final Block bedBlock;
     private final BlockPos bedPos;
-    private final double height;
     private final Direction direction;
     protected ClientboundBlockUpdatePacket setBedPacket;
     protected ClientboundPlayerInfoUpdatePacket addNpcInfoPacket;
@@ -135,7 +135,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         bedPos = new BlockPos(blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
 
         playerNpc = createNPC();
-        height = seatLocation.getY() + gSitMain.getSitService().getBaseOffset();
+        double height = seatLocation.getY() + gSitMain.getSitService().getBaseOffset();
         double scale = serverPlayer.getScale();
         double offset = height;
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) offset += 0.1125d * scale;
@@ -150,6 +150,11 @@ public class Pose implements dev.geco.gsit.model.Pose {
         createNpcPacket = new ClientboundAddEntityPacket(playerNpc.getId(), playerNpc.getUUID(), playerNpc.getX(), playerNpc.getY(), playerNpc.getZ(), playerNpc.getXRot(), playerNpc.getYRot(), playerNpc.getType(), 0, playerNpc.getDeltaMovement(), playerNpc.getYHeadRot());
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) teleportNpcPacket = new ClientboundTeleportEntityPacket(playerNpc.getId(), net.minecraft.world.entity.PositionMoveRotation.of(playerNpc), Set.of(), false);
         if(poseType == PoseType.SPIN) rotateNpcPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90f), true);
+        if(poseType == PoseType.LAY_BACK) {
+            vehicleEntity = new PlayerSitEntity(seatPlayer.getLocation());
+            float sleepYaw = direction == Direction.SOUTH ? 270 : direction == Direction.WEST ? 180 : direction == Direction.EAST ? 0 : 90;
+            vehicleEntity.absSnapTo(seatLocation.getX(), height - 0.375 * scale, seatLocation.getZ(), sleepYaw, 0f);
+        }
 
         hideNameEntity = new PlayerSitEntity(seatPlayer.getLocation());
 
@@ -217,6 +222,13 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         packages.add(addNpcInfoPacket);
         packages.add(createNpcPacket);
+        if(poseType == PoseType.LAY_BACK) {
+            playerNpc.startRiding(vehicleEntity, true, false);
+            playerNpc.setPose(net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
+            packages.add(new ClientboundAddEntityPacket(vehicleEntity.getId(), vehicleEntity.getUUID(), vehicleEntity.getX(), vehicleEntity.getY(), vehicleEntity.getZ(), vehicleEntity.getXRot(), vehicleEntity.getYRot(), vehicleEntity.getType(), 0, vehicleEntity.getDeltaMovement(), vehicleEntity.getYHeadRot()));
+            packages.add(new ClientboundSetEntityDataPacket(vehicleEntity.getId(), vehicleEntity.getEntityData().getNonDefaultValues()));
+            packages.add(new ClientboundSetPassengersPacket(vehicleEntity));
+        }
         if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
         packages.add(attributeNpcPacket);
@@ -289,6 +301,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         seatPlayer.removeScoreboardTag(PoseService.POSE_TAG);
 
         for(Player nearbyPlayer : nearbyPlayers) removeViewerPlayer(nearbyPlayer);
+        if(vehicleEntity != null) sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(vehicleEntity.getId()));
         sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(hideNameEntity.getId()));
 
         if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(false);
