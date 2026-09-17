@@ -17,15 +17,15 @@ commands:
 
   glay:
     usage: /<command>
-    aliases: [lay]
+    aliases: [lay, glayback, layback]
     description: Lay command
     permission: GSit.Lay
 
-  glayback:
+  glegsup:
     usage: /<command>
-    aliases: [layback]
-    description: Lay back command
-    permission: GSit.LayBack
+    aliases: [legsup]
+    description: Legs up command
+    permission: GSit.LegsUp
 
   gbellyflop:
     usage: /<command>
@@ -104,7 +104,7 @@ permissions:
     description: Pose | Permissions
     children:
       GSit.Lay: true
-      GSit.LayBack: true
+      GSit.LegsUp: true
       GSit.BellyFlop: true
       GSit.Spin: true
 
@@ -112,9 +112,9 @@ permissions:
     default: true
     description: Lay command | Permission
 
-  GSit.LayBack:
+  GSit.LegsUp:
     default: true
-    description: LayBack command | Permission
+    description: LegsUp command | Permission
 
   GSit.BellyFlop:
     default: true

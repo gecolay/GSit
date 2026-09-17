@@ -14,11 +14,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class GLayBackCommand implements CommandExecutor {
+public class GLegsUpCommand implements CommandExecutor {
 
     private final GSitMain gSitMain;
 
-    public GLayBackCommand(GSitMain gSitMain) {
+    public GLegsUpCommand(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
     }
 
@@ -29,7 +29,7 @@ public class GLayBackCommand implements CommandExecutor {
             return true;
         }
 
-        if(!gSitMain.getPermissionService().hasPermission(sender, "LayBack", "Pose.*")) {
+        if(!gSitMain.getPermissionService().hasPermission(sender, "LegsUp", "Pose.*")) {
             gSitMain.getMessageService().sendMessage(sender, "Messages.command-permission-error");
             return true;
         }
@@ -40,7 +40,7 @@ public class GLayBackCommand implements CommandExecutor {
         }
 
         Pose pose = gSitMain.getPoseService().getPoseByPlayer(player);
-        if(pose != null && pose.getPoseType() == PoseType.LAY_BACK) {
+        if(pose != null && pose.getPoseType() == PoseType.LEGS_UP) {
             gSitMain.getPoseService().removePose(pose, StopReason.GET_UP);
             return true;
         }
@@ -84,7 +84,7 @@ public class GLayBackCommand implements CommandExecutor {
             return true;
         }
 
-        pose = gSitMain.getPoseService().createPose(block, player, PoseType.LAY_BACK);
+        pose = gSitMain.getPoseService().createPose(block, player, PoseType.LEGS_UP);
         if(pose == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-pose-error");
 
         return true;

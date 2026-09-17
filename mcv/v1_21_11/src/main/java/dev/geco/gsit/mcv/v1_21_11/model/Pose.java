@@ -138,19 +138,19 @@ public class Pose implements dev.geco.gsit.model.Pose {
         double height = seatLocation.getY() + gSitMain.getSitService().getBaseOffset();
         double scale = serverPlayer.getScale();
         double offset = height;
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) offset += 0.1125d * scale;
+        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) offset += 0.1125d * scale;
         if(poseType == PoseType.BELLYFLOP) offset += -0.19 * scale;
         playerNpc.absSnapTo(seatLocation.getX(), offset, seatLocation.getZ(), 0f, 0f);
 
         direction = getDirection();
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) setBedPacket = new ClientboundBlockUpdatePacket(bedPos, Blocks.WHITE_BED.defaultBlockState().setValue(BedBlock.FACING, direction.getOpposite()).setValue(BedBlock.PART, BedPart.HEAD));
+        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) setBedPacket = new ClientboundBlockUpdatePacket(bedPos, Blocks.WHITE_BED.defaultBlockState().setValue(BedBlock.FACING, direction.getOpposite()).setValue(BedBlock.PART, BedPart.HEAD));
         addNpcInfoPacket = new ClientboundPlayerInfoUpdatePacket(EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, ClientboundPlayerInfoUpdatePacket.Action.INITIALIZE_CHAT, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_GAME_MODE, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY, ClientboundPlayerInfoUpdatePacket.Action.UPDATE_DISPLAY_NAME), Collections.singletonList(playerNpc));
         removeNpcInfoPacket = new ClientboundPlayerInfoRemovePacket(Collections.singletonList(playerNpc.getUUID()));
         removeNpcPacket = new ClientboundRemoveEntitiesPacket(playerNpc.getId());
         createNpcPacket = new ClientboundAddEntityPacket(playerNpc.getId(), playerNpc.getUUID(), playerNpc.getX(), playerNpc.getY(), playerNpc.getZ(), playerNpc.getXRot(), playerNpc.getYRot(), playerNpc.getType(), 0, playerNpc.getDeltaMovement(), playerNpc.getYHeadRot());
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) teleportNpcPacket = new ClientboundTeleportEntityPacket(playerNpc.getId(), net.minecraft.world.entity.PositionMoveRotation.of(playerNpc), Set.of(), false);
+        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) teleportNpcPacket = new ClientboundTeleportEntityPacket(playerNpc.getId(), net.minecraft.world.entity.PositionMoveRotation.of(playerNpc), Set.of(), false);
         if(poseType == PoseType.SPIN) rotateNpcPacket = new ClientboundMoveEntityPacket.PosRot(playerNpc.getId(), (short) 0, (short) 0, (short) 0, (byte) 0, getFixedRotation(-90f), true);
-        if(poseType == PoseType.LAY_BACK) {
+        if(poseType == PoseType.LEGS_UP) {
             vehicleEntity = new PlayerSitEntity(seatPlayer.getLocation());
             float sleepYaw = direction == Direction.SOUTH ? 270 : direction == Direction.WEST ? 180 : direction == Direction.EAST ? 0 : 90;
             vehicleEntity.absSnapTo(seatLocation.getX(), height - 0.375 * scale, seatLocation.getZ(), sleepYaw, 0f);
@@ -197,7 +197,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         playerNpc.getEntityData().set(POSE_ACCESSOR, net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
         if(poseType == PoseType.SPIN) playerNpc.getEntityData().set(DATA_FLAG_ACCESSOR, (byte) 4);
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) playerNpc.getEntityData().set(SLEEP_BLOCK_POS_ACCESSOR, Optional.of(bedPos));
+        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) playerNpc.getEntityData().set(SLEEP_BLOCK_POS_ACCESSOR, Optional.of(bedPos));
         playerNpc.getEntityData().set(MAIN_HAND_ACCESSOR, serverPlayer.getEntityData().get(MAIN_HAND_ACCESSOR));
         playerNpc.getEntityData().set(SKIN_ACCESSOR, serverPlayer.getEntityData().get(SKIN_ACCESSOR));
         playerNpc.getEntityData().set(LEFT_SHOULDER_ACCESSOR, serverPlayer.getEntityData().get(LEFT_SHOULDER_ACCESSOR));
@@ -209,7 +209,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         setEquipmentVisibility(false);
 
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) {
+        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) {
             sleepingIgnoredCache = seatPlayer.isSleepingIgnored();
             if(gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(true);
             if(gSitMain.getConfigService().P_LAY_REST) seatPlayer.setStatistic(Statistic.TIME_SINCE_REST, 0);
@@ -222,14 +222,14 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
         packages.add(addNpcInfoPacket);
         packages.add(createNpcPacket);
-        if(poseType == PoseType.LAY_BACK) {
+        if(poseType == PoseType.LEGS_UP) {
             playerNpc.startRiding(vehicleEntity, true, false);
             playerNpc.setPose(net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
             packages.add(new ClientboundAddEntityPacket(vehicleEntity.getId(), vehicleEntity.getUUID(), vehicleEntity.getX(), vehicleEntity.getY(), vehicleEntity.getZ(), vehicleEntity.getXRot(), vehicleEntity.getYRot(), vehicleEntity.getType(), 0, vehicleEntity.getDeltaMovement(), vehicleEntity.getYHeadRot()));
             packages.add(new ClientboundSetEntityDataPacket(vehicleEntity.getId(), vehicleEntity.getEntityData().getNonDefaultValues()));
             packages.add(new ClientboundSetPassengersPacket(vehicleEntity));
         }
-        if(poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) packages.add(setBedPacket);
+        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) packages.add(setBedPacket);
         packages.add(metaNpcPacket);
         packages.add(attributeNpcPacket);
         if(poseType == PoseType.SPIN) packages.add(rotateNpcPacket);
@@ -272,7 +272,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
             updateSkin();
 
-            if((poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) || !gSitMain.getConfigService().P_LAY_SNORING_SOUNDS) return;
+            if((poseType != PoseType.LAY && poseType != PoseType.LEGS_UP) || !gSitMain.getConfigService().P_LAY_SNORING_SOUNDS) return;
 
             long tick = serverPlayer.getPlayerTime();
 
@@ -284,7 +284,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
     private void addViewerPlayer(Player player) {
         sendPacket(player, bundle);
-        if(poseType != PoseType.LAY && poseType != PoseType.LAY_BACK) return;
+        if(poseType != PoseType.LAY && poseType != PoseType.LEGS_UP) return;
         gSitMain.getTaskService().runDelayed(() -> {
             sendPacket(player, teleportNpcPacket);
             gSitMain.getTaskService().runDelayed(() -> {
@@ -304,7 +304,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         if(vehicleEntity != null) sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(vehicleEntity.getId()));
         sendPacket(serverPlayer, new ClientboundRemoveEntitiesPacket(hideNameEntity.getId()));
 
-        if((poseType == PoseType.LAY || poseType == PoseType.LAY_BACK) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(false);
+        if((poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) && gSitMain.getConfigService().P_LAY_NIGHT_SKIP && !sleepingIgnoredCache) seatPlayer.setSleepingIgnored(false);
 
         if(!serverPlayer.activeEffects.containsKey(MobEffects.INVISIBILITY)) serverPlayer.setInvisible(false);
 

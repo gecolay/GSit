@@ -5,7 +5,7 @@ import org.bukkit.entity.Pose;
 public enum PoseType {
 
     LAY(Pose.SLEEPING, "lay"),
-    LAY_BACK(Pose.SLEEPING, "lay_back"),
+    LEGS_UP(Pose.SLEEPING, "legs_up"),
     BELLYFLOP(Pose.SWIMMING, "bellyflop"),
     SPIN(Pose.SPIN_ATTACK, "spin");
 
