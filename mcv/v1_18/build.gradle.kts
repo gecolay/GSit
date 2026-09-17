@@ -10,7 +10,6 @@ dependencies {
 
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
 
-
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(18)
 }
