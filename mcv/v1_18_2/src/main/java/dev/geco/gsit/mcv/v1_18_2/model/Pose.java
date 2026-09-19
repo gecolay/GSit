@@ -292,7 +292,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
             if((poseType != PoseType.LAY && poseType != PoseType.LEGS_UP) || !gSitMain.getConfigService().P_LAY_SNORING_SOUNDS) return;
 
-            long tick = serverPlayer.getPlayerTime();
+            long tick = seatPlayer.getPlayerTime();
 
             if((!gSitMain.getConfigService().P_LAY_SNORING_NIGHT_ONLY || (tick >= 12500 && tick <= 23500)) && tick % 90 == 0) {
                 for(Player nearbyPlayer : this.nearbyPlayers) nearbyPlayer.playSound(seat.getLocation(), Sound.ENTITY_FOX_SLEEP, SoundCategory.PLAYERS, 1.5f, 0);
