@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public class EntityEventHandler {

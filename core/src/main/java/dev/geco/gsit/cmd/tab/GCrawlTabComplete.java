@@ -23,7 +23,7 @@ public class GCrawlTabComplete implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(!gSitMain.getConfigService().C_DOUBLE_SNEAK) return new ArrayList<>();
+        if(!gSitMain.getConfigService().C_DOUBLE_SNEAK && !gSitMain.getConfigService().C_CORRIDOR_CRAWL) return new ArrayList<>();
         List<String> complete = new ArrayList<>(), completeStarted = new ArrayList<>();
         if(args.length == 1) {
             if(gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*")) complete.add("toggle");

@@ -52,7 +52,10 @@ public class ConfigService {
     public boolean P_LAY_SNORING_NIGHT_ONLY;
     public boolean P_LAY_NIGHT_SKIP;
     public boolean C_GET_UP_SNEAK;
+    public boolean C_CORRIDOR_CRAWL;
     public boolean C_DOUBLE_SNEAK;
+    public double C_DOUBLE_SNEAK_PITCH;
+    public long C_DOUBLE_SNEAK_TIME;
     public boolean C_DEFAULT_CRAWL_MODE;
     public int C_LAYERS;
     public boolean TRUSTED_REGION_ONLY;
@@ -129,7 +132,10 @@ public class ConfigService {
         P_LAY_NIGHT_SKIP = gSitMain.getConfig().getBoolean("Options.Pose.lay-night-skip", true);
 
         C_GET_UP_SNEAK = gSitMain.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
+        C_CORRIDOR_CRAWL = gSitMain.getConfig().getBoolean("Options.Crawl.corridor-crawl", true);
         C_DOUBLE_SNEAK = gSitMain.getConfig().getBoolean("Options.Crawl.double-sneak", false);
+        C_DOUBLE_SNEAK_PITCH = gSitMain.getConfig().getDouble("Options.Crawl.double-sneak-pitch", 75d);
+        C_DOUBLE_SNEAK_TIME = gSitMain.getConfig().getLong("Options.Crawl.double-sneak-time", 400);
         C_DEFAULT_CRAWL_MODE = gSitMain.getConfig().getBoolean("Options.Crawl.default-crawl-mode", true);
         C_LAYERS = gSitMain.getConfig().getInt("Options.Crawl.layers", 1);
 

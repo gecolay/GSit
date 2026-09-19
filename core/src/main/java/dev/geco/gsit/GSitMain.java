@@ -13,6 +13,7 @@ import dev.geco.gsit.cmd.tab.EmptyTabComplete;
 import dev.geco.gsit.cmd.tab.GCrawlTabComplete;
 import dev.geco.gsit.cmd.tab.GSitTabComplete;
 import dev.geco.gsit.event.BlockEventHandler;
+import dev.geco.gsit.event.CrawlEventHandler;
 import dev.geco.gsit.event.EntityEventHandler;
 import dev.geco.gsit.event.LegacyPacketHandler;
 import dev.geco.gsit.event.PacketHandler;
@@ -249,6 +250,7 @@ public class GSitMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerSitEventHandler(this), this);
         getServer().getPluginManager().registerEvents(new BlockEventHandler(this), this);
         getServer().getPluginManager().registerEvents(new SitEventHandler(this), this);
+        getServer().getPluginManager().registerEvents(new CrawlEventHandler(this), this);
 
         Listener mcvEntityEventHandler = versionService.isNewerOrVersion(1, 18) ? (Listener) versionService.getPackageObjectInstance("event.EntityEventHandler", this) : null;
         if(mcvEntityEventHandler == null) mcvEntityEventHandler = (Listener) versionService.getLegacyPackageObjectInstance("event.EntityEventHandler", this);

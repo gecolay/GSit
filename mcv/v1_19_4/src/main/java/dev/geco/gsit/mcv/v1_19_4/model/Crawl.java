@@ -139,7 +139,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
 
             int size = boxEntities.length;
 
-            List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>(size * size * 2);
+            List<Packet<ClientGamePacketListener>> packets = new ArrayList<>(size * size * 2);
 
             for(int x = 0; x < size; x++) {
                 for(int z = 0; z < size; z++) {

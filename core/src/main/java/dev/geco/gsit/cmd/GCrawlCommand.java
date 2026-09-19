@@ -63,7 +63,7 @@ public class GCrawlCommand implements CommandExecutor {
             return true;
         }
 
-        if(!args[0].equalsIgnoreCase("toggle") || !gSitMain.getConfigService().C_DOUBLE_SNEAK) {
+        if(!args[0].equalsIgnoreCase("toggle") || (!gSitMain.getConfigService().C_DOUBLE_SNEAK && !gSitMain.getConfigService().C_CORRIDOR_CRAWL)) {
             Bukkit.dispatchCommand(sender, label);
             return true;
         }

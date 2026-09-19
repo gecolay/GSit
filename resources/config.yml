@@ -46,7 +46,7 @@ Options:
     - "shelf_mushroom"
     - "snow"
 
-    # Allow sitting only on the bottom part of stairs and slabs
+    # Allow sitting only on the bottom part of slabs
     bottom-part-only: true
 
     # Require an empty main hand to sit by clicking
@@ -103,8 +103,17 @@ Options:
     # Allow standing up from crawling by sneaking
     get-up-sneak: true
 
+    # Start crawling when sneaking in front of a 1 block high corridor
+    corridor-crawl: true
+
     # Enable double-sneak to start crawling (requires looking straight down)
     double-sneak: false
+
+    # Minimum pitch (looking down) required to trigger double-sneak crawling
+    double-sneak-pitch: 75
+
+    # Maximum time in milliseconds between the two sneaks to trigger double-sneak crawling
+    double-sneak-time: 400
 
     # Allow crawling by default without using 'crawl toggle'
     default-crawl-mode: true

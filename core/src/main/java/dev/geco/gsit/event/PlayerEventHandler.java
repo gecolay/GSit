@@ -16,19 +16,12 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class PlayerEventHandler implements Listener {
 
-    private final double MAX_DOUBLE_SNEAK_PITCH = 85d;
-    private final long MAX_DOUBLE_SNEAK_TIME = 400;
-
     private final GSitMain gSitMain;
-    private final HashMap<UUID, Long> doubleSneakCrawlPlayers = new HashMap<>();
 
     public PlayerEventHandler(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -46,7 +39,6 @@ public class PlayerEventHandler implements Listener {
         Player player = event.getPlayer();
         stopActions(player, StopReason.DISCONNECT, true);
         gSitMain.getToggleService().clearEntitySitToggleCache(player.getUniqueId());
-        doubleSneakCrawlPlayers.remove(player.getUniqueId());
         gSitMain.getPacketHandler().removePlayerPacketHandler(player);
     }
 
@@ -86,38 +78,6 @@ public class PlayerEventHandler implements Listener {
 
         gSitMain.getMessageService().sendMessage(player, "Messages.action-blocked-error");
         event.setCancelled(true);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void playerToggleSneakEvent(PlayerToggleSneakEvent event) {
-        if(!gSitMain.getConfigService().C_DOUBLE_SNEAK) return;
-
-        Player player = event.getPlayer();
-        if(!event.isSneaking() || player.getLocation().getPitch() < MAX_DOUBLE_SNEAK_PITCH || !gSitMain.getCrawlService().isAvailable()) return;
-
-        if(!player.isValid() || !player.isOnGround() || player.getVehicle() != null || player.isSleeping() || gSitMain.getCrawlService().isPlayerCrawling(player)) return;
-
-        UUID playerId = player.getUniqueId();
-        if(!gSitMain.getToggleService().canPlayerUseCrawl(playerId)) return;
-
-        if(!doubleSneakCrawlPlayers.containsKey(playerId)) {
-            doubleSneakCrawlPlayers.put(playerId, System.currentTimeMillis());
-            return;
-        }
-
-        long last = doubleSneakCrawlPlayers.get(playerId);
-        doubleSneakCrawlPlayers.put(playerId, System.currentTimeMillis());
-        if(last < System.currentTimeMillis() - MAX_DOUBLE_SNEAK_TIME) return;
-
-        if(!gSitMain.getPermissionService().hasPermission(player, "CrawlSneak", "Crawl.*")) return;
-
-        if(!gSitMain.getEnvironmentUtil().isEntityInAllowedWorld(player)) return;
-
-        if(!gSitMain.getEnvironmentUtil().canUseInLocation(player.getLocation(), player, "crawl")) return;
-
-        doubleSneakCrawlPlayers.remove(playerId);
-
-        gSitMain.getCrawlService().startCrawl(player);
     }
 
 }
