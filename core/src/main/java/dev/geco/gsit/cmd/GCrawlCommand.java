@@ -2,6 +2,7 @@ package dev.geco.gsit.cmd;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.CrawlType;
 import dev.geco.gsit.model.StopReason;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -59,7 +60,7 @@ public class GCrawlCommand implements CommandExecutor {
                 return true;
             }
 
-            if(gSitMain.getCrawlService().startCrawl(player) == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-region-error");
+            if(gSitMain.getCrawlService().startCrawl(player, CrawlType.COMMAND) == null) gSitMain.getMessageService().sendMessage(sender, "Messages.action-crawl-region-error");
             return true;
         }
 

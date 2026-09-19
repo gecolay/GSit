@@ -1,6 +1,7 @@
 package dev.geco.gsit.util;
 
 import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.CrawlType;
 import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
@@ -27,6 +28,8 @@ public interface EntityUtil {
 
     @Nullable Pose createPose(@NotNull Seat seat, @NotNull PoseType poseType);
 
-    @Nullable Crawl createCrawl(@NotNull Player player);
+    @Nullable Crawl createCrawl(@NotNull Player player, @NotNull CrawlType crawlType);
+
+    @Nullable Crawl createCrawl(@NotNull Player player, @NotNull CrawlType crawlType, int layers);
 
 }

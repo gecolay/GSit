@@ -68,7 +68,7 @@ public class PoseService {
         Location seatLocation = gSitMain.getSitService().getSeatLocation(block, returnLocation, xOffset, yOffset, zOffset, sitInBlockCenter);
         if(!gSitMain.getEntityUtil().isSitLocationValid(seatLocation)) return null;
 
-        PrePlayerPoseEvent prePlayerPoseEvent = new PrePlayerPoseEvent(player, block);
+        PrePlayerPoseEvent prePlayerPoseEvent = new PrePlayerPoseEvent(player, block, poseType);
         Bukkit.getPluginManager().callEvent(prePlayerPoseEvent);
         if(prePlayerPoseEvent.isCancelled()) return null;
 

@@ -1,5 +1,6 @@
 package dev.geco.gsit.api.event;
 
+import dev.geco.gsit.model.PoseType;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -10,15 +11,19 @@ import org.jetbrains.annotations.NotNull;
 public class PrePlayerPoseEvent extends PlayerEvent implements Cancellable {
 
     private final Block block;
+    private final PoseType poseType;
     private boolean cancel = false;
     private static final HandlerList handlers = new HandlerList();
 
-    public PrePlayerPoseEvent(@NotNull Player player, @NotNull Block block) {
+    public PrePlayerPoseEvent(@NotNull Player player, @NotNull Block block, @NotNull PoseType poseType) {
         super(player);
         this.block = block;
+        this.poseType = poseType;
     }
 
     public @NotNull Block getBlock() { return block; }
+
+    public @NotNull PoseType getPoseType() { return poseType; }
 
     @Override
     public boolean isCancelled() { return cancel; }

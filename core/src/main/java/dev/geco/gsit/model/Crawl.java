@@ -11,6 +11,8 @@ public interface Crawl {
 
     @NotNull Player getPlayer();
 
+    @NotNull CrawlType getCrawlType();
+
     long getLifetimeInNanoSeconds();
 
 }

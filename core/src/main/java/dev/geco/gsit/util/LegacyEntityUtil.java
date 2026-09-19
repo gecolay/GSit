@@ -2,6 +2,7 @@ package dev.geco.gsit.util;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.CrawlType;
 import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
@@ -153,6 +154,9 @@ public class LegacyEntityUtil implements EntityUtil {
     public @Nullable Pose createPose(@NotNull Seat seat, @NotNull PoseType poseType) { return null; }
 
     @Override
-    public @Nullable Crawl createCrawl(@NotNull Player player) { return null; }
+    public @Nullable Crawl createCrawl(@NotNull Player player, @NotNull CrawlType crawlType) { return null; }
+
+    @Override
+    public @Nullable Crawl createCrawl(@NotNull Player player, @NotNull CrawlType crawlType, int layers) { return null; }
 
 }

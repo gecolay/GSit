@@ -1,5 +1,6 @@
 package dev.geco.gsit.api.event;
 
+import dev.geco.gsit.model.CrawlType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -8,12 +9,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class PrePlayerCrawlEvent extends PlayerEvent implements Cancellable {
 
+    private final CrawlType crawlType;
     private boolean cancel = false;
     private static final HandlerList handlers = new HandlerList();
 
-    public PrePlayerCrawlEvent(@NotNull Player player) {
+    public PrePlayerCrawlEvent(@NotNull Player player, @NotNull CrawlType crawlType) {
         super(player);
+        this.crawlType = crawlType;
     }
+
+    public @NotNull CrawlType getCrawlType() { return crawlType; }
 
     @Override
     public boolean isCancelled() { return cancel; }

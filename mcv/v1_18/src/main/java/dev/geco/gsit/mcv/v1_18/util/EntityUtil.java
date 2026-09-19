@@ -5,6 +5,7 @@ import dev.geco.gsit.mcv.v1_18.entity.PlayerSitEntity;
 import dev.geco.gsit.mcv.v1_18.entity.SeatEntity;
 import dev.geco.gsit.mcv.v1_18.model.Crawl;
 import dev.geco.gsit.mcv.v1_18.model.Pose;
+import dev.geco.gsit.model.CrawlType;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -120,6 +121,9 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     public @Nullable Pose createPose(@NotNull Seat seat, @NotNull PoseType poseType) { return new Pose(seat, poseType); }
 
     @Override
-    public @Nullable Crawl createCrawl(@NotNull Player player) { return new Crawl(player); }
+    public @Nullable Crawl createCrawl(@NotNull Player player, @NotNull CrawlType crawlType) { return new Crawl(player, crawlType); }
+
+    @Override
+    public @Nullable Crawl createCrawl(@NotNull Player player, @NotNull CrawlType crawlType, int layers) { return new Crawl(player, crawlType, layers); }
 
 }

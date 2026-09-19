@@ -2,6 +2,7 @@ package dev.geco.gsit.mcv.v1_21_11.model;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.mcv.v1_21_11.entity.BoxEntity;
+import dev.geco.gsit.model.CrawlType;
 import dev.geco.gsit.model.StopReason;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
@@ -28,6 +29,7 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
 
     private final GSitMain gSitMain = GSitMain.getInstance();
     private final Player player;
+    private final CrawlType crawlType;
     private final ServerPlayer serverPlayer;
     protected final BoxEntity boxEntity;
     private boolean boxEntityExist = false;
@@ -37,9 +39,12 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     private boolean finished = false;
     private final long spawnTime = System.nanoTime();
 
+    public Crawl(Player player, CrawlType crawlType) { this(player, crawlType, GSitMain.getInstance().getConfigService().C_LAYERS); }
+
     @SuppressWarnings("deprecation")
-    public Crawl(Player player) {
+    public Crawl(Player player, CrawlType crawlType, int layers) {
         this.player = player;
+        this.crawlType = crawlType;
 
         serverPlayer = ((CraftPlayer) player).getHandle();
 
@@ -146,6 +151,9 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
 
     @Override
     public @NotNull Player getPlayer() { return player; }
+
+    @Override
+    public @NotNull CrawlType getCrawlType() { return crawlType; }
 
     @Override
     public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }

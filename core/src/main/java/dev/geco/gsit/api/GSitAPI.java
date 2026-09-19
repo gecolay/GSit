@@ -2,6 +2,7 @@ package dev.geco.gsit.api;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.model.Crawl;
+import dev.geco.gsit.model.CrawlType;
 import dev.geco.gsit.model.Pose;
 import dev.geco.gsit.model.PoseType;
 import dev.geco.gsit.model.Seat;
@@ -433,10 +434,24 @@ public class GSitAPI {
      * @author Gecolay
      * @since 2.0.0
      * @param player Player
+     * @param crawlType CrawlType {@link CrawlType}
      * @return Crawl or <code>null</code> if the start failed or was cancelled by event
      */
-    public static @Nullable Crawl startCrawl(@NotNull Player player) {
-        return getInstance().getCrawlService().startCrawl(player);
+    public static @Nullable Crawl startCrawl(@NotNull Player player, CrawlType crawlType) {
+        return getInstance().getCrawlService().startCrawl(player, crawlType);
+    }
+
+    /**
+     * Starts a new crawl session for a player
+     * @author Gecolay
+     * @since 3.7.0
+     * @param player Player
+     * @param crawlType CrawlType {@link CrawlType}
+     * @param layers Crawl box layers
+     * @return Crawl or <code>null</code> if the start failed or was cancelled by event
+     */
+    public static @Nullable Crawl startCrawl(@NotNull Player player, CrawlType crawlType, int layers) {
+        return getInstance().getCrawlService().startCrawl(player, crawlType, layers);
     }
 
     /**
