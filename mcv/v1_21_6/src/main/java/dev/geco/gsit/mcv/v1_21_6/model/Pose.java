@@ -217,32 +217,32 @@ public class Pose implements dev.geco.gsit.model.Pose {
         metaNpcPacket = new ClientboundSetEntityDataPacket(playerNpc.getId(), playerNpc.getEntityData().isDirty() ? playerNpc.getEntityData().packDirty() : playerNpc.getEntityData().getNonDefaultValues());
         attributeNpcPacket = new ClientboundUpdateAttributesPacket(playerNpc.getId(), serverPlayer.getAttributes().getSyncableAttributes());
 
-        List<Packet<? super ClientGamePacketListener>> packages = new ArrayList<>();
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
 
-        packages.add(addNpcInfoPacket);
-        packages.add(createNpcPacket);
+        packets.add(addNpcInfoPacket);
+        packets.add(createNpcPacket);
         if(poseType == PoseType.LEGS_UP) {
             playerNpc.startRiding(vehicleEntity, true);
             playerNpc.setPose(net.minecraft.world.entity.Pose.values()[poseType.getPlayerPose().ordinal()]);
-            packages.add(new ClientboundAddEntityPacket(vehicleEntity.getId(), vehicleEntity.getUUID(), vehicleEntity.getX(), vehicleEntity.getY(), vehicleEntity.getZ(), vehicleEntity.getXRot(), vehicleEntity.getYRot(), vehicleEntity.getType(), 0, vehicleEntity.getDeltaMovement(), vehicleEntity.getYHeadRot()));
-            packages.add(new ClientboundSetEntityDataPacket(vehicleEntity.getId(), vehicleEntity.getEntityData().getNonDefaultValues()));
-            packages.add(new ClientboundSetPassengersPacket(vehicleEntity));
+            packets.add(new ClientboundAddEntityPacket(vehicleEntity.getId(), vehicleEntity.getUUID(), vehicleEntity.getX(), vehicleEntity.getY(), vehicleEntity.getZ(), vehicleEntity.getXRot(), vehicleEntity.getYRot(), vehicleEntity.getType(), 0, vehicleEntity.getDeltaMovement(), vehicleEntity.getYHeadRot()));
+            packets.add(new ClientboundSetEntityDataPacket(vehicleEntity.getId(), vehicleEntity.getEntityData().getNonDefaultValues()));
+            packets.add(new ClientboundSetPassengersPacket(vehicleEntity));
         }
-        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) packages.add(setBedPacket);
-        packages.add(metaNpcPacket);
-        packages.add(attributeNpcPacket);
-        if(poseType == PoseType.SPIN) packages.add(rotateNpcPacket);
+        if(poseType == PoseType.LAY || poseType == PoseType.LEGS_UP) packets.add(setBedPacket);
+        packets.add(metaNpcPacket);
+        packets.add(attributeNpcPacket);
+        if(poseType == PoseType.SPIN) packets.add(rotateNpcPacket);
 
-        bundle = new ClientboundBundlePacket(packages);
+        bundle = new ClientboundBundlePacket(packets);
 
         for(Player nearbyPlayer : nearbyPlayers) addViewerPlayer(nearbyPlayer);
 
         hideNameEntity.setVehicle(playerNpc);
-        List<Packet<? super ClientGamePacketListener>> playerPackages = new ArrayList<>();
-        playerPackages.add(new ClientboundAddEntityPacket(hideNameEntity.getId(), hideNameEntity.getUUID(), hideNameEntity.getX(), hideNameEntity.getY(), hideNameEntity.getZ(), hideNameEntity.getXRot(), hideNameEntity.getYRot(), hideNameEntity.getType(), 0, hideNameEntity.getDeltaMovement(), hideNameEntity.getYHeadRot()));
-        playerPackages.add(new ClientboundSetEntityDataPacket(hideNameEntity.getId(), hideNameEntity.getEntityData().getNonDefaultValues()));
-        playerPackages.add(new ClientboundSetPassengersPacket(playerNpc));
-        sendPacket(serverPlayer, new ClientboundBundlePacket(playerPackages));
+        List<Packet<? super ClientGamePacketListener>> playerPackets = new ArrayList<>();
+        playerPackets.add(new ClientboundAddEntityPacket(hideNameEntity.getId(), hideNameEntity.getUUID(), hideNameEntity.getX(), hideNameEntity.getY(), hideNameEntity.getZ(), hideNameEntity.getXRot(), hideNameEntity.getYRot(), hideNameEntity.getType(), 0, hideNameEntity.getDeltaMovement(), hideNameEntity.getYHeadRot()));
+        playerPackets.add(new ClientboundSetEntityDataPacket(hideNameEntity.getId(), hideNameEntity.getEntityData().getNonDefaultValues()));
+        playerPackets.add(new ClientboundSetPassengersPacket(playerNpc));
+        sendPacket(serverPlayer, new ClientboundBundlePacket(playerPackets));
 
         Bukkit.getPluginManager().registerEvents(listener, gSitMain);
 
@@ -457,6 +457,6 @@ public class Pose implements dev.geco.gsit.model.Pose {
     public @NotNull PoseType getPoseType() { return poseType; }
 
     @Override
-    public String toString() { return seat.toString(); }
+    public String toString() { return GSitMain.NAME + "_" + poseType.name() + "_" + seatPlayer.getUniqueId(); }
 
 }

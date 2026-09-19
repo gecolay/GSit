@@ -3,7 +3,10 @@ package dev.geco.gsit.mcv.v1_21_4.model;
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.mcv.v1_21_4.entity.BoxEntity;
 import dev.geco.gsit.model.StopReason;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundBundlePacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
@@ -22,6 +25,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Crawl implements dev.geco.gsit.model.Crawl {
@@ -29,21 +34,27 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     private final GSitMain gSitMain = GSitMain.getInstance();
     private final Player player;
     private final ServerPlayer serverPlayer;
-    protected final BoxEntity boxEntity;
-    private boolean boxEntityExist = false;
+    private final int layers;
+    private final BoxEntity[][] boxEntities;
+    private boolean boxEntitiesExist = false;
     private final Listener listener;
     private final Listener moveListener;
     private final Listener stopListener;
     private boolean finished = false;
     private final long spawnTime = System.nanoTime();
 
+    public Crawl(Player player) { this(player, GSitMain.getInstance().getConfigService().C_LAYERS); }
+
     @SuppressWarnings("deprecation")
-    public Crawl(Player player) {
+    public Crawl(Player player, int layers) {
         this.player = player;
+        this.layers = Math.max(layers, 1);
 
         serverPlayer = ((CraftPlayer) player).getHandle();
 
-        boxEntity = new BoxEntity(player.getLocation());
+        int size = this.layers * 2 - 1;
+        boxEntities = new BoxEntity[size][size];
+        for(int x = 0; x < size; x++) for(int z = 0; z < size; z++) boxEntities[x][z] = new BoxEntity(player.getLocation());
 
         listener = new Listener() {
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -101,18 +112,33 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
 
             playerLocation.setY(playerLocation.getY() + (height >= 40 ? 1.5 : 0.5));
 
-            boxEntity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
+            int size = boxEntities.length;
 
-            if(!boxEntityExist) {
-                boxEntity.setPos(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                serverPlayer.connection.send(new ClientboundAddEntityPacket(boxEntity.getId(), boxEntity.getUUID(), boxEntity.getX(), boxEntity.getY(), boxEntity.getZ(), boxEntity.getXRot(), boxEntity.getYRot(), boxEntity.getType(), 0, boxEntity.getDeltaMovement(), boxEntity.getYHeadRot()));
-                boxEntityExist = true;
-                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-            } else {
-                serverPlayer.connection.send(new ClientboundSetEntityDataPacket(boxEntity.getId(), boxEntity.getEntityData().getNonDefaultValues()));
-                boxEntity.setPosRaw(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-                serverPlayer.connection.send(new ClientboundTeleportEntityPacket(boxEntity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(boxEntity), Set.of(), false));
+            List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>(size * size * 2);
+
+            for(int x = 0; x < size; x++) {
+                for(int z = 0; z < size; z++) {
+                    BoxEntity entity = boxEntities[x][z];
+                    entity.setRawPeekAmount(height >= 40 ? 100 - height : 0);
+
+                    double entityX = playerLocation.getX() + x - (layers - 1);
+                    double entityZ = playerLocation.getZ() + z - (layers - 1);
+
+                    if(!boxEntitiesExist) {
+                        entity.setPos(entityX, playerLocation.getY(), entityZ);
+                        packets.add(new ClientboundAddEntityPacket(entity.getId(), entity.getUUID(), entity.getX(), entity.getY(), entity.getZ(), entity.getXRot(), entity.getYRot(), entity.getType(), 0, entity.getDeltaMovement(), entity.getYHeadRot()));
+                        packets.add(new ClientboundSetEntityDataPacket(entity.getId(), entity.getEntityData().getNonDefaultValues()));
+                    } else {
+                        packets.add(new ClientboundSetEntityDataPacket(entity.getId(), entity.getEntityData().getNonDefaultValues()));
+                        entity.setPosRaw(entityX, playerLocation.getY(), entityZ);
+                        packets.add(new ClientboundTeleportEntityPacket(entity.getId(), net.minecraft.world.entity.PositionMoveRotation.of(entity), Set.of(), false));
+                    }
+                }
             }
+
+            serverPlayer.connection.send(new ClientboundBundlePacket(packets));
+
+            boxEntitiesExist = true;
         }, true, playerLocation);
     }
 
@@ -131,9 +157,15 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     }
 
     private void destoryEntity() {
-        if(!boxEntityExist) return;
-        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(boxEntity.getId()));
-        boxEntityExist = false;
+        if(!boxEntitiesExist) return;
+
+        int size = boxEntities.length;
+        int[] entityIds = new int[size * size];
+        int entityIndex = 0;
+        for(BoxEntity[] boxEntityLayer : boxEntities) for (BoxEntity boxEntity : boxEntityLayer) entityIds[entityIndex++] = boxEntity.getId();
+
+        serverPlayer.connection.send(new ClientboundRemoveEntitiesPacket(entityIds));
+        boxEntitiesExist = false;
     }
 
     private boolean checkCrawlValid() {
@@ -151,6 +183,6 @@ public class Crawl implements dev.geco.gsit.model.Crawl {
     public long getLifetimeInNanoSeconds() { return System.nanoTime() - spawnTime; }
 
     @Override
-    public String toString() { return boxEntity.getUUID().toString(); }
+    public String toString() { return GSitMain.NAME + "_crawl_" + player.getUniqueId(); }
 
 }

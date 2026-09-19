@@ -109,6 +109,9 @@ Options:
     # Allow crawling by default without using 'crawl toggle'
     default-crawl-mode: true
 
+    # Number of box layers used for crawling (1 = 1x1, 2 = 3x3, 3 = 5x5, ...)
+    layers: 1
+
   # Restrict all features to be only available to trusted players in a region (supported: PlotSquared & GriefPrevention)
   trusted-region-only: false
 

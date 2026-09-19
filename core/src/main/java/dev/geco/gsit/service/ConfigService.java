@@ -54,6 +54,7 @@ public class ConfigService {
     public boolean C_GET_UP_SNEAK;
     public boolean C_DOUBLE_SNEAK;
     public boolean C_DEFAULT_CRAWL_MODE;
+    public int C_LAYERS;
     public boolean TRUSTED_REGION_ONLY;
     public List<String> WORLDBLACKLIST = new ArrayList<>();
     public List<String> WORLDWHITELIST = new ArrayList<>();
@@ -130,6 +131,7 @@ public class ConfigService {
         C_GET_UP_SNEAK = gSitMain.getConfig().getBoolean("Options.Crawl.get-up-sneak", true);
         C_DOUBLE_SNEAK = gSitMain.getConfig().getBoolean("Options.Crawl.double-sneak", false);
         C_DEFAULT_CRAWL_MODE = gSitMain.getConfig().getBoolean("Options.Crawl.default-crawl-mode", true);
+        C_LAYERS = gSitMain.getConfig().getInt("Options.Crawl.layers", 1);
 
         TRUSTED_REGION_ONLY = gSitMain.getConfig().getBoolean("Options.trusted-region-only", false);
         WORLDBLACKLIST = gSitMain.getConfig().getStringList("Options.WorldBlacklist");

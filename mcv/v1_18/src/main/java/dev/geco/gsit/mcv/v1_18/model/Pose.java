@@ -422,6 +422,6 @@ public class Pose implements dev.geco.gsit.model.Pose {
     public @NotNull PoseType getPoseType() { return poseType; }
 
     @Override
-    public String toString() { return seat.toString(); }
+    public String toString() { return GSitMain.NAME + "_" + poseType.name() + "_" + seatPlayer.getUniqueId(); }
 
 }
