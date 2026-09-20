@@ -81,7 +81,7 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
 
         if(canRotate) seatEntity.startRotate();
 
-        return seatEntity.getBukkitEntity();
+        return ((net.minecraft.world.entity.Entity) seatEntity).getBukkitEntity();
     }
 
     @Override
