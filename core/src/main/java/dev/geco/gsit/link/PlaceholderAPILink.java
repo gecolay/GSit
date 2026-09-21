@@ -32,7 +32,7 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
     public @NotNull String getVersion() { return gSitMain.getDescription().getVersion(); }
 
     @Override
-    public @NotNull List<String> getPlaceholders() { return Arrays.asList("crawling", "playertoggle", "posing", "sitting", "toggle"); }
+    public @NotNull List<String> getPlaceholders() { return Arrays.asList("crawling", "crawltoggle", "playertoggle", "posing", "sitting", "toggle"); }
 
     @Override
     public boolean persist() { return true; }
@@ -41,6 +41,7 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer offlinePlayer, @NotNull String placeholder) {
         if(offlinePlayer == null) return null;
         if(placeholder.equalsIgnoreCase("crawling")) return offlinePlayer.isOnline() ? "" + (gSitMain.getCrawlService().isPlayerCrawling(offlinePlayer.getPlayer())) : "" + false;
+        else if(placeholder.equalsIgnoreCase("crawltoggle")) return "" + gSitMain.getToggleService().canPlayerUseCrawl(offlinePlayer.getUniqueId());
         else if(placeholder.equalsIgnoreCase("playertoggle")) return "" + gSitMain.getToggleService().canPlayerUsePlayerSit(offlinePlayer.getUniqueId());
         else if(placeholder.equalsIgnoreCase("posing")) return offlinePlayer.isOnline() ? "" + (gSitMain.getPoseService().isPlayerPosing(offlinePlayer.getPlayer())) : "" + false;
         else if(placeholder.equalsIgnoreCase("sitting")) return offlinePlayer.isOnline() ? "" + gSitMain.getSitService().isEntitySitting(offlinePlayer.getPlayer()) : "" + false;
