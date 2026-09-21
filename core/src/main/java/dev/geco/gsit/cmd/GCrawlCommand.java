@@ -69,7 +69,7 @@ public class GCrawlCommand implements CommandExecutor {
             return true;
         }
 
-        if(gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*")) {
+        if(!gSitMain.getPermissionService().hasPermission(sender, "CrawlToggle", "Crawl.*")) {
             Bukkit.dispatchCommand(sender, label);
             return true;
         }
