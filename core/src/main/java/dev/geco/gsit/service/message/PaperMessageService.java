@@ -2,6 +2,7 @@ package dev.geco.gsit.service.message;
 
 import dev.geco.gsit.GSitMain;
 import dev.geco.gsit.service.MessageService;
+import dev.geco.gsit.util.LegacyColorUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -19,13 +20,17 @@ public class PaperMessageService extends MessageService {
 
     protected final Pattern PARSED_HEX_PATTERN = Pattern.compile("§x(§[0-9a-fA-F]){6}");
     protected final LegacyComponentSerializer legacyComponentSerializer;
+    protected final LegacyComponentSerializer legacySectionSerializer;
     protected final MiniMessage miniMessage;
+    protected final LegacyColorUtil legacyColorUtil;
     protected final Map<String, String> tags;
 
     public PaperMessageService(GSitMain gSitMain) {
         super(gSitMain);
         legacyComponentSerializer = LegacyComponentSerializer.builder().character(AMPERSAND_CHAR).hexColors().build();
+        legacySectionSerializer = LegacyComponentSerializer.builder().character(COLOR_CHAR).hexColors().useUnusualXRepeatedCharacterHexFormat().build();
         miniMessage = MiniMessage.miniMessage();
+        legacyColorUtil = new LegacyColorUtil();
         Map<String, String> tags = new HashMap<>();
         tags.put("0", "<black>");
         tags.put("1", "<dark_blue>");
@@ -52,7 +57,10 @@ public class PaperMessageService extends MessageService {
         this.tags = Collections.unmodifiableMap(tags);
     }
 
-    public String toFormattedMessage(String text, Object... rawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirectly(formatText(text, rawReplaceList))); }
+    public String toFormattedMessage(String text, Object... rawReplaceList) {
+        if(gSitMain.getConfigService().L_MINI_MESSAGE) return legacySectionSerializer.serialize(miniMessage.deserialize(replaceText(text, rawReplaceList)));
+        return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirectly(formatText(text, rawReplaceList)));
+    }
 
     public void sendMessage(@NotNull CommandSender target, String message, Object... replaceList) {
         Component translatedMessage = getTranslatedComponent(message, getLanguageForTarget(target), replaceList);
@@ -68,7 +76,14 @@ public class PaperMessageService extends MessageService {
 
     private @NotNull Component getTranslatedComponent(String message, String languageCode, Object... replaceList) { return toFormattedComponent(getRawTranslatedMessage(message, languageCode, replaceList)); }
 
-    private @NotNull Component toFormattedComponent(String text, Object... rawReplaceList) { return miniMessage.deserialize(replaceLegacyColors(replaceText(text, rawReplaceList))); }
+    private @NotNull Component toFormattedComponent(String text, Object... rawReplaceList) {
+        if(gSitMain.getConfigService().L_MINI_MESSAGE) return miniMessage.deserialize(replaceText(text, rawReplaceList));
+        return miniMessage.deserialize(replaceLegacyColors(replaceText(text, rawReplaceList)));
+    }
+
+    protected String formatRawMessage(String message) { return gSitMain.getConfigService().L_MINI_MESSAGE ? legacyColorUtil.toMiniMessage(message) : message; }
+
+    protected String formatReplaceValue(String value) { return gSitMain.getConfigService().L_MINI_MESSAGE ? miniMessage.escapeTags(value) : value; }
 
     private String replaceLegacyColors(String text) {
         Matcher matcher = HEX_PATTERN.matcher(text);

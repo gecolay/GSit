@@ -13,6 +13,9 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.12.3")
     compileOnly("com.github.GriefPrevention:GriefPrevention:18.0.0")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.6.0")
+    testImplementation(platform("org.junit:junit-bom:5.13.4"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 java {
@@ -22,6 +25,10 @@ java {
 
 tasks.compileJava {
     options.release = 16
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 publishing {

@@ -87,7 +87,7 @@ abstract public class MessageService {
 
     public String getTranslatedMessage(String message, String languageCode, Object... replaceList) { return toFormattedMessage(getRawTranslatedMessage(message, languageCode, replaceList)); }
 
-    public String getRawTranslatedMessage(String message, String languageCode, Object... replaceList) { return replaceWithLanguageCode(message == null || message.isEmpty() ? "" : getMessages(languageCode).getString(message, message), languageCode, replaceList); }
+    public String getRawTranslatedMessage(String message, String languageCode, Object... replaceList) { return replaceWithLanguageCode(message == null || message.isEmpty() ? "" : formatRawMessage(getMessages(languageCode).getString(message, message)), languageCode, replaceList); }
 
     public String getLanguageForTarget(CommandSender target) {
         if(!gSitMain.getConfigService().L_CLIENT_LANG || !(target instanceof Player)) return defaultLanguage;
@@ -100,12 +100,16 @@ abstract public class MessageService {
         for(int count = 0; count < replaceList.length; count += 2) {
             if(replaceList[count] != null && replaceList[count + 1] != null) {
                 String key = replaceList[count].toString();
-                String value = replaceList[count + 1].toString();
+                String value = formatReplaceValue(replaceList[count + 1].toString());
                 text = text.replace(key, value);
             }
         }
         return text;
     }
+
+    protected String formatRawMessage(String message) { return message; }
+
+    protected String formatReplaceValue(String value) { return value; }
 
     protected String replaceHexColorsDirectly(String text) {
         Matcher matcher = HEX_PATTERN.matcher(text);
@@ -123,7 +127,7 @@ abstract public class MessageService {
 
     private String replaceWithLanguageCode(String message, String languageCode, Object ... replaceList) {
         message = replaceText(message, replaceList);
-        return message.replace(PREFIX_PLACEHOLDER, getMessages(languageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE));
+        return message.replace(PREFIX_PLACEHOLDER, formatRawMessage(getMessages(languageCode).getString("Plugin.plugin-prefix", PREFIX_REPLACE)));
     }
 
 }

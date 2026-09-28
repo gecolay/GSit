@@ -22,6 +22,7 @@ public class ConfigService {
 
     public String L_LANG;
     public boolean L_CLIENT_LANG;
+    public boolean L_MINI_MESSAGE;
     public boolean CHECK_FOR_UPDATE;
     public boolean DEBUG;
     public boolean GET_UP_DAMAGE;
@@ -98,6 +99,7 @@ public class ConfigService {
 
         L_LANG = gSitMain.getConfig().getString("Lang.lang", "en_us").toLowerCase();
         L_CLIENT_LANG = gSitMain.getConfig().getBoolean("Lang.client-lang", true);
+        L_MINI_MESSAGE = gSitMain.getConfig().getBoolean("Lang.mini-message", false);
 
         CHECK_FOR_UPDATE = gSitMain.getConfig().getBoolean("Options.check-for-update", true);
         DEBUG = gSitMain.getConfig().getBoolean("Options.debug", false);

@@ -5,6 +5,9 @@ Lang:
   # Send messages to clients in their own language, if available
   client-lang: true
 
+  # Parse messages with MiniMessage, legacy color codes are converted to MiniMessage tags
+  mini-message: false
+
 Options:
   # Plugin sends update notifications
   check-for-update: true
