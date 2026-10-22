@@ -2,6 +2,7 @@ package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
@@ -20,6 +21,8 @@ public class UpdateService {
     private final String MODRINTH_REMOTE_URL = "https://api.modrinth.com/v2/project/gsit/version";
     private final String SPIGOT_REMOTE_URL = "https://api.spigotmc.org/legacy/update.php?resource=62325";
     private final String PAPER_REMOTE_URL = "https://hangar.papermc.io/api/v1/projects/gecolay/gsit/latest?channel=release";
+    private final String SPIGOT_DOWNLOAD_URL = "http://spigotmc.org/resources/GSit.62325";
+    private final String MODRINTH_DOWNLOAD_URL = "https://modrinth.com/plugin/gsit";
     private final GSitMain gSitMain;
     private LocalDate lastCheckDate = null;
     private String latestVersion = null;
@@ -35,9 +38,9 @@ public class UpdateService {
             if(isLatestVersion) return;
             for(Player player : Bukkit.getOnlinePlayers()) {
                 if(!gSitMain.getPermissionService().hasPermission(player, "Update")) continue;
-                gSitMain.getMessageService().sendMessage(player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
+                sendUpdateNotification(player);
             }
-            gSitMain.getMessageService().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
+            sendUpdateNotification(Bukkit.getConsoleSender());
         });
     }
 
@@ -46,8 +49,18 @@ public class UpdateService {
         if(!gSitMain.getPermissionService().hasPermission(player, "Update")) return;
         checkVersion(() -> {
             if(isLatestVersion) return;
-            gSitMain.getMessageService().sendMessage(player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
+            sendUpdateNotification(player);
         });
+    }
+
+    private void sendUpdateNotification(CommandSender target) {
+        String path;
+        if(target instanceof Player) {
+            path = "<click:open_url:'" + SPIGOT_DOWNLOAD_URL + "'><hover:show_text:'Click to open Spigot'>&6" + SPIGOT_DOWNLOAD_URL + "&r</click> &7| <click:open_url:'" + MODRINTH_DOWNLOAD_URL + "'><hover:show_text:'Click to open Modrinth'>&6" + MODRINTH_DOWNLOAD_URL + "&r</click>";
+        } else {
+            path = SPIGOT_DOWNLOAD_URL + " | " + MODRINTH_DOWNLOAD_URL;
+        }
+        gSitMain.getMessageService().sendMessage(target, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", path, "%SpigotPath%", SPIGOT_DOWNLOAD_URL, "%ModrinthPath%", MODRINTH_DOWNLOAD_URL);
     }
 
     private void getGitHubVersion(Consumer<String> versionConsumer) {
