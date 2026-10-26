@@ -85,7 +85,8 @@ tasks {
         "github" to mapOf("website" to "https://github.com/gecolay/GSit"),
         "modrinth" to mapOf("website" to "https://modrinth.com/plugin/gsit"),
         "spigot" to mapOf("website" to "https://www.spigotmc.org/resources/GSit.62325"),
-        "paper" to mapOf("website" to "https://hangar.papermc.io/gecolay/GSit")
+        "paper" to mapOf("website" to "https://hangar.papermc.io/gecolay/GSit"),
+        "curseforge" to mapOf("website" to "https://www.curseforge.com/minecraft/bukkit-plugins/gsit")
     )
 
     val resourceTasks = sources.mapValues { (sourceName, sourceProps) ->
