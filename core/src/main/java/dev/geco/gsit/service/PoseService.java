@@ -57,7 +57,7 @@ public class PoseService {
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
         if(!gSitMain.getPermissionService().hasPermission(player, "Kick.Pose", "Kick.*")) return false;
-        for(Pose pose : getPosesByBlock(block)) if(!removePose(pose, StopReason.KICKED)) return false;
+        for(Pose pose : new ArrayList<>(getPosesByBlock(block))) if(!removePose(pose, StopReason.KICKED)) return false;
         return true;
     }
 
@@ -99,7 +99,11 @@ public class PoseService {
 
         Seat seat = pose.getSeat();
         Player player = pose.getPlayer();
-        blockPoses.remove(seat.getBlock());
+        Set<Pose> blockPoseList = blockPoses.get(seat.getBlock());
+        if(blockPoseList != null) {
+            blockPoseList.remove(pose);
+            if(blockPoseList.isEmpty()) blockPoses.remove(seat.getBlock());
+        }
         poses.remove(player.getUniqueId());
         if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
 

@@ -60,11 +60,11 @@ public class BlockEventHandler implements Listener {
     private void handleExplodeEvent(List<Block> blocks) {
         if(!gSitMain.getConfigService().GET_UP_BREAK) return;
         blocks: for(Block block : new ArrayList<>(blocks)) {
-            for(Seat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat, StopReason.BLOCK_BREAK)) {
+            for(Seat seat : new ArrayList<>(gSitMain.getSitService().getSeatsByBlock(block))) if(!gSitMain.getSitService().removeSeat(seat, StopReason.BLOCK_BREAK)) {
                 blocks.remove(block);
                 continue blocks;
             }
-            for(Pose pose : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(pose, StopReason.BLOCK_BREAK)) blocks.remove(block);
+            for(Pose pose : new ArrayList<>(gSitMain.getPoseService().getPosesByBlock(block))) if(!gSitMain.getPoseService().removePose(pose, StopReason.BLOCK_BREAK)) blocks.remove(block);
         }
     }
 
@@ -85,8 +85,8 @@ public class BlockEventHandler implements Listener {
 
     private void handleBlockEvent(Cancellable event, Block block) {
         if(!gSitMain.getConfigService().GET_UP_BREAK) return;
-        for(Seat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat, StopReason.BLOCK_BREAK)) event.setCancelled(true);
-        if(!event.isCancelled()) for(Pose pose : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(pose, StopReason.BLOCK_BREAK)) event.setCancelled(true);
+        for(Seat seat : new ArrayList<>(gSitMain.getSitService().getSeatsByBlock(block))) if(!gSitMain.getSitService().removeSeat(seat, StopReason.BLOCK_BREAK)) event.setCancelled(true);
+        if(!event.isCancelled()) for(Pose pose : new ArrayList<>(gSitMain.getPoseService().getPosesByBlock(block))) if(!gSitMain.getPoseService().removePose(pose, StopReason.BLOCK_BREAK)) event.setCancelled(true);
     }
 
 }
