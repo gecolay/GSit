@@ -167,7 +167,7 @@ public class GSitMain extends JavaPlugin {
     public void onEnable() {
         if(!versionCheck()) return;
 
-        packetHandler = versionService.isNewerOrVersion(26, 1) ? (PacketHandler) versionService.getPackageObjectInstance("event.PacketHandler", this) : new LegacyPacketHandler();
+        packetHandler = versionService.isNewerOrVersion(1, 18) ? (PacketHandler) versionService.getPackageObjectInstance("event.PacketHandler", this) : new LegacyPacketHandler();
         entityUtil = versionService.isNewerOrVersion(1, 18) ? (EntityUtil) versionService.getPackageObjectInstance("util.EntityUtil", this) : new LegacyEntityUtil(this);
 
         loadPluginDependencies();

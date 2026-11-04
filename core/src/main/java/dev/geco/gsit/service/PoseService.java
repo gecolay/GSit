@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class PoseService {
@@ -31,6 +32,7 @@ public class PoseService {
     private final GSitMain gSitMain;
     private final boolean available;
     private final HashMap<UUID, Pose> poses = new HashMap<>();
+    private final Set<Integer> posingEntityIds = ConcurrentHashMap.newKeySet();
     private final HashMap<Block, Set<Pose>> blockPoses = new HashMap<>();
     private final HashMap<PoseType, Integer> poseCount = new HashMap<>();
     private final HashMap<PoseType, Long> poseTime = new HashMap<>();
@@ -43,6 +45,8 @@ public class PoseService {
     public boolean isAvailable() { return available; }
 
     public HashMap<UUID, Pose> getAllPoses() { return poses; }
+
+    public boolean isEntityIdPosing(int entityId) { return posingEntityIds.contains(entityId); }
 
     public boolean isPlayerPosing(Player player) { return poses.containsKey(player.getUniqueId()); }
 
@@ -86,6 +90,7 @@ public class PoseService {
 
         pose.spawn();
         poses.put(player.getUniqueId(), pose);
+        posingEntityIds.add(player.getEntityId());
         blockPoses.computeIfAbsent(block, b -> new HashSet<>()).add(pose);
         poseCount.merge(poseType, 1, Integer::sum);
         Bukkit.getPluginManager().callEvent(new PlayerPoseEvent(pose));
@@ -108,6 +113,7 @@ public class PoseService {
             if(blockPoseList.isEmpty()) blockPoses.remove(seat.getBlock());
         }
         poses.remove(player.getUniqueId());
+        posingEntityIds.remove(player.getEntityId());
         if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
 
         pose.remove();

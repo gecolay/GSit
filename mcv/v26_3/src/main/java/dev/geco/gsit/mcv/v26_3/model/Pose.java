@@ -63,7 +63,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
@@ -186,9 +185,6 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
             @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
             public void playerDropItemEvent(PlayerDropItemEvent event) { if(event.getPlayer() == seatPlayer && seatPlayer.getGameMode() == GameMode.CREATIVE) event.setCancelled(true); }
-
-            @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-            public void entityPotionEffectEvent(EntityPotionEffectEvent event) { if(event.getEntity() == seatPlayer) serverPlayer.setInvisible(true); }
         };
     }
 
