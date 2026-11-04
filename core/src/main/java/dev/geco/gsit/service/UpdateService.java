@@ -1,7 +1,9 @@
 package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
+import dev.geco.gsit.service.message.PaperMessageService;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
@@ -35,9 +37,9 @@ public class UpdateService {
             if(isLatestVersion) return;
             for(Player player : Bukkit.getOnlinePlayers()) {
                 if(!gSitMain.getPermissionService().hasPermission(player, "Update")) continue;
-                gSitMain.getMessageService().sendMessage(player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
+                sendUpdateMessage(player);
             }
-            gSitMain.getMessageService().sendMessage(Bukkit.getConsoleSender(), "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
+            sendUpdateMessage(Bukkit.getConsoleSender());
         });
     }
 
@@ -46,8 +48,14 @@ public class UpdateService {
         if(!gSitMain.getPermissionService().hasPermission(player, "Update")) return;
         checkVersion(() -> {
             if(isLatestVersion) return;
-            gSitMain.getMessageService().sendMessage(player, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", gSitMain.getDescription().getWebsite());
+            sendUpdateMessage(player);
         });
+    }
+
+    private void sendUpdateMessage(CommandSender target) {
+        String path = gSitMain.getDescription().getWebsite();
+        if(target instanceof Player && gSitMain.getMessageService() instanceof PaperMessageService) path = "<click:open_url:'" + path + "'>" + path + "</click>";
+        gSitMain.getMessageService().sendMessage(target, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", path);
     }
 
     private void getGitHubVersion(Consumer<String> versionConsumer) {
