@@ -25,6 +25,8 @@ import java.util.regex.Pattern;
 
 abstract public class MessageService {
 
+    public record RawReplacement(String text) { }
+
     protected final String PREFIX_PLACEHOLDER = "[P]";
     protected final String PREFIX_REPLACE = "&7[&6" + GSitMain.NAME + "&7]";
     protected final char AMPERSAND_CHAR = '&';
@@ -103,12 +105,14 @@ abstract public class MessageService {
         for(int count = 0; count < replaceList.length; count += 2) {
             if(replaceList[count] != null && replaceList[count + 1] != null) {
                 String key = replaceList[count].toString();
-                String value = replaceList[count + 1].toString();
+                String value = replaceList[count + 1] instanceof RawReplacement rawReplacement ? rawReplacement.text() : formatReplaceValue(replaceList[count + 1].toString());
                 text = text.replace(key, value);
             }
         }
         return text;
     }
+
+    protected String formatReplaceValue(String value) { return value; }
 
     protected String replaceHexColorsDirectly(String text) {
         Matcher matcher = HEX_PATTERN.matcher(text);

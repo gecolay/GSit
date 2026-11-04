@@ -9,48 +9,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PaperMessageService extends MessageService {
 
     protected final Pattern PARSED_HEX_PATTERN = Pattern.compile("§x(§[0-9a-fA-F]){6}");
+    protected final String RESET_TAG = "<reset>";
+    protected final String COLOR_CODES = "0123456789abcdef";
+    protected final String[] COLOR_TAGS = {"<black>", "<dark_blue>", "<dark_green>", "<dark_aqua>", "<dark_red>", "<dark_purple>", "<gold>", "<gray>", "<dark_gray>", "<blue>", "<green>", "<aqua>", "<red>", "<light_purple>", "<yellow>", "<white>"};
+    protected final String FORMAT_CODES = "klmno";
+    protected final String[] FORMAT_TAGS = {"<obfuscated>", "<bold>", "<strikethrough>", "<underlined>", "<italic>"};
     protected final LegacyComponentSerializer legacyComponentSerializer;
     protected final MiniMessage miniMessage;
-    protected final Map<String, String> tags;
 
     public PaperMessageService(GSitMain gSitMain) {
         super(gSitMain);
         legacyComponentSerializer = LegacyComponentSerializer.builder().character(AMPERSAND_CHAR).hexColors().build();
         miniMessage = MiniMessage.miniMessage();
-        Map<String, String> tags = new HashMap<>();
-        tags.put("0", "<black>");
-        tags.put("1", "<dark_blue>");
-        tags.put("2", "<dark_green>");
-        tags.put("3", "<dark_aqua>");
-        tags.put("4", "<dark_red>");
-        tags.put("5", "<dark_purple>");
-        tags.put("6", "<gold>");
-        tags.put("7", "<gray>");
-        tags.put("8", "<dark_gray>");
-        tags.put("9", "<blue>");
-        tags.put("a", "<green>");
-        tags.put("b", "<aqua>");
-        tags.put("c", "<red>");
-        tags.put("d", "<light_purple>");
-        tags.put("e", "<yellow>");
-        tags.put("f", "<white>");
-        tags.put("k", "<obfuscated>");
-        tags.put("l", "<bold>");
-        tags.put("m", "<strikethrough>");
-        tags.put("n", "<underlined>");
-        tags.put("o", "<italic>");
-        tags.put("r", "<reset>");
-        this.tags = Collections.unmodifiableMap(tags);
     }
+
+    @Override
+    protected String formatReplaceValue(String value) { return miniMessage.escapeTags(value); }
 
     public String toFormattedMessage(String text, Object... rawReplaceList) { return org.bukkit.ChatColor.translateAlternateColorCodes(AMPERSAND_CHAR, replaceHexColorsDirectly(formatText(text, rawReplaceList))); }
 
@@ -70,24 +50,6 @@ public class PaperMessageService extends MessageService {
 
     private @NotNull Component toFormattedComponent(String text, Object... rawReplaceList) { return miniMessage.deserialize(replaceLegacyColors(replaceText(text, rawReplaceList))); }
 
-    private String replaceLegacyColors(String text) {
-        Matcher matcher = HEX_PATTERN.matcher(text);
-        StringBuilder result = new StringBuilder(text.length());
-        int lastIndex = 0;
-        while(matcher.find()) {
-            result.append(text, lastIndex, matcher.start()).append("<color:").append(matcher.group()).append(">");
-            lastIndex = matcher.end();
-        }
-        result.append(text, lastIndex, text.length());
-        for(Map.Entry<String, String> tag : tags.entrySet()) {
-            String key = tag.getKey();
-            String value = tag.getValue();
-            String upperKey = key.toUpperCase();
-            result = new StringBuilder(result.toString().replace(AMPERSAND_CHAR + key, value).replace(AMPERSAND_CHAR + upperKey, value).replace(COLOR_CHAR + key, value).replace(COLOR_CHAR + upperKey, value));
-        }
-        return result.toString();
-    }
-
     private String formatText(String text, Object... rawReplaceList) { return legacyComponentSerializer.serialize(miniMessage.deserialize(replaceParsedLegacyColors(replaceText(text, rawReplaceList)))); }
 
     private String replaceParsedLegacyColors(String text) {
@@ -105,6 +67,77 @@ public class PaperMessageService extends MessageService {
         int length = result.length();
         for(int i = 0; i < length; i++) if(result.charAt(i) == COLOR_CHAR) result.setCharAt(i, AMPERSAND_CHAR);
         return result.toString();
+    }
+
+    private String replaceLegacyColors(String text) {
+        StringBuilder result = new StringBuilder(text.length() + 16);
+        boolean formatted = false;
+        for(int index = 0; index < text.length(); index++) {
+            char current = text.charAt(index);
+            if(current == '<') {
+                int tagEnd = findTagEnd(text, index);
+                if(tagEnd != -1) {
+                    result.append(text, index, tagEnd + 1);
+                    index = tagEnd;
+                    continue;
+                }
+            } else if(current == '#' || current == '&' || current == COLOR_CHAR) {
+                char next = index + 1 < text.length() ? Character.toLowerCase(text.charAt(index + 1)) : 0;
+                String hex = null;
+                int length = 0;
+                if(current == '#') { hex = hexAt(text, index + 1); length = 7; }
+                else if(next == '#') { hex = hexAt(text, index + 2); length = 8; }
+                else if(next == 'x') { hex = spacedHexAt(text, index + 2, current); length = 14; }
+                if(hex != null) {
+                    if(formatted) result.append(RESET_TAG);
+                    result.append("<color:#").append(hex.toLowerCase()).append('>');
+                    formatted = false;
+                    index += length - 1;
+                    continue;
+                }
+                int color = current == '#' ? -1 : COLOR_CODES.indexOf(next);
+                int format = current == '#' ? -1 : FORMAT_CODES.indexOf(next);
+                if(color != -1 || format != -1 || (next == 'r' && current != '#')) {
+                    if(color != -1 && formatted) result.append(RESET_TAG);
+                    result.append(color != -1 ? COLOR_TAGS[color] : format != -1 ? FORMAT_TAGS[format] : RESET_TAG);
+                    formatted = format != -1;
+                    index++;
+                    continue;
+                }
+            }
+            result.append(current);
+        }
+        return result.toString();
+    }
+
+    private int findTagEnd(String text, int start) {
+        char quote = 0;
+        for(int index = start + 1; index < text.length(); index++) {
+            char current = text.charAt(index);
+            if(quote != 0) {
+                if(current == '\\') index++;
+                else if(current == quote) quote = 0;
+            } else if(current == '\'' || current == '"') quote = current;
+            else if(current == '>') return index;
+            else if(current == '<') return -1;
+        }
+        return -1;
+    }
+
+    private String hexAt(String text, int start) {
+        if(start + 6 > text.length()) return null;
+        for(int index = start; index < start + 6; index++) if(Character.digit(text.charAt(index), 16) == -1) return null;
+        return text.substring(start, start + 6);
+    }
+
+    private String spacedHexAt(String text, int start, char prefix) {
+        if(start + 12 > text.length()) return null;
+        StringBuilder hex = new StringBuilder(6);
+        for(int index = start; index < start + 12; index += 2) {
+            if(text.charAt(index) != prefix || Character.digit(text.charAt(index + 1), 16) == -1) return null;
+            hex.append(text.charAt(index + 1));
+        }
+        return hex.toString();
     }
 
 }

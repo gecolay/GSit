@@ -53,8 +53,8 @@ public class UpdateService {
     }
 
     private void sendUpdateMessage(CommandSender target) {
-        String path = gSitMain.getDescription().getWebsite();
-        if(target instanceof Player && gSitMain.getMessageService() instanceof PaperMessageService) path = "<click:open_url:'" + path + "'>" + path + "</click>";
+        String website = gSitMain.getDescription().getWebsite();
+        Object path = target instanceof Player && gSitMain.getMessageService() instanceof PaperMessageService ? new MessageService.RawReplacement("<click:open_url:'" + website + "'>" + website + "</click>") : website;
         gSitMain.getMessageService().sendMessage(target, "Plugin.plugin-update", "%Name%", GSitMain.NAME, "%NewVersion%", latestVersion, "%Version%", gSitMain.getDescription().getVersion(), "%Path%", path);
     }
 
