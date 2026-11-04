@@ -27,8 +27,8 @@ public class TaskService {
     public List<UUID> getTasks() { return new ArrayList<>(tasks.keySet()); }
 
     public void removeEntity(@NotNull Entity entity) {
-        if(!gSitMain.supportsTaskFeature() || Bukkit.isOwnedByCurrentRegion(entity)) entity.remove();
-        else run(entity::remove, entity);
+        if(gSitMain.isFoliaServer() && !Bukkit.isOwnedByCurrentRegion(entity)) run(entity::remove, entity);
+        else entity.remove();
     }
 
     public void run(@NotNull Runnable runnable) { run(runnable, true, null, null); }
