@@ -52,7 +52,10 @@ public class PoseService {
 
     public boolean isBlockWithPose(Block block) { return blockPoses.containsKey(block); }
 
-    public Set<Pose> getPosesByBlock(Block block) { return new HashSet(blockPoses.getOrDefault(block, Collections.emptySet())); }
+    public Set<Pose> getPosesByBlock(Block block) {
+        Set<Pose> blockPoseList = blockPoses.get(block);
+        return blockPoseList == null ? Collections.emptySet() : new HashSet<>(blockPoseList);
+    }
 
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;

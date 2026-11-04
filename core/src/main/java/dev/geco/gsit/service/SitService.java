@@ -61,7 +61,10 @@ public class SitService {
 
     public boolean isBlockWithSeat(Block block) { return blockSeats.containsKey(block); }
 
-    public Set<Seat> getSeatsByBlock(Block block) { return new HashSet(blockSeats.getOrDefault(block, Collections.emptySet())); }
+    public Set<Seat> getSeatsByBlock(Block block) {
+        Set<Seat> blockSeatList = blockSeats.get(block);
+        return blockSeatList == null ? Collections.emptySet() : new HashSet<>(blockSeatList);
+    }
 
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
         if(!isBlockWithSeat(block)) return true;
@@ -71,8 +74,9 @@ public class SitService {
     }
 
     public boolean isValidSitBlockData(BlockData blockData) {
+        if(gSitMain.getConfigService().S_SITMATERIALS.containsKey(blockData.getMaterial())) return true;
         for(BlockData sitBlockData : gSitMain.getConfigService().S_SITBLOCKDATA.keySet()) if(sitBlockData.matches(blockData)) return true;
-        return gSitMain.getConfigService().S_SITMATERIALS.containsKey(blockData.getMaterial());
+        return false;
     }
 
     public double getSitBlockDataHeightOffset(BlockData blockData) {

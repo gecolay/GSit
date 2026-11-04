@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PlayerSitEntity extends AreaEffectCloud {
 
-    private final Field vehicle;
+    private static volatile Field vehicle;
 
     public PlayerSitEntity(Location location) {
         super(((CraftWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
@@ -24,10 +24,16 @@ public class PlayerSitEntity extends AreaEffectCloud {
         setNoGravity(true);
         setPermanentlyInvulnerable(true);
         addTag(PlayerSitService.PLAYERSIT_ENTITY_TAG);
+        if(vehicle == null) resolveVehicleField();
+    }
+
+    private static synchronized void resolveVehicleField() {
+        if(vehicle != null) return;
         List<Field> vehicleList = new ArrayList<>();
         for(Field field : Entity.class.getDeclaredFields()) if(field.getType().equals(Entity.class)) vehicleList.add(field);
-        vehicle = vehicleList.getFirst();
-        vehicle.setAccessible(true);
+        Field field = vehicleList.getFirst();
+        field.setAccessible(true);
+        vehicle = field;
     }
 
     @Override
@@ -40,7 +46,7 @@ public class PlayerSitEntity extends AreaEffectCloud {
     public boolean dismountsUnderwater() { return false; }
 
     public void setVehicle(Entity vehicle) {
-        try { this.vehicle.set(this, vehicle); } catch(Throwable ignored) { }
+        try { PlayerSitEntity.vehicle.set(this, vehicle); } catch(Throwable ignored) { }
         if(vehicle.passengers.isEmpty()) vehicle.passengers = ImmutableList.of(this);
         else {
             List<Entity> list = Lists.newArrayList(vehicle.passengers);

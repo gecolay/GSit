@@ -15,8 +15,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.HashMap;
 
 public class ConfigService {
 
@@ -59,12 +63,12 @@ public class ConfigService {
     public boolean C_DEFAULT_CRAWL_MODE;
     public int C_LAYERS;
     public boolean TRUSTED_REGION_ONLY;
-    public List<String> WORLDBLACKLIST = new ArrayList<>();
-    public List<String> WORLDWHITELIST = new ArrayList<>();
-    public final List<Material> MATERIALBLACKLIST = new ArrayList<>();
+    public Set<String> WORLDBLACKLIST = new HashSet<>();
+    public Set<String> WORLDWHITELIST = new HashSet<>();
+    public final Set<Material> MATERIALBLACKLIST = EnumSet.noneOf(Material.class);
     public final List<BlockData> BLOCKDATABLACKLIST = new ArrayList<>();
-    public List<String> COMMANDBLACKLIST = new ArrayList<>();
-    public List<String> FEATUREFLAGS = new ArrayList<>();
+    public Set<String> COMMANDBLACKLIST = new HashSet<>();
+    public Set<String> FEATUREFLAGS = new HashSet<>();
 
     private final GSitMain gSitMain;
 
@@ -140,11 +144,11 @@ public class ConfigService {
         C_LAYERS = gSitMain.getConfig().getInt("Options.Crawl.layers", 1);
 
         TRUSTED_REGION_ONLY = gSitMain.getConfig().getBoolean("Options.trusted-region-only", false);
-        WORLDBLACKLIST = gSitMain.getConfig().getStringList("Options.WorldBlacklist");
-        WORLDWHITELIST = gSitMain.getConfig().getStringList("Options.WorldWhitelist");
+        WORLDBLACKLIST = new HashSet<>(gSitMain.getConfig().getStringList("Options.WorldBlacklist"));
+        WORLDWHITELIST = new HashSet<>(gSitMain.getConfig().getStringList("Options.WorldWhitelist"));
         fillBlacklistedMaterialList();
-        COMMANDBLACKLIST = gSitMain.getConfig().getStringList("Options.CommandBlacklist");
-        FEATUREFLAGS = gSitMain.getConfig().getStringList("Options.FeatureFlags");
+        COMMANDBLACKLIST = gSitMain.getConfig().getStringList("Options.CommandBlacklist").stream().map(String::toLowerCase).collect(Collectors.toCollection(HashSet::new));
+        FEATUREFLAGS = new HashSet<>(gSitMain.getConfig().getStringList("Options.FeatureFlags"));
     }
 
     private void fillSitMaterialMap() {

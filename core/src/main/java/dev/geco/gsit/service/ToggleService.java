@@ -2,7 +2,6 @@ package dev.geco.gsit.service;
 
 import dev.geco.gsit.GSitMain;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
@@ -37,10 +36,11 @@ public class ToggleService {
     }
 
     public boolean canEntityUseSit(UUID entityUuid) {
-        if(sitCache.containsKey(entityUuid)) return sitCache.get(entityUuid);
+        Boolean cached = sitCache.get(entityUuid);
+        if(cached != null) return cached;
         try {
-            ResultSet resultSet = gSitMain.getDataService().executeAndGet("SELECT uuid FROM gsit_sit_toggle WHERE uuid = ?", entityUuid.toString());
-            boolean canUseSit = gSitMain.getConfigService().S_DEFAULT_SIT_MODE == !resultSet.next();
+            boolean exists = gSitMain.getDataService().exists("SELECT uuid FROM gsit_sit_toggle WHERE uuid = ?", entityUuid.toString());
+            boolean canUseSit = gSitMain.getConfigService().S_DEFAULT_SIT_MODE == !exists;
             sitCache.put(entityUuid, canUseSit);
             return canUseSit;
         } catch(SQLException e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check sit toggle!", e); }
@@ -48,10 +48,11 @@ public class ToggleService {
     }
 
     public boolean canPlayerUsePlayerSit(UUID playerUuid) {
-        if(playersitCache.containsKey(playerUuid)) return playersitCache.get(playerUuid);
+        Boolean cached = playersitCache.get(playerUuid);
+        if(cached != null) return cached;
         try {
-            ResultSet resultSet = gSitMain.getDataService().executeAndGet("SELECT uuid FROM gsit_player_toggle WHERE uuid = ?", playerUuid.toString());
-            boolean canUsePlayerSit = gSitMain.getConfigService().PS_DEFAULT_SIT_MODE == !resultSet.next();
+            boolean exists = gSitMain.getDataService().exists("SELECT uuid FROM gsit_player_toggle WHERE uuid = ?", playerUuid.toString());
+            boolean canUsePlayerSit = gSitMain.getConfigService().PS_DEFAULT_SIT_MODE == !exists;
             playersitCache.put(playerUuid, canUsePlayerSit);
             return canUsePlayerSit;
         } catch(SQLException e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check player sit toggle!", e); }
@@ -59,10 +60,11 @@ public class ToggleService {
     }
 
     public boolean canPlayerUseCrawl(UUID playerUuid) {
-        if(crawlCache.containsKey(playerUuid)) return crawlCache.get(playerUuid);
+        Boolean cached = crawlCache.get(playerUuid);
+        if(cached != null) return cached;
         try {
-            ResultSet resultSet = gSitMain.getDataService().executeAndGet("SELECT uuid FROM gsit_crawl_toggle WHERE uuid = ?", playerUuid.toString());
-            boolean canUseCrawl = gSitMain.getConfigService().C_DEFAULT_CRAWL_MODE == !resultSet.next();
+            boolean exists = gSitMain.getDataService().exists("SELECT uuid FROM gsit_crawl_toggle WHERE uuid = ?", playerUuid.toString());
+            boolean canUseCrawl = gSitMain.getConfigService().C_DEFAULT_CRAWL_MODE == !exists;
             crawlCache.put(playerUuid, canUseCrawl);
             return canUseCrawl;
         } catch(SQLException e) { gSitMain.getLogger().log(Level.SEVERE, "Could not check crawl toggle!", e); }

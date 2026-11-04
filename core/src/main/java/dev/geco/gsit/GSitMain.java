@@ -52,6 +52,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.InputStream;
 import java.util.Map;
 
 public class GSitMain extends JavaPlugin {
@@ -82,6 +83,7 @@ public class GSitMain extends JavaPlugin {
     private PlotSquaredLink plotSquaredLink;
     private WorldGuardLink worldGuardLink;
     private BStatsMetric bStatsMetric;
+    private volatile String pluginSource;
     private boolean supportsTaskFeature = false;
     private boolean isPaperServer = false;
     private boolean isFoliaServer = false;
@@ -334,8 +336,14 @@ public class GSitMain extends JavaPlugin {
     }
 
     public String getSource() {
-        Map<?, ?> map = (new Yaml()).load(getClassLoader().getResourceAsStream("plugin.yml"));
-        return map.get("source").toString().toLowerCase();
+        String source = pluginSource;
+        if(source != null) return source;
+        try(InputStream inputStream = getClassLoader().getResourceAsStream("plugin.yml")) {
+            Map<?, ?> map = new Yaml().load(inputStream);
+            source = map.get("source").toString().toLowerCase();
+        } catch(Throwable e) { source = "unknown"; }
+        pluginSource = source;
+        return source;
     }
 
     private void setupBStatsMetric() {

@@ -41,7 +41,10 @@ abstract public class MessageService {
 
     public FileConfiguration getMessages() { return getMessages(defaultLanguage); }
 
-    public FileConfiguration getMessages(String languageCode) { return messages.getOrDefault(languageCode, new YamlConfiguration()); }
+    public FileConfiguration getMessages(String languageCode) {
+        FileConfiguration lang = messages.get(languageCode);
+        return lang != null ? lang : new YamlConfiguration();
+    }
 
     public void loadMessages() {
         messages.clear();

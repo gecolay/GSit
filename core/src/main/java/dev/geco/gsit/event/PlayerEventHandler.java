@@ -17,7 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import java.util.List;
+import java.util.Set;
 
 public class PlayerEventHandler implements Listener {
 
@@ -66,7 +66,7 @@ public class PlayerEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
-        List<String> commands = gSitMain.getConfigService().COMMANDBLACKLIST;
+        Set<String> commands = gSitMain.getConfigService().COMMANDBLACKLIST;
         if(commands.isEmpty()) return;
 
         String message = event.getMessage();
@@ -74,7 +74,7 @@ public class PlayerEventHandler implements Listener {
         if(message.length() <= 1 || (!gSitMain.getSitService().isEntitySitting(player) && !gSitMain.getPoseService().isPlayerPosing(player) && !gSitMain.getPlayerSitService().isPlayerInPlayerSitStack(player))) return;
 
         message = message.substring(1).split(" ")[0].toLowerCase();
-        if(commands.stream().noneMatch(message::equalsIgnoreCase) || gSitMain.getPermissionService().hasPermission(player, "ByPass.Command", "ByPass.*")) return;
+        if(!commands.contains(message) || gSitMain.getPermissionService().hasPermission(player, "ByPass.Command", "ByPass.*")) return;
 
         gSitMain.getMessageService().sendMessage(player, "Messages.action-blocked-error");
         event.setCancelled(true);

@@ -108,6 +108,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
     private net.minecraft.world.item.ItemStack mainSlotCache;
     private float directionCache;
     private boolean sleepingIgnoredCache;
+    private ClientboundSetEquipmentPacket hiddenEquipmentPacket;
     protected int renderRange;
     private final Listener listener;
     private static final EntityDataAccessor<net.minecraft.world.entity.Pose> POSE_ACCESSOR = EntityDataSerializers.POSE.createAccessor(6);
@@ -255,11 +256,11 @@ public class Pose implements dev.geco.gsit.model.Pose {
                 addViewerPlayer(nearbyPlayer);
             }
 
-            for(Player nearbyPlayer : new ArrayList<>(nearbyPlayers)) {
-                if(currentNearbyPlayers.contains(nearbyPlayer)) continue;
-                nearbyPlayers.remove(nearbyPlayer);
+            nearbyPlayers.removeIf(nearbyPlayer -> {
+                if(currentNearbyPlayers.contains(nearbyPlayer)) return false;
                 removeViewerPlayer(nearbyPlayer);
-            }
+                return true;
+            });
 
             if(poseType != PoseType.SPIN) updateDirection();
 
@@ -325,7 +326,9 @@ public class Pose implements dev.geco.gsit.model.Pose {
 
     private Set<Player> getNearbyPlayers() {
         Set<Player> currentNearbyPlayers = new HashSet<>();
-        seatPlayer.getWorld().getPlayers().stream().filter(player -> seat.getLocation().distanceSquared(player.getLocation()) <= renderRange * renderRange && player.canSee(seatPlayer)).forEach(currentNearbyPlayers::add);
+        Location seatLocation = seat.getLocation();
+        double maxDistanceSquared = (double) renderRange * renderRange;
+        for(Player player : seatPlayer.getWorld().getPlayers()) if(seatLocation.distanceSquared(player.getLocation()) <= maxDistanceSquared && player.canSee(seatPlayer)) currentNearbyPlayers.add(player);
         return currentNearbyPlayers;
     }
 
@@ -403,6 +406,11 @@ public class Pose implements dev.geco.gsit.model.Pose {
     }
 
     private void setEquipmentVisibility(boolean visibility) {
+        if(!visibility && hiddenEquipmentPacket != null) {
+            for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, hiddenEquipmentPacket);
+            return;
+        }
+
         List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> equipmentList = new ArrayList<>();
 
         for(net.minecraft.world.entity.EquipmentSlot equipmentSlot : net.minecraft.world.entity.EquipmentSlot.values()) {
@@ -411,6 +419,7 @@ public class Pose implements dev.geco.gsit.model.Pose {
         }
 
         ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(serverPlayer.getId(), equipmentList);
+        if(!visibility) hiddenEquipmentPacket = setEquipmentPacket;
 
         for(Player nearbyPlayer : nearbyPlayers) sendPacket(nearbyPlayer, setEquipmentPacket);
     }

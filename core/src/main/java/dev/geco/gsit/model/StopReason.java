@@ -7,13 +7,13 @@ public enum StopReason {
     DEATH(false, true),
     ENVIRONMENT(true, false),
     GAMEMODE_CHANGE(false, false),
-    GET_UP(true, false),
+    GET_UP(true, true),
     SWITCH(true, false),
     KICKED(true, false),
     PLUGIN(false, true),
     REGION(true, false),
-    TELEPORT(false, false),
-    DISCONNECT(false, false);
+    TELEPORT(false, true),
+    DISCONNECT(false, true);
 
     private final boolean cancellable;
     private final boolean useEntityTask;

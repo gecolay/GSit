@@ -15,6 +15,7 @@ import java.util.logging.Level;
 public class DataService {
 
     protected final int MAX_RETRIES = 3;
+    private static final long VALID_CHECK_INTERVAL_NANOS = 30_000_000_000L;
 
     private final GSitMain gSitMain;
     private Connection connection;
@@ -26,6 +27,7 @@ public class DataService {
     private String password = null;
     private String args = "";
     private int retries = 0;
+    private long lastValidCheck = 0L;
 
     public DataService(GSitMain gSitMain) {
         this.gSitMain = gSitMain;
@@ -48,9 +50,20 @@ public class DataService {
 
     public boolean isConnected() {
         try {
-            if(connection != null && !connection.isClosed() && connection.isValid(5)) return true;
+            if(connection != null && !connection.isClosed() && connection.isValid(5)) {
+                lastValidCheck = System.nanoTime();
+                return true;
+            }
         } catch(SQLException ignored) { }
         return false;
+    }
+
+    private boolean isConnectionUsable() {
+        try {
+            if(connection == null || connection.isClosed()) return false;
+            if(System.nanoTime() - lastValidCheck < VALID_CHECK_INTERVAL_NANOS) return true;
+        } catch(SQLException e) { return false; }
+        return isConnected();
     }
 
     private boolean reconnect() {
@@ -61,6 +74,7 @@ public class DataService {
                 if(!type.equals("sqlite")) connection = getConnection(true);
                 if(connection != null) {
                     retries = 0;
+                    lastValidCheck = System.nanoTime();
                     return true;
                 }
             }
@@ -88,6 +102,14 @@ public class DataService {
         }
     }
 
+    public boolean exists(String query, Object... parameters) throws SQLException {
+        ensureConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            for(int i = 1; i <= parameters.length; i++) preparedStatement.setObject(i, parameters[i - 1]);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) { return resultSet.next(); }
+        }
+    }
+
     public ResultSet executeAndGet(String query, Object... parameters) throws SQLException {
         ensureConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -96,7 +118,7 @@ public class DataService {
     }
 
     private void ensureConnection() throws SQLException {
-        if(isConnected()) return;
+        if(isConnectionUsable()) return;
         if(reconnect()) return;
         if(!reconnect()) throw new SQLException("Failed to reconnect to the " + type + " database.");
     }

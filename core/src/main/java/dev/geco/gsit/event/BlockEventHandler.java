@@ -20,7 +20,6 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,13 +58,12 @@ public class BlockEventHandler implements Listener {
 
     private void handleExplodeEvent(List<Block> blocks) {
         if(!gSitMain.getConfigService().GET_UP_BREAK) return;
-        blocks: for(Block block : new ArrayList<>(blocks)) {
-            for(Seat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat, StopReason.BLOCK_BREAK)) {
-                blocks.remove(block);
-                continue blocks;
-            }
-            for(Pose pose : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(pose, StopReason.BLOCK_BREAK)) blocks.remove(block);
-        }
+        blocks.removeIf(block -> {
+            for(Seat seat : gSitMain.getSitService().getSeatsByBlock(block)) if(!gSitMain.getSitService().removeSeat(seat, StopReason.BLOCK_BREAK)) return true;
+            boolean keep = false;
+            for(Pose pose : gSitMain.getPoseService().getPosesByBlock(block)) if(!gSitMain.getPoseService().removePose(pose, StopReason.BLOCK_BREAK)) keep = true;
+            return keep;
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

@@ -113,6 +113,6 @@ public class PlayerSitEventHandler implements Listener {
         if(gSitMain.getPassengerUtil().isEntityInPassengerList(target, player)) event.setCancelled(true);
     }
 
-    private boolean isPlayerNPC(Player player) { return !Bukkit.getOnlinePlayers().contains(player); }
+    private boolean isPlayerNPC(Player player) { return Bukkit.getPlayer(player.getUniqueId()) == null; }
 
 }

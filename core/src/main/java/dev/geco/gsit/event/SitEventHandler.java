@@ -39,6 +39,7 @@ public class SitEventHandler implements Listener {
         if(gSitMain.getConfigService().S_EMPTY_HAND_ONLY && event.getItem() != null) return;
 
         Player player = event.getPlayer();
+        if(!player.isValid() || player.isSneaking()) return;
         Block clickedBlock = event.getClickedBlock();
         if(clickedBlock == null || !gSitMain.getPermissionService().hasPermission(player, "SitClick", "Sit.*")) return;
 
@@ -47,7 +48,6 @@ public class SitEventHandler implements Listener {
 
         if(!gSitMain.getEnvironmentUtil().isEntityInAllowedWorld(player)) return;
 
-        if(!player.isValid() || player.isSneaking()) return;
 
         Seat seat = gSitMain.getSitService().getSeatByEntity(player);
         if(seat != null && seat.getBlock().equals(clickedBlock)) return;
