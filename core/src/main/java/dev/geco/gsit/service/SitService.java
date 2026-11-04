@@ -61,7 +61,7 @@ public class SitService {
 
     public boolean isBlockWithSeat(Block block) { return blockSeats.containsKey(block); }
 
-    public Set<Seat> getSeatsByBlock(Block block) { return blockSeats.getOrDefault(block, Collections.emptySet()); }
+    public Set<Seat> getSeatsByBlock(Block block) { return new HashSet(blockSeats.getOrDefault(block, Collections.emptySet())); }
 
     public boolean kickSeatEntitiesFromBlock(Block block, LivingEntity entity) {
         if(!isBlockWithSeat(block)) return true;
@@ -127,7 +127,10 @@ public class SitService {
         }
 
         Set<Seat> blockSeatList = blockSeats.get(seat.getBlock());
-        if(blockSeatList != null) blockSeatList.remove(seat);
+        if(blockSeatList != null) {
+            blockSeatList.remove(seat);
+            if(blockSeatList.isEmpty()) blockSeats.remove(seat.getBlock());
+        }
         seat.setBlock(seat.getBlock().getRelative(blockDirection));
         blockSeats.computeIfAbsent(seat.getBlock(), b -> new HashSet<>()).add(seat);
         seat.setLocation(seat.getLocation().add(blockDirection.getModX(), blockDirection.getModY(), blockDirection.getModZ()));
@@ -145,7 +148,7 @@ public class SitService {
         seats.remove(entity.getUniqueId());
         if(useSafeDismount) handleSafeSeatDismount(seat);
 
-        Set<Seat> blockSeatList = blockSeats.remove(seat.getBlock());
+        Set<Seat> blockSeatList = blockSeats.get(seat.getBlock());
         if(blockSeatList != null) {
             blockSeatList.remove(seat);
             if(blockSeatList.isEmpty()) blockSeats.remove(seat.getBlock());

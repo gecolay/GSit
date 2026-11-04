@@ -52,7 +52,7 @@ public class PoseService {
 
     public boolean isBlockWithPose(Block block) { return blockPoses.containsKey(block); }
 
-    public Set<Pose> getPosesByBlock(Block block) { return blockPoses.getOrDefault(block, Collections.emptySet()); }
+    public Set<Pose> getPosesByBlock(Block block) { return new HashSet(blockPoses.getOrDefault(block, Collections.emptySet())); }
 
     public boolean kickPoseEntitiesFromBlock(Block block, Player player) {
         if(!isBlockWithPose(block)) return true;
@@ -99,7 +99,11 @@ public class PoseService {
 
         Seat seat = pose.getSeat();
         Player player = pose.getPlayer();
-        blockPoses.remove(seat.getBlock());
+        Set<Pose> blockPoseList = blockPoses.get(seat.getBlock());
+        if(blockPoseList != null) {
+            blockPoseList.remove(pose);
+            if(blockPoseList.isEmpty()) blockPoses.remove(seat.getBlock());
+        }
         poses.remove(player.getUniqueId());
         if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
 
