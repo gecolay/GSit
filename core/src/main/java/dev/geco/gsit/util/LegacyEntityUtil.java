@@ -31,7 +31,7 @@ public class LegacyEntityUtil implements EntityUtil {
     }
 
     @Override
-    public void setEntityLocation(@NotNull Entity entity, @NotNull Location location) {
+    public void setEntityLocation(@NotNull Entity entity, @NotNull Location location, boolean sync) {
         try {
             Method getHandle = entity.getClass().getMethod("getHandle");
             Object serverEntity = getHandle.invoke(entity);

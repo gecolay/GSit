@@ -150,22 +150,23 @@ public class SitService {
 
         Entity entity = seat.getEntity();
         seats.remove(entity.getUniqueId());
-        if(useSafeDismount) handleSafeSeatDismount(seat);
+        if(useSafeDismount) handleSafeSeatDismount(seat, stopReason == StopReason.DISCONNECT);
 
         Set<Seat> blockSeatList = blockSeats.get(seat.getBlock());
         if(blockSeatList != null) {
             blockSeatList.remove(seat);
             if(blockSeatList.isEmpty()) blockSeats.remove(seat.getBlock());
         }
-        if(!stopReason.isUsingEntityTask()) seat.getSeatEntity().remove();
-        else gSitMain.getTaskService().run(() -> seat.getSeatEntity().remove(), seat.getSeatEntity());
+        gSitMain.getTaskService().removeEntity(seat.getSeatEntity());
         Bukkit.getPluginManager().callEvent(new EntityStopSitEvent(seat, stopReason));
         sitTime += seat.getLifetimeInNanoSeconds();
 
         return true;
     }
 
-    public void handleSafeSeatDismount(Seat seat) {
+    public void handleSafeSeatDismount(Seat seat) { handleSafeSeatDismount(seat, false); }
+
+    public void handleSafeSeatDismount(Seat seat, boolean sync) {
         Location returnLocation;
         if(gSitMain.getConfigService().GET_UP_RETURN) returnLocation = seat.getReturnLocation();
         else {
@@ -181,7 +182,7 @@ public class SitService {
         returnLocation.setPitch(entityLocation.getPitch());
 
         try {
-            if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation);
+            if(entity.isValid()) gSitMain.getEntityUtil().setEntityLocation(entity, returnLocation, sync);
             if(seat.getSeatEntity().isValid() && !gSitMain.getVersionManager().isNewerOrVersion(1, 17)) gSitMain.getEntityUtil().setEntityLocation(seat.getSeatEntity(), returnLocation);
         } catch(IllegalStateException e) {
             if(!gSitMain.isFoliaServer()) gSitMain.getLogger().log(Level.WARNING, "Failed to set entity location", e);

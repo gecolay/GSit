@@ -114,11 +114,10 @@ public class PoseService {
         }
         poses.remove(player.getUniqueId());
         posingEntityIds.remove(player.getEntityId());
-        if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat);
+        if(useSafeDismount) gSitMain.getSitService().handleSafeSeatDismount(seat, stopReason == StopReason.DISCONNECT);
 
         pose.remove();
-        if(!stopReason.isUsingEntityTask()) seat.getSeatEntity().remove();
-        else gSitMain.getTaskService().run(() -> seat.getSeatEntity().remove(), seat.getSeatEntity());
+        gSitMain.getTaskService().removeEntity(seat.getSeatEntity());
         Bukkit.getPluginManager().callEvent(new PlayerStopPoseEvent(pose, stopReason));
         poseTime.merge(pose.getPoseType(), seat.getLifetimeInNanoSeconds(), Long::sum);
 

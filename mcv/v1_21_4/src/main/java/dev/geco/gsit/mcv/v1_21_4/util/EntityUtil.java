@@ -43,9 +43,9 @@ public class EntityUtil implements dev.geco.gsit.util.EntityUtil {
     }
 
     @Override
-    public void setEntityLocation(@NotNull Entity entity, @NotNull Location location) {
+    public void setEntityLocation(@NotNull Entity entity, @NotNull Location location, boolean sync) {
         if(entity instanceof Player) {
-            if(gSitMain.isFoliaServer()) {
+            if(gSitMain.isFoliaServer() && !sync) {
                 entity.teleportAsync(location, PlayerTeleportEvent.TeleportCause.DISMOUNT);
                 return;
             }

@@ -16,7 +16,9 @@ import java.util.UUID;
 
 public interface EntityUtil {
 
-    void setEntityLocation(@NotNull Entity entity, @NotNull Location location);
+    default void setEntityLocation(@NotNull Entity entity, @NotNull Location location) { setEntityLocation(entity, location, false); }
+
+    void setEntityLocation(@NotNull Entity entity, @NotNull Location location, boolean sync);
 
     boolean isSitLocationValid(@NotNull Location location);
 
